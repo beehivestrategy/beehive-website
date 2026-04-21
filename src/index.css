@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 10 10 10;
+  --fg: 244 244 240;
+  --muted: 153 153 153;
+  --card: 15 15 15;
+  --border: 45 45 45;
+  --accent: 204 255 0; /* Neon Lime */
+  --primary: 244 244 240;
+  --cta: 204 255 0;
+  --focus: 204 255 0;
+
+  font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+html {
+  color-scheme: dark;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-bg text-fg selection:bg-accent selection:text-black;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+.dark {
+  --bg: 10 10 10;
+  --fg: 244 244 240;
+  --muted: 153 153 153;
+  --card: 15 15 15;
+  --border: 45 45 45;
+  --accent: 204 255 0;
+  --primary: 244 244 240;
+  --cta: 204 255 0;
+  --focus: 204 255 0;
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.grid-background {
+  background-size: 60px 60px;
+  background-image: 
+    linear-gradient(to right, rgb(var(--border) / 0.8) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--border) / 0.8) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+}
+
+.gradient-blur {
+  filter: blur(120px);
+  border-radius: 100%;
+}
+
+.glass-card {
+  @apply bg-card/80 backdrop-blur-xl border border-border/80;
+}
+
+.dark .glass-card {
+  @apply bg-card/80 backdrop-blur-xl border border-border/80;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-br from-fg via-fg to-muted;
+}
+
+.button-glow {
+  position: relative;
+}
+
+.button-glow::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: rgb(var(--accent));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.button-glow:hover::after {
+  opacity: 1;
+}
+
+html {
+  color-scheme: light;
+  background: rgb(var(--bg));
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  color: rgb(var(--fg));
+  background: rgb(var(--bg));
+}
+
+::selection {
+  background: color-mix(in oklab, rgb(var(--accent)) 25%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--focus));
+  outline-offset: 2px;
+}
+
+a {
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
