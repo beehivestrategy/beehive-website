@@ -15,6 +15,10 @@ if (!OPENROUTER_API_KEY) {
 
 const currentDate = new Date().toISOString().split('T')[0];
 
+const MODEL = process.env.OPENROUTER_MODEL ?? 'meta-llama/llama-3-8b-instruct:free';
+const HTTP_REFERER = process.env.OPENROUTER_HTTP_REFERER ?? 'https://beehive.consulting';
+const APP_TITLE = process.env.OPENROUTER_APP_TITLE ?? 'Beehive Data & AI Consulting';
+
 const prompt = `
 You are a top-tier enterprise Data & AI consultant. Write a highly professional, compelling, and actionable insight article for the "Beehive Data & AI Consulting" blog.
 The article should be about modern data foundations, AI operationalization, metric governance, or data transformation.
@@ -45,19 +49,19 @@ Ensure there are at least 3 detailed sections and 2 FAQs. The tone must be autho
 Return ONLY valid JSON.
 `;
 
-async function generateContent() {
+async function chatCompletion(message: string, temperature: number) {
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://beehive.consulting', // Replace with your actual site URL
-      'X-Title': 'Beehive Data & AI Consulting', // Replace with your actual site name
+      'HTTP-Referer': HTTP_REFERER,
+      'X-Title': APP_TITLE,
     },
     body: JSON.stringify({
-      model: 'anthropic/claude-3.5-sonnet', // or your preferred OpenRouter model
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
+      model: MODEL,
+      messages: [{ role: 'user', content: message }],
+      temperature,
     }),
   });
 
@@ -66,15 +70,19 @@ async function generateContent() {
   }
 
   const data = await response.json();
-  let content = data.choices[0].message.content.trim();
-  
-  if (content.startsWith('\`\`\`json')) {
-    content = content.replace(/^\`\`\`json\n?/, '').replace(/\n?\`\`\`$/, '');
-  } else if (content.startsWith('\`\`\`')) {
-    content = content.replace(/^\`\`\`\n?/, '').replace(/\n?\`\`\`$/, '');
+  let content = data.choices?.[0]?.message?.content?.trim?.() ?? '';
+
+  if (content.startsWith('```json')) {
+    content = content.replace(/^```json\n?/, '').replace(/\n?```$/, '');
+  } else if (content.startsWith('```')) {
+    content = content.replace(/^```\n?/, '').replace(/\n?```$/, '');
   }
 
   return JSON.parse(content);
+}
+
+async function generateContent() {
+  return chatCompletion(prompt, 0.7);
 }
 
 async function translateContent(articleJson: any, targetLang: string) {
@@ -87,36 +95,7 @@ ${JSON.stringify(articleJson, null, 2)}
 
 Return ONLY valid JSON without markdown formatting.
 `;
-
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://beehive.consulting',
-      'X-Title': 'Beehive Data & AI Consulting',
-    },
-    body: JSON.stringify({
-      model: 'anthropic/claude-3.5-sonnet',
-      messages: [{ role: 'user', content: translatePrompt }],
-      temperature: 0.3,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`OpenRouter Translation Error: ${response.statusText}`);
-  }
-
-  const data = await response.json();
-  let content = data.choices[0].message.content.trim();
-  
-  if (content.startsWith('\`\`\`json')) {
-    content = content.replace(/^\`\`\`json\n?/, '').replace(/\n?\`\`\`$/, '');
-  } else if (content.startsWith('\`\`\`')) {
-    content = content.replace(/^\`\`\`\n?/, '').replace(/\n?\`\`\`$/, '');
-  }
-
-  return JSON.parse(content);
+  return chatCompletion(translatePrompt, 0.3);
 }
 
 async function run() {
