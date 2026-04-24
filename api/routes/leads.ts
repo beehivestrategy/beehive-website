@@ -4,6 +4,7 @@ import { appendJsonLine } from '../storage.js'
 import { getClientIp, isRateLimited } from '../utils/rateLimit.js'
 import { sha256Hex } from '../utils/hash.js'
 import { isBoolean, isNonEmptyString, isValidEmail, toTrimmedString } from '../utils/validation.js'
+import { Resend } from 'resend'
 
 type LeadTopic =
   | 'data-enablement'
@@ -26,6 +27,7 @@ type CreateLeadRequest = {
 }
 
 const router = Router()
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 router.post('/', async (req: Request, res: Response) => {
   const ip = getClientIp(req)
@@ -76,19 +78,50 @@ router.post('/', async (req: Request, res: Response) => {
   const receivedAt = new Date().toISOString()
   const ua = typeof req.headers['user-agent'] === 'string' ? req.headers['user-agent'] : ''
 
-  await appendJsonLine('leads.jsonl', {
-    id,
-    receivedAt,
-    fullName,
-    workEmail,
-    company,
-    role: role || undefined,
-    topic: topic || 'other',
-    message,
-    source: source || undefined,
-    ipHash: sha256Hex(ip),
-    userAgent: ua || undefined,
-  })
+  try {
+    await appendJsonLine('leads.jsonl', {
+      id,
+      receivedAt,
+      fullName,
+      workEmail,
+      company,
+      role: role || undefined,
+      topic: topic || 'other',
+      message,
+      source: source || undefined,
+      ipHash: sha256Hex(ip),
+      userAgent: ua || undefined,
+    })
+  } catch (e) {
+    console.error("Failed to write to leads.jsonl:", e);
+  }
+
+  if (resend) {
+    try {
+      const emailHtml = `
+        <h2>New Lead from Website</h2>
+        <p><strong>Name:</strong> ${fullName}</p>
+        <p><strong>Email:</strong> ${workEmail}</p>
+        <p><strong>Company:</strong> ${company}</p>
+        <p><strong>Role:</strong> ${role || 'N/A'}</p>
+        <p><strong>Topic:</strong> ${topic}</p>
+        <p><strong>Source:</strong> ${source || 'Direct'}</p>
+        <hr />
+        <h3>Message:</h3>
+        <p>${message.replace(/\n/g, '<br/>')}</p>
+      `;
+
+      await resend.emails.send({
+        from: 'Beehive Website <onboarding@resend.dev>',
+        to: process.env.CONTACT_EMAIL || 'hello@beehivestrategy.com',
+        replyTo: workEmail,
+        subject: `New Contact Request: ${fullName} from ${company}`,
+        html: emailHtml,
+      });
+    } catch (e) {
+      console.error("Failed to send email via Resend:", e);
+    }
+  }
 
   res.status(200).json({ success: true, data: { id, receivedAt } })
 })

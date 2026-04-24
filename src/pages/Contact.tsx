@@ -1,14 +1,18 @@
+import { useState } from "react";
 import SiteLayout from "@/components/layout/SiteLayout";
 import Container from "@/components/ui/Container";
 import SectionHeader from "@/components/sections/SectionHeader";
 import Seo from "@/components/seo/Seo";
 import LeadForm from "@/components/forms/LeadForm";
+import CalendlyEmbed from "@/components/forms/CalendlyEmbed";
 import Tag from "@/components/ui/Tag";
 import { site } from "@/content/site";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
 
 export default function Contact() {
   const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<"form" | "calendar">("form");
 
   return (
     <SiteLayout>
@@ -23,7 +27,7 @@ export default function Contact() {
           <Tag>{t("contactPage.tag2")}</Tag>
         </div>
 
-        <div className="mt-6 grid gap-10 md:grid-cols-[1fr_0.9fr] md:items-start">
+        <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
           <div>
             <SectionHeader
               eyebrow={t("contactPage.eyebrow")}
@@ -57,7 +61,34 @@ export default function Contact() {
             </div>
           </div>
 
-          <LeadForm source="contact" />
+          <div className="flex flex-col gap-6">
+            <div className="flex bg-black/40 border border-border/60 p-1">
+              <button
+                onClick={() => setActiveTab("form")}
+                className={cn(
+                  "flex-1 py-3 px-4 text-sm font-bold uppercase tracking-wider transition-colors",
+                  activeTab === "form" ? "bg-accent text-black" : "text-muted hover:text-white"
+                )}
+              >
+                Send Message
+              </button>
+              <button
+                onClick={() => setActiveTab("calendar")}
+                className={cn(
+                  "flex-1 py-3 px-4 text-sm font-bold uppercase tracking-wider transition-colors",
+                  activeTab === "calendar" ? "bg-accent text-black" : "text-muted hover:text-white"
+                )}
+              >
+                Book Meeting
+              </button>
+            </div>
+            
+            {activeTab === "form" ? (
+              <LeadForm source="contact" />
+            ) : (
+              <CalendlyEmbed url="https://calendly.com/beehivestrategy/30min" />
+            )}
+          </div>
         </div>
       </Container>
     </SiteLayout>
