@@ -13,6 +13,16 @@ export type Insight = {
 
 export const insights: Insight[] = [
   {
+    slug: "modern-data-foundations-and-ai-operationalization",
+    title: "Modern Data Foundations and AI Operationalization",
+    summary: "Enterprises must align robust data foundations with scalable AI operationalization to unlock sustainable value. This article outlines the strategic pillars required to integrate data integrity with intelligent automation.",
+    publishedAt: "2026-04-24",
+    readingMinutes: 5,
+    topics: ["data enablement","ai enablement","strategy"],
+    sections: [],
+    faqs: []
+  },
+  {
     slug: "data-products-operating-model",
     title: "Data Products: The Operating Model That Makes Data Useful",
     summary:
