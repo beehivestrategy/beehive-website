@@ -4,7 +4,7 @@ import { appendJsonLine } from '../storage.js'
 import { getClientIp, isRateLimited } from '../utils/rateLimit.js'
 import { sha256Hex } from '../utils/hash.js'
 import { isBoolean, isNonEmptyString, isValidEmail, toTrimmedString } from '../utils/validation.js'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
 type LeadTopic =
   | 'data-enablement'
@@ -27,7 +27,15 @@ type CreateLeadRequest = {
 }
 
 const router = Router()
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const transporter = process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD
+  ? nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    })
+  : null;
 
 router.post('/', async (req: Request, res: Response) => {
   const ip = getClientIp(req)
@@ -96,7 +104,7 @@ router.post('/', async (req: Request, res: Response) => {
     console.error("Failed to write to leads.jsonl:", e);
   }
 
-  if (resend) {
+  if (transporter) {
     try {
       const emailHtml = `
         <h2>New Lead from Website</h2>
@@ -111,15 +119,15 @@ router.post('/', async (req: Request, res: Response) => {
         <p>${message.replace(/\n/g, '<br/>')}</p>
       `;
 
-      await resend.emails.send({
-        from: 'Beehive Website <onboarding@resend.dev>',
-        to: process.env.CONTACT_EMAIL || 'hello@beehivestrategy.com',
+      await transporter.sendMail({
+        from: `"Beehive Website" <${process.env.GMAIL_USER}>`,
+        to: process.env.CONTACT_EMAIL || process.env.GMAIL_USER,
         replyTo: workEmail,
         subject: `New Contact Request: ${fullName} from ${company}`,
         html: emailHtml,
       });
     } catch (e) {
-      console.error("Failed to send email via Resend:", e);
+      console.error("Failed to send email via Gmail:", e);
     }
   }
 
