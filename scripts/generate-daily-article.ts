@@ -15,7 +15,7 @@ if (!OPENROUTER_API_KEY) {
 
 const currentDate = new Date().toISOString().split('T')[0];
 
-const MODEL = process.env.OPENROUTER_MODEL ?? 'meta-llama/llama-3-8b-instruct:free';
+const MODEL = process.env.OPENROUTER_MODEL ?? 'meta-llama/llama-3.3-70b-instruct:free';
 const HTTP_REFERER = process.env.OPENROUTER_HTTP_REFERER ?? 'https://beehive.consulting';
 const APP_TITLE = process.env.OPENROUTER_APP_TITLE ?? 'Beehive Data & AI Consulting';
 
