@@ -13,6 +13,16 @@ export type Insight = {
 
 export const insights: Insight[] = [
   {
+    slug: "modern-data-foundations-and-ai-operationalization-beyond-the-hype",
+    title: "Modern Data Foundations & AI Operationalization: Beyond the Hype",
+    summary: "This article dissects the critical intersection of robust data foundations and AI operationalization, revealing how enterprises can transition from theoretical capabilities to measurable, business-impactful outcomes. Key insights include the role of centralized data governance, real-time data mesh architectures, and the alignment of AI models with operational KPIs to drive enterprise agility.",
+    publishedAt: "2026-04-24",
+    readingMinutes: 5,
+    topics: ["data enablement","ai enablement","strategy"],
+    sections: [],
+    faqs: []
+  },
+  {
     slug: "modern-data-foundations-and-ai-operationalization",
     title: "Modern Data Foundations and AI Operationalization",
     summary: "Enterprises must align robust data foundations with scalable AI operationalization to unlock sustainable value. This article outlines the strategic pillars required to integrate data integrity with intelligent automation.",
