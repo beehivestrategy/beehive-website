@@ -12,10 +12,12 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Privacy from "@/pages/Privacy";
 import Accessibility from "@/pages/Accessibility";
+import GTMTracker from "@/components/seo/GTMTracker";
 
 export default function App() {
   return (
     <Router basename={import.meta.env.BASE_URL}>
+      <GTMTracker />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />

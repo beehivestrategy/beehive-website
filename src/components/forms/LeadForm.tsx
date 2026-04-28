@@ -97,6 +97,17 @@ export default function LeadForm({ className, compact, defaultTopic, source }: L
 
       setErrors({});
       setSuccess(t("forms.leadSuccess"));
+
+      // Push event to GTM dataLayer for conversion tracking
+      if (typeof window !== 'undefined') {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          event: "generate_lead",
+          lead_type: source,
+          topic: state.topic
+        });
+      }
+
       setState((s) => ({
         ...s,
         message: "",
