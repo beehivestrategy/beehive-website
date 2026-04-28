@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { site } from "@/content/site";
-import { ensureLinkRel, ensureMetaTag, getDefaultOgImage, toCanonicalUrl } from "@/utils/seo";
+import { ensureLinkRel, ensureMetaTag, getBaseJsonLd, getDefaultOgImage, toCanonicalUrl } from "@/utils/seo";
 
 type SeoProps = {
   title?: string;
@@ -40,6 +40,7 @@ export default function Seo({ title, description, pathname, image, ogType = "web
 
     ensureMetaTag("description", pageDescription);
     ensureMetaTag("og:type", ogType, true);
+    ensureMetaTag("og:site_name", siteName, true);
     ensureMetaTag("og:title", pageTitle, true);
     ensureMetaTag("og:description", pageDescription, true);
     ensureMetaTag("og:url", canonical, true);
@@ -54,9 +55,15 @@ export default function Seo({ title, description, pathname, image, ogType = "web
     ensureMetaTag("twitter:description", pageDescription);
     ensureMetaTag("twitter:image", ogImage);
 
-    if (jsonLd) upsertJsonLd("jsonld-primary", jsonLd);
+    const baseJsonLd = getBaseJsonLd();
+    const combinedJsonLd = jsonLd
+      ? Array.isArray(jsonLd)
+        ? [...baseJsonLd, ...jsonLd]
+        : [...baseJsonLd, jsonLd]
+      : baseJsonLd;
+
+    upsertJsonLd("jsonld-primary", combinedJsonLd);
   }, [title, description, pathname, image, ogType, publishedTime, jsonLd, t]);
 
   return null;
 }
-

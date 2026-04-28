@@ -11,7 +11,6 @@ import SectionHeader from "@/components/sections/SectionHeader";
 import LeadForm from "@/components/forms/LeadForm";
 import NewsletterForm from "@/components/forms/NewsletterForm";
 import Seo from "@/components/seo/Seo";
-import { getOrganizationJsonLd } from "@/utils/seo";
 import { services } from "@/content/services";
 import { caseStudies } from "@/content/caseStudies";
 import { insights } from "@/content/insights";
@@ -33,7 +32,6 @@ export default function Home() {
         pathname="/"
         title={t("site.tagline")}
         description={t("site.description")}
-        jsonLd={getOrganizationJsonLd()}
       />
 
       <section className="relative overflow-hidden min-h-[90vh] flex items-center">
@@ -234,4 +232,3 @@ export default function Home() {
     </SiteLayout>
   );
 }
-

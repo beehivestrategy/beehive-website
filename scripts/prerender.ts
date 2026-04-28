@@ -15,7 +15,7 @@ function getSiteUrl() {
   return 'https://www.beehivestrategy.com'
 }
 
-const defaultTitle = "Beehive | Data, Analytics & AI Transformation"
+const defaultTitle = "Beehive Strategy | Data, Analytics & AI Transformation"
 const defaultDesc = "Data enablement, analytics, transformation, and AI enablement consulting. Build trusted data foundations, accelerate insight delivery, and operationalize AI with governance."
 const defaultImage = "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=editorial%20corporate%20hero%20image%2C%20abstract%20data%20lattice%20lines%20and%20nodes%20on%20a%20near-black%20background%2C%20subtle%20grain%20texture%2C%20teal%20and%20signal-orange%20accent%20glow%2C%20high-end%20technology%20consulting%20aesthetic%2C%20clean%20negative%20space%2C%20no%20text%2C%20photoreal%20lighting%2C%20ultra%20detailed%2C%20sharp%20focus&image_size=landscape_16_9"
 
@@ -37,7 +37,7 @@ async function main() {
     { route: '/industries', title: `Industries | ${defaultTitle}`, desc: "Industry-specific data and AI solutions." },
     { route: '/case-studies', title: `Case Studies | ${defaultTitle}`, desc: "Real-world data and AI transformation stories." },
     { route: '/insights', title: `Insights | ${defaultTitle}`, desc: "Latest thinking on data, analytics, and AI." },
-    { route: '/about', title: `About | ${defaultTitle}`, desc: "About Beehive Data & AI Consulting." },
+    { route: '/about', title: `About | ${defaultTitle}`, desc: "About Beehive Strategy." },
     { route: '/contact', title: `Contact | ${defaultTitle}`, desc: "Get in touch with our experts." },
     { route: '/privacy', title: `Privacy Policy | ${defaultTitle}`, desc: "Our privacy policy." },
     { route: '/accessibility', title: `Accessibility | ${defaultTitle}`, desc: "Our accessibility statement." },

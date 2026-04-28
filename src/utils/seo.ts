@@ -37,12 +37,31 @@ export function getDefaultOgImage(): string {
 
 export function getOrganizationJsonLd() {
   const origin = getSiteOrigin();
+  const organizationId = `${origin}/#organization`;
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": organizationId,
     name: site.legalName,
+    alternateName: site.name,
     url: origin,
     email: site.contactEmail,
+    logo: `${origin}/favicon.svg`,
   };
 }
 
+export function getWebSiteJsonLd() {
+  const origin = getSiteOrigin();
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${origin}/#website`,
+    name: site.name,
+    url: origin,
+    publisher: { "@id": `${origin}/#organization` },
+  };
+}
+
+export function getBaseJsonLd() {
+  return [getOrganizationJsonLd(), getWebSiteJsonLd()];
+}

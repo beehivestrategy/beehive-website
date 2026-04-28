@@ -10,6 +10,8 @@ import NewsletterForm from "@/components/forms/NewsletterForm";
 import Seo from "@/components/seo/Seo";
 import TableOfContents from "@/components/insights/TableOfContents";
 import { getInsightBySlug } from "@/content/insights";
+import { getSiteOrigin } from "@/content/site";
+import { toCanonicalUrl } from "@/utils/seo";
 
 function toId(heading: string) {
   return heading
@@ -40,13 +42,16 @@ export default function InsightDetail() {
 
   const jsonLd = useMemo(() => {
     if (!post) return undefined;
+    const origin = getSiteOrigin();
     return {
       "@context": "https://schema.org",
       "@type": "Article",
       headline: title,
       datePublished: post.publishedAt,
       description: summary,
-      mainEntityOfPage: { "@type": "WebPage", "@id": `/insights/${post.slug}` },
+      mainEntityOfPage: { "@type": "WebPage", "@id": toCanonicalUrl(`/insights/${post.slug}`) },
+      author: { "@id": `${origin}/#organization` },
+      publisher: { "@id": `${origin}/#organization` },
     };
   }, [post, title, summary]);
 

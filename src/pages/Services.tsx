@@ -8,6 +8,7 @@ import SectionHeader from "@/components/sections/SectionHeader";
 import Tag from "@/components/ui/Tag";
 import Seo from "@/components/seo/Seo";
 import { services } from "@/content/services";
+import { getSiteOrigin } from "@/content/site";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,19 +35,19 @@ const itemVariants = {
 export default function Services() {
   const { t } = useTranslation();
   
-  const jsonLd = useMemo(
-    () => ({
+  const jsonLd = useMemo(() => {
+    const origin = getSiteOrigin();
+    return {
       "@context": "https://schema.org",
       "@type": "ItemList",
       itemListElement: services.map((s, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        url: `/services/${s.slug}`,
+        url: `${origin}/services/${s.slug}`,
         name: t(`services.${s.slug}.title`, { defaultValue: s.title }),
       })),
-    }),
-    [t],
-  );
+    };
+  }, [t]);
 
   return (
     <SiteLayout>
@@ -153,4 +154,3 @@ export default function Services() {
     </SiteLayout>
   );
 }
-
