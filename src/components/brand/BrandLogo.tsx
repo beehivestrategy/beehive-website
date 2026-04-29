@@ -9,23 +9,23 @@ type BrandLogoProps = {
 
 export default function BrandLogo({ variant = "horizontal", className }: BrandLogoProps) {
   const { t } = useTranslation();
-  const [failed, setFailed] = useState(false);
+  const [index, setIndex] = useState(0);
 
-  const src = useMemo(() => {
-    if (variant === "mark") return "/brand/logo-mark.png";
-    return "/brand/logo-horizontal.png";
+  const sources = useMemo(() => {
+    if (variant === "mark") return ["/brand/logo-mark.svg", "/brand/logo-mark.png"];
+    return ["/brand/logo-horizontal.svg", "/brand/logo-horizontal.png"];
   }, [variant]);
 
-  if (failed) {
+  if (index >= sources.length) {
     return <LogoMark className={className} />;
   }
 
   return (
     <img
-      src={src}
+      src={sources[index]}
       alt={t("site.name")}
       className={className}
-      onError={() => setFailed(true)}
+      onError={() => setIndex((v) => v + 1)}
       loading="eager"
       decoding="async"
     />
