@@ -35,6 +35,17 @@ export default function About() {
         <p className="mt-6 max-w-[76ch] text-lg text-muted md:text-xl leading-relaxed">
           {t("aboutPage.description")}
         </p>
+        <div className="mt-10 relative overflow-hidden border border-border/50 bg-black/40">
+          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-transparent mix-blend-multiply" />
+          <img
+            src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=executive%20workshop%20scene%2C%20enterprise%20data%20and%20AI%20strategy%20session%20in%20a%20modern%20boardroom%2C%20subtle%20hexagonal%20motif%20in%20background%2C%20teal%20and%20honey%20yellow%20accent%20lighting%2C%20premium%20consulting%20brand%2C%20photorealistic%2C%20no%20text&image_size=landscape_16_9"
+            alt=""
+            width="1400"
+            height="788"
+            loading="lazy"
+            className="w-full h-auto opacity-80"
+          />
+        </div>
 
         <div className="mt-16 grid gap-6 md:grid-cols-3">
           {principles.map((p) => (
@@ -74,4 +85,3 @@ export default function About() {
     </SiteLayout>
   );
 }
-

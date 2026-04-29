@@ -28,8 +28,8 @@ const base =
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "border-transparent bg-accent text-black hover:bg-white hover:text-black shadow-[4px_4px_0px_rgb(255,255,255)] hover:shadow-[2px_2px_0px_rgb(255,255,255)] hover:translate-x-[2px] hover:translate-y-[2px]",
-  secondary: "border-border/60 bg-card text-fg hover:border-accent hover:text-accent hover:bg-card shadow-sm",
+    "border-transparent bg-cta text-black hover:bg-white hover:text-black shadow-[4px_4px_0px_rgb(var(--accent))] hover:shadow-[2px_2px_0px_rgb(var(--accent))] hover:translate-x-[2px] hover:translate-y-[2px]",
+  secondary: "border-border/60 bg-card text-fg hover:border-cta hover:text-cta hover:bg-card shadow-sm",
   ghost: "border-transparent bg-transparent text-fg hover:bg-white/5",
 };
 

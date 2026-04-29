@@ -94,7 +94,7 @@ export default function ServiceDetail() {
           <div className="grid gap-5">
             <div className="relative aspect-[4/3] w-full overflow-hidden border border-border/50 bg-black">
               <img 
-                src={`https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop`} 
+                src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=photorealistic%20technology%20consulting%20scene%2C%20enterprise%20data%20platform%20visualization%20with%20subtle%20honeycomb%20structure%2C%20teal%20and%20honey%20yellow%20accent%20lighting%2C%20dark%20premium%20aesthetic%2C%20no%20text%2C%20ultra%20detailed&image_size=landscape_4_3" 
                 alt="" 
                 width="800"
                 height="600"
@@ -178,4 +178,3 @@ export default function ServiceDetail() {
     </SiteLayout>
   );
 }
-

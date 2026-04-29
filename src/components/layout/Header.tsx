@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import NavItemLink from "@/components/nav/NavItemLink";
+import LogoMark from "@/components/brand/LogoMark";
 
 function LanguageSwitcher() {
   const { i18n } = useTranslation();
@@ -52,12 +53,12 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-bg/95 backdrop-blur-md">
       <div className="flex h-20 items-center justify-between px-6 md:px-12 max-w-[1600px] mx-auto w-full">
-        <Link className="group flex items-center gap-3" to="/" aria-label="Beehive home" aria-current={location.pathname === "/" ? "page" : undefined}>
-          <span className="relative grid h-10 w-10 place-items-center bg-accent">
-            <span className="h-3 w-3 bg-black" />
+        <Link className="group flex items-center gap-3" to="/" aria-label={`${t("site.name")} home`} aria-current={location.pathname === "/" ? "page" : undefined}>
+          <span className="relative grid h-10 w-10 place-items-center border border-border bg-card">
+            <LogoMark className="h-8 w-8" />
           </span>
           <div className="leading-none">
-            <div className="font-display text-2xl font-bold uppercase tracking-tighter text-fg">BEEHIVE</div>
+            <div className="font-display text-2xl font-bold uppercase tracking-tighter text-fg">{t("site.name")}</div>
           </div>
         </Link>
 

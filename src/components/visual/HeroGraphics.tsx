@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next';
 export default function HeroGraphics() {
   const { t } = useTranslation();
 
+  const heroImage =
+    "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=premium%20corporate%20hero%20photograph%2C%20abstract%20honeycomb%20geometry%20and%20data%20network%20lines%2C%20teal%20and%20honey%20yellow%20rim%20lighting%20on%20dark%20background%2C%20high-end%20consulting%20brand%2C%20cinematic%2C%20ultra%20detailed%2C%20no%20text&image_size=landscape_4_3";
+
   return (
     <div className="relative w-full aspect-[4/3] overflow-hidden border border-border/50">
       <motion.div
@@ -13,7 +16,7 @@ export default function HeroGraphics() {
         className="absolute inset-0"
       >
         <img 
-          src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2000&auto=format&fit=crop" 
+          src={heroImage}
           alt="" 
           width="800"
           height="600"
