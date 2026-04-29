@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import { site } from "@/content/site";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -13,8 +14,15 @@ export default function Footer() {
       <Container className="py-16 relative z-10">
         <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr] md:gap-12">
           <div>
-            <div className="font-display text-3xl tracking-tight text-gradient">{t("site.tagline", { defaultValue: site.tagline })}</div>
-            <p className="mt-4 max-w-[58ch] text-sm text-muted leading-relaxed">{t("site.description", { defaultValue: site.description })}</p>
+            <div className="flex items-center gap-4">
+              <div className="grid h-12 w-12 place-items-center border border-border bg-card overflow-hidden">
+                <BrandLogo variant="mark" className="h-10 w-10" />
+              </div>
+              <div>
+                <div className="font-display text-2xl tracking-tight text-fg">{t("site.name", { defaultValue: site.name })}</div>
+                <div className="mt-1 text-xs font-bold uppercase tracking-widest text-muted">{t("site.tagline", { defaultValue: site.tagline })}</div>
+              </div>
+            </div>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Button to="/contact" variant="primary" className="button-glow">
                 {t('forms.leadTitle')}
@@ -75,4 +83,3 @@ export default function Footer() {
     </footer>
   );
 }
-

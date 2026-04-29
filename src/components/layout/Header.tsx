@@ -4,9 +4,8 @@ import { Menu, Moon, Sun, X } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "react-i18next";
 import Button from "@/components/ui/Button";
-import Container from "@/components/ui/Container";
 import NavItemLink from "@/components/nav/NavItemLink";
-import LogoMark from "@/components/brand/LogoMark";
+import BrandLogo from "@/components/brand/BrandLogo";
 
 function LanguageSwitcher() {
   const { i18n } = useTranslation();
@@ -54,11 +53,14 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-bg/95 backdrop-blur-md">
       <div className="flex h-20 items-center justify-between px-6 md:px-12 max-w-[1600px] mx-auto w-full">
         <Link className="group flex items-center gap-3" to="/" aria-label={`${t("site.name")} home`} aria-current={location.pathname === "/" ? "page" : undefined}>
-          <span className="relative grid h-10 w-10 place-items-center border border-border bg-card">
-            <LogoMark className="h-8 w-8" />
+          <span className="relative grid h-10 w-10 place-items-center border border-border bg-card overflow-hidden">
+            <BrandLogo variant="mark" className="h-8 w-8" />
           </span>
           <div className="leading-none">
-            <div className="font-display text-2xl font-bold uppercase tracking-tighter text-fg">{t("site.name")}</div>
+            <div className="hidden sm:block">
+              <BrandLogo variant="horizontal" className="h-6 w-auto" />
+            </div>
+            <div className="sm:hidden font-display text-2xl font-bold uppercase tracking-tighter text-fg">{t("site.name")}</div>
           </div>
         </Link>
 

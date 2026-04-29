@@ -55,9 +55,14 @@ export default function Home() {
             <h1 className="mt-8 font-display text-4xl leading-[1.03] tracking-tight md:text-6xl lg:text-7xl text-gradient text-balance">
               {t("home.title")}
             </h1>
-            <p className="mt-6 max-w-[55ch] text-lg text-muted md:text-xl leading-relaxed text-pretty">
-              {t("home.subtitle")}
-            </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3 max-w-[60ch]">
+              {outcomes.map((o) => (
+                <div key={o.label} className="border border-border/60 bg-card/25 backdrop-blur-md px-4 py-3">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted">{o.label}</div>
+                  <div className="mt-2 text-sm font-bold text-fg">{o.value}</div>
+                </div>
+              ))}
+            </div>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
               <Button to="/contact" variant="primary" size="lg" className="button-glow">
@@ -114,7 +119,6 @@ export default function Home() {
           <SectionHeader
             eyebrow={t("home.servicesSection.eyebrow")}
             title={t("home.servicesSection.title")}
-            description={t("home.servicesSection.description")}
           />
 
           <div className="mt-12 grid gap-6 md:grid-cols-2">
@@ -122,25 +126,37 @@ export default function Home() {
               <Link
                 key={s.slug}
                 to={`/services/${s.slug}`}
-                className="group relative border border-border bg-black p-6 md:p-8 transition-[border-color,background-color,transform] duration-300 hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="group relative border border-border bg-black overflow-hidden transition-[border-color,background-color,transform] duration-300 hover:border-cta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
-                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative flex items-start justify-between gap-6 z-10">
+                <div className="absolute inset-0">
+                  <img
+                    src={`https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=${encodeURIComponent(
+                      `premium abstract enterprise ${s.title} visual, subtle hexagonal honeycomb pattern and data network lines, teal and honey yellow accent lighting on deep midnight background, high-end consulting brand, no text, ultra detailed, photorealistic`,
+                    )}&image_size=landscape_4_3`}
+                    alt=""
+                    loading="lazy"
+                    width="1000"
+                    height="750"
+                    className="h-full w-full object-cover opacity-70"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/45 to-transparent" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgb(var(--accent)/0.25),transparent_55%),radial-gradient(circle_at_80%_35%,rgb(var(--cta)/0.18),transparent_55%)]" />
+                </div>
+
+                <div className="relative z-10 flex items-start justify-between gap-6 p-6 md:p-8">
                   <div>
                     <h3 className="font-display text-2xl font-bold uppercase tracking-tight text-white">{t(`services.${s.slug}.title`)}</h3>
-                    <p className="mt-3 text-base text-muted leading-relaxed">{t(`services.${s.slug}.summary`)}</p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {s.outcomes.slice(0, 2).map((o, idx) => (
+                        <Tag key={o} className="bg-black/30 border-border/50 text-fg">
+                          {t(`services.${s.slug}.outcomes.${idx}`)}
+                        </Tag>
+                      ))}
+                    </div>
                   </div>
                   <div className="grid h-12 w-12 shrink-0 place-items-center border border-border bg-bg/50 text-muted transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-black">
                     <ArrowRight aria-hidden="true" className="h-5 w-5" />
                   </div>
-                </div>
-
-                <div className="mt-8 grid gap-3 relative z-10 border-t border-border/50 pt-6">
-                  {s.outcomes.slice(0, 3).map((o, idx) => (
-                    <div key={o} className="flex gap-3 text-sm text-muted font-medium">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-accent shadow-[2px_2px_0px_rgba(255,255,255,0.2)]" /> {t(`services.${s.slug}.outcomes.${idx}`)}
-                    </div>
-                  ))}
                 </div>
               </Link>
             ))}
