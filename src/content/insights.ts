@@ -13,6 +13,16 @@ export type Insight = {
 
 export const insights: Insight[] = [
   {
+    slug: "building-the-modern-data-foundation-a-blueprint-for-ai-ready-enterprises",
+    title: "Building the Modern Data Foundation: A Blueprint for AI-Ready Enterprises",
+    summary: "This article outlines the critical components of a modern data foundation, demonstrates how to operationalize AI at scale, and provides a framework for metric governance that drives enterprise value. Leaders will gain actionable insights to accelerate their data transformation journey while maintaining rigorous controls.",
+    publishedAt: "2026-04-30",
+    readingMinutes: 5,
+    topics: ["data enablement","ai enablement","strategy"],
+    sections: [],
+    faqs: []
+  },
+  {
     slug: "building-modern-data-foundations-for-enterprise-ai-success",
     title: "Building Modern Data Foundations for Enterprise AI Success",
     summary: "Enterprises that invest in robust data foundations accelerate AI deployment and achieve measurable business impact. This article outlines the essential pillars, operational practices, and governance frameworks required for sustainable AI at scale.",
