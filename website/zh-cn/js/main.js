@@ -30,7 +30,9 @@
     revealElements: document.querySelectorAll('.reveal'),
     statCards: document.querySelectorAll('.stat-card'),
     faqItems: document.querySelectorAll('.faq-item'),
-    navLinks: document.querySelectorAll('.nav-link, .mobile-menu a')
+    navLinks: document.querySelectorAll('.nav-link, .mobile-menu a'),
+    langSwitcher: document.getElementById('lang-switcher'),
+    langSwitcherBtn: document.getElementById('lang-switcher-btn')
   };
 
   // ——— Utilities ———
@@ -739,6 +741,90 @@
     bars.forEach(bar => observer.observe(bar));
   }
 
+  // ——— Language Switcher ———
+  function initLangSwitcher() {
+    const switcher = DOM.langSwitcher;
+    const btn = DOM.langSwitcherBtn;
+    const label = document.getElementById('current-lang-label');
+    if (!switcher || !btn) return;
+
+    // Auto-detect current language from URL path
+    const path = window.location.pathname;
+    let currentLang = 'en';
+    let currentLabel = 'EN';
+    if (path.indexOf('/zh-cn/') !== -1) {
+      currentLang = 'zh-cn';
+      currentLabel = '简';
+    } else if (path.indexOf('/zh-tw/') !== -1) {
+      currentLang = 'zh-tw';
+      currentLabel = '繁';
+    }
+
+    // Update button label
+    if (label) label.textContent = currentLabel;
+
+    // Mark active item in dropdown
+    const dropdownLinks = switcher.querySelectorAll('.lang-switcher-dropdown a');
+    dropdownLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('data-lang') === currentLang) {
+        link.classList.add('active');
+      }
+    });
+
+    // Build correct alternate paths for this page
+    const langPaths = { en: '', 'zh-cn': '', 'zh-tw': '' };
+    let pagePath = path;
+    // Strip language prefix to get the base page path
+    for (const lang of ['zh-cn', 'zh-tw']) {
+      const prefix = '/' + lang + '/';
+      if (pagePath.indexOf(prefix) === 0) {
+        pagePath = pagePath.substring(prefix.length - 1); // keep leading /
+        break;
+      }
+    }
+    if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
+
+    // Actually for simplicity, update dropdown links to point to proper alternates
+    const isZhCn = path.indexOf('/zh-cn/') === 0;
+    const isZhTw = path.indexOf('/zh-tw/') === 0;
+    const basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-tw/, '') : path);
+    const enPath = basePath;
+    const zhCnPath = '/zh-cn' + basePath;
+    const zhTwPath = '/zh-tw' + basePath;
+
+    dropdownLinks.forEach(link => {
+      const dl = link.getAttribute('data-lang');
+      if (dl === 'en') link.setAttribute('href', enPath);
+      else if (dl === 'zh-cn') link.setAttribute('href', zhCnPath);
+      else if (dl === 'zh-tw') link.setAttribute('href', zhTwPath);
+    });
+
+    // Toggle dropdown
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isOpen = switcher.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function(e) {
+      if (!switcher.contains(e.target)) {
+        switcher.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && switcher.classList.contains('open')) {
+        switcher.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.focus();
+      }
+    });
+  }
+
   // ——— Active Nav Link Detection (Multi-page) ———
   function initActiveSectionNav() {
     const currentPath = window.location.pathname;
@@ -760,29 +846,31 @@
 
   // ——— Initialize Everything ———
   function init() {
-    initHeader();
-    initMobileMenu();
-    initHeroParticles();
-    initScrollReveal();
-    initCounterAnimation();
-    initNewAnimations();
-    initLineDrawAnimation();
-    initBarGrowthAnimation();
-    initSparklineDrawAnimation();
-    initCompBarFillAnimation();
-    initDonutDrawAnimation();
-    initFAQ();
-    initSmoothScroll();
-    initTiltEffect();
-    initMagneticButtons();
-    initTextScramble();
-    initScrollProgress();
-    initBackToTop();
-    initSkeletonLoading();
-    initPerformanceMonitoring();
-    initActiveSectionNav();
-    initBarChart();
-    initComparisonBars();
+    // Run lang switcher FIRST — it's critical UX, must work even if other inits fail
+    try { initLangSwitcher(); } catch(e) { console.warn('Lang switcher init failed:', e); }
+    try { initHeader(); } catch(e) {}
+    try { initMobileMenu(); } catch(e) {}
+    try { initHeroParticles(); } catch(e) {}
+    try { initScrollReveal(); } catch(e) {}
+    try { initCounterAnimation(); } catch(e) {}
+    try { initNewAnimations(); } catch(e) {}
+    try { initLineDrawAnimation(); } catch(e) {}
+    try { initBarGrowthAnimation(); } catch(e) {}
+    try { initSparklineDrawAnimation(); } catch(e) {}
+    try { initCompBarFillAnimation(); } catch(e) {}
+    try { initDonutDrawAnimation(); } catch(e) {}
+    try { initFAQ(); } catch(e) {}
+    try { initSmoothScroll(); } catch(e) {}
+    try { initTiltEffect(); } catch(e) {}
+    try { initMagneticButtons(); } catch(e) {}
+    try { initTextScramble(); } catch(e) {}
+    try { initScrollProgress(); } catch(e) {}
+    try { initBackToTop(); } catch(e) {}
+    try { initSkeletonLoading(); } catch(e) {}
+    try { initPerformanceMonitoring(); } catch(e) {}
+    try { initActiveSectionNav(); } catch(e) {}
+    try { initBarChart(); } catch(e) {}
+    try { initComparisonBars(); } catch(e) {}
   }
 
   // Start when DOM is ready
