@@ -846,30 +846,31 @@
 
   // ——— Initialize Everything ———
   function init() {
-    initHeader();
-    initMobileMenu();
-    initHeroParticles();
-    initScrollReveal();
-    initCounterAnimation();
-    initNewAnimations();
-    initLineDrawAnimation();
-    initBarGrowthAnimation();
-    initSparklineDrawAnimation();
-    initCompBarFillAnimation();
-    initDonutDrawAnimation();
-    initFAQ();
-    initSmoothScroll();
-    initTiltEffect();
-    initMagneticButtons();
-    initTextScramble();
-    initScrollProgress();
-    initBackToTop();
-    initSkeletonLoading();
-    initPerformanceMonitoring();
-    initActiveSectionNav();
-    initBarChart();
-    initComparisonBars();
-    initLangSwitcher();
+    // Run lang switcher FIRST — it's critical UX, must work even if other inits fail
+    try { initLangSwitcher(); } catch(e) { console.warn('Lang switcher init failed:', e); }
+    try { initHeader(); } catch(e) {}
+    try { initMobileMenu(); } catch(e) {}
+    try { initHeroParticles(); } catch(e) {}
+    try { initScrollReveal(); } catch(e) {}
+    try { initCounterAnimation(); } catch(e) {}
+    try { initNewAnimations(); } catch(e) {}
+    try { initLineDrawAnimation(); } catch(e) {}
+    try { initBarGrowthAnimation(); } catch(e) {}
+    try { initSparklineDrawAnimation(); } catch(e) {}
+    try { initCompBarFillAnimation(); } catch(e) {}
+    try { initDonutDrawAnimation(); } catch(e) {}
+    try { initFAQ(); } catch(e) {}
+    try { initSmoothScroll(); } catch(e) {}
+    try { initTiltEffect(); } catch(e) {}
+    try { initMagneticButtons(); } catch(e) {}
+    try { initTextScramble(); } catch(e) {}
+    try { initScrollProgress(); } catch(e) {}
+    try { initBackToTop(); } catch(e) {}
+    try { initSkeletonLoading(); } catch(e) {}
+    try { initPerformanceMonitoring(); } catch(e) {}
+    try { initActiveSectionNav(); } catch(e) {}
+    try { initBarChart(); } catch(e) {}
+    try { initComparisonBars(); } catch(e) {}
   }
 
   // Start when DOM is ready
