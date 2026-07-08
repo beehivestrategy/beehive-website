@@ -749,7 +749,11 @@
     if (!switcher || !btn) return;
 
     // Auto-detect current language from URL path
-    const path = window.location.pathname;
+    // Strip .html extension for clean URL normalization
+    let path = window.location.pathname;
+    if (path !== '/' && path.endsWith('.html')) {
+      path = path.slice(0, -5);
+    }
     let currentLang = 'en';
     let currentLabel = 'EN';
     if (path.indexOf('/zh-cn/') !== -1) {
@@ -772,23 +776,13 @@
       }
     });
 
-    // Build correct alternate paths for this page
-    const langPaths = { en: '', 'zh-cn': '', 'zh-tw': '' };
-    let pagePath = path;
-    // Strip language prefix to get the base page path
-    for (const lang of ['zh-cn', 'zh-tw']) {
-      const prefix = '/' + lang + '/';
-      if (pagePath.indexOf(prefix) === 0) {
-        pagePath = pagePath.substring(prefix.length - 1); // keep leading /
-        break;
-      }
-    }
-    if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
-
-    // Actually for simplicity, update dropdown links to point to proper alternates
+    // Build alternate paths (always use clean URLs, no .html extension)
     const isZhCn = path.indexOf('/zh-cn/') === 0;
     const isZhTw = path.indexOf('/zh-tw/') === 0;
-    const basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-tw/, '') : path);
+    let basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-tw/, '') : path);
+    // Normalize: strip .html, ensure trailing slash for index
+    if (basePath === '' || basePath === '/') basePath = '/';
+    else if (basePath === '/index') basePath = '/';
     const enPath = basePath;
     const zhCnPath = '/zh-cn' + basePath;
     const zhTwPath = '/zh-tw' + basePath;
