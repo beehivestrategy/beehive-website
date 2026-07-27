@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
+<!-- End Google Tag Manager -->
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>为什么数据网格优于单体数据架构 | Beehive</title>
+  <meta name="description" content="单体数据架构在企业规模下不堪重负。数据网格将所有权下放到领域团队，实现3-5倍的更快洞察交付，并与MCP等AI工具天然兼容。">
+  <meta name="keywords" content="数据网格, 单体架构, 领域驱动设计, 数据平台, 企业可扩展性">
+  <meta name="author" content="Beehive Strategy Limited">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+  <link rel="canonical" href="https://www.beehivestrategy.com/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture">
+  <link rel="alternate" hreflang="en" href="https://www.beehivestrategy.com/blog/articles/why-data-mesh-beats-monolithic-data-architecture">
+  <link rel="alternate" hreflang="zh-CN" href="https://www.beehivestrategy.com/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture">
+  <link rel="alternate" hreflang="zh-TW" href="https://www.beehivestrategy.com/zh-tw/blog/articles/why-data-mesh-beats-monolithic-data-architecture">
+  <link rel="alternate" hreflang="x-default" href="https://www.beehivestrategy.com/blog/articles/why-data-mesh-beats-monolithic-data-architecture">
+
+  <meta name="geo.region" content="CN-GD">
+  <meta name="geo.placename" content="Shenzhen, Guangdong, China">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Beehive Strategy">
+  <meta property="og:title" content="为什么数据网格优于单体数据架构">
+  <meta property="og:description" content="单体数据架构在企业规模下不堪重负。数据网格将所有权下放到领域团队，实现3-5倍的更快洞察交付，并与MCP等AI工具天然兼容。">
+  <meta property="og:url" content="https://www.beehivestrategy.com/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture">
+  <meta property="og:image" content="https://www.beehivestrategy.com/assets/images/blog/why-data-mesh-beats-monolithic-data-architecture.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="为什么数据网格优于单体数据架构 — Beehive Strategy">
+
+  <meta property="og:locale" content="zh_CN">
+  <meta property="article:published_time" content="2026-08-01T09:00:00+08:00">
+  <meta property="article:author" content="Beehive Strategy">
+  <meta property="article:section" content="Technology">
+  <meta property="article:tag" content="Data Mesh">
+    <meta property="article:tag" content="Data Mesh">
+    <meta property="article:tag" content="Data Architecture">
+    <meta property="article:tag" content="Domain-Driven Design">
+    <meta property="article:tag" content="Enterprise Data">
+    <meta property="article:tag" content="Scalability">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@beehivestrategy">
+  <meta name="twitter:creator" content="@kenkwok">
+
+  <meta name="twitter:title" content="为什么数据网格优于单体数据架构">
+  <meta name="twitter:description" content="单体数据架构在企业规模下不堪重负。数据网格将所有权下放到领域团队，实现3-5倍的更快洞察交付，并与MCP等AI工具天然兼容。">
+  <meta name="twitter:image" content="https://www.beehivestrategy.com/assets/images/blog/why-data-mesh-beats-monolithic-data-architecture.webp">
+
+  <link rel="alternate" type="application/rss+xml" title="Beehive Strategy Blog RSS Feed" href="https://www.beehivestrategy.com/blog/feed.xml">
+
+  <meta name="theme-color" content="#0a0e0d">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture#article",
+      "headline": "为什么数据网格优于单体数据架构",
+      "description": "单体数据架构在企业规模下不堪重负。数据网格将所有权下放到领域团队，实现3-5倍的更快洞察交付，并与MCP等AI工具天然兼容。",
+      "datePublished": "2026-08-01T09:00:00+08:00",
+      "dateModified": "2026-08-01T09:00:00+08:00",
+      "articleSection": "Technology",
+      "keywords": "Data Mesh, Data Architecture, Domain-Driven Design, Enterprise Data, Scalability",
+      "inLanguage": "zh-CN",
+      "isPartOf": {
+        "@id": "https://www.beehivestrategy.com/blog/#blog"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Kenneth Kwok",
+        "url": "https://www.beehivestrategy.com/zh-cn//zh-cn",
+        "jobTitle": "创始人兼CEO",
+        "worksFor": { "@id": "https://www.beehivestrategy.com/#organization" },
+        "knowsAbout": ["Data Mesh", "Data Architecture", "Domain-Driven Design", "Enterprise Data", "Scalability"]
+      },
+      "publisher": { "@id": "https://www.beehivestrategy.com/#organization" },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "首页", "item": "https://www.beehivestrategy.com/" },
+        { "@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog/" },
+        { "@type": "ListItem", "position": 3, "name": "为什么数据网格优于单体数据架构", "item": "https://www.beehivestrategy.com/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "数据网格和单体数据架构有什么区别？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "单体架构通过中央团队管理的单一管道集中所有数据，造成瓶颈。数据网格去中心化所有权，使每个业务领域通过标准化接口拥有、管理和服务自己的数据产品。这实现3-5倍更快的洞察交付和更好的数据质量。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "数据网格如何与MCP和AI代理配合？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "数据网格和MCP在架构上是对齐的。数据网格中的每个领域通过标准化接口暴露数据产品。MCP服务器包装这些接口，使数据可供AI代理使用。这意味着实现良好的数据网格立即就AI-ready，不需要额外的集成层。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "数据网格适合中型企业还是只适合大型企业？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "数据网格原则适用于任何规模，但完整的正式实现对于拥有多个业务领域和数据团队的组织最有影响力。中型企业可以渐进式采用数据网格——从2-3个高价值领域数据产品开始并扩展。关键是标准化的数据产品接口，无论组织规模如何都提供价值。"
+            }
+          }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="/zh-cn/" class="logo" aria-label="蜂启咨询 — 回到首页">
+        <img src="/assets/images/beehive-logo.png" alt="蜂启咨询 Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
+        <a href="/zh-cn/solution" class="nav-link">解决方案</a>
+        <a href="/zh-cn/services" class="nav-link">咨询服务</a>
+        <a href="/zh-cn/industries" class="nav-link">行业方案</a>
+        <a href="/zh-cn/case-studies" class="nav-link">客户案例</a>
+        <a href="/zh-cn/pricing" class="nav-link">定价</a>
+        <a href="/zh-cn/about" class="nav-link">关于我们</a>
+        <a href="/zh-cn/blog" class="nav-link active">博客</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">简</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/why-data-mesh-beats-monolithic-data-architecture" role="menuitem" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture" role="menuitem" class="active" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-tw/blog/articles/why-data-mesh-beats-monolithic-data-architecture" role="menuitem" data-lang="zh-tw"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/zh-cn/contact" class="btn btn-primary">预约演示</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="/zh-cn/solution">解决方案</a>
+  <a href="/zh-cn/services">咨询服务</a>
+  <a href="/zh-cn/industries">行业方案</a>
+  <a href="/zh-cn/case-studies">客户案例</a>
+  <a href="/zh-cn/pricing">定价</a>
+  <a href="/zh-cn/about">关于我们</a>
+  <a href="/zh-cn/blog">博客</a>
+  <div class="mobile-lang-switcher">
+    <a href="/blog/articles/why-data-mesh-beats-monolithic-data-architecture" data-lang="en">English</a>
+    <a href="/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture" data-lang="zh-cn" class="active">简体中文</a>
+    <a href="/zh-tw/blog/articles/why-data-mesh-beats-monolithic-data-architecture" data-lang="zh-tw">繁體中文</a>
+  </div>
+  <a href="/zh-cn/contact" class="btn btn-primary btn-lg">预约演示</a>
+  </div>
+
+  <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol>
+        <li><a href="https://www.beehivestrategy.com/zh-cn/">首页</a></li>
+        <li><a href="https://www.beehivestrategy.com/zh-cn/blog">博客</a></li>
+        <li aria-current="page">为什么数据网格优于单体数据架构</li>
+      </ol>
+    </div>
+  </nav>
+
+  <main role="main">
+    <article class="article">
+      <div class="container">
+  <header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="/zh-cn/" class="logo" aria-label="蜂启咨询 — 回到首页">
+        <img src="/assets/images/beehive-logo.png" alt="蜂启咨询 Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
+        <a href="/zh-cn/solution" class="nav-link">解决方案</a>
+        <a href="/zh-cn/services" class="nav-link">咨询服务</a>
+        <a href="/zh-cn/industries" class="nav-link">行业方案</a>
+        <a href="/zh-cn/case-studies" class="nav-link">客户案例</a>
+        <a href="/zh-cn/pricing" class="nav-link">定价</a>
+        <a href="/zh-cn/about" class="nav-link">关于我们</a>
+        <a href="/zh-cn/blog" class="nav-link active">博客</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">简</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/why-data-mesh-beats-monolithic-data-architecture" role="menuitem" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/why-data-mesh-beats-monolithic-data-architecture" role="menuitem" class="active" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-tw/blog/articles/why-data-mesh-beats-monolithic-data-architecture" role="menuitem" data-lang="zh-tw"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/zh-cn/contact" class="btn btn-primary">预约演示</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+        <div class="article-content">
+          <p><strong>基于单体原则构建的企业数据架构在80%的情况下无法规模化——不是因为技术不好，而是因为中央数据团队无法跟上管理他们不拥有的数据所需的领域知识。</strong>对500人公司运作出色的数据仓库，当组织增长到5,000或50,000人时就变成了瓶颈。数据网格通过反转所有权模型来解决这个问题：不是中央数据团队管理一切，而是每个业务领域拥有并服务自己的数据产品。</p>
+
+<h2>单体数据问题</h2>
+
+<p>单体数据架构通过中央管道传输所有数据：从源系统提取，在数据仓库或数据湖中转换，通过单一分析层服务。这在小规模下有效。在企业规模下，它造成组织瓶颈。中央数据团队成为了解数据格式但不了解业务背景的守门人。理解数据含义的领域专家对数据如何建模或服务没有控制权。结果是交付缓慢、数据质量差和广泛的不满。</p>
+
+<p>2025年DBTA调查发现，67%拥有单体数据架构的企业报告新用例的数据交付时间超过4周。在快速变化的市场中，这种延迟是致命的。</p>
+
+<h2>为什么数据网格在企业规模下胜出</h2>
+
+<ol>
+  <li><strong>领域所有权带来更好的数据质量</strong><br>当市场团队拥有市场数据产品时，他们定义架构、质量规则和服务级别协议。他们知道"活跃客户"在他们的上下文中意味着什么，并将这些知识直接编码到数据产品中。相反，中央数据团队必须从技术文档推断业务含义——这一过程引入错误、歧义和不断的反复沟通。研究表明，领域拥有的数据产品比中央管理的同类产品少40-60%的数据质量问题（Gartner，2025）。</li>
+
+  <li><strong>3-5倍的更快洞察交付</strong><br>在单体架构中，新的数据用例需要中央团队确定需求、构建管道、测试和部署——这一过程需要数周。在数据网格中，领域团队可以直接修改其数据产品，通常在几天甚至几小时内交付新的数据视图。Netflix的数据网格实现将平均数据获取时间从数周缩短到不到一天。对于在竞争激烈的亚洲市场的企业，这种速度优势直接转化为业务敏捷性。</li>
+
+  <li><strong>没有瓶颈的可扩展性</strong><br>单体架构有硬性上限：中央团队的能力。当每个新用例必须通过同一个团队时，队列线性增长而积压呈指数级爆炸。数据网格通过分配所有权来水平扩展。十个领域团队可以并行工作于十个数据产品，而无需通过中央瓶颈协调。这不是理论优势——它是架构随业务增长与约束业务之间的区别。</li>
+
+  <li><strong>与AI和MCP天然兼容</strong><br>这是大多数架构讨论忽略的洞察：数据网格和MCP在架构上是对齐的。在数据网格中，每个领域通过标准化接口暴露数据产品。MCP服务器消费这些接口，使数据可供AI代理使用。这意味着一个实现良好的数据网格立即就AI-ready——不需要额外的集成层。每个领域的MCP服务器包装其数据产品，AI代理可以在没有中央编排的情况下查询任何领域的数据。</li>
+
+  <li><strong>在生产环境中大规模验证</strong><br>数据网格不是理论。它已在Netflix、Zalando、Airbnb和多家主要金融机构得到验证。这些组织不是因为学术原因采用数据网格——他们采用它是因为单体架构在真实生产负载下失败了。模式是一致的：转型到数据网格的企业报告更高的数据质量、更快的交付和更满意的业务用户。</li>
+</ol>
+
+<h2>数据网格 vs. 单体架构</h2>
+
+<p>比较从根本上说是关于所有权和速度。单体架构集中数据所有权，造成在4周以上交付新用例的瓶颈。数据网格将所有权分配给领域团队，将交付时间缩短到几天。单体架构每次变更都需要中央团队参与；数据网格赋能自主的领域团队。特别是对于AI集成，数据网格的标准数据产品接口与MCP天然对齐，而单体架构需要额外的抽象层来达到相同的结果。</p>
+
+<h2>实施数据网格的务实路径</h2>
+
+<p>数据网格的全面实施是一个长期项目，但这不意味着企业需要等到所有条件成熟才开始行动。我们推荐的务实路径是"识别-试点-标准化-扩展"四步法。首先识别2-3个数据瓶颈最严重、业务价值最高的领域作为试点候选。然后为这些领域建立第一个数据产品，定义清晰的schema、质量标准和SLA。接着将试点中积累的标准推广为组织级数据产品规范。最后逐步将更多领域纳入网格。</p>
+
+<p>在这一过程中，最关键的成功因素不是技术选型，而是组织对"数据即产品"理念的真正接纳。每个领域团队需要培养数据产品思维：他们的数据输出就像一个面向内部客户的产品，需要明确的接口文档、质量保证和版本管理。当这种思维在组织内扎根时，数据网格就不再是架构师的项目，而是整个组织的运营方式。结合MCP的实施，每个数据产品都可以立即被AI代理消费，实现数据架构的现代化和AI就绪的一步到位。</p>
+
+<h2>数据网格的技术基础</h2>
+<p>数据网格的成功实施依赖于几个关键技术能力。首先是自助式数据平台基础设施——领域团队需要能够独立部署和管理数据产品，而不依赖中央工程团队的容量。这通常通过内部数据平台产品（IDP）来实现，提供标准化的数据产品模板、CI/CD管道和监控工具。其次是联邦式计算治理——虽然数据所有权是分布式的，但计算资源和技术标准需要一定程度的集中协调。最后是数据发现和目录——当数据产品分散在不同领域时，一个统一的数据目录对于用户发现和访问数据至关重要。这些技术基础共同构成了数据网格的"地基"，没有它们，数据网格的理念就无法在现实中落地。</p>
+<h2>数据网格的常见误区</h2>
+<p>关于数据网格，最常见的误解是"数据网格意味着完全去中心化，没有统一管控"。这是一种危险的过度简化。数据网格确实将数据所有权下放到领域团队，但它在平台层保持必要的集中化——包括统一的认证授权、数据目录、标准化接口规范和跨领域数据质量监控。这种"集中式平台、分布式所有权"的混合模式才是数据网格的真正精髓。另一个误区是"数据网格需要完全重建现有架构"。实际上，数据网格可以渐进式地引入——你可以保留现有的数据仓库作为过渡期的基础设施，同时逐步将高价值领域迁移到数据产品模式。关键是建立标准化的数据产品接口，这是连接现有架构和未来架构的桥梁。</p>
+<h2>Beehive Strategy如何帮助</h2>
+
+<p>Beehive Strategy指导企业完成从单体数据架构到数据网格的转型。我们的方法是务实的，而非教条的：我们首先识别最高价值的领域，建立数据产品标准，并实施保持网格架构一致性的治理框架。结合我们的MCP专业知识，我们帮助企业构建不仅可扩展，而且从第一天起就AI-ready的数据平台。</p>
+        </div>
+
+        <div class="faq-section">
+          <h2>常见问题</h2>
+
+        <div class="faq-item reveal">
+          <h3 class="faq-question">数据网格和单体数据架构有什么区别？</h3>
+          <p class="faq-answer">单体架构通过中央团队管理的单一管道集中所有数据，造成瓶颈。数据网格去中心化所有权，使每个业务领域通过标准化接口拥有、管理和服务自己的数据产品。这实现3-5倍更快的洞察交付和更好的数据质量。</p>
+        </div>
+        <div class="faq-item reveal">
+          <h3 class="faq-question">数据网格如何与MCP和AI代理配合？</h3>
+          <p class="faq-answer">数据网格和MCP在架构上是对齐的。数据网格中的每个领域通过标准化接口暴露数据产品。MCP服务器包装这些接口，使数据可供AI代理使用。这意味着实现良好的数据网格立即就AI-ready，不需要额外的集成层。</p>
+        </div>
+        <div class="faq-item reveal">
+          <h3 class="faq-question">数据网格适合中型企业还是只适合大型企业？</h3>
+          <p class="faq-answer">数据网格原则适用于任何规模，但完整的正式实现对于拥有多个业务领域和数据团队的组织最有影响力。中型企业可以渐进式采用数据网格——从2-3个高价值领域数据产品开始并扩展。关键是标准化的数据产品接口，无论组织规模如何都提供价值。</p>
+        </div>
+        </div>
+
+        <div class="article-footer">
+          <a href="/zh-cn/blog" class="btn btn-secondary">返回所有文章</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/zh-cn/" class="logo" aria-label="蜂启咨询 — 回到首页">
+            <img src="/assets/images/beehive-logo.png" alt="蜂启咨询 Logo" width="144" height="36" loading="lazy">
+          </a>
+          <p>企业级AI与数据分析咨询。我们提供基于MCP的对话式智能解决方案，助力企业实现数据驱动决策。</p>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="mailto:account@beehivestrategy.com" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>产品</h4>
+          <ul>
+            <li><a href="/zh-cn/solution">平台</a></li>
+            <li><a href="/zh-cn/solution">AI智能体</a></li>
+            <li><a href="/zh-cn/case-studies">客户案例</a></li>
+            <li><a href="/zh-cn/security">安全</a></li>
+            <li><a href="/zh-cn/pricing">定价</a></li>
+            <li><a href="/zh-cn/blog">博客</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>行业</h4>
+          <ul>
+            <li><a href="/zh-cn/industries">零售与电商</a></li>
+            <li><a href="/zh-cn/industries">金融服务</a></li>
+            <li><a href="/zh-cn/industries">制造业</a></li>
+            <li><a href="/zh-cn/industries">专业服务</a></li>
+            <li><a href="/zh-cn/industries">房地产</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>公司</h4>
+          <ul>
+            <li><a href="/zh-cn/about">关于我们</a></li>
+            <li><a href="/zh-cn/contact">联系方式</a></li>
+            <li><a href="/zh-cn/pricing">常见问题</a></li>
+            <li><a href="mailto:account@beehivestrategy.com">加入我们</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 深圳蜂启咨询有限公司 版权所有</p>
+        <div class="legal">
+          <a href="/zh-cn/privacy">隐私政策</a>
+          <a href="/zh-cn/terms">服务条款</a>
+          <a href="/zh-cn/cookies">Cookie政策</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <script src="/js/main.js" defer></script>
+</body>
+</html>

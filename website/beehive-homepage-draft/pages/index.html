@@ -1,0 +1,2519 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beehive Strategy | MCP-Powered Enterprise Conversational BI Platform</title>
+    <style id="theme-vars">
+/* Beehive Strategy — Design Tokens for Canvas */
+
+:root {
+  /* Brand Colors */
+  --color-primary: #2B9E8B;
+  --color-primary-light: #3dd4b0;
+  --color-primary-dark: #1e7a6b;
+  --color-accent: #d4a843;
+  --color-accent-light: #f0d78c;
+  --color-accent-dark: #b8922f;
+
+  /* Dark Theme Base */
+  --color-bg: #0a0e0d;
+  --color-bg-alt: #111816;
+  --color-bg-card: rgba(255, 255, 255, 0.03);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.06);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.15);
+
+  /* Text Colors */
+  --color-text: #f0f0f0;
+  --color-text-secondary: #8a9e96;
+  --color-text-muted: #5a6e66;
+  --color-text-inverse: #0a0e0d;
+
+  /* Semantic Colors */
+  --color-success: #3dd4b0;
+  --color-warning: #f0d78c;
+  --color-error: #e74c3c;
+  --color-info: #6a9bcc;
+
+  /* Typography */
+  --font-heading: 'Geist', 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-body: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 4rem;
+  --space-24: 5rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(43, 158, 139, 0.15);
+  --shadow-glow-accent: 0 0 40px rgba(212, 168, 67, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  /* Layout */
+  --max-width: 1440px;
+  --header-height: 64px;
+
+  /* Semantic Aliases (required by canvas bridge) */
+  --bh-background: #0a0e0d;
+  --bh-foreground: #f0f0f0;
+  --bh-card: rgba(255, 255, 255, 0.03);
+  --bh-muted: #5a6e66;
+  --bh-radius-sm: 0.375rem;
+  --bh-radius-md: 0.5rem;
+  --bh-radius-lg: 0.75rem;
+  --bh-primary: #2B9E8B;
+  --bh-accent: #d4a843;
+  --bh-border: rgba(255, 255, 255, 0.08);
+}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--bh-background);
+    --color-foreground: var(--bh-foreground);
+    --color-card: var(--bh-card);
+    --color-primary: var(--bh-primary);
+    --color-muted: var(--bh-muted);
+    --color-accent: var(--bh-accent);
+    --color-border: var(--bh-border);
+    --radius-sm: var(--bh-radius-sm);
+    --radius-md: var(--bh-radius-md);
+    --radius-lg: var(--bh-radius-lg);
+  }
+  @layer base {
+    body { background: var(--bh-background); color: var(--bh-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--bh-background); }
+      .text-background { color: var(--bh-background); }
+      .border-background { border-color: var(--bh-background); }
+      .ring-background { --tw-ring-color: var(--bh-background); }
+      .bg-foreground { background-color: var(--bh-foreground); }
+      .text-foreground { color: var(--bh-foreground); }
+      .border-foreground { border-color: var(--bh-foreground); }
+      .ring-foreground { --tw-ring-color: var(--bh-foreground); }
+      .bg-card { background-color: var(--bh-card); }
+      .text-card { color: var(--bh-card); }
+      .border-card { border-color: var(--bh-card); }
+      .ring-card { --tw-ring-color: var(--bh-card); }
+      .bg-primary { background-color: var(--bh-primary); }
+      .text-primary { color: var(--bh-primary); }
+      .border-primary { border-color: var(--bh-primary); }
+      .ring-primary { --tw-ring-color: var(--bh-primary); }
+      .bg-muted { background-color: var(--bh-muted); }
+      .text-muted { color: var(--bh-muted); }
+      .border-muted { border-color: var(--bh-muted); }
+      .ring-muted { --tw-ring-color: var(--bh-muted); }
+      .bg-accent { background-color: var(--bh-accent); }
+      .text-accent { color: var(--bh-accent); }
+      .border-accent { border-color: var(--bh-accent); }
+      .ring-accent { --tw-ring-color: var(--bh-accent); }
+      .bg-border { background-color: var(--bh-border); }
+      .text-border { color: var(--bh-border); }
+      .border-border { border-color: var(--bh-border); }
+      .ring-border { --tw-ring-color: var(--bh-border); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+
+    <!-- HEADER (Dark Glass) -->
+    <header style="position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;align-items:center;background:rgba(10,14,13,0.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);box-shadow:0 1px 0 rgba(255,255,255,0.04);" id="header" role="banner">
+      <div style="width:100%;max-width:1440px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;">
+        <a href="/" class="bh-logo-link" aria-label="Beehive Strategy Home">
+          <img src="../assets/beehive-logo.png" alt="Beehive Strategy Logo" style="height:36px;width:auto;" loading="eager">
+        </a>
+        <nav class="bh-desktop-nav" style="display:flex;align-items:center;gap:2rem;" role="navigation" aria-label="Main navigation">
+          <a href="/solution" data-dom-id="nav-solution" class="bh-nav-link">Solution</a>
+          <a href="/services" data-dom-id="nav-services" class="bh-nav-link">Services</a>
+          <a href="/industries" data-dom-id="nav-industries" class="bh-nav-link">Industries</a>
+          <a href="/case-studies" data-dom-id="nav-case-studies" class="bh-nav-link">Case Studies</a>
+          <a href="/pricing" data-dom-id="nav-pricing" class="bh-nav-link">Pricing</a>
+          <a href="/about" data-dom-id="nav-about" class="bh-nav-link">About</a>
+          <a href="/blog" data-dom-id="nav-blog" class="bh-nav-link">Blog</a>
+        </nav>
+        <div class="bh-desktop-cta" style="display:flex;align-items:center;gap:1rem;">
+          <div style="display:inline-flex;align-items:center;">
+            <button style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 0.75rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--color-text-secondary);font-family:'Geist',sans-serif;font-size:0.875rem;font-weight:500;cursor:pointer;">
+              <svg style="width:20px;height:20px;opacity:0.9;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              <span>EN</span>
+              <svg style="width:14px;height:14px;opacity:0.6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+          <a href="/contact" data-dom-id="cta-demo" class="bh-cta-btn-primary">Book a Demo</a>
+        </div>
+        <button class="bh-hamburger" onclick="document.getElementById('bh-mobile-menu').classList.toggle('bh-mobile-open')" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="bh-mobile-menu" id="bh-mobile-menu">
+      <div class="bh-lang-segmented" role="radiogroup" aria-label="Language">
+        <a href="/" class="bh-lang-seg bh-lang-seg-active" role="radio" aria-checked="true">EN</a>
+        <a href="/zh-cn/" class="bh-lang-seg" role="radio" aria-checked="false">简</a>
+        <a href="/zh-tw/" class="bh-lang-seg" role="radio" aria-checked="false">繁</a>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.06);margin:0.25rem 0 0;"></div>
+      <a href="/solution" data-dom-id="mob-solution">Solution</a>
+      <a href="/services" data-dom-id="mob-services">Services</a>
+      <a href="/industries" data-dom-id="mob-industries">Industries</a>
+      <a href="/case-studies" data-dom-id="mob-case-studies">Case Studies</a>
+      <a href="/pricing" data-dom-id="mob-pricing">Pricing</a>
+      <a href="/about" data-dom-id="mob-about">About</a>
+      <a href="/blog" data-dom-id="mob-blog">Blog</a>
+      <div style="height:1px;background:rgba(255,255,255,0.06);margin:0;"></div>
+      <a href="/contact" data-dom-id="mob-cta-demo" class="bh-mobile-cta">Book a Demo</a>
+    </div>
+
+    <main>
+
+    <!-- HERO -->
+    <section class="bh-hero-grid" aria-label="Hero">
+      <!-- Noise texture overlay -->
+      <div class="bh-hero-noise" aria-hidden="true"></div>
+      <div style="position:absolute;inset:0;z-index:0;overflow:hidden;background:#0a0e0d;" aria-hidden="true">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 30% 20%,rgba(43,158,139,0.18),transparent),radial-gradient(ellipse 50% 40% at 75% 30%,rgba(61,212,176,0.10),transparent),radial-gradient(ellipse 60% 50% at 50% 70%,rgba(212,168,67,0.08),transparent),radial-gradient(ellipse 40% 30% at 85% 80%,rgba(43,158,139,0.06),transparent);"></div>
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 70% 50% at 50% 40%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 70% 50% at 50% 40%,black,transparent);"></div>
+      </div>
+
+      <div style="position:relative;z-index:2;">
+        <div class="bh-hero-badge">
+          <span class="bh-pulse-indicator" aria-hidden="true"></span>
+          <span>MCP-Powered Enterprise Intelligence</span>
+        </div>
+        <h1 class="bh-serif-display bh-hero-h1">Ask Your Data <span class="bh-gradient-text-teal">Anything</span><br>Get Answers <span class="bh-gradient-text-gold">Everywhere</span></h1>
+        <p class="bh-hero-sub">The conversational BI platform that turns enterprise data into instant, actionable insights &mdash; right inside WeChat Work, DingTalk, and Feishu.</p>
+        <div class="bh-hero-buttons">
+          <a href="/contact" class="bh-btn-book-demo">Book a Free Demo</a>
+          <a href="/solution" data-dom-id="hero-see-how" class="bh-btn-see-how">See How It Works</a>
+        </div>
+        <div class="bh-hero-stats">
+          <div class="bh-hero-stat">
+            <div>2<span class="bh-stat-accent"> weeks</span></div>
+            <div class="bh-stat-label">To Deploy</div>
+          </div>
+          <div class="bh-hero-stat">
+            <div>50<span class="bh-stat-accent">+</span></div>
+            <div class="bh-stat-label">Data Sources</div>
+          </div>
+          <div class="bh-hero-stat">
+            <div>3<span class="bh-stat-accent">x</span></div>
+            <div class="bh-stat-label">Avg ROI</div>
+          </div>
+          <div class="bh-hero-stat">
+            <div>0<span class="bh-stat-accent">%</span></div>
+            <div class="bh-stat-label">Code Required</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bh-hero-visual">
+        <div class="bh-chat-mockup">
+          <div class="bh-chat-header">
+            <span class="bh-chat-status-dot" aria-hidden="true"></span>
+            <span>Beehive BI Assistant</span>
+            <span class="bh-chat-badge">WeChat Work</span>
+          </div>
+          <div class="bh-chat-messages">
+            <!-- Message 1: User -->
+            <div class="bh-msg bh-msg-user">Show me Q3 sales by region vs last year</div>
+            <!-- Message 2: Bot response -->
+            <div class="bh-msg bh-msg-bot">
+              <strong style="color:var(--color-primary-light);">Q3 Sales by Region</strong><br>
+              South region leads with &yen;4.2M (+18% YoY). East grew fastest at +24%.
+              <div style="margin-top:0.75rem;width:100%;">
+                <svg viewBox="0 0 300 80" width="100%" height="80" role="img" aria-label="Mini bar chart showing Q3 sales by region">
+                  <rect x="10" y="20" width="40" height="55" rx="3" fill="#2B9E8B" opacity="0.9"/>
+                  <text x="30" y="15" fill="#3dd4b0" font-size="9" text-anchor="middle" font-family="Geist,sans-serif" font-weight="600">4.2M</text>
+                  <rect x="65" y="35" width="40" height="40" rx="3" fill="#2B9E8B" opacity="0.7"/>
+                  <text x="85" y="30" fill="#3dd4b0" font-size="9" text-anchor="middle" font-family="Geist,sans-serif" font-weight="600">3.1M</text>
+                  <rect x="120" y="42" width="40" height="33" rx="3" fill="#2B9E8B" opacity="0.6"/>
+                  <text x="140" y="37" fill="#3dd4b0" font-size="9" text-anchor="middle" font-family="Geist,sans-serif" font-weight="600">2.6M</text>
+                  <rect x="175" y="50" width="40" height="25" rx="3" fill="#2B9E8B" opacity="0.5"/>
+                  <text x="195" y="45" fill="#3dd4b0" font-size="9" text-anchor="middle" font-family="Geist,sans-serif" font-weight="600">1.9M</text>
+                  <rect x="230" y="58" width="40" height="17" rx="3" fill="#d4a843" opacity="0.7"/>
+                  <text x="250" y="53" fill="#f0d78c" font-size="9" text-anchor="middle" font-family="Geist,sans-serif" font-weight="600">1.3M</text>
+                  <line x1="0" y1="75" x2="300" y2="75" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                </svg>
+              </div>
+            </div>
+            <!-- Message 3: User follow-up -->
+            <div class="bh-msg bh-msg-user">What's driving the South region growth?</div>
+            <!-- Typing indicator -->
+            <div class="bh-msg bh-msg-typing">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF BAR (Animated Counters) -->
+    <section class="bh-social-proof" aria-label="Trusted by">
+      <div class="bh-container">
+        <div class="bh-proof-grid">
+          <div class="bh-proof-stat">
+            <div class="bh-proof-number"><span class="bh-counter" data-target="12" data-suffix="+">0</span></div>
+            <div class="bh-proof-label">Enterprise Deployments</div>
+          </div>
+          <div class="bh-proof-divider" aria-hidden="true"></div>
+          <div class="bh-proof-stat">
+            <div class="bh-proof-number"><span class="bh-counter" data-target="50" data-suffix="+">0</span></div>
+            <div class="bh-proof-label">Data Source Connectors</div>
+          </div>
+          <div class="bh-proof-divider" aria-hidden="true"></div>
+          <div class="bh-proof-stat">
+            <div class="bh-proof-number"><span class="bh-counter" data-target="5" data-suffix="">0</span></div>
+            <div class="bh-proof-label">Industry Verticals</div>
+          </div>
+          <div class="bh-proof-divider" aria-hidden="true"></div>
+          <div class="bh-proof-stat">
+            <div class="bh-proof-number"><span class="bh-counter" data-target="99.9" data-suffix="%" data-decimals="1">0</span></div>
+            <div class="bh-proof-label">Platform Uptime SLA</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION STATEMENT -->
+    <section class="bh-mission" aria-label="Our mission">
+      <div class="bh-mission-bg" aria-hidden="true"></div>
+      <div class="bh-container bh-mission-inner">
+        <div class="bh-mission-line" aria-hidden="true"></div>
+        <div class="bh-mission-quote-mark" aria-hidden="true">&ldquo;</div>
+        <h2 class="bh-serif-display bh-mission-text">We believe every enterprise decision-maker should be able to ask their data a question and get an answer &mdash; in seconds, not weeks.</h2>
+        <p class="bh-mission-sub">That's why we built Beehive: an MCP-powered conversational BI platform that connects 50+ data sources to the IM tools your teams already use. No SQL. No dashboards. Just answers.</p>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (Vertical Timeline) -->
+    <section class="bh-timeline-section" aria-label="How it works">
+      <div class="bh-timeline-bg" aria-hidden="true"></div>
+      <div class="bh-container">
+        <div class="bh-section-header">
+          <span class="bh-section-eyebrow">How It Works</span>
+          <h2 class="bh-serif-display bh-section-title">From Data to Decision in One Conversation</h2>
+          <p class="bh-section-subtitle">Four layers. Zero friction. Your data flows through the MCP standard into the IM tools your teams already use.</p>
+        </div>
+
+        <!-- Timeline Layout -->
+        <div class="bh-timeline">
+          <!-- Vertical timeline line -->
+          <div class="bh-timeline-line" aria-hidden="true"></div>
+
+          <!-- Step 1: Your Data -->
+          <div class="bh-timeline-node">
+            <div class="bh-timeline-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <div class="bh-tl-card">
+              <h4 class="bh-tl-card-title">Your Data</h4>
+              <p class="bh-tl-card-desc">ERP, CRM, DBs, SaaS &mdash; all your enterprise data sources in one place.</p>
+            </div>
+          </div>
+
+          <!-- Step 2: MCP Layer -->
+          <div class="bh-timeline-node">
+            <div class="bh-timeline-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div class="bh-tl-card">
+              <h4 class="bh-tl-card-title">MCP Layer</h4>
+              <p class="bh-tl-card-desc">Semantic unification &mdash; data becomes queryable through the Model Context Protocol standard.</p>
+            </div>
+          </div>
+
+          <!-- Step 3: AI Agents -->
+          <div class="bh-timeline-node">
+            <div class="bh-timeline-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-light)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m17.5-7.5l-4.2 4.2m-4.6 4.6l-4.2 4.2m12.4 0l-4.2-4.2m-4.6-4.6L5.5 5.5"/></svg>
+            </div>
+            <div class="bh-tl-card">
+              <h4 class="bh-tl-card-title">AI Agents</h4>
+              <p class="bh-tl-card-desc">Natural language query &mdash; ask questions in plain language, get precise answers.</p>
+            </div>
+          </div>
+
+          <!-- Step 4: IM Delivery -->
+          <div class="bh-timeline-node">
+            <div class="bh-timeline-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="bh-tl-card">
+              <h4 class="bh-tl-card-title">IM Delivery</h4>
+              <p class="bh-tl-card-desc">WeChat, DingTalk, Feishu &mdash; answers delivered right inside your team's IM tools.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION DIVIDER -->
+    <div class="bh-divider" aria-hidden="true"></div>
+
+    <!-- CASE STUDY SHOWCASE -->
+    <section class="bh-cases" aria-label="Featured case studies">
+      <div class="bh-container">
+        <div class="bh-section-header">
+          <span class="bh-section-eyebrow">Our Work</span>
+          <h2 class="bh-serif-display bh-section-title">Real Results, Real Impact</h2>
+          <p class="bh-section-subtitle">See how enterprises across five industries transformed their data operations with Beehive's conversational BI platform.</p>
+        </div>
+
+        <!-- Featured: Retail (full-width, chart right) -->
+        <a href="/case-studies" class="bh-case-entry bh-case-featured">
+          <div class="bh-case-featured-text">
+            <span class="bh-case-tag">Retail &amp; E-Commerce</span>
+            <h3 class="bh-case-title">Regional retail chain unlocks real-time sales visibility across 200+ stores</h3>
+            <p class="bh-case-desc">Integrated 8 data sources into a single conversational BI layer deployed on WeChat Work. Store managers now get instant answers on sales, inventory, and promotions without touching a dashboard.</p>
+            <div class="bh-case-metrics">
+              <div>
+                <span class="bh-case-metric-value">18%</span>
+                <span class="bh-case-metric-label">Revenue Uplift</span>
+              </div>
+              <div>
+                <span class="bh-case-metric-value">200+</span>
+                <span class="bh-case-metric-label">Stores Connected</span>
+              </div>
+              <div>
+                <span class="bh-case-metric-value">14 days</span>
+                <span class="bh-case-metric-label">Time to Deploy</span>
+              </div>
+            </div>
+            <span class="bh-case-link">Read case study <svg class="bh-case-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+          </div>
+          <div class="bh-case-featured-chart">
+            <div class="bh-chart-grid">
+              <div class="bh-chart-cell">
+                <span class="bh-chart-label">South Region</span>
+                <div class="bh-chart-bar" style="width:100%;"></div>
+                <div class="bh-chart-bar bh-chart-bar-compare" style="width:70%;"></div>
+                <div class="bh-chart-divider"></div>
+                <span class="bh-chart-value bh-chart-value-up">+18% YoY</span>
+              </div>
+              <div class="bh-chart-cell">
+                <span class="bh-chart-label">East Region</span>
+                <div class="bh-chart-bar" style="width:82%;"></div>
+                <div class="bh-chart-bar bh-chart-bar-compare" style="width:55%;"></div>
+                <div class="bh-chart-divider"></div>
+                <span class="bh-chart-value bh-chart-value-up">+24% YoY</span>
+              </div>
+              <div class="bh-chart-cell">
+                <span class="bh-chart-label">North Region</span>
+                <div class="bh-chart-bar" style="width:62%;"></div>
+                <div class="bh-chart-bar bh-chart-bar-compare" style="width:40%;"></div>
+                <div class="bh-chart-divider"></div>
+                <span class="bh-chart-value bh-chart-value-up">+12% YoY</span>
+              </div>
+              <div class="bh-chart-cell">
+                <span class="bh-chart-label">West Region</span>
+                <div class="bh-chart-bar" style="width:45%;"></div>
+                <div class="bh-chart-bar bh-chart-bar-compare" style="width:30%;"></div>
+                <div class="bh-chart-divider"></div>
+                <span class="bh-chart-value bh-chart-value-mid">+5% YoY</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Two smaller case studies side-by-side -->
+        <div class="bh-cases-grid">
+          <a href="/case-studies" class="bh-case-entry">
+            <div class="bh-case-chart-inline">
+              <svg width="180" height="100" viewBox="0 0 180 100" role="img" aria-label="Risk control trend chart">
+                <polyline points="10,80 30,75 50,70 70,60 90,55 110,45 130,40 150,30 170,20" fill="none" stroke="#3dd4b0" stroke-width="2.5"/>
+                <polyline points="10,85 30,82 50,78 70,72 90,68 110,60 130,50 150,35 170,28" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                <line x1="10" y1="90" x2="170" y2="90" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                <text x="10" y="8" fill="rgba(255,255,255,0.5)" font-family="Geist,sans-serif" font-size="9">Risk Incidents</text>
+                <circle cx="170" cy="20" r="4" fill="#3dd4b0" opacity="0.3"/>
+                <circle cx="170" cy="20" r="2" fill="#3dd4b0"/>
+              </svg>
+            </div>
+            <span class="bh-case-tag">Financial Services</span>
+            <h3 class="bh-case-title-sm">FinTech firm automates risk monitoring and cuts report turnaround by 60%</h3>
+            <p class="bh-case-desc-sm">Deployed intelligent risk control agents integrated with trading and compliance systems, delivering real-time alerts via DingTalk.</p>
+            <div class="bh-case-metrics">
+              <div>
+                <span class="bh-case-metric-value">60%</span>
+                <span class="bh-case-metric-label">Faster Reports</span>
+              </div>
+              <div>
+                <span class="bh-case-metric-value">95%</span>
+                <span class="bh-case-metric-label">Detection Rate</span>
+              </div>
+            </div>
+            <span class="bh-case-link">Read case study <svg class="bh-case-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+          </a>
+          <a href="/case-studies" class="bh-case-entry">
+            <div class="bh-case-chart-inline">
+              <svg width="180" height="100" viewBox="0 0 180 100" role="img" aria-label="Production efficiency chart">
+                <rect x="15" y="60" width="30" height="30" rx="2" fill="#2B9E8B" opacity="0.3"/>
+                <rect x="15" y="25" width="30" height="35" rx="2" fill="#2B9E8B" opacity="0.7"/>
+                <text x="30" y="20" text-anchor="middle" fill="#3dd4b0" font-family="Geist,sans-serif" font-size="9" font-weight="600">Q1</text>
+                <rect x="55" y="50" width="30" height="40" rx="2" fill="#2B9E8B" opacity="0.4"/>
+                <rect x="55" y="20" width="30" height="30" rx="2" fill="#2B9E8B" opacity="0.8"/>
+                <text x="70" y="15" text-anchor="middle" fill="#3dd4b0" font-family="Geist,sans-serif" font-size="9" font-weight="600">Q2</text>
+                <rect x="95" y="40" width="30" height="50" rx="2" fill="#d4a843" opacity="0.4"/>
+                <rect x="95" y="15" width="30" height="25" rx="2" fill="#d4a843" opacity="0.8"/>
+                <text x="110" y="10" text-anchor="middle" fill="#d4a843" font-family="Geist,sans-serif" font-size="9" font-weight="600">Q3</text>
+                <rect x="135" y="30" width="30" height="60" rx="2" fill="#3dd4b0" opacity="0.4"/>
+                <rect x="135" y="10" width="30" height="20" rx="2" fill="#3dd4b0" opacity="0.9"/>
+                <text x="150" y="6" text-anchor="middle" fill="#3dd4b0" font-family="Geist,sans-serif" font-size="9" font-weight="600">Q4</text>
+                <line x1="10" y1="90" x2="170" y2="90" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                <text x="10" y="97" fill="rgba(255,255,255,0.4)" font-family="Geist,sans-serif" font-size="8">Efficiency gain per quarter (actual vs projected)</text>
+              </svg>
+            </div>
+            <span class="bh-case-tag">Manufacturing &amp; Supply Chain</span>
+            <h3 class="bh-case-title-sm">Manufacturer gains full-chain visibility and reduces downtime by 35%</h3>
+            <p class="bh-case-desc-sm">Connected production, inventory, and logistics into one conversational interface on Feishu, enabling real-time decision-making across the supply chain.</p>
+            <div class="bh-case-metrics">
+              <div>
+                <span class="bh-case-metric-value">35%</span>
+                <span class="bh-case-metric-label">Less Downtime</span>
+              </div>
+              <div>
+                <span class="bh-case-metric-value">10 weeks</span>
+                <span class="bh-case-metric-label">Full Rollout</span>
+              </div>
+            </div>
+            <span class="bh-case-link">Read case study <svg class="bh-case-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+          </a>
+        </div>
+
+        <div class="bh-section-footer">
+          <a href="/case-studies" data-dom-id="hero-view-cases" class="bh-btn-outline">View All Case Studies &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section class="bh-testimonial-section" aria-label="Client testimonial">
+      <div class="bh-testimonial-glow bh-testimonial-glow-1" aria-hidden="true"></div>
+      <div class="bh-testimonial-glow bh-testimonial-glow-2" aria-hidden="true"></div>
+      <div class="bh-container">
+        <div class="bh-testimonial-card">
+          <div class="bh-testimonial-border-anim" aria-hidden="true"></div>
+          <div class="bh-testimonial-quote-mark" aria-hidden="true">&ldquo;</div>
+          <p class="bh-testimonial-text">We went from waiting weeks for a dashboard update to getting answers on WeChat in under 10 seconds. Our regional managers &mdash; who never touched a BI tool before &mdash; now ask the system questions every single day. It's been transformative for our data culture.</p>
+          <div class="bh-testimonial-author">
+            <div class="bh-testimonial-avatar">L</div>
+            <div class="bh-testimonial-info">
+              <div class="bh-testimonial-name">Head of Data, Leading Asia-Pacific Retail Group</div>
+              <div class="bh-testimonial-role">200+ stores &middot; Deployed on WeChat Work</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION DIVIDER -->
+    <div class="bh-divider" aria-hidden="true"></div>
+
+    <!-- BEEHIVE vs TRADITIONAL BI (Animated Bars) -->
+    <section class="bh-comparison-section" aria-label="Beehive vs traditional BI">
+      <div class="bh-container">
+        <div class="bh-comparison-grid">
+          <div>
+            <span class="bh-section-eyebrow">Why Beehive</span>
+            <h2 class="bh-serif-display bh-section-title">Beehive vs Traditional BI</h2>
+            <p class="bh-comparison-desc">Traditional BI takes months to deploy, requires dedicated dashboards, and never reaches frontline staff. Beehive deploys in weeks and puts insights directly in chat.</p>
+            <div class="bh-comparison-tags">
+              <span class="bh-comparison-tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> No SQL needed</span>
+              <span class="bh-comparison-tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Zero learning curve</span>
+              <span class="bh-comparison-tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Works in your IM</span>
+            </div>
+            <a href="/solution" data-dom-id="comp-explore" class="bh-btn-outline-sm">Explore the Platform &rarr;</a>
+          </div>
+
+          <div id="bh-comparison-bars" class="bh-bars-container">
+            <div class="bh-bars-header">
+              <div></div>
+              <div class="bh-bars-header-trad">Traditional BI</div>
+              <div class="bh-bars-header-bee">Beehive</div>
+            </div>
+            <div class="bh-bars-rows">
+              <div class="bh-bar-row">
+                <div class="bh-bar-label">Deployment Time</div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-trad" data-width="90">6 months</div>
+                </div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-bee" data-width="15">2 weeks</div>
+                </div>
+              </div>
+              <div class="bh-bar-row">
+                <div class="bh-bar-label">Time to Insight</div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-trad" data-width="80">Days</div>
+                </div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-bee" data-width="10">Seconds</div>
+                </div>
+              </div>
+              <div class="bh-bar-row">
+                <div class="bh-bar-label">User Adoption</div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-trad" data-width="25">~15%</div>
+                </div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-bee" data-width="92">85%+</div>
+                </div>
+              </div>
+              <div class="bh-bar-row">
+                <div class="bh-bar-label">Data Reach</div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-trad" data-width="20">Analysts only</div>
+                </div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-bee" data-width="85">All staff</div>
+                </div>
+              </div>
+              <div class="bh-bar-row">
+                <div class="bh-bar-label">Cost / Report</div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-trad" data-width="75">High</div>
+                </div>
+                <div class="bh-bar-track">
+                  <div class="bh-bar bh-bar-bee" data-width="20">Low</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION DIVIDER -->
+    <div class="bh-divider" aria-hidden="true"></div>
+
+    <!-- INDUSTRIES TEASER (Horizontal Scroll Strip) -->
+    <section class="bh-industries-section" aria-label="Industries">
+      <div class="bh-industries-bg" aria-hidden="true"></div>
+      <div class="bh-industries-fade bh-industries-fade-left" aria-hidden="true"></div>
+      <div class="bh-industries-fade bh-industries-fade-right" aria-hidden="true"></div>
+      <div class="bh-container">
+        <div class="bh-section-header">
+          <span class="bh-section-eyebrow">Industries</span>
+          <h2 class="bh-serif-display bh-section-title">Purpose-Built for Your Sector</h2>
+          <p class="bh-section-subtitle">Five industry verticals with pre-built AI agents, data models, and analytics templates &mdash; ready to deploy in your environment.</p>
+        </div>
+        <div class="bh-industries-strip">
+          <a href="/industries" class="bh-industry-panel">
+            <div class="bh-industry-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <h3 class="bh-industry-title">Retail &amp; E-Commerce</h3>
+            <p class="bh-industry-desc">Real-time sales insights. Inventory optimisation. Promotion analytics.</p>
+            <span class="bh-industry-cta">Explore &rarr;</span>
+          </a>
+          <a href="/industries" class="bh-industry-panel">
+            <div class="bh-industry-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h3 class="bh-industry-title">Financial Services</h3>
+            <p class="bh-industry-desc">Intelligent risk control. Compliance automation. Portfolio insights.</p>
+            <span class="bh-industry-cta">Explore &rarr;</span>
+          </a>
+          <a href="/industries" class="bh-industry-panel">
+            <div class="bh-industry-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <h3 class="bh-industry-title">Manufacturing</h3>
+            <p class="bh-industry-desc">Full-chain visibility. Production scheduling. Quality analytics.</p>
+            <span class="bh-industry-cta">Explore &rarr;</span>
+          </a>
+          <a href="/industries" class="bh-industry-panel">
+            <div class="bh-industry-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3 class="bh-industry-title">Professional Services</h3>
+            <p class="bh-industry-desc">Digital project management. Resource allocation. Client analytics.</p>
+            <span class="bh-industry-cta">Explore &rarr;</span>
+          </a>
+          <a href="/industries" class="bh-industry-panel">
+            <div class="bh-industry-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3 class="bh-industry-title">Real Estate</h3>
+            <p class="bh-industry-desc">Omnichannel marketing data. Dynamic cost control. Customer insights.</p>
+            <span class="bh-industry-cta">Explore &rarr;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG TEASER (Editorial List) -->
+    <section class="bh-blog-section" aria-label="Blog and resources">
+      <div class="bh-container">
+        <div class="bh-section-header">
+          <span class="bh-section-eyebrow">Insights</span>
+          <h2 class="bh-serif-display bh-section-title">Latest Thinking</h2>
+          <p class="bh-section-subtitle">Expert perspectives on conversational BI, MCP, AI agents, and the future of enterprise data.</p>
+        </div>
+        <div class="bh-blog-list">
+          <a href="/blog/articles/enterprise-digital-transformation-ai-first-playbook-2026" class="bh-blog-entry">
+            <div class="bh-blog-date">
+              <span class="bh-blog-date-day">Jul 13</span>
+              <span class="bh-blog-date-year">2026</span>
+            </div>
+            <div class="bh-blog-content">
+              <span class="bh-blog-tag">Digital Transformation</span>
+              <h3 class="bh-blog-title">Enterprise Digital Transformation: The AI-First Playbook for 2026</h3>
+              <p class="bh-blog-desc">Why 70% of digital transformation programmes fail &mdash; and how an AI-first approach built on MCP and conversational BI changes the equation for enterprise data.</p>
+            </div>
+            <span class="bh-blog-read">Read &rarr;</span>
+          </a>
+          <a href="/blog/articles/ai-agents-professional-services-beyond-billable-hours" class="bh-blog-entry">
+            <div class="bh-blog-date">
+              <span class="bh-blog-date-day">Jul 12</span>
+              <span class="bh-blog-date-year">2026</span>
+            </div>
+            <div class="bh-blog-content">
+              <span class="bh-blog-tag">Professional Services</span>
+              <h3 class="bh-blog-title">AI Agents in Professional Services: Beyond Billable Hours</h3>
+              <p class="bh-blog-desc">How AI agents and conversational BI are transforming professional services &mdash; from automated client reporting to real-time project profitability and resource allocation.</p>
+            </div>
+            <span class="bh-blog-read">Read &rarr;</span>
+          </a>
+          <a href="/blog/articles/case-study-consultancy-cut-reporting-time-mcp-bi" class="bh-blog-entry">
+            <div class="bh-blog-date">
+              <span class="bh-blog-date-day">Jul 9</span>
+              <span class="bh-blog-date-year">2026</span>
+            </div>
+            <div class="bh-blog-content">
+              <span class="bh-blog-tag">Case Studies</span>
+              <h3 class="bh-blog-title">Case Study: How a Consultancy Cut Reporting Time by 71%</h3>
+              <p class="bh-blog-desc">A global consultancy reduced client reporting time by 71% and reclaimed 2,400 consultant hours annually by deploying MCP-powered conversational BI inside Feishu.</p>
+            </div>
+            <span class="bh-blog-read">Read &rarr;</span>
+          </a>
+        </div>
+        <div class="bh-section-footer">
+          <a href="/blog" class="bh-btn-outline">View All Articles</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bh-cta-section" aria-label="Contact us">
+      <div class="bh-cta-bg" aria-hidden="true"></div>
+      <div class="bh-cta-particles" aria-hidden="true"></div>
+      <div class="bh-container">
+        <div class="bh-cta-inner">
+          <h2 class="bh-serif-display bh-cta-title">Ready to See Your Data in Chat?</h2>
+          <p class="bh-cta-sub">Book a demo, get a free data assessment, or simply reach out. We'll help you unlock the full value of your enterprise data.</p>
+          <div class="bh-cta-buttons">
+            <a href="/contact" data-dom-id="cta-demo-bottom" class="bh-btn-book-demo">Book a Product Demo</a>
+            <a href="/contact" data-dom-id="cta-assessment-bottom" class="bh-btn-outline">Free Data Assessment</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </main>
+
+    <!-- FOOTER (Dark with Hex Grid) -->
+    <footer class="bh-footer" role="contentinfo">
+      <div class="bh-container bh-footer-inner">
+        <div class="bh-footer-grid">
+          <div>
+            <a href="/" class="bh-footer-logo">
+              <img src="../assets/beehive-logo.png" alt="Beehive Strategy Logo" style="height:36px;width:auto;" loading="lazy">
+            </a>
+            <p class="bh-footer-desc">Enterprise AI &amp; data analytics consulting. We deliver MCP-powered conversational intelligence that transforms how businesses interact with their data.</p>
+            <div class="bh-footer-socials">
+              <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank" class="bh-footer-social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+              <a href="mailto:hello@beehivestrategy.com" aria-label="Email" class="bh-footer-social-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4 class="bh-footer-heading">Product</h4>
+            <ul class="bh-footer-links">
+              <li><a href="/solution">Platform</a></li>
+              <li><a href="/solution">AI Agents</a></li>
+              <li><a href="/case-studies">Case Studies</a></li>
+              <li><a href="/about">Security</a></li>
+              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/blog">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="bh-footer-heading">Industries</h4>
+            <ul class="bh-footer-links">
+              <li><a href="/industries">Retail &amp; E-Commerce</a></li>
+              <li><a href="/industries">Financial Services</a></li>
+              <li><a href="/industries">Manufacturing</a></li>
+              <li><a href="/industries">Professional Services</a></li>
+              <li><a href="/industries">Real Estate</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="bh-footer-heading">Company</h4>
+            <ul class="bh-footer-links">
+              <li><a href="/about">About Us</a></li>
+              <li><a href="/contact">Contact</a></li>
+              <li><a href="/pricing">FAQ</a></li>
+              <li><a href="mailto:hello@beehivestrategy.com">Careers</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="bh-footer-bottom">
+          <p>&copy; 2026 Beehive Strategy Limited All rights reserved.</p>
+          <div class="bh-footer-legal">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+            <a href="/cookies">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- All Custom Styles (before </body>) -->
+    <style>
+    /* ========================================
+       FONT IMPORT
+       ======================================== */
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+    /* ========================================
+       SMOOTH SCROLL
+       ======================================== */
+    html { scroll-behavior: smooth; }
+
+    /* ========================================
+       FOCUS VISIBLE
+       ======================================== */
+    *:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+    .bh-nav-link:focus-visible { outline-color: var(--color-primary-light); }
+
+    /* ========================================
+       CONTAINER
+       ======================================== */
+    .bh-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1440px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    /* ========================================
+       SECTION HEADER
+       ======================================== */
+    .bh-section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+    }
+    .bh-section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-primary-light);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    .bh-section-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+      margin-bottom: 1rem;
+      text-wrap: balance;
+    }
+    .bh-section-subtitle {
+      font-size: 1.125rem;
+      color: var(--color-text-secondary);
+    }
+    .bh-section-footer {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    /* ========================================
+       BUTTONS (All hover via classes, NO inline)
+       ======================================== */
+    .bh-btn-book-demo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 1rem;
+      background: var(--color-primary);
+      color: white;
+      box-shadow: 0 4px 20px rgba(43,158,139,0.3);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+    .bh-btn-book-demo:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 30px rgba(43,158,139,0.45), 0 0 20px rgba(43,158,139,0.2);
+      background: var(--color-primary-light);
+    }
+
+    .bh-btn-see-how {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 1rem;
+      background: transparent;
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      backdrop-filter: blur(10px);
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+    .bh-btn-see-how:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary-light);
+      background: rgba(43,158,139,0.05);
+    }
+
+    .bh-btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 1rem;
+      background: transparent;
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      backdrop-filter: blur(10px);
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+    .bh-btn-outline:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary-light);
+      background: rgba(43,158,139,0.05);
+    }
+
+    .bh-btn-outline-sm {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 0.75rem;
+      background: transparent;
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      backdrop-filter: blur(10px);
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+    .bh-btn-outline-sm:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary-light);
+      background: rgba(43,158,139,0.05);
+    }
+
+    .bh-cta-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 0.75rem;
+      background: var(--color-primary);
+      color: white;
+      box-shadow: 0 4px 20px rgba(43,158,139,0.3), 0 0 20px rgba(43,158,139,0.15);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+    .bh-cta-btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 30px rgba(43,158,139,0.45), 0 0 20px rgba(43,158,139,0.2);
+      background: var(--color-primary-light);
+    }
+
+    /* ========================================
+       NAV LINK HOVER (class-based)
+       ======================================== */
+    .bh-nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      position: relative;
+      padding-bottom: 2px;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .bh-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--color-primary);
+      border-radius: 1px;
+      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1), left 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .bh-nav-link:hover {
+      color: var(--color-text) !important;
+    }
+    .bh-nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    .bh-cta-btn-primary:hover,
+    a[href="/contact"][data-dom-id="cta-demo"]:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(43,158,139,0.4), 0 0 24px rgba(43,158,139,0.2) !important;
+      filter: brightness(1.1);
+    }
+    .bh-desktop-cta button:hover {
+      background: rgba(255,255,255,0.1) !important;
+      border-color: rgba(255,255,255,0.18) !important;
+    }
+
+    .bh-logo-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+    .bh-logo-link:hover { opacity: 0.8; }
+
+    /* ========================================
+       MOBILE MENU
+       ======================================== */
+    @media (max-width: 1023px) {
+      .bh-desktop-nav { display: none !important; }
+      .bh-desktop-cta { display: none !important; }
+      .bh-hamburger { display: flex !important; }
+    }
+    @media (min-width: 1024px) {
+      .bh-hamburger { display: none !important; }
+      .bh-mobile-menu { display: none !important; }
+    }
+    .bh-hamburger {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      position: relative;
+    }
+    .bh-hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #c0d0c8;
+      border-radius: 2px;
+      position: absolute;
+      left: 50%;
+      margin-left: -10px;
+      transition: all 0.3s ease;
+    }
+    .bh-hamburger span:nth-child(1) { transform: translateY(-7px); }
+    .bh-hamburger span:nth-child(2) { transform: translateY(0); }
+    .bh-hamburger span:nth-child(3) { transform: translateY(7px); }
+    .bh-mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      background: rgba(10,14,13,0.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 1rem 1.5rem 1.5rem;
+      flex-direction: column;
+      gap: 0;
+    }
+    .bh-mobile-menu.bh-mobile-open { display: flex; }
+    .bh-mobile-menu a {
+      display: block;
+      padding: 0.875rem 0;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .bh-mobile-menu a:last-of-type { border-bottom: none; }
+    .bh-mobile-menu a:hover { color: var(--color-primary-light); }
+    /* Language segmented control */
+    .bh-lang-segmented {
+      display: inline-flex;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 2px;
+      margin-bottom: 0.5rem;
+    }
+    .bh-lang-seg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem 1.1rem;
+      font-family: 'Geist', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: color 0.2s ease, background 0.2s ease;
+      min-width: 44px;
+      text-align: center;
+    }
+    .bh-lang-seg:hover {
+      color: var(--color-text-secondary);
+      background: rgba(255,255,255,0.04);
+    }
+    .bh-lang-seg-active {
+      background: var(--color-primary) !important;
+      color: #fff !important;
+      box-shadow: 0 2px 8px rgba(43,158,139,0.3);
+    }
+    .bh-lang-seg-active:hover {
+      background: var(--color-primary-light, #3dd4b0) !important;
+      color: #fff !important;
+    }
+    .bh-mobile-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 0.75rem;
+      background: #2B9E8B;
+      color: white;
+      margin-top: 0.75rem;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* ========================================
+       @KEYFRAMES
+       ======================================== */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @keyframes typing-bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+    @keyframes msg-reveal {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes timeline-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(43,158,139,0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(43,158,139,0); }
+    }
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes bar-grow {
+      from { width: 0; }
+    }
+    @keyframes conic-spin {
+      0% { --conic-angle: 0deg; }
+      100% { --conic-angle: 360deg; }
+    }
+    @keyframes testimonial-border-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes particle-float {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-80px) translateX(20px); opacity: 0; }
+    }
+
+    /* ========================================
+       HERO
+       ======================================== */
+    .bh-hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      min-height: 88dvh;
+      padding-top: 64px;
+      padding-bottom: 4rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      overflow: hidden;
+    }
+
+    /* Noise texture overlay */
+    .bh-hero-noise {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+
+    .bh-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(43,158,139,0.1);
+      border: 1px solid rgba(43,158,139,0.2);
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-primary-light);
+      margin-bottom: 1.5rem;
+    }
+    .bh-pulse-indicator {
+      width: 8px;
+      height: 8px;
+      background: var(--color-primary);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+
+    .bh-hero-h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+      margin-bottom: 1.5rem;
+      text-wrap: balance;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    .bh-gradient-text-teal {
+      background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .bh-gradient-text-gold {
+      background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .bh-hero-sub {
+      font-size: 1.25rem;
+      color: var(--color-text-secondary);
+      max-width: 540px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .bh-hero-buttons {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Hero stats */
+    .bh-hero-stats {
+      display: flex;
+      justify-content: flex-start;
+      gap: 3rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--color-border);
+    }
+    .bh-hero-stat {
+      text-align: center;
+      cursor: default;
+      transition: transform 0.3s ease;
+    }
+    .bh-hero-stat:hover {
+      transform: scale(1.05);
+    }
+    .bh-hero-stat > div:first-child {
+      font-family: 'Geist', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1;
+    }
+    .bh-stat-accent {
+      color: var(--color-primary-light);
+    }
+    .bh-stat-label {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Chat mockup */
+    .bh-hero-visual {
+      position: relative;
+      z-index: 1;
+      animation: float 4s ease-in-out infinite;
+      transition: transform 0.4s ease;
+    }
+    .bh-hero-visual:hover {
+      transform: rotate(1deg) translateY(-4px);
+    }
+    .bh-chat-mockup {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(43,158,139,0.08);
+      transition: box-shadow 0.3s ease;
+    }
+    .bh-hero-visual:hover .bh-chat-mockup {
+      box-shadow: 0 24px 70px rgba(0,0,0,0.6), 0 0 100px rgba(43,158,139,0.15);
+    }
+    .bh-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-bg-card);
+    }
+    .bh-chat-status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-success);
+      animation: pulse-dot 2s infinite;
+    }
+    .bh-chat-header > span:nth-child(2) {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+    .bh-chat-badge {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      padding: 0.25rem 0.5rem;
+      background: var(--color-bg);
+      border-radius: 0.375rem;
+    }
+    .bh-chat-messages {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .bh-msg {
+      max-width: 85%;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      opacity: 0;
+      animation: msg-reveal 0.6s ease forwards;
+    }
+    .bh-msg-user {
+      align-self: flex-end;
+      background: var(--color-primary);
+      color: white;
+      animation-delay: 0.3s;
+    }
+    .bh-msg-user:nth-of-type(1) { animation-delay: 0.3s; }
+    .bh-msg-bot {
+      align-self: flex-start;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      animation-delay: 1.2s;
+    }
+    .bh-msg-user:nth-of-type(2) { animation-delay: 2.5s; }
+    .bh-msg-typing {
+      display: flex;
+      gap: 4px;
+      padding: 0.5rem 1rem;
+      align-self: flex-start;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 0.75rem;
+      animation-delay: 3.2s;
+    }
+    .bh-msg-typing span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-text-muted);
+      animation: typing-bounce 1.4s infinite;
+    }
+    .bh-msg-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .bh-msg-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    /* Hero responsive */
+    @media (max-width: 768px) {
+      .bh-hero-grid { grid-template-columns: 1fr !important; }
+      .bh-hero-visual { display: none; }
+    }
+
+    /* ========================================
+       SOCIAL PROOF BAR
+       ======================================== */
+    .bh-social-proof {
+      border-bottom: 1px solid var(--color-border);
+      padding: 2rem 0;
+    }
+    .bh-proof-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 2rem 0;
+    }
+    .bh-proof-stat {
+      text-align: center;
+      padding: 1rem;
+      cursor: default;
+    }
+    .bh-proof-number {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--color-primary-light);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      transition: color 0.3s ease;
+    }
+    .bh-proof-stat:hover .bh-proof-number {
+      color: #fff;
+    }
+    .bh-proof-label {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      margin-top: 0.5rem;
+    }
+    .bh-proof-divider {
+      width: 1px;
+      height: 48px;
+      background: rgba(255,255,255,0.08);
+      align-self: center;
+    }
+    @media (max-width: 768px) {
+      .bh-proof-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .bh-proof-divider { display: none; }
+    }
+
+    /* ========================================
+       MISSION
+       ======================================== */
+    .bh-mission {
+      position: relative;
+      padding: 5rem 0;
+      text-align: center;
+      overflow: hidden;
+    }
+    .bh-mission-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: radial-gradient(ellipse 50% 60% at 50% 50%,rgba(43,158,139,0.12),transparent 70%),radial-gradient(ellipse 30% 40% at 30% 60%,rgba(212,168,67,0.06),transparent 70%);
+      pointer-events: none;
+    }
+    .bh-mission-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .bh-mission-line {
+      width: 40px;
+      height: 3px;
+      background: var(--color-primary-light);
+      margin: 0 auto 2rem;
+      border-radius: 2px;
+    }
+    .bh-mission-quote-mark {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20rem;
+      line-height: 1;
+      color: var(--color-primary-light);
+      opacity: 0.06;
+      font-family: 'Instrument Serif', Georgia, serif;
+      pointer-events: none;
+      user-select: none;
+    }
+    .bh-mission-text {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 400;
+      line-height: 1.4;
+      max-width: 800px;
+      margin: 0 auto 1.5rem;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+      text-wrap: balance;
+      position: relative;
+    }
+    .bh-mission-sub {
+      font-size: 1.125rem;
+      color: var(--color-text-secondary);
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    /* ========================================
+       HOW IT WORKS (Timeline)
+       ======================================== */
+    .bh-timeline-section {
+      position: relative;
+      background: var(--color-bg-alt);
+      padding: 5rem 0;
+      overflow: hidden;
+    }
+    .bh-timeline-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bh-timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .bh-timeline-line {
+      position: absolute;
+      left: 23px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--color-primary), var(--color-primary-light), rgba(43,158,139,0.1));
+    }
+    .bh-timeline-node {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    .bh-timeline-node:last-child { margin-bottom: 0; }
+    .bh-timeline-circle {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--color-bg);
+      border: 2px solid var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      animation: timeline-pulse 3s ease-in-out infinite;
+      transition: border-color 0.3s ease;
+    }
+    .bh-tl-card {
+      flex: 1;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    .bh-tl-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--color-primary) !important;
+      box-shadow: 0 8px 30px rgba(43,158,139,0.12);
+    }
+    .bh-tl-card-title {
+      font-family: 'Geist', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+    }
+    .bh-tl-card-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    /* ========================================
+       DIVIDER
+       ======================================== */
+    .bh-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+    }
+
+    /* ========================================
+       CASE STUDIES (Editorial Layout)
+       ======================================== */
+    .bh-cases {
+      position: relative;
+      padding: 5rem 0;
+      overflow: hidden;
+    }
+
+    /* Featured case study - full width */
+    .bh-case-featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.3s ease;
+      background: rgba(255,255,255,0.01);
+    }
+    .bh-case-featured:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .bh-case-entry {
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .bh-case-entry:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .bh-case-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-primary-light);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .bh-case-title {
+      font-family: 'Geist', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--color-text);
+      margin-bottom: 0.75rem;
+    }
+    .bh-case-title-sm {
+      font-family: 'Geist', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+    }
+    .bh-case-desc {
+      font-size: 1rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .bh-case-desc-sm {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 0.5rem;
+    }
+    .bh-case-metrics {
+      display: flex;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--color-border);
+    }
+    .bh-case-metric-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-primary-light);
+      letter-spacing: -0.02em;
+      display: block;
+    }
+    .bh-case-metric-label {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .bh-case-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-primary-light);
+      margin-top: 1rem;
+    }
+    .bh-case-arrow {
+      transition: transform 0.3s ease;
+    }
+    .bh-case-entry:hover .bh-case-arrow {
+      transform: translateX(4px);
+    }
+
+    /* Chart grid in featured case */
+    .bh-case-featured-chart {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bh-chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      padding: 1rem;
+      width: 100%;
+      max-width: 420px;
+    }
+    .bh-chart-cell {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+    .bh-chart-label {
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+    }
+    .bh-chart-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--color-primary);
+      opacity: 0.6;
+    }
+    .bh-chart-bar-compare {
+      opacity: 0.4;
+    }
+    .bh-chart-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--color-border);
+    }
+    .bh-chart-value {
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+    }
+    .bh-chart-value-up { color: #3dd4b0; }
+    .bh-chart-value-mid { color: #d4a843; }
+
+    .bh-case-chart-inline {
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .bh-cases-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .bh-case-featured { grid-template-columns: 1fr; }
+      .bh-cases-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========================================
+       TESTIMONIAL
+       ======================================== */
+    .bh-testimonial-section {
+      position: relative;
+      background: var(--color-bg-alt);
+      padding: 5rem 0;
+      overflow: hidden;
+    }
+    .bh-testimonial-glow {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bh-testimonial-glow-1 {
+      top: 15%; left: 10%; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(43,158,139,0.08), transparent 70%);
+    }
+    .bh-testimonial-glow-2 {
+      bottom: 10%; right: 8%; width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(212,168,67,0.06), transparent 70%);
+    }
+    .bh-testimonial-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    /* Animated gradient border */
+    .bh-testimonial-border-anim {
+      position: absolute;
+      inset: -2px;
+      border-radius: 1.75rem;
+      background: conic-gradient(from 0deg, transparent 0%, rgba(43,158,139,0.3) 10%, transparent 20%, rgba(212,168,67,0.2) 30%, transparent 40%, rgba(43,158,139,0.3) 50%, transparent 60%, rgba(212,168,67,0.2) 70%, transparent 80%, rgba(43,158,139,0.3) 90%, transparent 100%);
+      background-size: 100% 100%;
+      animation: testimonial-border-spin 8s linear infinite;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    .bh-testimonial-quote-mark {
+      position: absolute;
+      top: 0.75rem;
+      left: 1.5rem;
+      font-size: 72px;
+      line-height: 1;
+      color: var(--color-primary);
+      opacity: 0.12;
+      font-family: 'Instrument Serif', Georgia, serif;
+      pointer-events: none;
+    }
+    .bh-testimonial-text {
+      font-size: 1.125rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-text);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .bh-testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .bh-testimonial-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px transparent;
+      transition: box-shadow 0.3s ease;
+    }
+    .bh-testimonial-avatar:hover {
+      box-shadow: 0 0 0 3px rgba(43,158,139,0.4), 0 0 16px rgba(43,158,139,0.2);
+    }
+    .bh-testimonial-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .bh-testimonial-name {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--color-text);
+    }
+    .bh-testimonial-role {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    /* ========================================
+       COMPARISON SECTION
+       ======================================== */
+    .bh-comparison-section {
+      position: relative;
+      padding: 5rem 0;
+      overflow: hidden;
+    }
+    .bh-comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .bh-comparison-desc {
+      font-size: 1.125rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    .bh-comparison-tags {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .bh-comparison-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(43,158,139,0.05);
+      border: 1px solid rgba(43,158,139,0.15);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color-primary-light);
+    }
+
+    .bh-bars-header {
+      display: grid;
+      grid-template-columns: 150px 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .bh-bars-header-trad {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-error);
+    }
+    .bh-bars-header-bee {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-primary-light);
+    }
+    .bh-bars-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .bh-bar-row {
+      display: grid;
+      grid-template-columns: 150px 1fr 1fr;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      transition: background 0.3s ease;
+    }
+    .bh-bar-row:hover {
+      background: rgba(255,255,255,0.02);
+    }
+    .bh-bar-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+    .bh-bar-track {
+      position: relative;
+      height: 36px;
+      background: var(--color-bg-card);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .bh-bar {
+      height: 100%;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .bh-bar-trad {
+      background: linear-gradient(90deg, rgba(231,76,60,0.5), rgba(231,76,60,0.25));
+      color: rgba(255,255,255,0.9);
+    }
+    .bh-bar-bee {
+      background: linear-gradient(90deg, var(--color-primary-dark), var(--color-primary));
+      color: white;
+    }
+    /* Animated state triggered by JS IntersectionObserver */
+    .bh-bars-animate .bh-bar {
+      width: var(--bh-bar-width) !important;
+    }
+
+    @media (max-width: 768px) {
+      .bh-comparison-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========================================
+       INDUSTRIES (Horizontal Scroll Strip)
+       ======================================== */
+    .bh-industries-section {
+      position: relative;
+      background: var(--color-bg-alt);
+      padding: 5rem 0;
+      overflow: hidden;
+    }
+    .bh-industries-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: radial-gradient(circle, rgba(43,158,139,0.12) 1.5px, transparent 1.5px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
+      pointer-events: none;
+    }
+    .bh-industries-fade {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 80px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .bh-industries-fade-left {
+      left: 0;
+      background: linear-gradient(to right, var(--color-bg-alt), transparent);
+    }
+    .bh-industries-fade-right {
+      right: 0;
+      background: linear-gradient(to left, var(--color-bg-alt), transparent);
+    }
+    .bh-industries-strip {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 1rem;
+      margin: 0 -1.5rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    .bh-industries-strip::-webkit-scrollbar { height: 4px; }
+    .bh-industries-strip::-webkit-scrollbar-track { background: transparent; }
+    .bh-industries-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    .bh-industry-panel {
+      flex: 0 0 200px;
+      height: 300px;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      scroll-snap-align: start;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .bh-industry-panel:hover {
+      transform: translateY(-6px);
+      border-color: var(--color-primary);
+      box-shadow: 0 8px 30px rgba(43,158,139,0.1);
+    }
+    .bh-industry-panel:hover .bh-industry-icon {
+      color: var(--color-primary-light);
+      box-shadow: 0 0 20px rgba(43,158,139,0.3);
+      border-color: rgba(43,158,139,0.4);
+    }
+    .bh-industry-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 1rem;
+      background: rgba(43,158,139,0.1);
+      border: 1px solid rgba(43,158,139,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary-light);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .bh-industry-title {
+      font-family: 'Geist', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .bh-industry-desc {
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+    .bh-industry-cta {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-primary-light);
+      margin-top: auto;
+      transition: color 0.3s ease;
+    }
+    .bh-industry-panel:hover .bh-industry-cta {
+      color: #fff;
+    }
+
+    /* ========================================
+       BLOG (Editorial List)
+       ======================================== */
+    .bh-blog-section {
+      position: relative;
+      padding: 5rem 0;
+      overflow: hidden;
+    }
+    .bh-blog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .bh-blog-entry {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 1.5rem;
+      align-items: start;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      text-decoration: none;
+      color: inherit;
+      border-radius: 0.75rem;
+      transition: background 0.3s ease;
+    }
+    .bh-blog-entry:hover {
+      background: rgba(255,255,255,0.02);
+    }
+    .bh-blog-entry:hover .bh-blog-title {
+      color: var(--color-primary-light);
+    }
+    .bh-blog-date {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding-top: 0.125rem;
+    }
+    .bh-blog-date-day {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text);
+      white-space: nowrap;
+    }
+    .bh-blog-date-year {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+    .bh-blog-tag {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+    .bh-blog-title {
+      font-family: 'Geist', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+      transition: color 0.3s ease;
+    }
+    .bh-blog-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .bh-blog-read {
+      font-size: 0.8125rem;
+      color: var(--color-primary-light);
+      font-weight: 600;
+      white-space: nowrap;
+      padding-top: 0.5rem;
+      transition: transform 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .bh-blog-entry:hover .bh-blog-read {
+      color: #fff;
+    }
+    @media (max-width: 768px) {
+      .bh-blog-entry {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      .bh-blog-read { display: none; }
+    }
+
+    /* ========================================
+       CTA SECTION
+       ======================================== */
+    .bh-cta-section {
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 0;
+    }
+    .bh-cta-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(43,158,139,0.22), transparent 60%),
+                  radial-gradient(ellipse 50% 70% at 80% 50%, rgba(212,168,67,0.16), transparent 60%),
+                  radial-gradient(ellipse 40% 60% at 50% 100%, rgba(61,212,176,0.14), transparent 60%);
+      background-size: 200% 200%;
+      animation: gradient-shift 12s ease infinite;
+      pointer-events: none;
+    }
+    /* Particle dots */
+    .bh-cta-particles {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bh-cta-particles::before,
+    .bh-cta-particles::after {
+      content: '';
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--color-primary-light);
+      opacity: 0;
+      animation: particle-float 6s ease-in-out infinite;
+    }
+    .bh-cta-particles::before {
+      left: 15%;
+      bottom: 20%;
+      animation-delay: 0s;
+    }
+    .bh-cta-particles::after {
+      left: 75%;
+      bottom: 30%;
+      animation-delay: 2s;
+      background: var(--color-accent-light);
+    }
+    .bh-cta-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .bh-cta-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+      margin-bottom: 1rem;
+    }
+    .bh-cta-sub {
+      font-size: 1.125rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 2rem;
+    }
+    .bh-cta-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ========================================
+       FOOTER
+       ======================================== */
+    .bh-footer {
+      background: var(--color-bg-alt);
+      border-top: 1px solid var(--color-border);
+      padding: 4rem 0 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .bh-footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .bh-footer-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .bh-footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .bh-footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+    .bh-footer-logo:hover { opacity: 0.8; }
+    .bh-footer-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      margin-top: 1rem;
+      max-width: 300px;
+    }
+    .bh-footer-socials {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .bh-footer-social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    .bh-footer-social-icon:hover {
+      color: var(--color-primary-light);
+      border-color: var(--color-primary);
+    }
+    .bh-footer-heading {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text);
+      margin-bottom: 1rem;
+    }
+    .bh-footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .bh-footer-links a {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .bh-footer-links a:hover {
+      color: var(--color-primary-light);
+    }
+    .bh-footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-border);
+    }
+    .bh-footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+    .bh-footer-legal {
+      display: flex;
+      gap: 1rem;
+    }
+    .bh-footer-legal a {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .bh-footer-legal a:hover {
+      color: var(--color-primary-light);
+    }
+    @media (max-width: 768px) {
+      .bh-footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .bh-footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .bh-footer-grid { grid-template-columns: 1fr; }
+    }
+    </style>
+
+    <script>
+    /* Animated Stat Counters */
+    (function(){
+      var counters = document.querySelectorAll('.bh-counter');
+      var observed = false;
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting && !observed){
+            observed = true;
+            counters.forEach(function(el){
+              var target = parseFloat(el.getAttribute('data-target'));
+              var suffix = el.getAttribute('data-suffix') || '';
+              var decimals = parseInt(el.getAttribute('data-decimals')) || 0;
+              var duration = 1500;
+              var start = performance.now();
+              function step(now){
+                var t = Math.min((now - start) / duration, 1);
+                var eased = 1 - Math.pow(1 - t, 3);
+                var val = eased * target;
+                el.textContent = val.toFixed(decimals) + suffix;
+                if(t < 1) requestAnimationFrame(step);
+              }
+              requestAnimationFrame(step);
+            });
+          }
+        });
+      }, {threshold: 0.3});
+      counters.forEach(function(c){ io.observe(c); });
+
+      /* Animated Comparison Bars */
+      var barsContainer = document.getElementById('bh-comparison-bars');
+      if(barsContainer){
+        var bars = barsContainer.querySelectorAll('.bh-bar');
+        bars.forEach(function(bar){
+          var w = bar.getAttribute('data-width');
+          bar.style.setProperty('--bh-bar-width', w + '%');
+        });
+        var barIO = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            if(e.isIntersecting){
+              barsContainer.classList.add('bh-bars-animate');
+            }
+          });
+        }, {threshold: 0.2});
+        barIO.observe(barsContainer);
+      }
+    })();
+    </script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

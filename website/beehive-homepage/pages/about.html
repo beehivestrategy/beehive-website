@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Beehive Strategy</title>
+    <style id="theme-vars">
+/* Beehive Strategy — Design Tokens for Canvas */
+
+:root {
+  /* Brand Colors */
+  --color-primary: #2B9E8B;
+  --color-primary-light: #3dd4b0;
+  --color-primary-dark: #1e7a6b;
+  --color-accent: #d4a843;
+  --color-accent-light: #f0d78c;
+  --color-accent-dark: #b8922f;
+
+  /* Dark Theme Base */
+  --color-bg: #0a0e0d;
+  --color-bg-alt: #111816;
+  --color-bg-card: rgba(255, 255, 255, 0.03);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.06);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.15);
+
+  /* Text Colors */
+  --color-text: #f0f0f0;
+  --color-text-secondary: #8a9e96;
+  --color-text-muted: #5a6e66;
+  --color-text-inverse: #0a0e0d;
+
+  /* Semantic Colors */
+  --color-success: #3dd4b0;
+  --color-warning: #f0d78c;
+  --color-error: #e74c3c;
+  --color-info: #6a9bcc;
+
+  /* Typography */
+  --font-heading: 'Geist', 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-body: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 4rem;
+  --space-24: 5rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(43, 158, 139, 0.15);
+  --shadow-glow-accent: 0 0 40px rgba(212, 168, 67, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  /* Layout */
+  --max-width: 1440px;
+  --header-height: 64px;
+
+  /* Semantic Aliases (required by canvas bridge) */
+  --bh-background: #0a0e0d;
+  --bh-foreground: #f0f0f0;
+  --bh-card: rgba(255, 255, 255, 0.03);
+  --bh-muted: #5a6e66;
+  --bh-radius-sm: 0.375rem;
+  --bh-radius-md: 0.5rem;
+  --bh-radius-lg: 0.75rem;
+  --bh-primary: #2B9E8B;
+  --bh-accent: #d4a843;
+  --bh-border: rgba(255, 255, 255, 0.08);
+}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--bh-background);
+    --color-foreground: var(--bh-foreground);
+    --color-card: var(--bh-card);
+    --color-primary: var(--bh-primary);
+    --color-muted: var(--bh-muted);
+    --color-accent: var(--bh-accent);
+    --color-border: var(--bh-border);
+    --radius-sm: var(--bh-radius-sm);
+    --radius-md: var(--bh-radius-md);
+    --radius-lg: var(--bh-radius-lg);
+  }
+  @layer base {
+    body { background: var(--bh-background); color: var(--bh-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--bh-background); }
+      .text-background { color: var(--bh-background); }
+      .border-background { border-color: var(--bh-background); }
+      .ring-background { --tw-ring-color: var(--bh-background); }
+      .bg-foreground { background-color: var(--bh-foreground); }
+      .text-foreground { color: var(--bh-foreground); }
+      .border-foreground { border-color: var(--bh-foreground); }
+      .ring-foreground { --tw-ring-color: var(--bh-foreground); }
+      .bg-card { background-color: var(--bh-card); }
+      .text-card { color: var(--bh-card); }
+      .border-card { border-color: var(--bh-card); }
+      .ring-card { --tw-ring-color: var(--bh-card); }
+      .bg-primary { background-color: var(--bh-primary); }
+      .text-primary { color: var(--bh-primary); }
+      .border-primary { border-color: var(--bh-primary); }
+      .ring-primary { --tw-ring-color: var(--bh-primary); }
+      .bg-muted { background-color: var(--bh-muted); }
+      .text-muted { color: var(--bh-muted); }
+      .border-muted { border-color: var(--bh-muted); }
+      .ring-muted { --tw-ring-color: var(--bh-muted); }
+      .bg-accent { background-color: var(--bh-accent); }
+      .text-accent { color: var(--bh-accent); }
+      .border-accent { border-color: var(--bh-accent); }
+      .ring-accent { --tw-ring-color: var(--bh-accent); }
+      .bg-border { background-color: var(--bh-border); }
+      .text-border { color: var(--bh-border); }
+      .border-border { border-color: var(--bh-border); }
+      .ring-border { --tw-ring-color: var(--bh-border); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <!-- HEADER -->
+    <header style="position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;align-items:center;background:rgba(255,255,255,0.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,0,0,0.08);" id="header" role="banner">
+      <div style="width:100%;max-width:1440px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;">
+        <a href="/" style="display:flex;align-items:center;gap:0.75rem;" aria-label="Beehive Strategy Home">
+          <img src="../assets/beehive-logo.png" alt="Beehive Strategy Logo" style="height:36px;width:auto;" loading="eager">
+        </a>
+        <nav style="display:flex;align-items:center;gap:2rem;" class="hidden md:flex bh-desktop-nav" role="navigation" aria-label="Main navigation">
+          <a href="/solution" data-dom-id="nav-solution" class="bh-nav-link" style="font-size:0.875rem;font-weight:500;color:#4a5a52;transition:color 150ms ease;text-decoration:none;">Solution</a>
+          <a href="/services" data-dom-id="nav-services" class="bh-nav-link" style="font-size:0.875rem;font-weight:500;color:#4a5a52;transition:color 150ms ease;text-decoration:none;">Services</a>
+          <a href="/industries" data-dom-id="nav-industries" class="bh-nav-link" style="font-size:0.875rem;font-weight:500;color:#4a5a52;transition:color 150ms ease;text-decoration:none;">Industries</a>
+          <a href="/case-studies" data-dom-id="nav-case-studies" class="bh-nav-link" style="font-size:0.875rem;font-weight:500;color:#4a5a52;transition:color 150ms ease;text-decoration:none;">Case Studies</a>
+          <a href="/pricing" data-dom-id="nav-pricing" class="bh-nav-link" style="font-size:0.875rem;font-weight:500;color:#4a5a52;transition:color 150ms ease;text-decoration:none;">Pricing</a>
+          <a href="/about" data-dom-id="nav-about" class="bh-nav-link" style="font-size:0.875rem;font-weight:500;color:var(--color-primary);transition:color 150ms ease;text-decoration:none;">About</a>
+          <a href="/blog" data-dom-id="nav-blog" class="bh-nav-link" style="font-size:0.875rem;font-weight:500;color:#4a5a52;transition:color 150ms ease;text-decoration:none;">Blog</a>
+        </nav>
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <div class="hidden sm:inline-flex bh-desktop-cta" style="align-items:center;">
+            <button style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 0.75rem;background:#f0f4f3;border:1px solid rgba(0,0,0,0.1);border-radius:8px;color:#1a2e28;font-family:'Geist',sans-serif;font-size:0.875rem;font-weight:500;cursor:pointer;">
+              <svg style="width:20px;height:20px;opacity:0.9;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              <span>EN</span>
+              <svg style="width:14px;height:14px;opacity:0.6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+          <a href="/contact" data-dom-id="cta-demo" class="hidden sm:inline-flex bh-desktop-cta" style="align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.5rem;font-size:0.875rem;font-weight:500;border-radius:0.75rem;background:var(--color-primary);color:white;box-shadow:0 4px 20px rgba(43,158,139,0.3);transition:all 300ms ease;">Book a Demo</a>
+          <!-- Mobile hamburger -->
+          <button class="md:hidden bh-hamburger" style="display:flex;flex-direction:column;gap:4px;padding:8px;cursor:pointer;background:none;border:none;" aria-label="Toggle menu" aria-expanded="false" id="bh-hamburger-btn">
+            <span style="display:block;width:20px;height:2px;background:#1a2e28;border-radius:2px;transition:all 200ms ease;"></span>
+            <span style="display:block;width:20px;height:2px;background:#1a2e28;border-radius:2px;transition:all 200ms ease;"></span>
+            <span style="display:block;width:14px;height:2px;background:#1a2e28;border-radius:2px;transition:all 200ms ease;"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile menu panel -->
+    <div class="bh-mobile-menu" id="bh-mobile-menu" role="dialog" aria-label="Mobile navigation">
+      <div class="bh-lang-segmented" role="radiogroup" aria-label="Language">
+        <a href="/" class="bh-lang-seg bh-lang-seg-active" role="radio" aria-checked="true">EN</a>
+        <a href="/zh-cn/" class="bh-lang-seg" role="radio" aria-checked="false">简</a>
+        <a href="/zh-tw/" class="bh-lang-seg" role="radio" aria-checked="false">繁</a>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.06);margin:0.25rem 0 0;"></div>
+      <a href="/solution" data-dom-id="mob-solution" class="bh-mobile-link">Solution</a>
+      <a href="/services" data-dom-id="mob-services" class="bh-mobile-link">Services</a>
+      <a href="/industries" data-dom-id="mob-industries" class="bh-mobile-link">Industries</a>
+      <a href="/case-studies" data-dom-id="mob-case-studies" class="bh-mobile-link">Case Studies</a>
+      <a href="/pricing" data-dom-id="mob-pricing" class="bh-mobile-link">Pricing</a>
+      <a href="/about" data-dom-id="mob-about" class="bh-mobile-link is-active">About</a>
+      <a href="/blog" data-dom-id="mob-blog" class="bh-mobile-link">Blog</a>
+      <div style="height:1px;background:rgba(255,255,255,0.06);margin:0;"></div>
+      <a href="/contact" data-dom-id="mob-cta-demo" class="bh-mobile-cta">Book a Demo</a>
+    </div>
+
+    <script>
+    (function() {
+      var btn = document.getElementById('bh-hamburger-btn');
+      var menu = document.getElementById('bh-mobile-menu');
+      var spans = btn ? btn.querySelectorAll('span') : [];
+      var isOpen = false;
+
+      function toggleMenu() {
+        isOpen = !isOpen;
+        btn.setAttribute('aria-expanded', isOpen);
+        if (isOpen) {
+          menu.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+          // Animate hamburger to X
+          if (spans[0]) { spans[0].style.transform = 'translateY(6px) rotate(45deg)'; }
+          if (spans[1]) { spans[1].style.opacity = '0'; }
+          if (spans[2]) { spans[2].style.transform = 'translateY(-6px) rotate(-45deg)'; spans[2].style.width = '20px'; }
+        } else {
+          menu.classList.remove('is-open');
+          document.body.style.overflow = '';
+          // Reset hamburger
+          if (spans[0]) { spans[0].style.transform = ''; }
+          if (spans[1]) { spans[1].style.opacity = ''; }
+          if (spans[2]) { spans[2].style.transform = ''; spans[2].style.width = '14px'; }
+        }
+      }
+
+      if (btn) btn.addEventListener('click', toggleMenu);
+
+      // Close menu when a link is clicked
+      if (menu) {
+        menu.querySelectorAll('.bh-mobile-link, .bh-mobile-cta').forEach(function(link) {
+          link.addEventListener('click', function() {
+            if (isOpen) toggleMenu();
+          });
+        });
+      }
+
+      // Close menu on Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isOpen) toggleMenu();
+      });
+    })();
+    </script>
+
+    <main style="padding-top:64px;">
+
+    <!-- PAGE HERO -->
+    <section style="position:relative;display:flex;align-items:center;justify-content:center;min-height:60dvh;padding:5rem 1.5rem 4rem;overflow:hidden;" aria-label="About Beehive Strategy">
+      <div style="position:absolute;inset:0;z-index:0;overflow:hidden;background:#0a0e0d;" aria-hidden="true">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 30% 20%,rgba(43,158,139,0.15),transparent),radial-gradient(ellipse 50% 40% at 75% 30%,rgba(61,212,176,0.08),transparent),radial-gradient(ellipse 60% 50% at 50% 70%,rgba(212,168,67,0.06),transparent);"></div>
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 60% 40% at 50% 40%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 60% 40% at 50% 40%,black,transparent);"></div>
+      </div>
+      <div style="position:relative;z-index:1;text-align:center;max-width:800px;margin:0 auto;">
+        <h1 style="font-family:var(--font-heading);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--color-text);margin-bottom:1.5rem;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;">Built by Experts, <span style="background:linear-gradient(135deg,var(--color-primary-light),var(--color-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">For Enterprises</span></h1>
+        <p style="font-family:var(--font-body);font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.7;color:var(--color-text-secondary);max-width:640px;margin:0 auto;">Our team brings deep expertise in MCP architecture, semantic layers, and AI agent deployment — helping enterprises transform how they interact with their data.</p>
+      </div>
+    </section>
+
+    <!-- BREADCRUMB -->
+    <nav aria-label="Breadcrumb" style="padding:0 1.5rem;">
+      <div style="max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;color:var(--color-text-muted);">
+        <a href="/" style="color:var(--color-text-secondary);transition:color 150ms ease;">Home</a>
+        <svg style="width:14px;height:14px;opacity:0.5;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span style="color:var(--color-primary);">About</span>
+      </div>
+    </nav>
+
+    <!-- COMPANY STORY -->
+    <section style="padding:5rem 1.5rem;background:var(--color-bg);" aria-label="Our story">
+      <div style="max-width:1440px;margin:0 auto;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <!-- Image side -->
+          <div style="position:relative;">
+            <div style="background:linear-gradient(135deg,rgba(43,158,139,0.08),rgba(212,168,67,0.04));border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--space-8);min-height:360px;display:flex;align-items:center;justify-content:center;">
+              <div style="text-align:center;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="1.5" style="margin:0 auto var(--space-4);opacity:0.6;">
+                  <line x1="18" y1="20" x2="18" y2="10"/>
+                  <line x1="12" y1="20" x2="12" y2="4"/>
+                  <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin:0;">Analytics Dashboard Preview</p>
+              </div>
+            </div>
+          </div>
+          <!-- Content side -->
+          <div>
+            <span style="display:inline-block;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-primary);margin-bottom:1rem;">Our Story</span>
+            <h2 style="font-family:var(--font-heading);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:var(--color-text);margin-bottom:1.5rem;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;">From Data Silos to <span style="background:linear-gradient(135deg,var(--color-primary-light),var(--color-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Conversational Intelligence</span></h2>
+            <p style="font-size:1rem;line-height:1.7;color:var(--color-text-secondary);margin-bottom:2rem;">Beehive Strategy Limited is an enterprise AI and data analytics consulting firm. Our team comes from top technology companies and consulting firms with deep expertise in MCP architecture, semantic layers, and AI agent deployment.</p>
+            <!-- Feature list -->
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+              <div style="display:flex;gap:1rem;align-items:flex-start;">
+                <div style="width:40px;height:40px;border-radius:var(--radius-lg);background:rgba(43,158,139,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div>
+                  <h4 style="font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Senior Team</h4>
+                  <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin:0;">10+ years of experience from top technology companies and consulting firms.</p>
+                </div>
+              </div>
+              <div style="display:flex;gap:1rem;align-items:flex-start;">
+                <div style="width:40px;height:40px;border-radius:var(--radius-lg);background:rgba(43,158,139,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </div>
+                <div>
+                  <h4 style="font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Technology Leadership</h4>
+                  <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin:0;">Pioneers in MCP, semantic layers, and enterprise AI agent deployment.</p>
+                </div>
+              </div>
+              <div style="display:flex;gap:1rem;align-items:flex-start;">
+                <div style="width:40px;height:40px;border-radius:var(--radius-lg);background:rgba(43,158,139,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div>
+                  <h4 style="font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Client Success Oriented</h4>
+                  <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin:0;">End-to-end customised service from assessment to deployment and beyond.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section style="padding:5rem 1.5rem;background:var(--color-bg-alt);" aria-label="Our team">
+      <div style="max-width:1440px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:3.5rem;">
+          <span style="display:inline-block;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-primary);margin-bottom:1rem;">Our Team</span>
+          <h2 style="font-family:var(--font-heading);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:var(--color-text);margin-bottom:1rem;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;">Experts Behind the Platform</h2>
+          <p style="font-size:1.0625rem;line-height:1.6;color:var(--color-text-secondary);max-width:560px;margin:0 auto;">A senior team with deep roots in enterprise AI, data analytics, and platform architecture.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <!-- Kenneth Kwok -->
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:2rem;text-align:center;transition:all 300ms ease;">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--color-primary),var(--color-primary-dark));display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:white;">K</div>
+            <h4 style="font-family:var(--font-heading);font-size:1.125rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Kenneth Kwok</h4>
+            <p style="font-size:0.875rem;color:var(--color-text-secondary);margin:0;">Founder & CEO</p>
+          </div>
+          <!-- Technical Lead -->
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:2rem;text-align:center;transition:all 300ms ease;">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--color-accent),var(--color-accent-dark));display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:white;">T</div>
+            <h4 style="font-family:var(--font-heading);font-size:1.125rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Technical Lead</h4>
+            <p style="font-size:0.875rem;color:var(--color-text-secondary);margin:0;">Platform Architecture</p>
+          </div>
+          <!-- Data Science Lead -->
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:2rem;text-align:center;transition:all 300ms ease;">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--color-primary-light),var(--color-primary));display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:white;">D</div>
+            <h4 style="font-family:var(--font-heading);font-size:1.125rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Data Science Lead</h4>
+            <p style="font-size:0.875rem;color:var(--color-text-secondary);margin:0;">AI & Analytics</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECHNOLOGY ECOSYSTEM -->
+    <section style="padding:5rem 1.5rem;background:var(--color-bg);" aria-label="Technology ecosystem">
+      <div style="max-width:1440px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:3.5rem;">
+          <span style="display:inline-block;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-primary);margin-bottom:1rem;">Ecosystem</span>
+          <h2 style="font-family:var(--font-heading);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:var(--color-text);margin-bottom:1rem;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;">Our Technology Ecosystem</h2>
+          <p style="font-size:1.0625rem;line-height:1.6;color:var(--color-text-secondary);max-width:560px;margin:0 auto;">We partner with the world's leading cloud, data, and AI platforms to deliver enterprise-grade solutions.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <!-- Cloud Infrastructure -->
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:2rem;transition:all 300ms ease;">
+            <div style="width:48px;height:48px;border-radius:var(--radius-lg);background:rgba(43,158,139,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+            </div>
+            <h3 style="font-family:var(--font-heading);font-size:1.125rem;font-weight:600;color:var(--color-text);margin-bottom:0.5rem;">Cloud Infrastructure</h3>
+            <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin-bottom:1.25rem;">Scalable, secure cloud deployments across leading platforms.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(43,158,139,0.1);color:var(--color-primary-light);">Alibaba Cloud</span>
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(43,158,139,0.1);color:var(--color-primary-light);">Tencent Cloud</span>
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(43,158,139,0.1);color:var(--color-primary-light);">AWS</span>
+            </div>
+          </div>
+          <!-- Data Technology -->
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:2rem;transition:all 300ms ease;">
+            <div style="width:48px;height:48px;border-radius:var(--radius-lg);background:rgba(212,168,67,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-light)" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <h3 style="font-family:var(--font-heading);font-size:1.125rem;font-weight:600;color:var(--color-text);margin-bottom:0.5rem;">Data Technology</h3>
+            <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin-bottom:1.25rem;">Industry-leading data visualisation and warehousing platforms.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(212,168,67,0.1);color:var(--color-accent-light);">Tableau</span>
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(212,168,67,0.1);color:var(--color-accent-light);">Power BI</span>
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(212,168,67,0.1);color:var(--color-accent-light);">Snowflake</span>
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(212,168,67,0.1);color:var(--color-accent-light);">BigQuery</span>
+            </div>
+          </div>
+          <!-- AI Models -->
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:2rem;transition:all 300ms ease;">
+            <div style="width:48px;height:48px;border-radius:var(--radius-lg);background:rgba(43,158,139,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </div>
+            <h3 style="font-family:var(--font-heading);font-size:1.125rem;font-weight:600;color:var(--color-text);margin-bottom:0.5rem;">AI Models</h3>
+            <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin-bottom:1.25rem;">Multi-model support with the latest frontier AI capabilities.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(43,158,139,0.1);color:var(--color-primary-light);">OpenAI</span>
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(43,158,139,0.1);color:var(--color-primary-light);">Anthropic</span>
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(43,158,139,0.1);color:var(--color-primary-light);">DeepSeek</span>
+              <span style="font-size:0.75rem;font-weight:500;padding:0.25rem 0.625rem;border-radius:var(--radius-md);background:rgba(43,158,139,0.1);color:var(--color-primary-light);">Qwen</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section style="padding:5rem 1.5rem;background:var(--color-bg-alt);" aria-label="Security and compliance">
+      <div style="max-width:1440px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:3.5rem;">
+          <span style="display:inline-block;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-primary);margin-bottom:1rem;">Security</span>
+          <h2 style="font-family:var(--font-heading);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:var(--color-text);margin-bottom:1rem;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;">Enterprise-Grade Security</h2>
+          <p style="font-size:1.0625rem;line-height:1.6;color:var(--color-text-secondary);max-width:560px;margin:0 auto;">Built for the most demanding enterprise environments with end-to-end protection.</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <!-- Features list -->
+          <div style="display:flex;flex-direction:column;gap:1.5rem;">
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(43,158,139,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <h4 style="font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Data Encryption</h4>
+                <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin:0;">End-to-end encryption for data at rest and in transit, using industry-standard protocols.</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(43,158,139,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <h4 style="font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Fine-Grained RBAC</h4>
+                <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin:0;">Role-based access control with granular permissions down to the row and column level.</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(43,158,139,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <h4 style="font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Complete Audit Trail</h4>
+                <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin:0;">Full audit logging of every query, interaction, and data access for compliance.</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(43,158,139,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <h4 style="font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--color-text);margin-bottom:0.25rem;">Flexible Deployment Options</h4>
+                <p style="font-size:0.875rem;line-height:1.6;color:var(--color-text-secondary);margin:0;">Public cloud, private cloud, or on-premises — choose the deployment that fits your needs.</p>
+              </div>
+            </div>
+            <!-- Security badges -->
+            <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:0.5rem;">
+              <span style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;padding:0.5rem 1rem;border-radius:var(--radius-lg);background:var(--color-bg-card);border:1px solid var(--color-border);color:var(--color-text-secondary);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                ISO 27001
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;padding:0.5rem 1rem;border-radius:var(--radius-lg);background:var(--color-bg-card);border:1px solid var(--color-border);color:var(--color-text-secondary);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Level 3 Cybersecurity
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;padding:0.5rem 1rem;border-radius:var(--radius-lg);background:var(--color-bg-card);border:1px solid var(--color-border);color:var(--color-text-secondary);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                SOC 2 Type II
+              </span>
+            </div>
+          </div>
+          <!-- Orbit visual -->
+          <div style="position:relative;display:flex;align-items:center;justify-content:center;min-height:360px;">
+            <div style="position:relative;width:320px;height:320px;">
+              <!-- Orbits -->
+              <div style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(43,158,139,0.15);"></div>
+              <div style="position:absolute;inset:40px;border-radius:50%;border:1px solid rgba(43,158,139,0.2);"></div>
+              <div style="position:absolute;inset:80px;border-radius:50%;border:1px solid rgba(43,158,139,0.25);"></div>
+              <!-- Center -->
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--color-primary),var(--color-primary-dark));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-glow);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <!-- Orbit points -->
+              <div style="position:absolute;top:50%;left:16px;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:var(--color-primary-light);box-shadow:0 0 12px rgba(61,212,176,0.4);"></div>
+              <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:var(--color-accent-light);box-shadow:0 0 12px rgba(240,215,140,0.4);"></div>
+              <div style="position:absolute;top:50%;right:16px;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:var(--color-primary-light);box-shadow:0 0 12px rgba(61,212,176,0.4);"></div>
+              <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:var(--color-accent);box-shadow:0 0 12px rgba(212,168,67,0.4);"></div>
+              <div style="position:absolute;top:72px;right:72px;width:10px;height:10px;border-radius:50%;background:var(--color-primary);opacity:0.7;"></div>
+              <div style="position:absolute;bottom:72px;left:72px;width:10px;height:10px;border-radius:50%;background:var(--color-accent-light);opacity:0.7;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI AGENT MARKET LANDSCAPE -->
+    <section style="padding:5rem 1.5rem;background:var(--color-bg);" aria-label="AI agent market landscape">
+      <div style="max-width:1440px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:3.5rem;">
+          <span style="display:inline-block;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-primary);margin-bottom:1rem;">Market Landscape</span>
+          <h2 style="font-family:var(--font-heading);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:var(--color-text);margin-bottom:1rem;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;">The AI Agent Revolution</h2>
+          <p style="font-size:1.0625rem;line-height:1.6;color:var(--color-text-secondary);max-width:560px;margin:0 auto;">The MCP ecosystem is growing rapidly, signalling a fundamental shift in how enterprises interact with AI.</p>
+        </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:1.5rem 2rem;text-align:center;">
+            <div style="font-family:var(--font-heading);font-size:clamp(2rem,3vw,2.75rem);font-weight:700;color:var(--color-primary-light);white-space:nowrap;">97<span style="font-size:0.6em;opacity:0.7;">M+</span></div>
+            <div style="font-size:0.875rem;font-weight:600;color:var(--color-text);margin-top:0.5rem;">Monthly SDK Downloads</div>
+            <div style="font-size:0.75rem;color:var(--color-text-muted);margin-top:0.25rem;line-clamp-2;">MCP SDK adoption worldwide</div>
+          </div>
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:1.5rem 2rem;text-align:center;">
+            <div style="font-family:var(--font-heading);font-size:clamp(2rem,3vw,2.75rem);font-weight:700;color:var(--color-accent-light);white-space:nowrap;">10,000<span style="font-size:0.6em;opacity:0.7;">+</span></div>
+            <div style="font-size:0.875rem;font-weight:600;color:var(--color-text);margin-top:0.5rem;">Public MCP Server Nodes</div>
+            <div style="font-size:0.75rem;color:var(--color-text-muted);margin-top:0.25rem;line-clamp-2;">Active nodes in the global ecosystem</div>
+          </div>
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:1.5rem 2rem;text-align:center;">
+            <div style="font-family:var(--font-heading);font-size:clamp(2rem,3vw,2.75rem);font-weight:700;color:var(--color-primary-light);white-space:nowrap;">81,000<span style="font-size:0.6em;opacity:0.7;">+</span></div>
+            <div style="font-size:0.875rem;font-weight:600;color:var(--color-text);margin-top:0.5rem;">GitHub Stars</div>
+            <div style="font-size:0.75rem;color:var(--color-text-muted);margin-top:0.25rem;line-clamp-2;">Community-driven development</div>
+          </div>
+          <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:1.5rem 2rem;text-align:center;">
+            <div style="font-family:var(--font-heading);font-size:clamp(2rem,3vw,2.75rem);font-weight:700;color:var(--color-accent-light);white-space:nowrap;">40<span style="font-size:0.6em;opacity:0.7;">%</span></div>
+            <div style="font-size:0.875rem;font-weight:600;color:var(--color-text);margin-top:0.5rem;">Enterprise AI Adoption by 2026</div>
+            <div style="font-size:0.75rem;color:var(--color-text-muted);margin-top:0.25rem;line-clamp-2;">Gartner forecast for AI deployment</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="position:relative;padding:6rem 1.5rem;overflow:hidden;" aria-label="Contact us">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 40% 50%,rgba(43,158,139,0.12),transparent),radial-gradient(ellipse 50% 40% at 70% 60%,rgba(212,168,67,0.08),transparent);background-color:var(--color-bg-alt);" aria-hidden="true"></div>
+      <div style="position:relative;z-index:1;max-width:1440px;margin:0 auto;text-align:center;">
+        <h2 style="font-family:var(--font-heading);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:var(--color-text);margin-bottom:1rem;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;">Ready to Transform Your Data Strategy?</h2>
+        <p style="font-size:1.0625rem;line-height:1.6;color:var(--color-text-secondary);max-width:560px;margin:0 auto 2rem;">Book a demo or get a free data assessment. Our team is ready to help you unlock the full value of your enterprise data.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="/contact" data-dom-id="cta-demo-bottom" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.875rem 2rem;font-size:0.9375rem;font-weight:500;border-radius:var(--radius-lg);background:var(--color-primary);color:white;box-shadow:0 4px 20px rgba(43,158,139,0.3);transition:all 300ms ease;">Book a Demo</a>
+          <a href="/contact" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.875rem 2rem;font-size:0.9375rem;font-weight:500;border-radius:var(--radius-lg);background:transparent;border:1px solid var(--color-border);color:var(--color-text);transition:all 300ms ease;">Free Data Assessment</a>
+        </div>
+      </div>
+    </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="background:rgba(255,255,255,0.97);border-top:1px solid rgba(0,0,0,0.08);padding:4rem 0 2rem;--color-text:#1a2e28;--color-text-secondary:#4a5a52;--color-text-muted:#7a8a82;--color-border:rgba(0,0,0,0.1);--color-bg-card:rgba(0,0,0,0.04);" role="contentinfo">
+      <div style="width:100%;max-width:1440px;margin-left:auto;margin-right:auto;padding-left:1.5rem;padding-right:1.5rem;">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" style="margin-bottom:3rem;">
+          <div>
+            <a href="/" style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+              <img src="../assets/beehive-logo.png" alt="Beehive Strategy Logo" style="height:36px;width:auto;" loading="lazy">
+            </a>
+            <p style="font-size:0.875rem;color:#7a8a82;margin-top:1rem;max-width:300px;">Enterprise AI &amp; data analytics consulting. We deliver MCP-powered conversational intelligence that transforms how businesses interact with their data.</p>
+            <div style="display:flex;gap:0.75rem;margin-top:1.5rem;">
+              <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank" style="width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;transition:all 150ms ease;color:#4a5a52;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+              <a href="mailto:hello@beehivestrategy.com" aria-label="Email" style="width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;transition:all 150ms ease;color:#4a5a52;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+            </div>
+          </div>
+          <div>
+            <h4 style="font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#1a2e28;margin-bottom:1rem;">Product</h4>
+            <ul style="display:flex;flex-direction:column;gap:0.75rem;">
+              <li><a href="/solution" style="font-size:0.875rem;color:#7a8a82;">Platform</a></li>
+              <li><a href="/solution" style="font-size:0.875rem;color:#7a8a82;">AI Agents</a></li>
+              <li><a href="/case-studies" style="font-size:0.875rem;color:#7a8a82;">Case Studies</a></li>
+              <li><a href="/about" style="font-size:0.875rem;color:#7a8a82;">Security</a></li>
+              <li><a href="/pricing" style="font-size:0.875rem;color:#7a8a82;">Pricing</a></li>
+              <li><a href="/blog" style="font-size:0.875rem;color:#7a8a82;">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#1a2e28;margin-bottom:1rem;">Industries</h4>
+            <ul style="display:flex;flex-direction:column;gap:0.75rem;">
+              <li><a href="/industries" style="font-size:0.875rem;color:#7a8a82;">Retail &amp; E-Commerce</a></li>
+              <li><a href="/industries" style="font-size:0.875rem;color:#7a8a82;">Financial Services</a></li>
+              <li><a href="/industries" style="font-size:0.875rem;color:#7a8a82;">Manufacturing</a></li>
+              <li><a href="/industries" style="font-size:0.875rem;color:#7a8a82;">Professional Services</a></li>
+              <li><a href="/industries" style="font-size:0.875rem;color:#7a8a82;">Real Estate</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#1a2e28;margin-bottom:1rem;">Company</h4>
+            <ul style="display:flex;flex-direction:column;gap:0.75rem;">
+              <li><a href="/about" style="font-size:0.875rem;color:#7a8a82;">About Us</a></li>
+              <li><a href="/contact" style="font-size:0.875rem;color:#7a8a82;">Contact</a></li>
+              <li><a href="/pricing" style="font-size:0.875rem;color:#7a8a82;">FAQ</a></li>
+              <li><a href="mailto:hello@beehivestrategy.com" style="font-size:0.875rem;color:#7a8a82;">Careers</a></li>
+            </ul>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.1);">
+          <p style="font-size:0.75rem;color:#7a8a82;margin:0;">&copy; 2026 Beehive Strategy Limited All rights reserved.</p>
+          <div style="display:flex;gap:1rem;">
+            <a href="/privacy" style="font-size:0.75rem;color:#7a8a82;">Privacy Policy</a>
+            <a href="/terms" style="font-size:0.75rem;color:#7a8a82;">Terms of Service</a>
+            <a href="/cookies" style="font-size:0.75rem;color:#7a8a82;">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* Mobile responsive header */
+    .bh-desktop-nav {
+      /* visible by default, hidden via media query below */
+    }
+    .bh-desktop-cta {
+      /* visible by default, hidden via media query below */
+    }
+
+    .bh-hamburger {
+      display: none;
+    }
+
+    .bh-mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      overflow-y: auto;
+      padding: 2rem 1.5rem 3rem;
+      flex-direction: column;
+      gap: 0;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      pointer-events: none;
+    }
+
+    .bh-mobile-menu.is-open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .bh-mobile-menu .bh-mobile-link {
+      display: block;
+      padding: 0.875rem 0;
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: #1a2e28;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      text-decoration: none;
+      transition: color 150ms ease;
+    }
+
+    .bh-mobile-menu .bh-mobile-link:hover,
+    .bh-mobile-menu .bh-mobile-link:active {
+      color: var(--color-primary);
+    }
+
+    .bh-mobile-menu .bh-mobile-link.is-active {
+      color: var(--color-primary);
+    }
+
+    .bh-mobile-menu .bh-mobile-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding: 0.875rem 2rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      border-radius: 0.75rem;
+      background: var(--color-primary);
+      color: white;
+      box-shadow: 0 4px 20px rgba(43,158,139,0.3);
+      text-decoration: none;
+      transition: all 300ms ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .bh-lang-segmented {
+      display: inline-flex;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 2px;
+      margin-bottom: 0.5rem;
+    }
+    .bh-lang-seg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem 1.1rem;
+      font-family: 'Geist', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: color 0.2s ease, background 0.2s ease;
+      min-width: 44px;
+      text-align: center;
+    }
+    .bh-lang-seg:hover {
+      color: var(--color-text-secondary);
+      background: rgba(255,255,255,0.04);
+    }
+    .bh-lang-seg-active {
+      background: var(--color-primary) !important;
+      color: #fff !important;
+      box-shadow: 0 2px 8px rgba(43,158,139,0.3);
+    }
+    .bh-lang-seg-active:hover {
+      background: var(--color-primary-light, #3dd4b0) !important;
+      color: #fff !important;
+    }
+    .bh-nav-link {
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .bh-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--color-primary);
+      border-radius: 1px;
+      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1), left 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .bh-nav-link:hover {
+      color: var(--color-text) !important;
+    }
+    .bh-nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    .bh-cta-btn-primary:hover,
+    a[href="/contact"][data-dom-id="cta-demo"]:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(43,158,139,0.4), 0 0 24px rgba(43,158,139,0.2) !important;
+      filter: brightness(1.1);
+    }
+    .bh-desktop-cta button:hover {
+      background: rgba(255,255,255,0.1) !important;
+      border-color: rgba(255,255,255,0.18) !important;
+    }
+
+    @media (max-width: 1023px) {
+      .bh-desktop-nav {
+        display: none !important;
+      }
+      .bh-desktop-cta {
+        display: none !important;
+      }
+      .bh-hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+      .bh-mobile-menu {
+        display: flex;
+      }
+    }
+    </style>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
