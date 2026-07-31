@@ -1,0 +1,100 @@
+name: Dev.to Auto-Publish
+
+# Publish new English blog articles to Dev.to as drafts.
+# Runs daily at 09:00 HKT (01:00 UTC) and can be triggered manually.
+# Articles are saved as DRAFTS — review and publish at https://dev.to/dashboard
+
+on:
+  schedule:
+    # 09:00 HKT = 01:00 UTC
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    # Manual trigger with options
+    inputs:
+      mode:
+        description: 'Publishing mode'
+        required: true
+        default: 'git-diff'
+        type: choice
+        options:
+          - git-diff
+          - slug
+          - dry-run
+      slug:
+        description: 'Article slug (only for "slug" mode, e.g. what-is-conversational-bi)'
+        required: false
+        default: ''
+      commits:
+        description: 'Number of commits to check (only for "git-diff" mode)'
+        required: false
+        default: '1'
+
+permissions:
+  contents: read
+
+jobs:
+  publish-to-devto:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history needed for git diff
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 html2text
+
+      - name: Determine run mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "mode=${{ inputs.mode }}" >> $GITHUB_OUTPUT
+            echo "slug=${{ inputs.slug }}" >> $GITHUB_OUTPUT
+            echo "commits=${{ inputs.commits }}" >> $GITHUB_OUTPUT
+          else
+            # Scheduled run — always use git-diff with 1 commit
+            echo "mode=git-diff" >> $GITHUB_OUTPUT
+            echo "slug=" >> $GITHUB_OUTPUT
+            echo "commits=1" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish articles to Dev.to
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          MODE="${{ steps.mode.outputs.mode }}"
+          SLUG="${{ steps.mode.outputs.slug }}"
+          COMMITS="${{ steps.mode.outputs.commits }}"
+
+          echo "=== Dev.to Auto-Publish ==="
+          echo "Mode: $MODE"
+
+          if [ "$MODE" = "slug" ] && [ -n "$SLUG" ]; then
+            echo "Publishing single article: $SLUG"
+            python3 scripts/devto_publish.py --slug "$SLUG"
+
+          elif [ "$MODE" = "dry-run" ]; then
+            echo "DRY RUN — no articles will be published"
+            # Check last 3 commits for new articles
+            python3 scripts/devto_publish.py --git-diff --commits 3 --dry-run
+
+          else
+            # git-diff mode (default for both scheduled and manual)
+            echo "Checking last $COMMITS commit(s) for new articles"
+            python3 scripts/devto_publish.py --git-diff --commits "$COMMITS"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "=== Workflow Complete ==="
+          echo "Check your Dev.to dashboard: https://dev.to/dashboard"
+          echo "Articles are saved as drafts — review and publish manually."
