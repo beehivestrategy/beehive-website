@@ -1,0 +1,139 @@
+name: Cross-Platform Content Distribution
+
+on:
+  # Schedule: Daily at 09:00 HKT (01:00 UTC)
+  schedule:
+    - cron: '0 1 * * *'
+
+  # Manual trigger with mode selection
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Publishing mode'
+        required: true
+        default: 'git-diff'
+        type: choice
+        options:
+          - git-diff
+          - slug
+          - dry-run
+      slug:
+        description: 'Article slug (for slug mode only)'
+        required: false
+        default: ''
+      commits:
+        description: 'Number of commits to check (for git-diff mode)'
+        required: false
+        default: '1'
+
+  # Trigger when new articles are pushed to main
+  push:
+    branches:
+      - main
+    paths:
+      - 'blog/articles/*.html'
+
+jobs:
+  cross-post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git-diff
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 html2text requests-oauthlib
+
+      # ============================================================
+      # PLATFORM 1: Dev.to
+      # ============================================================
+      - name: Publish to Dev.to
+        if: env.DEVTO_API_KEY != ''
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          echo "=== Publishing to Dev.to ==="
+          MODE="${{ github.event.inputs.mode || 'git-diff' }}"
+
+          if [ "$MODE" = "slug" ]; then
+            python3 scripts/devto_publish.py --slug "${{ github.event.inputs.slug }}"
+          elif [ "$MODE" = "dry-run" ]; then
+            python3 scripts/devto_publish.py --dry-run
+          else
+            COMMITS="${{ github.event.inputs.commits || '1' }}"
+            python3 scripts/devto_publish.py --git-diff --commits "$COMMITS"
+          fi
+        continue-on-error: true
+
+      # ============================================================
+      # PLATFORM 2: Medium
+      # ============================================================
+      - name: Publish to Medium
+        if: env.MEDIUM_API_KEY != ''
+        env:
+          MEDIUM_API_KEY: ${{ secrets.MEDIUM_API_KEY }}
+          MEDIUM_AUTHOR_ID: ${{ secrets.MEDIUM_AUTHOR_ID }}
+        run: |
+          echo "=== Publishing to Medium ==="
+          MODE="${{ github.event.inputs.mode || 'git-diff' }}"
+
+          if [ "$MODE" = "slug" ]; then
+            python3 scripts/medium_publish.py --slug "${{ github.event.inputs.slug }}"
+          elif [ "$MODE" = "dry-run" ]; then
+            python3 scripts/medium_publish.py --dry-run
+          else
+            COMMITS="${{ github.event.inputs.commits || '1' }}"
+            python3 scripts/medium_publish.py --git-diff --commits "$COMMITS"
+          fi
+        continue-on-error: true
+
+      # ============================================================
+      # PLATFORM 3: X.com (Twitter)
+      # ============================================================
+      - name: Post to X.com
+        if: env.X_API_KEY != ''
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_KEY_SECRET: ${{ secrets.X_API_KEY_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+        run: |
+          echo "=== Posting to X.com ==="
+          MODE="${{ github.event.inputs.mode || 'git-diff' }}"
+
+          if [ "$MODE" = "slug" ]; then
+            python3 scripts/x_post.py --slug "${{ github.event.inputs.slug }}"
+          elif [ "$MODE" = "dry-run" ]; then
+            python3 scripts/x_post.py --dry-run
+          else
+            COMMITS="${{ github.event.inputs.commits || '1' }}"
+            python3 scripts/x_post.py --git-diff --commits "$COMMITS"
+          fi
+        continue-on-error: true
+
+      # ============================================================
+      # SUMMARY
+      # ============================================================
+      - name: Summary
+        if: always()
+        run: |
+          echo "============================================"
+          echo "Cross-Platform Content Distribution Complete"
+          echo "============================================"
+          echo ""
+          echo "Platforms attempted:"
+          echo "  - Dev.to: ${{ env.DEVTO_API_KEY != '' && 'Configured' || 'Not configured (missing DEVTO_API_KEY secret)' }}"
+          echo "  - Medium: ${{ env.MEDIUM_API_KEY != '' && 'Configured' || 'Not configured (missing MEDIUM_API_KEY secret)' }}"
+          echo "  - X.com:  ${{ env.X_API_KEY != '' && 'Configured' || 'Not configured (missing X_API_KEY secret)' }}"
+          echo ""
+          echo "Note: LinkedIn requires Zapier (free tier) for RSS-to-LinkedIn automation"
+          echo "      See scripts/CONTENT_DISTRIBUTION_SETUP.md for details"
