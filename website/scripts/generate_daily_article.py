@@ -39,7 +39,16 @@ FEED_XML = Path(__file__).parent.parent / "blog" / "feed.xml"
 
 # OpenRouter config
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
-DEFAULT_MODEL = os.environ.get("OPENROUTER_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
+DEFAULT_MODEL = os.environ.get("OPENROUTER_MODEL", "nvidia/nemotron-3-super-120b-a12b:free")
+
+# Fallback free models (tried in order if primary fails)
+FALLBACK_MODELS = [
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "google/gemma-4-31b-it:free",
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "google/gemma-4-26b-a4b-it:free",
+    "openai/gpt-oss-20b:free",
+]
 
 # Article topics rotation (ensures variety)
 TOPICS = [
@@ -84,40 +93,55 @@ def get_api_key():
 
 
 def call_openrouter(api_key, prompt, temperature=0.7, model=None):
-    """Call OpenRouter API for text generation."""
-    model = model or DEFAULT_MODEL
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}",
-        "HTTP-Referer": "https://www.beehivestrategy.com",
-        "X-Title": "Beehive Strategy Article Generator",
-    }
-    payload = {
-        "model": model,
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": temperature,
-    }
+    """Call OpenRouter API for text generation, with fallback models."""
+    models_to_try = [model or DEFAULT_MODEL] + [m for m in FALLBACK_MODELS if m != (model or DEFAULT_MODEL)]
+    
+    for try_model in models_to_try:
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+            "HTTP-Referer": "https://www.beehivestrategy.com",
+            "X-Title": "Beehive Strategy Article Generator",
+        }
+        payload = {
+            "model": try_model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": temperature,
+        }
 
-    try:
-        resp = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=120)
-        resp.raise_for_status()
-        data = resp.json()
-        content = data.get("choices", [{}])[0].get("message", {}).get("content", "").strip()
+        try:
+            resp = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=120)
+            
+            if resp.status_code == 404:
+                print(f"  Model {try_model} unavailable, trying next...")
+                continue
+            
+            resp.raise_for_status()
+            data = resp.json()
+            content = data.get("choices", [{}])[0].get("message", {}).get("content", "").strip()
 
-        # Strip markdown code blocks if present
-        if content.startswith("```json"):
-            content = re.sub(r"^```json\n?", "", content)
-            content = re.sub(r"\n?```$", "", content)
-        elif content.startswith("```"):
-            content = re.sub(r"^```\n?", "", content)
-            content = re.sub(r"\n?```$", "", content)
+            # Strip markdown code blocks if present
+            if content.startswith("```json"):
+                content = re.sub(r"^```json\n?", "", content)
+                content = re.sub(r"\n?```$", "", content)
+            elif content.startswith("```"):
+                content = re.sub(r"^```\n?", "", content)
+                content = re.sub(r"\n?```$", "", content)
 
-        return content
-    except requests.RequestException as e:
-        print(f"ERROR: OpenRouter API call failed: {e}")
-        if hasattr(e, "response") and e.response is not None:
-            print(f"Response: {e.response.text[:500]}")
-        return None
+            if try_model != (model or DEFAULT_MODEL):
+                print(f"  Used fallback model: {try_model}")
+            return content
+        except requests.RequestException as e:
+            if hasattr(e, "response") and e.response is not None and e.response.status_code == 404:
+                print(f"  Model {try_model} unavailable, trying next...")
+                continue
+            print(f"ERROR: OpenRouter API call failed with {try_model}: {e}")
+            if hasattr(e, "response") and e.response is not None:
+                print(f"Response: {e.response.text[:500]}")
+            continue
+    
+    print("ERROR: All models failed")
+    return None
 
 
 def generate_article_content(api_key, topic, dry_run=False):
