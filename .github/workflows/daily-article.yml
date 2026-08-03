@@ -1,0 +1,85 @@
+name: Daily Article Generation
+
+on:
+  schedule:
+    # 09:00 HKT = 01:00 UTC
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Specific topic (optional — defaults to rotated topic)'
+        required: false
+        default: ''
+      no_translate:
+        description: 'Skip Chinese translations'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  generate-article:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Generate article
+        id: generate
+        working-directory: website
+        run: |
+          EXTRA_ARGS=""
+          TOPIC="${{ github.event.inputs.topic || '' }}"
+          NO_TRANSLATE="${{ github.event.inputs.no_translate || false }}"
+
+          if [ -n "$TOPIC" ]; then
+            EXTRA_ARGS="$EXTRA_ARGS --topic \"$TOPIC\""
+          fi
+          if [ "$NO_TRANSLATE" = "true" ]; then
+            EXTRA_ARGS="$EXTRA_ARGS --no-translate"
+          fi
+
+          echo "Running: python3 scripts/generate_daily_article.py $EXTRA_ARGS"
+          python3 scripts/generate_daily_article.py $EXTRA_ARGS
+
+      - name: Commit and push changes
+        working-directory: website
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Add new article files and updated site files
+          git add blog/articles/ zh-cn/blog/articles/ zh-tw/blog/articles/ blog.html sitemap.xml blog/feed.xml 2>/dev/null || true
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(content): auto-generate daily SEO article $(date -u +%Y-%m-%d)"
+            git push origin HEAD
+            echo "Changes pushed successfully"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "=== Daily Article Generation Complete ==="
+          echo "Check blog: https://www.beehivestrategy.com/blog"
