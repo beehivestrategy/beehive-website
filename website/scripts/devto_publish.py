@@ -244,10 +244,18 @@ def parse_article(html_path):
     }
 
 
-def publish_to_devto(api_key, article_data, dry_run=False):
-    """Publish an article to Dev.to."""
+def publish_to_devto(api_key, article_data, dry_run=False, auto_publish=False):
+    """Publish an article to Dev.to.
+
+    Args:
+        api_key: Dev.to API key
+        article_data: Parsed article data dict
+        dry_run: If True, show what would be published without posting
+        auto_publish: If True, publish immediately (published=true). If False, save as draft.
+    """
     if dry_run:
-        print(f"\n[DRY RUN] Would publish:")
+        status = "PUBLISHED" if auto_publish else "DRAFT"
+        print(f"\n[DRY RUN] Would publish as {status}:")
         print(f"  Title: {article_data['title']}")
         print(f"  Canonical: {article_data['canonical_url']}")
         print(f"  Tags: {article_data['tags']}")
@@ -264,7 +272,7 @@ def publish_to_devto(api_key, article_data, dry_run=False):
         "article": {
             "title": article_data["title"],
             "body_markdown": article_data["body_markdown"],
-            "published": False,  # Save as draft first for review
+            "published": auto_publish,  # True = publish immediately, False = draft
             "tags": article_data["tags"],
             "canonical_url": article_data["canonical_url"],
         }
@@ -286,9 +294,11 @@ def publish_to_devto(api_key, article_data, dry_run=False):
             result = resp.json()
             article_id = result.get("id")
             article_url = result.get("url", "unknown")
-            print(f"  SUCCESS: Published as draft (ID: {article_id})")
+            status_label = "PUBLISHED" if auto_publish else "Draft"
+            print(f"  SUCCESS: Published as {status_label} (ID: {article_id})")
             print(f"  URL: {article_url}")
-            print(f"  Status: Draft (review and publish on Dev.to)")
+            if not auto_publish:
+                print(f"  Status: Draft (review and publish on Dev.to)")
             return True
         else:
             print(f"  ERROR: Dev.to API returned {resp.status_code}")
@@ -325,6 +335,7 @@ def main():
     parser.add_argument("--commits", type=int, default=1, help="Number of commits to check (default: 1)")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be published without posting")
     parser.add_argument("--all", action="store_true", help="Process all articles (use with --dry-run first)")
+    parser.add_argument("--publish", action="store_true", help="Auto-publish immediately (default: save as draft)")
     args = parser.parse_args()
 
     api_key = get_api_key()
@@ -390,7 +401,7 @@ def main():
             continue
 
         # Publish
-        success = publish_to_devto(api_key, article_data, dry_run=args.dry_run)
+        success = publish_to_devto(api_key, article_data, dry_run=args.dry_run, auto_publish=args.publish)
         if success:
             published_count += 1
             # Add to existing to prevent duplicates in same batch
@@ -402,8 +413,12 @@ def main():
     print(f"\n{'='*50}")
     print(f"SUMMARY: {published_count} published, {skipped_count} skipped, {failed_count} failed")
     if not args.dry_run and published_count > 0:
-        print(f"\nNOTE: Articles were saved as DRAFTS on Dev.to.")
-        print(f"Review and publish them at: https://dev.to/dashboard")
+        if args.publish:
+            print(f"\nNOTE: Articles were PUBLISHED on Dev.to.")
+            print(f"View them at: https://dev.to/beehivestrategy")
+        else:
+            print(f"\nNOTE: Articles were saved as DRAFTS on Dev.to.")
+            print(f"Review and publish them at: https://dev.to/dashboard")
 
 
 if __name__ == "__main__":

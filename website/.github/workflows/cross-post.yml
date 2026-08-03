@@ -25,6 +25,11 @@ on:
         description: 'Number of commits to check (for git-diff mode)'
         required: false
         default: '1'
+      auto_publish:
+        description: 'Auto-publish immediately (default: save as draft)'
+        required: false
+        default: false
+        type: boolean
 
   # Trigger when new articles are pushed to main
   push:
@@ -63,14 +68,20 @@ jobs:
         run: |
           echo "=== Publishing to Dev.to ==="
           MODE="${{ github.event.inputs.mode || 'git-diff' }}"
+          AUTO_PUBLISH="${{ github.event.inputs.auto_publish || false }}"
+          PUBLISH_FLAG=""
+
+          if [ "$AUTO_PUBLISH" = "true" ]; then
+            PUBLISH_FLAG="--publish"
+          fi
 
           if [ "$MODE" = "slug" ]; then
-            python3 scripts/devto_publish.py --slug "${{ github.event.inputs.slug }}"
+            python3 scripts/devto_publish.py --slug "${{ github.event.inputs.slug }}" $PUBLISH_FLAG
           elif [ "$MODE" = "dry-run" ]; then
-            python3 scripts/devto_publish.py --dry-run --all
+            python3 scripts/devto_publish.py --dry-run --all $PUBLISH_FLAG
           else
             COMMITS="${{ github.event.inputs.commits || '1' }}"
-            python3 scripts/devto_publish.py --git-diff --commits "$COMMITS"
+            python3 scripts/devto_publish.py --git-diff --commits "$COMMITS" $PUBLISH_FLAG
           fi
         continue-on-error: true
 
