@@ -168,6 +168,67 @@ export async function onRequest(context) {
     });
   }
 
+  // Return 410 Gone for old WordPress/WooCommerce URL patterns
+  // This speeds up de-indexing compared to 404 (Google treats 410 as "permanently removed")
+  const wpPatterns = [
+    /^\/product\//,
+    /^\/product-tag\//,
+    /^\/product-category\//,
+    /^\/portfolio\//,
+    /^\/portfolio-category\//,
+    /^\/shop\/?/,
+    /^\/cart\/?/,
+    /^\/checkout\/?/,
+    /^\/my-account\/?/,
+    /^\/wp-admin\//,
+    /^\/wp-content\//,
+    /^\/wp-includes\//,
+    /^\/wp-login\.php/,
+    /^\/author\//,
+    /^\/tag\//,
+    /^\/category\//,
+    /^\/date\//,
+    /^\/feed\/?/,
+    /^\/comments\/feed\/?/,
+    /^\/\d{4}\/\d{2}\/?/,  // WordPress date-based archives (/2023/01/)
+    /^\/\d{4}\/\d{2}\/[^/]+\/?$/,  // WordPress date-based post URLs (/2023/01/post-title/)
+  ];
+  for (const pattern of wpPatterns) {
+    if (pattern.test(url.pathname)) {
+      return new Response('<!DOCTYPE html><html><head><title>410 Gone</title><meta name="robots" content="noindex"></head><body><h1>410 Gone</h1><p>This page has been permanently removed.</p></body></html>', {
+        status: 410,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+          'X-Frame-Options': 'SAMEORIGIN',
+          'X-Content-Type-Options': 'nosniff',
+          'Referrer-Policy': 'strict-origin-when-cross-origin',
+          'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+          'Cache-Control': 'public, max-age=86400',
+        },
+      });
+    }
+  }
+
+  // Return 410 for WordPress query parameter URLs (?p=, ?page_id=, ?m=)
+  const wpQueryParams = ['p', 'page_id', 'm', 'attachment_id', 'cat'];
+  for (const param of wpQueryParams) {
+    if (url.searchParams.has(param)) {
+      return new Response('<!DOCTYPE html><html><head><title>410 Gone</title><meta name="robots" content="noindex"></head><body><h1>410 Gone</h1><p>This page has been permanently removed.</p></body></html>', {
+        status: 410,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+          'X-Frame-Options': 'SAMEORIGIN',
+          'X-Content-Type-Options': 'nosniff',
+          'Referrer-Policy': 'strict-origin-when-cross-origin',
+          'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+          'Cache-Control': 'public, max-age=86400',
+        },
+      });
+    }
+  }
+
   const response = await context.next();
 
   // Add security headers to all responses

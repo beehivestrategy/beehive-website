@@ -130,7 +130,7 @@ All pages share the same header/nav structure. Variations:
 
 | # | English Text | File(s) | Classification |
 |---|---|---|---|
-| 44 | `© 2026 Beehive Strategy Co., Ltd. All rights reserved.` | ALL pages | Shared (footer) |
+| 44 | `© 2026 Beehive Strategy Limited All rights reserved.` | ALL pages | Shared (footer) |
 | 45 | `Privacy Policy` | ALL pages | Shared (footer) |
 | 46 | `Terms of Service` | ALL pages | Shared (footer) |
 | 47 | `Cookie Policy` | ALL pages | Shared (footer) |
@@ -140,7 +140,7 @@ All pages share the same header/nav structure. Variations:
 | # | English Text | File(s) | Classification |
 |---|---|---|---|
 | 48 | `Beehive Strategy` (og:site_name) | ALL pages | Shared (meta) |
-| 49 | `Beehive Strategy Co., Ltd.` (meta author) | ALL pages | Shared (meta) |
+| 49 | `Beehive Strategy Limited` (meta author) | ALL pages | Shared (meta) |
 | 50 | `Beehive Strategy — MCP-Powered Conversational BI` (og:image:alt) | ALL pages | Shared (meta) |
 | 51 | `Shenzhen, Guangdong, China` (geo.placename) | ALL pages | Shared (meta) |
 
@@ -369,8 +369,8 @@ From `blog/articles/what-is-mcp-model-context-protocol-explained.html` (template
 
 | # | English Text | Classification |
 |---|---|---|
-| 166 | `Beehive Strategy Co., Ltd.` (Organization name) | Shared (structured data) |
-| 167 | `蜂启咨询有限公司` (Organization alternateName) | Shared (structured data) — already Chinese |
+| 166 | `Beehive Strategy Limited` (Organization name) | Shared (structured data) |
+| 167 | `深圳蜂启咨询有限公司` (Organization alternateName) | Shared (structured data) — already Chinese |
 | 168 | `Beehive Strategy \| MCP-Powered Enterprise Conversational BI Platform` (WebPage name) | Page-specific (structured data) |
 | 169 | `Beehive Strategy builds MCP-powered conversational BI platforms for enterprises. Ask your data questions in natural language via WeChat Work, DingTalk, and Feishu. Deploy in 2 weeks.` (WebPage description) | Page-specific (structured data) |
 | 170 | `MCP-Powered Conversational BI Platform` (SoftwareApplication name) | Page-specific (structured data) |

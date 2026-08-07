@@ -1,0 +1,189 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Beehive Strategy WebMCP API",
+    "description": "WebMCP endpoints for AI agent tool invocation. Enables AI assistants to search services, blog articles, retrieve contact info, and navigate site content.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "account@beehivestrategy.com",
+      "url": "https://www.beehivestrategy.com/contact"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://www.beehivestrategy.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/api/mcp": {
+      "post": {
+        "summary": "Invoke an MCP tool",
+        "description": "Execute a WebMCP tool call. Supports tools: search_services, search_blog, get_contact_info, navigate_to.",
+        "operationId": "invokeMcpTool",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tool",
+                  "arguments"
+                ],
+                "properties": {
+                  "tool": {
+                    "type": "string",
+                    "description": "The MCP tool name to invoke",
+                    "enum": [
+                      "search_services",
+                      "search_blog",
+                      "get_contact_info",
+                      "navigate_to"
+                    ]
+                  },
+                  "arguments": {
+                    "type": "object",
+                    "description": "Key-value pairs of arguments for the tool",
+                    "additionalProperties": true
+                  }
+                }
+              },
+              "example": {
+                "tool": "search_services",
+                "arguments": {
+                  "query": "conversational BI"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tool invocation result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tool": {
+                      "type": "string"
+                    },
+                    "result": {
+                      "type": "object",
+                      "description": "Tool-specific result data",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tool name or arguments"
+          }
+        }
+      }
+    },
+    "/api/mcp/tools": {
+      "get": {
+        "summary": "List available MCP tools",
+        "description": "Returns an array of all available MCP tool definitions with name, description, and parameter schemas.",
+        "operationId": "listMcpTools",
+        "responses": {
+          "200": {
+            "description": "List of available MCP tools",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "description",
+                      "parameters"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Unique tool identifier"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Human-readable tool description"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "description": "JSON Schema defining the tool's input parameters",
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "name": "search_services",
+                    "description": "Search Beehive Strategy consulting services by keyword",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "query": {
+                          "type": "string",
+                          "description": "Search query"
+                        }
+                      },
+                      "required": [
+                        "query"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "search_blog",
+                    "description": "Search blog articles by topic or keyword",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "query": {
+                          "type": "string",
+                          "description": "Search query"
+                        }
+                      },
+                      "required": [
+                        "query"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "get_contact_info",
+                    "description": "Retrieve Beehive Strategy contact information",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  {
+                    "name": "navigate_to",
+                    "description": "Get the URL for a named page or section",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "string",
+                          "description": "Page name (e.g. services, about, pricing)"
+                        }
+                      },
+                      "required": [
+                        "page"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

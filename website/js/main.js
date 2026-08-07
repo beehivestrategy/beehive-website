@@ -292,12 +292,15 @@
 
   // ——— Counter Animation (Enhanced) ———
   function initCounterAnimation() {
-    const selectors = '.stat-value[data-target], .metric-value[data-target], .sp-num[data-target], .counter-animate[data-target]';
+    // Support both data-target and data-counter attributes
+    const selectors = '.stat-value[data-target], .stat-value[data-counter], .metric-value[data-target], .sp-num[data-target], .counter-animate[data-target]';
     const statValues = document.querySelectorAll(selectors);
 
     const animateCounter = (el) => {
-      const target = parseFloat(el.dataset.target);
-      const isFloat = el.dataset.target.includes('.');
+      // Use data-counter if present, otherwise data-target
+      const raw = el.dataset.counter || el.dataset.target;
+      const target = parseFloat(raw);
+      const isFloat = raw && raw.includes('.');
       const suffix = el.dataset.suffix || '';
       const prefix = el.dataset.prefix || '';
       const duration = parseInt(el.dataset.duration, 10) || 2000;
@@ -508,7 +511,8 @@
 
   // ——— Parallax Tilt Effect for Cards ———
   function initTiltEffect() {
-    if (CONFIG.isTouch || CONFIG.prefersReducedMotion) return;
+    // Disabled — causes scroll jank due to mousemove listeners on many elements
+    return;
 
     const cards = document.querySelectorAll('.card, .industry-card, .agent-card, .reason-card');
 
@@ -535,53 +539,154 @@
   function initMagneticButtons() {
     if (CONFIG.isTouch || CONFIG.prefersReducedMotion) return;
 
-    const buttons = document.querySelectorAll('.btn-primary, .btn-accent');
+    // Fix: Use [data-magnetic] to catch ALL magnetic buttons (including .btn-ghost)
+    const buttons = document.querySelectorAll('[data-magnetic]');
 
     buttons.forEach(btn => {
+      const strength = 0.25;
+
       btn.addEventListener('mousemove', (e) => {
         const rect = btn.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
 
-        btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) translateY(-2px)`;
+        // Use GSAP for smoother movement if available
+        if (typeof gsap !== 'undefined') {
+          gsap.to(btn, {
+            x: x * strength,
+            y: y * strength,
+            duration: 0.4,
+            ease: 'power3.out'
+          });
+        } else {
+          btn.style.transform = `translate(${x * strength}px, ${y * strength}px) translateY(-2px)`;
+        }
       });
 
       btn.addEventListener('mouseleave', () => {
-        btn.style.transform = '';
+        if (typeof gsap !== 'undefined') {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
+        } else {
+          btn.style.transform = '';
+        }
       });
     });
   }
 
-  // ——— Text Scramble Effect for Hero ———
-  function initTextScramble() {
+  // ——— GSAP Hero Entrance Animation ———
+  function initGSAPHero() {
     if (CONFIG.prefersReducedMotion) return;
 
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const target = document.querySelector('.hero h1');
-    if (!target) return;
+    // If GSAP is not loaded, skip — CSS animations serve as fallback
+    if (typeof gsap === 'undefined') return;
 
-    const originalText = target.innerHTML;
-    let iteration = 0;
-    let interval = null;
-
-    function scramble() {
-      clearInterval(interval);
-      iteration = 0;
-
-      interval = setInterval(() => {
-        // This is a simplified scramble - just for the initial load effect
-        // In a full implementation, we would parse the HTML and scramble text nodes
-        iteration += 1 / 3;
-
-        if (iteration >= 1) {
-          clearInterval(interval);
-          target.innerHTML = originalText;
-        }
-      }, 30);
+    // Register plugins if available
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+    if (typeof ScrollToPlugin !== 'undefined') {
+      gsap.registerPlugin(ScrollToPlugin);
     }
 
-    // Trigger after a short delay
-    setTimeout(scramble, 500);
+    // Initialize Splitting.js for character animation
+    if (typeof Splitting !== 'undefined') {
+      Splitting({
+        target: '[data-splitting]',
+        by: 'chars'
+      });
+    }
+
+    // Clear hero-stagger CSS animation to prevent conflict with GSAP
+    // The CSS animation is a fallback for no-JS; GSAP takes over when available
+    const heroStagger = document.querySelector('.hero-stagger');
+    if (heroStagger) {
+      heroStagger.querySelectorAll(':scope > *').forEach(child => {
+        child.style.animation = 'none';
+        child.style.opacity = '1';
+        child.style.transform = 'none';
+      });
+    }
+    // Also clear reveal on hero-visual
+    const heroVisual = document.querySelector('.hero-visual');
+    if (heroVisual) {
+      heroVisual.style.opacity = '1';
+      heroVisual.style.transform = 'none';
+      heroVisual.style.transition = 'none';
+    }
+
+    // Hero entrance timeline — staggered fade-up
+    const heroTl = gsap.timeline({ delay: 0.3 });
+
+    heroTl
+      .from('.hero-badge', {
+        y: 20, opacity: 0, duration: 0.6, ease: 'power3.out'
+      })
+      .from('.hero-title .char', {
+        y: 30, opacity: 0, duration: 0.5,
+        stagger: 0.03, ease: 'power3.out'
+      }, '-=0.3')
+      .from('.hero-tagline', {
+        y: 20, opacity: 0, duration: 0.6, ease: 'power3.out'
+      }, '-=0.3')
+      .from('.hero-subtitle', {
+        y: 20, opacity: 0, duration: 0.6, ease: 'power3.out'
+      }, '-=0.4')
+      .from('.hero-cta .btn', {
+        y: 20, opacity: 0, duration: 0.5,
+        stagger: 0.1, ease: 'power3.out'
+      }, '-=0.3')
+      .from('.hero-cta-note', {
+        y: 10, opacity: 0, duration: 0.4, ease: 'power3.out'
+      }, '-=0.2')
+      .from('.hero-stat', {
+        y: 20, opacity: 0, duration: 0.4,
+        stagger: 0.08, ease: 'power3.out'
+      }, '-=0.2')
+      .from('.hero-visual', {
+        y: 40, opacity: 0, duration: 0.8, ease: 'power3.out'
+      }, '-=0.6');
+
+    // Scroll parallax on hero visual
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.to('.hero-visual', {
+        yPercent: 15,
+        opacity: 0.7,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1
+        }
+      });
+    }
+  }
+
+  // ——— Lenis Smooth Scroll ———
+  function initLenis() {
+    if (CONFIG.prefersReducedMotion) return;
+
+    // If Lenis is not loaded, skip — native scrolling works fine
+    if (typeof Lenis === 'undefined') return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    // Connect Lenis to GSAP ScrollTrigger if both available
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    }
   }
 
   // ——— Scroll Progress Indicator ———
@@ -857,7 +962,8 @@
     try { initSmoothScroll(); } catch(e) {}
     try { initTiltEffect(); } catch(e) {}
     try { initMagneticButtons(); } catch(e) {}
-    try { initTextScramble(); } catch(e) {}
+    try { initGSAPHero(); } catch(e) {}
+    try { initLenis(); } catch(e) {}
     try { initScrollProgress(); } catch(e) {}
     try { initBackToTop(); } catch(e) {}
     try { initSkeletonLoading(); } catch(e) {}

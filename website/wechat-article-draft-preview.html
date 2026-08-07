@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeChat Article Draft Preview - 蜂启咨询</title>
+<style>
+  /* ===== PREVIEW PAGE STYLES (not part of WeChat article) ===== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: #f0f0f0;
+    color: #333;
+  }
+  
+  /* Top toolbar */
+  .toolbar {
+    background: #07c160;
+    color: #fff;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .toolbar h1 { font-size: 16px; font-weight: 600; }
+  .toolbar .badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+  
+  /* Layout */
+  .preview-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 20px;
+  }
+  @media (max-width: 768px) {
+    .preview-container { grid-template-columns: 1fr; }
+    .sidebar { order: 2; }
+  }
+  
+  /* Phone frame */
+  .phone-frame {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    overflow: hidden;
+    border: 8px solid #1a1a1a;
+  }
+  .phone-statusbar {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 6px 16px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+  .phone-header {
+    background: #ededed;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #d9d9d9;
+  }
+  .phone-header .back { font-size: 20px; color: #333; }
+  .phone-header .title { font-size: 15px; font-weight: 600; color: #333; }
+  .phone-header .more { font-size: 20px; color: #333; }
+  
+  /* WeChat article content area */
+  .wechat-article {
+    padding: 24px 18px;
+    background: #fff;
+    min-height: 600px;
+  }
+  
+  /* Article title in WeChat */
+  .wc-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .wc-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .wc-avatar {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .wc-author-name { font-size: 14px; color: #576b95; font-weight: 500; }
+  .wc-date { font-size: 12px; color: #999; }
+  
+  /* ===== WECHAT ARTICLE INLINE STYLES (what actually goes into WeChat) ===== */
+  /* All styles below use inline CSS in the actual WeChat article */
+  
+  /* Sidebar */
+  .sidebar {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  .sidebar h2 {
+    font-size: 16px;
+    color: #0a0e0d;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f59e0b;
+  }
+  .sidebar h3 {
+    font-size: 14px;
+    color: #0a0e0d;
+    margin: 16px 0 8px 0;
+  }
+  .feature-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-left: 3px solid #f59e0b;
+  }
+  .feature-card .fname { font-size: 13px; font-weight: 600; color: #0a0e0d; }
+  .feature-card .fdesc { font-size: 12px; color: #666; margin-top: 4px; line-height: 1.5; }
+  .feature-card .fstatus {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .fstatus.recommend { background: #e8f5e9; color: #2e7d32; }
+  .fstatus.optional { background: #fff3e0; color: #e65100; }
+  .fstatus.future { background: #e3f2fd; color: #1565c0; }
+  
+  .action-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #07c160;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    text-align: center;
+  }
+  .action-btn:hover { background: #06ad56; }
+  
+  .review-note {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #766300;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <h1>WeChat Article Draft Preview</h1>
+  <span class="badge">DRAFT - For Review</span>
+</div>
+
+<div class="preview-container">
+  <!-- Left: Phone Preview -->
+  <div>
+    <div class="phone-frame">
+      <div class="phone-statusbar">
+        <span>9:41</span>
+        <span>📶 📶 🔋</span>
+      </div>
+      <div class="phone-header">
+        <span class="back">‹</span>
+        <span class="title">什么是对话式BI？AI驱动的分析详解</span>
+        <span class="more">···</span>
+      </div>
+      
+      <!-- ===== WECHAT ARTICLE CONTENT ===== -->
+      <div class="wechat-article">
+        
+        <!-- Article Title -->
+        <div class="wc-title">什么是对话式BI？AI驱动的分析详解</div>
+        
+        <!-- Author Info -->
+        <div class="wc-meta">
+          <div class="wc-avatar" style="padding:4px;">
+            <img src="beehive-logo.png" alt="蜂启咨询" style="width:28px;height:28px;object-fit:contain;"/>
+          </div>
+          <div>
+            <div class="wc-author-name">蜂启咨询</div>
+            <div class="wc-date">2026年8月5日</div>
+          </div>
+        </div>
+
+        <!-- ===== COVER IMAGE with text overlay ===== -->
+        <div style="width:100%;margin:0 0 24px 0;border-radius:8px;overflow:hidden;position:relative;border:1px solid #e8e8e8;">
+          <img src="wechat-cover-v3.jpg" alt="什么是对话式BI" style="width:100%;display:block;"/>
+          <!-- Text overlay for feed visibility -->
+          <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(11,79,108,0.85));padding:30px 16px 14px 16px;">
+            <p style="font-size:20px;font-weight:bold;color:#fff;margin:0 0 2px 0;text-shadow:0 2px 4px rgba(0,0,0,0.3);">对话式BI</p>
+            <p style="font-size:13px;color:#f59e0b;margin:0;text-shadow:0 1px 3px rgba(0,0,0,0.3);">用自然语言，问出数据洞察 →</p>
+          </div>
+        </div>
+
+        <!-- ===== LEAD PARAGRAPH WITH HIGHLIGHTED BOX ===== -->
+        <section style="background:#f8f9fa;border-left:4px solid #f59e0b;padding:14px 16px;margin:16px 0;border-radius:0 8px 8px 0;">
+          <p style="font-size:15px;line-height:1.8;color:#333;margin:0;letter-spacing:0.5px;">
+            <strong style="color:#0a0e0d;">对话式BI</strong>是一种商业智能类别，使用户能够通过自然语言对话查询数据、获取洞察并触发工作流，而无需使用传统仪表盘。由大语言模型和语义层驱动，企业分析采用率提高<strong style="color:#f59e0b;">5-10倍</strong>。
+          </p>
+        </section>
+
+        <!-- ===== SECTION 1 ===== -->
+        <h2 style="font-size:18px;color:#0a0e0d;border-bottom:2px solid #f59e0b;padding-bottom:8px;margin:24px 0 14px 0;font-weight:bold;letter-spacing:1px;">
+          📊 什么是对话式BI？
+        </h2>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 14px 0;letter-spacing:0.5px;text-align:justify;">
+          <strong>对话式BI（Conversational BI）是一种商业智能类别，使用户能够通过自然语言对话查询数据、获取洞察并触发工作流，而无需使用传统仪表盘。</strong>由大语言模型和语义层驱动，对话式BI在企业中的分析采用率提高了5到10倍——传统BI工具的使用率不到25%，而对话式界面让每位决策者都能访问数据，无需技术背景。
+        </p>
+
+        <!-- ===== SECTION 2 ===== -->
+        <h2 style="font-size:18px;color:#0a0e0d;border-bottom:2px solid #f59e0b;padding-bottom:8px;margin:24px 0 14px 0;font-weight:bold;letter-spacing:1px;">
+          ⚙️ 对话式BI如何工作？
+        </h2>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 14px 0;letter-spacing:0.5px;text-align:justify;">
+          当用户提出问题时——"上个月亚太地区的销售额是多少？"——对话式BI系统解析意图，通过语义层将业务术语映射到数据库字段，生成适当的SQL或API查询，针对连接的数据源执行它，并将结果作为自然语言答案、图表或数据表返回。
+        </p>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 14px 0;letter-spacing:0.5px;text-align:justify;">
+          高级系统保持对话上下文，允许后续问题如"那与欧洲相比如何？"而无需重复约束。它们还与协作工具（Slack、Teams、微信企业版）集成，因此洞察在已经做出决策的地方呈现。
+        </p>
+
+        <!-- ===== SECTION 3: KEY COMPONENTS ===== -->
+        <h2 style="font-size:18px;color:#0a0e0d;border-bottom:2px solid #f59e0b;padding-bottom:8px;margin:24px 0 14px 0;font-weight:bold;letter-spacing:1px;">
+          🔑 关键组件
+        </h2>
+        
+        <!-- Component cards -->
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;">
+          <span style="background:#f59e0b;color:#fff;font-size:13px;font-weight:bold;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;">1</span>
+          <div>
+            <strong style="color:#0a0e0d;font-size:14px;">自然语言理解</strong>
+            <p style="font-size:13px;line-height:1.7;color:#666;margin:3px 0 0 0;">从自由文本问题中解析用户意图、实体、过滤器和聚合。</p>
+          </div>
+        </div>
+        
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;">
+          <span style="background:#f59e0b;color:#fff;font-size:13px;font-weight:bold;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;">2</span>
+          <div>
+            <strong style="color:#0a0e0d;font-size:14px;">语义层</strong>
+            <p style="font-size:13px;line-height:1.7;color:#666;margin:3px 0 0 0;">将业务术语映射到物理数据字段，解决歧义并强制执行指标一致性。</p>
+          </div>
+        </div>
+        
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;">
+          <span style="background:#f59e0b;color:#fff;font-size:13px;font-weight:bold;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;">3</span>
+          <div>
+            <strong style="color:#0a0e0d;font-size:14px;">查询生成与执行</strong>
+            <p style="font-size:13px;line-height:1.7;color:#666;margin:3px 0 0 0;">将意图转换为SQL或API调用，安全地执行它们，并优雅地处理错误。</p>
+          </div>
+        </div>
+        
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;">
+          <span style="background:#f59e0b;color:#fff;font-size:13px;font-weight:bold;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;">4</span>
+          <div>
+            <strong style="color:#0a0e0d;font-size:14px;">响应格式化器</strong>
+            <p style="font-size:13px;line-height:1.7;color:#666;margin:3px 0 0 0;">将结果呈现为针对用户设备和上下文优化的叙述、图表或表格。</p>
+          </div>
+        </div>
+        
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;">
+          <span style="background:#f59e0b;color:#fff;font-size:13px;font-weight:bold;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;">5</span>
+          <div>
+            <strong style="color:#0a0e0d;font-size:14px;">上下文与记忆</strong>
+            <p style="font-size:13px;line-height:1.7;color:#666;margin:3px 0 0 0;">保持对话历史，以便后续问题继承先前的约束和过滤器。</p>
+          </div>
+        </div>
+
+        <!-- ===== SECTION 4: WHY IT MATTERS ===== -->
+        <h2 style="font-size:18px;color:#0a0e0d;border-bottom:2px solid #f59e0b;padding-bottom:8px;margin:24px 0 14px 0;font-weight:bold;letter-spacing:1px;">
+          💡 为什么对企业很重要
+        </h2>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 14px 0;letter-spacing:0.5px;text-align:justify;">
+          传统BI工具需要数周的培训和持续的IT支持。结果，大多数组织中只有不到25%的员工使用它们。对话式BI通过在用户已经知道的工具中与他们见面——<strong style="color:#f59e0b;">Slack、微信、电子邮件</strong>——并让他们用自然语言提问来打破这一障碍。
+        </p>
+        
+        <!-- Stat highlight box -->
+        <div style="background:#0B4F6C;border-radius:10px;padding:18px;margin:16px 0;text-align:center;">
+          <p style="font-size:32px;color:#f59e0b;font-weight:bold;margin:0 0 4px 0;">5-10倍</p>
+          <p style="font-size:12px;color:#fff;margin:0;opacity:0.8;">整个组织数据驱动决策增幅</p>
+        </div>
+        
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 14px 0;letter-spacing:0.5px;text-align:justify;">
+          对于<strong>高管</strong>，对话式BI意味着不再等待周一早晨的报告。他们可以在会议期间提问并立即获得答案。对于<strong>分析师</strong>，它消除了临时查询队列，使他们能够进行更深入的战略工作。对于<strong>数据团队</strong>，它集中了治理——因为每个查询都通过语义层，访问控制和审计跟踪自动强制执行。
+        </p>
+
+        <!-- ===== SECTION 5: USE CASES ===== -->
+        <h2 style="font-size:18px;color:#0a0e0d;border-bottom:2px solid #f59e0b;padding-bottom:8px;margin:24px 0 14px 0;font-weight:bold;letter-spacing:1px;">
+          🎯 常见使用场景
+        </h2>
+        
+        <div style="background:#f0fdf4;border-left:3px solid #22c55e;padding:10px 14px;margin-bottom:6px;border-radius:0 6px 6px 0;">
+          <strong style="color:#0a0e0d;font-size:14px;">👔 高管问答</strong>
+          <span style="font-size:13px;color:#666;line-height:1.7;"> — C-suite在会议期间用自然语言询问收入、成本和员工数问题。</span>
+        </div>
+        <div style="background:#f0fdf4;border-left:3px solid #22c55e;padding:10px 14px;margin-bottom:6px;border-radius:0 6px 6px 0;">
+          <strong style="color:#0a0e0d;font-size:14px;">📈 销售运营</strong>
+          <span style="font-size:13px;color:#666;line-height:1.7;"> — 区域经理通过聊天查询管道、预测准确率和配额达成情况。</span>
+        </div>
+        <div style="background:#f0fdf4;border-left:3px solid #22c55e;padding:10px 14px;margin-bottom:6px;border-radius:0 6px 6px 0;">
+          <strong style="color:#0a0e0d;font-size:14px;">🔍 自助分析</strong>
+          <span style="font-size:13px;color:#666;line-height:1.7;"> — 业务用户无需SQL培训或仪表板构建技能即可探索数据。</span>
+        </div>
+        <div style="background:#f0fdf4;border-left:3px solid #22c55e;padding:10px 14px;margin-bottom:6px;border-radius:0 6px 6px 0;">
+          <strong style="color:#0a0e0d;font-size:14px;">🤖 自动化报告</strong>
+          <span style="font-size:13px;color:#666;line-height:1.7;"> — 安排每日或每周自然语言摘要推送到团队频道。</span>
+        </div>
+
+        <!-- ===== SECTION 6: BEEHIVE STRATEGY ===== -->
+        <h2 style="font-size:18px;color:#0a0e0d;border-bottom:2px solid #f59e0b;padding-bottom:8px;margin:24px 0 14px 0;font-weight:bold;letter-spacing:1px;">
+          🐝 蜂启咨询的方案
+        </h2>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 14px 0;letter-spacing:0.5px;text-align:justify;">
+          对话式BI是<strong style="color:#f59e0b;">蜂启咨询</strong>产品的基石。我们的平台结合MCP连接的数据访问、语义层治理和领域调优的LLM，在<strong>微信企业版、钉钉、Slack和Microsoft Teams</strong>中提供自然语言分析。每个答案都可追溯到其来源，每个查询都尊重访问控制，每个洞察都可以通过反向ETL触发运营工作流。
+        </p>
+
+        <!-- ===== SECTION 7: GETTING STARTED ===== -->
+        <h2 style="font-size:18px;color:#0a0e0d;border-bottom:2px solid #f59e0b;padding-bottom:8px;margin:24px 0 14px 0;font-weight:bold;letter-spacing:1px;">
+          🚀 入门指南
+        </h2>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 6px 0;">✅ 为前10-20个业务指标定义语义层，确保跨团队的一致定义。</p>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 6px 0;">✅ 通过MCP或标准数据库连接器连接您的数据仓库和关键SaaS工具。</p>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 6px 0;">✅ 从一个狭窄的领域开始——销售或财务——在扩展到其他部门之前建立信心。</p>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 6px 0;">✅ 与团队已经使用的协作平台集成（Slack、Teams、微信企业版、钉钉）。</p>
+        <p style="font-size:15px;line-height:1.9;color:#333;margin:0 0 14px 0;">✅ 监控查询日志和用户反馈，以持续改进意图识别和答案准确性。</p>
+
+        <!-- ===== FAQ SECTION ===== -->
+        <h2 style="font-size:18px;color:#0a0e0d;border-bottom:2px solid #f59e0b;padding-bottom:8px;margin:24px 0 14px 0;font-weight:bold;letter-spacing:1px;">
+          ❓ 常见问题
+        </h2>
+        
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+          <p style="font-size:14px;font-weight:bold;color:#0a0e0d;margin:0 0 5px 0;">Q：对话式BI安全吗？</p>
+          <p style="font-size:13px;line-height:1.7;color:#666;margin:0;">是的，当通过适当的治理实施时。语义层强制执行行级安全，查询日志提供完整的审计跟踪，并且没有原始数据离开仓库。</p>
+        </div>
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+          <p style="font-size:14px;font-weight:bold;color:#0a0e0d;margin:0 0 5px 0;">Q：对话式BI能取代仪表板吗？</p>
+          <p style="font-size:13px;line-height:1.7;color:#666;margin:0;">它补充而非取代仪表板。仪表板擅长监控已知KPI；对话式BI擅长临时探索和回答意外问题。</p>
+        </div>
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+          <p style="font-size:14px;font-weight:bold;color:#0a0e0d;margin:0 0 5px 0;">Q：对话式BI适用于哪些数据源？</p>
+          <p style="font-size:13px;line-height:1.7;color:#666;margin:0;">几乎任何结构化或半结构化来源：SQL数据库、数据仓库、云分析平台，甚至API。关键是定义良好的语义层，抽象来源复杂性。</p>
+        </div>
+
+        <!-- ===== ENGAGEMENT: VOTING/POLL ===== -->
+        <div style="background:#f8f9fa;border-radius:10px;padding:16px;margin:20px 0;border:1px solid #e8e8e8;">
+          <p style="font-size:14px;font-weight:bold;color:#0a0e0d;margin:0 0 10px 0;">📊 您的企业目前使用哪种BI工具？</p>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#fff;border:1px solid #e8e8e8;border-radius:6px;padding:8px 12px;font-size:13px;color:#333;">A. 传统仪表板（Tableau、Power BI等）</div>
+            <div style="background:#fff;border:1px solid #e8e8e8;border-radius:6px;padding:8px 12px;font-size:13px;color:#333;">B. 对话式BI（ChatBI、Copilot等）</div>
+            <div style="background:#fff;border:1px solid #e8e8e8;border-radius:6px;padding:8px 12px;font-size:13px;color:#333;">C. 还在评估中</div>
+            <div style="background:#fff;border:1px solid #e8e8e8;border-radius:6px;padding:8px 12px;font-size:13px;color:#333;">D. 暂未使用专业BI工具</div>
+          </div>
+          <p style="font-size:11px;color:#999;margin:8px 0 0 0;text-align:center;">👆 WeChat投票功能 - 读者可点击投票</p>
+        </div>
+
+        <!-- ===== CTA SECTION ===== -->
+        <div style="background:#f8f9fa;border:1px solid #e8e8e8;border-radius:12px;padding:24px 20px;margin:28px 0;text-align:center;">
+          <div style="width:56px;height:56px;background:#fff;border:1px solid #e8e8e8;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px auto;padding:6px;">
+            <img src="beehive-logo.png" alt="蜂启咨询" style="width:40px;height:40px;object-fit:contain;"/>
+          </div>
+          <p style="font-size:16px;color:#0B4F6C;font-weight:bold;margin:0 0 8px 0;">关于蜂启咨询</p>
+          <p style="font-size:13px;line-height:1.7;color:#666;margin:0 0 14px 0;">
+            企业级AI与数据分析咨询。我们提供基于MCP的对话式智能解决方案，助力企业实现数据驱动决策。
+          </p>
+          <div style="background:#0B4F6C;color:#fff;border-radius:20px;padding:8px 20px;display:inline-block;font-size:13px;font-weight:bold;">
+            点击关注，获取更多AI洞察
+          </div>
+        </div>
+
+        <!-- ===== ENGAGEMENT: COLLECTIONS ===== -->
+        <div style="background:#f0f7ff;border-radius:8px;padding:12px 14px;margin:16px 0;border:1px solid #d0e3ff;">
+          <p style="font-size:13px;color:#576b95;margin:0;">
+            📚 本文收录于合集：<strong>AI与数据分析</strong> · 点击查看更多相关文章
+          </p>
+        </div>
+
+        <!-- ===== ENGAGEMENT: HYPERLINK ===== -->
+        <div style="background:#f8f9fa;border-radius:8px;padding:12px 14px;margin:16px 0;border:1px solid #e8e8e8;">
+          <p style="font-size:13px;color:#576b95;margin:0 0 4px 0;">🔗 相关阅读</p>
+          <p style="font-size:12px;color:#999;margin:0;">点击下方链接查看更多蜂启咨询博客文章</p>
+        </div>
+
+        <!-- ===== DIVIDER ===== -->
+        <p style="text-align:center;font-size:11px;color:#999;margin:20px 0 6px 0;letter-spacing:2px;">— END —</p>
+        <p style="text-align:center;font-size:11px;color:#ccc;margin:0;">蜂启咨询 © 2026 | beehivestrategy.com</p>
+
+        <!-- ===== ENGAGEMENT: LIKE & SHARE ===== -->
+        <div style="display:flex;justify-content:center;gap:30px;margin:20px 0 10px 0;padding-top:16px;border-top:1px solid #f0f0f0;">
+          <span style="font-size:13px;color:#576b95;">👍 赞 (0)</span>
+          <span style="font-size:13px;color:#576b95;">💬 留言</span>
+          <span style="font-size:13px;color:#576b95;">↗ 分享</span>
+          <span style="font-size:13px;color:#576b95;">⭐ 收藏</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Sidebar with Traffic & Engagement Strategy -->
+  <div class="sidebar">
+    <h2>🚀 Traffic & Engagement Strategy</h2>
+    <p style="font-size:12px;color:#666;margin-bottom:16px;line-height:1.6;">
+      WeChat's algorithm has shifted from subscription-only to <strong>algorithmic recommendation</strong>. Here's how to maximize reach.
+    </p>
+
+    <h3>🎨 Cover Image (CTR Booster #1)</h3>
+    <div class="feature-card">
+      <div class="fname">High-contrast split design</div>
+      <div class="fdesc">Navy blue vs white split creates instant pattern interrupt in feed. Diagonal adds energy.</div>
+      <span class="fstatus recommend">✅ Applied</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Text overlay on image</div>
+      <div class="fdesc">Bold title + tagline overlaid on cover. Users decide in 0.5s - text makes topic instantly clear.</div>
+      <span class="fstatus recommend">✅ Applied</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Curiosity gap</div>
+      <div class="fdesc">"→" arrow creates open loop. Question mark on left side invites investigation.</div>
+      <span class="fstatus recommend">✅ Applied</span>
+    </div>
+
+    <h3>🔍 WeChat Search (搜一搜)</h3>
+    <div class="feature-card">
+      <div class="fname">Keyword-rich title</div>
+      <div class="fdesc">"对话式BI" + "AI驱动" are high-search-volume terms. 800M MAU use WeChat Search monthly.</div>
+      <span class="fstatus recommend">✅ Applied</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Article summary optimization</div>
+      <div class="fdesc">Summary contains keywords that WeChat Search indexes. Already set with BI, AI, 语义层.</div>
+      <span class="fstatus recommend">✅ Applied</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Account tags & bio</div>
+      <div class="fdesc">Update account bio with: AI, 数据分析, BI, 企业智能. Algorithm reads these for recommendation.</div>
+      <span class="fstatus optional">⚡ Action Needed</span>
+    </div>
+
+    <h3>📈 Algorithm Recommendation (推荐)</h3>
+    <div class="feature-card">
+      <div class="fname">Platform recommendation enabled</div>
+      <div class="fdesc">Allow WeChat to recommend your article beyond subscribers. Already enabled in editor.</div>
+      <span class="fstatus recommend">✅ Applied</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Original content declaration</div>
+      <div class="fdesc">Mark as original (原创) for algorithm boost. Original articles get 3-5x more recommendation reach.</div>
+      <span class="fstatus recommend">✅ Apply at publish</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Article length sweet spot</div>
+      <div class="fdesc">1500-3000 chars optimal for algorithm. Current article is ~1800 chars - perfect range.</div>
+      <span class="fstatus recommend">✅ Good</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Publishing time</div>
+      <div class="fdesc">Best times: 7-9am commute, 12-1pm lunch, 8-10pm evening. Tue-Thu get highest engagement.</div>
+      <span class="fstatus optional">⚡ Schedule</span>
+    </div>
+
+    <h3>🔄 Viral Loop (社交传播)</h3>
+    <div class="feature-card">
+      <div class="fname">Moments-shareable summary</div>
+      <div class="fdesc">Summary reads like a hook: "企业分析采用率提高5-10倍" - makes people want to share.</div>
+      <span class="fstatus recommend">✅ Applied</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Voting poll in article</div>
+      <div class="fdesc">Interactive poll drives engagement time + shares. Voters 3x more likely to share article.</div>
+      <span class="fstatus recommend">✅ In article</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Collections (合集)</div>
+      <div class="fdesc">Group articles so readers binge-read. Increases pages per session by 40%+.</div>
+      <span class="fstatus optional">⚡ Create collection</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">"Look Around" (看一看) optimization</div>
+      <div class="fdesc">Friends' shares appear here. Encourage team to share + like within first hour for algorithm boost.</div>
+      <span class="fstatus optional">⚡ Team action</span>
+    </div>
+
+    <h3>💼 Long-term Growth</h3>
+    <div class="feature-card">
+      <div class="fname">Consistent publishing cadence</div>
+      <div class="fdesc">3-5 articles/week signals active account to algorithm. New accounts need 30+ articles to gain traction.</div>
+      <span class="fstatus future">🔮 Ongoing</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Cross-reference articles</div>
+      <div class="fdesc">Use hyperlinks to link related articles. Creates internal link network that boosts SEO.</div>
+      <span class="fstatus future">🔮 As library grows</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Account Card embed</div>
+      <div class="fdesc">Embed follow card in every article. Converts readers to subscribers at 2-5% rate.</div>
+      <span class="fstatus recommend">✅ In CTA</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Video Account (视频号) link</div>
+      <div class="fdesc">Create short video summaries and link to articles. Video gets 10x algorithm priority in 2025.</div>
+      <span class="fstatus future">🔮 Future</span>
+    </div>
+    <div class="feature-card">
+      <div class="fname">Mini Program demo</div>
+      <div class="fdesc">Embed interactive BI demo as Mini Program card. Let readers experience the product.</div>
+      <span class="fstatus future">🔮 Future</span>
+    </div>
+
+    <h3>📊 First-Hour Checklist</h3>
+    <div class="review-note">
+      <strong>🎯 Publish Day Action Plan:</strong><br><br>
+      <strong>0-15 min:</strong> Share to Moments + team shares<br>
+      <strong>0-30 min:</strong> Ask 5+ colleagues to like + comment<br>
+      <strong>0-60 min:</strong> Reply to all comments immediately<br>
+      <strong>0-2 hrs:</strong> Monitor data in WeChat backend<br>
+      <strong>Day 1:</strong> Share to relevant WeChat groups<br>
+      <strong>Day 2-3:</strong> Create follow-up article referencing this one<br><br>
+      <strong>Why first hour matters:</strong> WeChat's algorithm measures early engagement signals (likes, comments, shares, read completion rate) to decide whether to recommend your article to non-subscribers. Strong first-hour metrics = algorithmic boost = 5-10x more reach.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

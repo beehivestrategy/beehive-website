@@ -535,7 +535,7 @@
 | 864 | `Privacy Policy` (page h1) | Page-specific |
 | 865 | `Last updated: July 7, 2026` | Page-specific |
 | 866 | `1. Introduction` | Page-specific |
-| 867 | `Beehive Strategy Co., Ltd. ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.` | Page-specific |
+| 867 | `Beehive Strategy Limited ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.` | Page-specific |
 | 868 | `2. Information We Collect` | Page-specific |
 | 869 | `We collect information you provide directly to us, such as when you fill out a contact form, request a demo, or subscribe to our blog. This includes your name, email address, company name, phone number, and any message you choose to include.` | Page-specific |
 | 870 | `3. How We Use Your Information` | Page-specific |
@@ -583,13 +583,13 @@
 | 896 | `Terms of Service` (page h1) | Page-specific |
 | 897 | `Last updated: July 7, 2026` | Page-specific |
 | 898 | `1. Acceptance of Terms` | Page-specific |
-| 899 | `By accessing or using the services provided by Beehive Strategy Co., Ltd. ("we", "us", or "our"), you agree to be bound by these Terms of Service. If you do not agree, please do not use our services.` | Page-specific |
+| 899 | `By accessing or using the services provided by Beehive Strategy Limited ("we", "us", or "our"), you agree to be bound by these Terms of Service. If you do not agree, please do not use our services.` | Page-specific |
 | 900 | `2. Services Description` | Page-specific |
 | 901 | `We provide enterprise AI and data analytics consulting services, including our MCP-powered conversational BI platform. Specific service details are outlined in individual service agreements.` | Page-specific |
 | 902 | `3. User Responsibilities` | Page-specific |
 | 903 | `You agree to use our services lawfully, provide accurate information, maintain the confidentiality of your account credentials, and not disrupt or interfere with our services.` | Page-specific |
 | 904 | `4. Intellectual Property` | Page-specific |
-| 905 | `All content, software, and materials provided as part of our services are the intellectual property of Beehive Strategy Co., Ltd. You may not copy, modify, or distribute our materials without prior written consent.` | Page-specific |
+| 905 | `All content, software, and materials provided as part of our services are the intellectual property of Beehive Strategy Limited You may not copy, modify, or distribute our materials without prior written consent.` | Page-specific |
 | 906 | `5. Fees and Payment` | Page-specific |
 | 907 | `Fees for our services are outlined in individual service agreements. Payment terms are net 30 days from invoice date unless otherwise specified.` | Page-specific |
 | 908 | `6. Confidentiality` | Page-specific |
@@ -599,7 +599,7 @@
 | 912 | `8. Disclaimer of Warranties` | Page-specific |
 | 913 | `Our services are provided "as is" without warranties of any kind, either express or implied. We do not guarantee that our services will be error-free or uninterrupted.` | Page-specific |
 | 914 | `9. Indemnification` | Page-specific |
-| 915 | `You agree to indemnify and hold harmless Beehive Strategy Co., Ltd. from any claims arising from your use of our services or violation of these Terms.` | Page-specific |
+| 915 | `You agree to indemnify and hold harmless Beehive Strategy Limited from any claims arising from your use of our services or violation of these Terms.` | Page-specific |
 | 916 | `10. Termination` | Page-specific |
 | 917 | `Either party may terminate the service agreement with 30 days written notice. Upon termination, all outstanding fees become immediately due.` | Page-specific |
 | 918 | `11. Governing Law` | Page-specific |

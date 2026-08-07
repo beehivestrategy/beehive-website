@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-HK" data-lang="zh-hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPC 4 週深度課程 | 用 AI 由零開始建立你嘅單人企業</title>
+<meta name="description" content="4 週深度課程，從策略定位到啟動變現，用 AI 打造你的一人公司。12 小時系統訓練，12-20 人小班教學。HK$3,880/人。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+:root{
+  --navy:#0F172A;--navy-light:#1E293B;--slate:#334155;--sky:#0369A1;
+  --sky-light:#38BDF8;--gold:#D97706;--gold-light:#FBBF24;
+  --bg:#F8FAFC;--bg-warm:#FEF7ED;--surface:#FFFFFF;
+  --text:#0F172A;--text-secondary:#475569;--text-muted:#94A3B8;
+  --border:#E2E8F0;--radius:12px;--shadow:0 4px 24px rgba(15,23,42,.08);
+  --shadow-lg:0 12px 48px rgba(15,23,42,.12);
+  --font-en:'Inter',sans-serif;--font-sc:'Noto Sans SC',sans-serif;--font-tc:'Noto Sans TC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-tc);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;padding-top:64px}
+
+/* Language switching */
+html[data-lang="en"] body{font-family:var(--font-en)}
+html[data-lang="zh-hans"] body{font-family:var(--font-sc)}
+html[data-lang="zh-hant"] body{font-family:var(--font-tc)}
+
+.lang-btn{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px}
+.lang-btn button{border:none;background:transparent;padding:6px 14px;border-radius:16px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit}
+.lang-btn button.active{background:var(--navy);color:#fff}
+
+/* Navigation */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(248,250,252,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:700;font-size:18px;color:var(--navy);text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-logo img{height:28px}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:.2s}
+.nav-links a:hover{color:var(--navy)}
+.nav-cta{background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff!important;padding:10px 22px;border-radius:24px;font-size:14px;font-weight:700;text-decoration:none!important;transition:.3s;box-shadow:0 4px 12px rgba(3,105,161,.3);display:inline-block}
+.nav-cta:hover{background:linear-gradient(135deg,var(--sky),var(--sky-light));transform:translateY(-2px);box-shadow:0 6px 16px rgba(3,105,161,.4);color:#fff!important}
+
+.nav-toggle{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px;z-index:110}
+.nav-toggle span{display:block;width:24px;height:2px;background:var(--navy);border-radius:2px;transition:.3s}
+.nav-toggle.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.nav-toggle.active span:nth-child(2){opacity:0}
+.nav-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.nav-mobile{position:fixed;top:0;right:0;width:280px;height:100vh;background:var(--surface);box-shadow:var(--shadow-lg);padding:80px 28px 28px;transform:translateX(100%);transition:transform .3s ease;z-index:105;display:flex;flex-direction:column;gap:16px}
+.nav-mobile.open{transform:translateX(0)}
+.nav-mobile a{color:var(--text);text-decoration:none;font-size:16px;font-weight:500;padding:10px 0;border-bottom:1px solid var(--border)}
+.nav-mobile a:hover{color:var(--sky)}
+.nav-mobile .lang-btn{display:flex;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px;width:fit-content}
+.nav-mobile .lang-btn button{border:none;background:transparent;padding:6px 14px;border-radius:16px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit}
+.nav-mobile .lang-btn button.active{background:var(--navy);color:#fff}
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100;opacity:0;visibility:hidden;transition:.3s}
+.nav-overlay.open{opacity:1;visibility:visible}
+
+/* Countdown Banner */
+.countdown-banner{background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;padding:12px 24px;position:relative;left:0;right:0;z-index:99;box-shadow:0 4px 16px rgba(15,23,42,.2)}
+.countdown-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.countdown-label{font-size:14px;font-weight:600;opacity:.9;display:flex;align-items:center;gap:6px}
+.countdown-label .highlight{background:var(--gold-light);color:var(--navy);padding:3px 10px;border-radius:5px;font-weight:700;white-space:nowrap}
+.countdown-timer{display:flex;gap:8px;align-items:center}
+.countdown-unit{text-align:center;min-width:44px}
+.countdown-unit .num{font-size:22px;font-weight:700;line-height:1.2;display:block}
+.countdown-unit .lbl{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.05em}
+.countdown-sep{font-size:18px;opacity:.4;font-weight:300}
+.countdown-cta{background:var(--gold-light);color:var(--navy);padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;transition:.2s;white-space:nowrap;min-height:44px;display:flex;align-items:center}
+.countdown-cta:hover{background:#fff;transform:translateY(-1px)}
+.countdown-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;opacity:.5;font-size:20px;cursor:pointer;transition:.2s;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.countdown-close:hover{opacity:1;background:rgba(255,255,255,.1)}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 50%,#0F172A 100%)}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5}
+.hero-inner{max-width:1200px;margin:0 auto;padding:40px 24px 80px;width:100%;position:relative;z-index:1}
+.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--sky-light);padding:8px 16px;border-radius:20px;font-size:13px;font-weight:500;margin-bottom:24px;backdrop-filter:blur(8px)}
+.hero-badge .dot{width:8px;height:8px;background:var(--gold-light);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:52px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:20px;letter-spacing:-.02em}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--sky-light),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:20px;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:32px;max-width:560px}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:40px}
+.hero-stat{display:flex;flex-direction:column;gap:4px;text-align:center}
+.hero-stat .num{font-size:32px;font-weight:700;color:#fff;line-height:1.1}
+.hero-stat .label{font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.03em}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,var(--sky),var(--sky-light));color:#fff;padding:16px 32px;border-radius:12px;font-size:16px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.3s;box-shadow:0 8px 24px rgba(3,105,161,.3);border:none;cursor:pointer}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(3,105,161,.4)}
+.btn-secondary{background:rgba(255,255,255,.1);color:#fff;padding:16px 32px;border-radius:12px;font-size:16px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.3s;border:1px solid rgba(255,255,255,.2);cursor:pointer}
+.btn-secondary:hover{background:rgba(255,255,255,.15)}
+.hero-visual{position:relative}
+.hero-card{background:var(--surface);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-lg);position:relative;z-index:2}
+.hero-card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.hero-avatar{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--sky),var(--gold));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px}
+.hero-card-title{font-weight:600;color:var(--text);font-size:16px}
+.hero-card-subtitle{font-size:13px;color:var(--text-muted)}
+.hero-weeks{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.hero-week-row{display:flex;align-items:center;gap:12px}
+.week-num{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.week-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.week-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--sky-light));border-radius:4px}
+.week-label{font-size:12px;color:var(--text-secondary);min-width:80px;text-align:right}
+.hero-checklist{display:flex;flex-direction:column;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.hero-checkitem{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-secondary)}
+.hero-checkitem .check{width:20px;height:20px;background:linear-gradient(135deg,var(--sky),var(--sky-light));border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hero-checkitem .check svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.hero-float{position:absolute;width:80px;height:80px;border-radius:16px;background:linear-gradient(135deg,var(--gold),var(--gold-light));opacity:.15;filter:blur(1px)}
+.hero-float-1{top:-20px;right:-20px;animation:float 6s ease-in-out infinite}
+.hero-float-2{bottom:40px;left:-30px;width:60px;height:60px;background:linear-gradient(135deg,var(--sky),var(--sky-light));animation:float 8s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+/* Sections */
+.section{padding:80px 24px}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:56px}
+.section-eyebrow{font-size:13px;font-weight:600;color:var(--sky);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.section-title{font-size:40px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:16px}
+.section-subtitle{font-size:18px;color:var(--text-secondary);max-width:640px;margin:0 auto}
+
+/* Problem Section */
+.problem-section{background:var(--bg-warm)}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.problem-card{background:var(--surface);border-radius:var(--radius);padding:32px 28px;box-shadow:var(--shadow);border:1px solid var(--border);transition:.3s;text-align:center}
+.problem-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.problem-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#FEE2E2,#FECACA);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.problem-icon svg{width:28px;height:28px;stroke:#DC2626;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.problem-card h3{font-size:18px;font-weight:600;color:var(--navy);margin-bottom:10px;line-height:1.4}
+.problem-card p{font-size:14px;color:var(--text-secondary);line-height:1.7}
+
+/* Curriculum / Weeks */
+.curriculum-section{background:var(--bg)}
+.week-cards{display:flex;flex-direction:column;gap:20px;max-width:900px;margin:0 auto}
+.week-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;transition:.3s}
+.week-card:hover{box-shadow:var(--shadow-lg)}
+.week-header{display:flex;align-items:center;gap:20px;padding:28px 32px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;cursor:pointer}
+.week-num{width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.week-num .wk{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.05em}
+.week-num .n{font-size:22px;font-weight:700;line-height:1}
+.week-title{flex:1}
+.week-title h3{font-size:20px;font-weight:600;margin-bottom:4px}
+.week-title p{font-size:14px;opacity:.75}
+.week-duration{font-size:13px;background:rgba(255,255,255,.15);padding:6px 14px;border-radius:20px;white-space:nowrap}
+.week-toggle{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;transition:.3s;flex-shrink:0}
+.week-card.active .week-toggle{transform:rotate(180deg)}
+.week-body{padding:0;max-height:0;overflow:hidden;transition:max-height .4s ease, padding .3s ease}
+.week-card.active .week-body{padding:28px 32px;max-height:1200px}
+.week-theme{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:16px;padding-left:20px;border-left:3px solid var(--gold);padding-top:2px;padding-bottom:2px}
+.week-modules{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.week-module{background:var(--bg);border-radius:8px;padding:14px 16px}
+.week-module h4{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.week-module p{font-size:12px;color:var(--text-secondary);line-height:1.5}
+.week-frameworks{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.week-frameworks h4{font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.framework-tags{display:flex;flex-wrap:wrap;gap:8px}
+.framework-tag{font-size:12px;padding:5px 12px;border-radius:16px;background:linear-gradient(135deg,#EFF6FF,#FEF3C7);color:var(--navy);font-weight:500}
+.week-deliverable{margin-top:16px;padding:14px 16px;background:linear-gradient(135deg,#D1FAE5,#EFF6FF);border-radius:8px;display:flex;align-items:center;gap:10px}
+.week-deliverable .icon{font-size:18px}
+.week-deliverable span{font-size:13px;font-weight:600;color:var(--navy)}
+
+/* What You Get */
+.included-section{background:linear-gradient(180deg,var(--bg),#fff)}
+.included-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.included-card{background:var(--surface);border-radius:var(--radius);padding:28px 24px;border:1px solid var(--border);transition:.3s;text-align:center}
+.included-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.included-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--navy),var(--sky));display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.included-icon svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.included-card h3{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.included-card p{font-size:13px;color:var(--text-secondary)}
+
+/* Pricing */
+.pricing-section{background:var(--bg-warm)}
+.pricing-grid{display:grid;gap:24px;max-width:440px;margin:0 auto}
+.price-card{background:var(--surface);border-radius:var(--radius);padding:36px 28px;border:2px solid var(--sky);transition:.3s;position:relative;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(3,105,161,.12)}
+.price-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.price-card.featured,.price-card.featured::before{display:none}
+.price-name{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.price-tagline{font-size:13px;color:var(--text-muted);margin-bottom:20px}
+.price-amount{font-size:48px;font-weight:700;color:var(--navy);line-height:1;margin-bottom:4px}
+.price-amount .currency{font-size:20px;font-weight:400;color:var(--text-muted);vertical-align:top;margin-right:2px}
+.price-period{font-size:13px;color:var(--text-muted);margin-bottom:24px}
+.price-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;flex:1}
+.price-feature{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-secondary);line-height:1.5}
+.price-feature .check{color:var(--sky);font-weight:700;flex-shrink:0;margin-top:1px}
+.price-feature .check svg{width:14px;height:14px;stroke:var(--sky);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.price-btn{width:100%;padding:14px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:.3s;border:none;background:var(--surface);color:var(--navy);border:2px solid var(--border)}
+.price-btn:hover{border-color:var(--sky);color:var(--sky)}
+.price-card.featured .price-btn{background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;border:none}
+.price-card.featured .price-btn:hover{background:linear-gradient(135deg,var(--sky),var(--sky-light))}
+
+/* Who It's For */
+.audience-section{background:var(--bg)}
+.audience-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;align-items:center}
+.audience-list{display:flex;flex-direction:column;gap:16px}
+.audience-item{display:flex;gap:16px;align-items:flex-start}
+.audience-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--sky),var(--sky-light));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.audience-icon svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.audience-item h3{font-size:17px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.audience-item p{font-size:14px;color:var(--text-secondary);line-height:1.7}
+.audience-visual{position:relative}
+.audience-card{background:var(--surface);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
+.audience-card h3{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:20px;text-align:center}
+.audience-stats{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.aud-stat{text-align:center;padding:16px;background:var(--bg);border-radius:10px}
+.aud-stat .num{font-size:28px;font-weight:700;color:var(--sky)}
+.aud-stat .lbl{font-size:12px;color:var(--text-muted);margin-top:4px}
+
+/* FAQ */
+.faq-section{background:linear-gradient(180deg,#fff,var(--bg))}
+.faq-list{display:flex;flex-direction:column;gap:12px;max-width:800px;margin:0 auto}
+.faq-item{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden}
+.faq-question{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-weight:500;font-size:15px;transition:.2s}
+.faq-question:hover{background:var(--bg)}
+.faq-answer{padding:0 24px;color:var(--text-secondary);font-size:15px;line-height:1.7;max-height:0;overflow:hidden;transition:max-height .3s ease, padding .3s ease}
+.faq-item.active .faq-answer{padding:0 24px 20px;max-height:500px}
+.faq-item.active .faq-question{color:var(--sky)}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;text-align:center;padding:100px 24px;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5}
+.cta-section .section-inner{position:relative;z-index:1}
+.cta-section h2{font-size:40px;font-weight:700;margin-bottom:16px}
+.cta-section p{font-size:18px;opacity:.75;margin-bottom:32px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.8}
+.cta-section .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-light));box-shadow:0 8px 24px rgba(217,119,6,.3)}
+.cta-section .btn-primary:hover{box-shadow:0 12px 32px rgba(217,119,6,.4)}
+
+/* Footer */
+.footer{background:#fff;color:var(--text-secondary);padding:48px 24px 24px;font-size:14px;border-top:1px solid var(--border)}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.footer-brand .logo{font-weight:700;color:var(--navy);font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.footer-brand p{line-height:1.7;color:var(--text-muted)}
+.footer-col h4{color:var(--navy);font-size:14px;font-weight:600;margin-bottom:16px;text-transform:uppercase;letter-spacing:.05em}
+.footer-col a{display:block;color:var(--text-secondary);text-decoration:none;margin-bottom:10px;transition:.2s}
+.footer-col a:hover{color:var(--sky)}
+.footer-bottom{margin-top:40px;padding-top:24px;border-top:1px solid var(--border);text-align:center;font-size:13px;color:var(--text-muted)}
+
+/* Scroll animations */
+.reveal{opacity:0;transform:translateY(30px);transition:all .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero-grid,.prob-grid,.problem-grid,.audience-grid{grid-template-columns:1fr}
+  .hero h1{font-size:36px}
+  .hero-inner{padding:32px 24px 60px}
+  .week-modules{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+  .included-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-grid{grid-template-columns:1fr}
+  .price-card.featured{transform:none}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  body{padding-top:52px}
+  .countdown-banner{padding:10px 16px}
+  .countdown-inner{flex-direction:row;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}
+  .countdown-label{font-size:12px}
+  .countdown-unit{min-width:32px}
+  .countdown-unit .num{font-size:16px}
+  .countdown-sep{font-size:12px}
+  .countdown-cta{padding:5px 14px;font-size:11px;min-height:32px;border-radius:16px}
+  .countdown-close{right:4px;width:32px;height:32px}
+}
+@media(max-width:600px){
+  .hero-stats{gap:4px}
+  .hero-stat .num{font-size:20px}
+  .hero-stat .label{font-size:9px;letter-spacing:0}
+  .hero h1{font-size:30px}
+  .hero h1 .gradient{display:inline;white-space:nowrap}
+  .hero-inner{padding:28px 20px 50px}
+  .hero-subtitle{font-size:16px;margin-bottom:24px}
+  .hero-cta{gap:10px}
+  .btn-primary,.btn-secondary{padding:14px 24px;font-size:14px;width:100%;justify-content:center}
+  .section-title{font-size:28px}
+  .section{padding:48px 20px}
+  .section-header{margin-bottom:32px}
+  .section-subtitle{font-size:15px}
+  .footer-inner{grid-template-columns:1fr}
+  .footer{padding:32px 20px 20px}
+  /* Curriculum week header — stacked layout on mobile */
+  .week-header{padding:16px 20px;gap:10px;flex-wrap:wrap;align-items:center}
+  .week-body{padding:0}
+  .week-card.active .week-body{padding:20px}
+  .week-num{width:40px;height:40px;border-radius:10px}
+  .week-num .wk{font-size:9px}
+  .week-num .n{font-size:16px}
+  .week-title{flex:1;min-width:0}
+  .week-title h3{font-size:16px;line-height:1.3}
+  .week-title p{font-size:12px;line-height:1.4}
+  .week-duration{font-size:11px;padding:4px 10px}
+  /* Week modules — single column with left accent */
+  .week-modules{grid-template-columns:1fr;gap:10px}
+  .week-module{padding:12px 14px 12px 18px;border-left:3px solid var(--sky);background:var(--bg)}
+  .week-module h4{font-size:14px;margin-bottom:4px}
+  .week-module p{font-size:12px}
+  /* Problem cards — vertical stack: icon on top */
+  .problem-grid{grid-template-columns:1fr;gap:12px}
+  .problem-card{padding:20px;text-align:center}
+  .problem-icon{width:48px;height:48px;flex-shrink:0;margin:0 auto 12px;border-radius:14px}
+  .problem-icon svg{width:24px;height:24px}
+  .problem-card h3{font-size:15px;margin-bottom:6px;line-height:1.4}
+  .problem-card p{font-size:13px;line-height:1.6;color:var(--text-secondary)}
+  /* Included cards — vertical stack: icon on top */
+  .included-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .included-card{padding:20px 16px;text-align:center}
+  .included-icon{width:48px;height:48px;flex-shrink:0;margin:0 auto 10px}
+  .included-icon svg{width:22px;height:22px}
+  .included-card h3{font-size:14px;margin-bottom:4px;font-weight:600}
+  .included-card p{font-size:12px;line-height:1.5}
+  .cta-section{padding:60px 20px}
+  .cta-section h2{font-size:28px}
+  .cta-section p{font-size:15px}
+  .faq-question{padding:16px 20px;font-size:14px}
+  .faq-answer{font-size:14px}
+  .hero-visual{display:none}
+  .hero-badge{font-size:12px;padding:6px 12px}
+  .price-card{padding:28px 20px}
+  .price-amount{font-size:40px}
+  .price-amount .currency{font-size:18px}
+  .price-period{font-size:14px;margin-bottom:20px}
+  .price-features{gap:14px}
+  .price-feature{font-size:13px;line-height:1.6;gap:12px}
+  .price-feature .check svg{width:16px;height:16px}
+  /* Strong primary CTA */
+  .price-btn{padding:18px;font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;border:none;border-radius:12px}
+  .price-btn:hover{background:linear-gradient(135deg,var(--sky),var(--sky-light));box-shadow:0 8px 24px rgba(3,105,161,.3)}
+  .audience-stats{grid-template-columns:1fr 1fr}
+  .audience-item{gap:14px;padding:12px 0}
+  .audience-item h3{font-size:16px}
+  .audience-item p{font-size:13px;line-height:1.6}
+  .audience-card{padding:24px}
+  .countdown-label{font-size:13px}
+  .countdown-unit{min-width:36px}
+  .countdown-unit .num{font-size:18px}
+  .countdown-unit .lbl{font-size:9px}
+  .countdown-sep{font-size:14px}
+  .countdown-cta{padding:6px 18px;font-size:12px;min-height:36px}
+  .countdown-close{right:4px;width:36px;height:36px}
+}
+
+/* ===== Payment Overlay ===== */
+.payment-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,.7);backdrop-filter:blur(4px);overflow-y:auto;padding:20px}
+.payment-overlay.active{display:flex;align-items:flex-start;justify-content:center}
+.payment-card{background:#fff;border-radius:16px;max-width:480px;width:100%;margin:auto;box-shadow:0 24px 64px rgba(0,0,0,.3);overflow:hidden;animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.payment-header{background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;padding:24px 28px;position:relative}
+.payment-header h3{font-size:20px;font-weight:700;margin-bottom:4px}
+.payment-header .tier{font-size:13px;opacity:.8}
+.payment-header .amount{font-size:28px;font-weight:700;margin-top:8px}
+.payment-header .amount .currency{font-size:16px;opacity:.7}
+.payment-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.payment-close:hover{background:rgba(255,255,255,.25)}
+.payment-body{padding:24px 28px}
+.payment-field{margin-bottom:16px}
+.payment-field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.payment-field input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:15px;font-family:inherit;transition:.2s;box-sizing:border-box}
+.payment-field input:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(3,105,161,.1)}
+.payment-divider{height:1px;background:var(--border);margin:20px 0}
+#paymentElement{min-height:120px}
+#paymentElementErrors{margin-top:8px;font-size:13px;color:#DC2626;min-height:18px}
+.pay-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:.3s;margin-top:8px}
+.pay-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(3,105,161,.3)}
+.pay-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.payment-success{text-align:center;padding:20px 0}
+.payment-success .check-circle{width:64px;height:64px;background:#10B981;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.payment-success .check-circle svg{width:32px;height:32px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.payment-success h3{font-size:22px;color:var(--navy);margin-bottom:8px}
+.payment-success p{font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+.payment-success .next-steps{text-align:left;background:var(--bg);border-radius:8px;padding:16px;margin-bottom:24px}
+.payment-success .next-steps h4{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--navy)}
+.payment-success .next-steps li{font-size:13px;color:var(--text-secondary);margin-bottom:6px;list-style:none;padding-left:20px;position:relative}
+.payment-success .next-steps li::before{content:'';position:absolute;left:0;top:1px;width:14px;height:14px;background:#10B981;border-radius:50%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.tier-badge{display:inline-block;background:var(--gold-light);color:var(--navy);padding:3px 10px;border-radius:5px;font-size:12px;font-weight:600;margin-left:8px}
+@media(max-width:600px){
+  .payment-overlay{padding:12px}
+  .payment-card{max-width:100%}
+  .payment-header,.payment-body{padding:20px}
+  .payment-header .amount{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo"><img src="beehive-logo.png" alt="Beehive Strategy"></a>
+    <div class="nav-links">
+      <a href="#curriculum">課程內容</a>
+      <a href="#included">課程有啲乜</a>
+      <a href="#pricing">收費</a>
+      <a href="#audience">邊個適合嚟？</a>
+      <a href="#faq">常見問題</a>
+      <div class="lang-btn">
+        <button data-set-lang="en">EN</button>
+        <button data-set-lang="zh-hans">简</button>
+        <button data-set-lang="zh-hant" class="active">繁</button>
+      </div>
+      <a href="#pricing" class="nav-cta">立即報名</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="nav-mobile" id="navMobile">
+  <a href="#curriculum">課程內容</a>
+  <a href="#included">課程有啲乜</a>
+  <a href="#pricing">收費</a>
+  <a href="#audience">邊個適合嚟？</a>
+  <a href="#faq">常見問題</a>
+  <a href="#pricing" class="nav-cta" style="text-align:center;margin-top:8px">立即報名</a>
+  <div class="lang-btn">
+    <button data-set-lang="en">EN</button>
+    <button data-set-lang="zh-hans">简</button>
+    <button data-set-lang="zh-hant" class="active">繁</button>
+  </div>
+</div>
+
+<!-- Countdown Banner -->
+<div class="countdown-banner" id="countdownBanner">
+  <div class="countdown-inner">
+    <div class="countdown-label countdown-label-text">第一期開課 <span class="highlight">9月16日（三）</span> 晚上 7-10PM</div>
+    <div class="countdown-timer" id="countdownTimer">
+      <div class="countdown-unit"><span class="num" id="cdDays">--</span><span class="lbl">天</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdHours">--</span><span class="lbl">時</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdMinutes">--</span><span class="lbl">分</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdSeconds">--</span><span class="lbl">秒</span></div>
+    </div>
+    <a href="#pricing" class="countdown-cta countdown-cta-text">立即報名</a>
+  </div>
+  <button class="countdown-close" onclick="document.getElementById('countdownBanner').classList.add('hidden')">&times;</button>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          <span>蜂啟咨詢 · 4 週深度課程</span>
+        </div>
+        <h1>
+          用 AI 由零開始建立你嘅<span class="gradient">單人企業</span>
+        </h1>
+        <p class="hero-subtitle">4 週課程，由搵市場定位到正式開業，一步步教你用 AI 建立一人公司。唔係淨係聽書，係真真正正做起盤生意。</p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="num">4</span>
+            <span class="label">週深度訓練</span>
+          </div>
+          <div class="hero-stat">
+            <span class="num">12</span>
+            <span class="label">小時課程</span>
+          </div>
+          <div class="hero-stat">
+            <span class="num">12-20</span>
+            <span class="label">人小班制</span>
+          </div>
+          <div class="hero-stat">
+            <span class="num">HK$3,880</span>
+            <span class="label">課程費用</span>
+          </div>
+        </div>
+        <div class="hero-cta">
+          <a href="#pricing" class="btn-primary">
+            <span>立即報名</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#curriculum" class="btn-secondary">
+            <span>查看課程內容</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-float hero-float-1"></div>
+        <div class="hero-float hero-float-2"></div>
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div class="hero-avatar">OPC</div>
+            <div>
+              <div class="hero-card-title">4 週學習路徑</div>
+              <div class="hero-card-subtitle">由零開始，每週一個目標</div>
+            </div>
+          </div>
+          <div class="hero-weeks">
+            <div class="hero-week-row">
+              <div class="week-num">W1</div>
+              <div class="week-bar"><div class="week-fill" style="width:25%"></div></div>
+              <div class="week-label">策略定位</div>
+            </div>
+            <div class="hero-week-row">
+              <div class="week-num">W2</div>
+              <div class="week-bar"><div class="week-fill" style="width:50%"></div></div>
+              <div class="week-label">AI 內容引擎</div>
+            </div>
+            <div class="hero-week-row">
+              <div class="week-num">W3</div>
+              <div class="week-bar"><div class="week-fill" style="width:75%"></div></div>
+              <div class="week-label">自動化營運</div>
+            </div>
+            <div class="hero-week-row">
+              <div class="week-num">W4</div>
+              <div class="week-bar"><div class="week-fill" style="width:100%"></div></div>
+              <div class="week-label">啟動變現</div>
+            </div>
+          </div>
+          <div class="hero-checklist">
+            <div class="hero-checkitem"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 個人定位與利基驗證</div>
+            <div class="hero-checkitem"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> AI 工具棧與內容系統</div>
+            <div class="hero-checkitem"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 3 個自動化工作流</div>
+            <div class="hero-checkitem"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 30 天啟動計劃</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Problem Section -->
+<section class="section problem-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">點解你要報呢個課程？</div>
+      <h2 class="section-title">一個人創業，你是否也遇到這些問題？</h2>
+      <p class="section-subtitle">很多人想做一人公司，但卡在了第一步就放棄了。不是因為不努力，而是沒有人帶路。</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <h3>唔知由邊度開始</h3>
+        <p>想創業但方向模糊，不知道自己適合做什麼，也不懂如何驗證市場需求。</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3>AI 工具太多，唔知揀邊隻</h3>
+        <p>AI 工具百百種，每個都試一試，花了很多時間，卻沒有形成真正的生產力。</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>做極都冇穩定收入</h3>
+        <p>忙了幾個月，內容發了、網站建了，但遲遲沒有付費客戶，懷疑自己是不是走錯路。</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+        <h3>一個人做好容易放棄</h3>
+        <p>遇到挫折沒人討論，進度緩慢沒人督促，熱情慢慢消退，最後不了了之。</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <h3>唔識香港法律同稅務</h3>
+        <p>商業登記、稅務申報、合約範本……這些細節讓人頭痛，怕做錯反而惹麻煩。</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>時間永遠不夠用</h3>
+        <p>一邊上班一邊創業，內容、營運、銷售全都要做，永遠在追趕進度。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Curriculum -->
+<section class="section curriculum-section" id="curriculum">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">課程內容</div>
+      <h2 class="section-title">4 週，由零開始建立你嘅一人公司</h2>
+      <p class="section-subtitle">每週 3 小時實戰課程 + 1 小時 Office Hour，12 小時系統訓練，帶你從策略到啟動。</p>
+    </div>
+    <div class="week-cards">
+
+      <!-- Week 1 -->
+      <div class="week-card active reveal">
+        <div class="week-header" onclick="toggleWeek(this)">
+          <div class="week-num">
+            <span class="wk">Week</span>
+            <span class="n">1</span>
+          </div>
+          <div class="week-title">
+            <h3>第一週：搵定位</h3>
+            <p>Strategy & Positioning — 找到你的利基，建立獨特定位</p>
+          </div>
+          <span class="week-duration">3 小時</span>
+          <div class="week-toggle">▼</div>
+        </div>
+        <div class="week-body">
+          <div class="week-theme">「Find your edge. Own your niche.」</div>
+          <div class="week-modules">
+            <div class="week-module">
+              <h4>OPC 模型深度解析</h4>
+              <p>營收模式、能力堆疊、創辦人市場契合度</p>
+            </div>
+            <div class="week-module">
+              <h4>利基選擇框架</h4>
+              <p>四象限矩陣、需求驗證、競爭分析</p>
+            </div>
+            <div class="week-module">
+              <h4>定位與訊息設計</h4>
+              <p>UVB 獨特價值靶心、電梯簡報、品牌語氣</p>
+            </div>
+            <div class="week-module">
+              <h4>香港市場特性</h4>
+              <p>本地機會、文化差異、語言策略</p>
+            </div>
+          </div>
+          <div class="week-frameworks">
+            <h4>核心框架</h4>
+            <div class="framework-tags">
+              <span class="framework-tag">OPC 能力堆疊</span>
+              <span class="framework-tag">利基四象限</span>
+              <span class="framework-tag">UVB 定位法</span>
+              <span class="framework-tag">創辦人契合度評分</span>
+            </div>
+          </div>
+          <div class="week-deliverable">
+            <span class="icon">📄</span>
+            <span>週產出：個人定位聲明 + 利基驗證報告</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 2 -->
+      <div class="week-card reveal">
+        <div class="week-header" onclick="toggleWeek(this)">
+          <div class="week-num">
+            <span class="wk">Week</span>
+            <span class="n">2</span>
+          </div>
+          <div class="week-title">
+            <h3>第二週：AI 工具同內容</h3>
+            <p>AI Tools & Content — 讓 AI 幫你做重活</p>
+          </div>
+          <span class="week-duration">3 小時</span>
+          <div class="week-toggle">▼</div>
+        </div>
+        <div class="week-body">
+          <div class="week-theme">「Let AI do the heavy lifting.」</div>
+          <div class="week-modules">
+            <div class="week-module">
+              <h4>AI 工具棧架構</h4>
+              <p>Tier 1/2/3 工具分類、成本優化、API 工作流</p>
+            </div>
+            <div class="week-module">
+              <h4>內容引擎設計</h4>
+              <p>內容支柱、重製工作流、批量創建</p>
+            </div>
+            <div class="week-module">
+              <h4>提示工程精通</h4>
+              <p>思維鏈、少量樣本、角色提示、模板庫</p>
+            </div>
+            <div class="week-module">
+              <h4>視覺與設計自動化</h4>
+              <p>AI 繪圖、Canva AI、品牌套件自動化</p>
+            </div>
+          </div>
+          <div class="week-frameworks">
+            <h4>涵蓋工具</h4>
+            <div class="framework-tags">
+              <span class="framework-tag">Claude / GPT-4o</span>
+              <span class="framework-tag">Midjourney / DALL-E</span>
+              <span class="framework-tag">Runway / HeyGen</span>
+              <span class="framework-tag">Make / Zapier</span>
+            </div>
+          </div>
+          <div class="week-deliverable">
+            <span class="icon">📄</span>
+            <span>週產出：個人 AI 工具地圖 + 30 天內容行事曆</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 3 -->
+      <div class="week-card reveal">
+        <div class="week-header" onclick="toggleWeek(this)">
+          <div class="week-num">
+            <span class="wk">Week</span>
+            <span class="n">3</span>
+          </div>
+          <div class="week-title">
+            <h3>第三週：自動化同營運</h3>
+            <p>Automation & Operations — 建立不需你的系統</p>
+          </div>
+          <span class="week-duration">3 小時</span>
+          <div class="week-toggle">▼</div>
+        </div>
+        <div class="week-body">
+          <div class="week-theme">「Build systems that scale without you.」</div>
+          <div class="week-modules">
+            <div class="week-module">
+              <h4>IMAR 自動化框架</h4>
+              <p>識別、映射、自動化、優化 — 企業級方法應用於 OPC</p>
+            </div>
+            <div class="week-module">
+              <h4>潛在客戶自動化</h4>
+              <p>落地頁、誘餌、培育序列、評分系統</p>
+            </div>
+            <div class="week-module">
+              <h4>客戶交付系統</h4>
+              <p>入職、專案管理、交付、離職流程</p>
+            </div>
+            <div class="week-module">
+              <h4>財務與行政自動化</h4>
+              <p>發票、費用追蹤、報告、稅務準備</p>
+            </div>
+          </div>
+          <div class="week-frameworks">
+            <h4>核心框架</h4>
+            <div class="framework-tags">
+              <span class="framework-tag">IMAR 自動化法</span>
+              <span class="framework-tag">客戶生命週期</span>
+              <span class="framework-tag">香港財務堆棧</span>
+            </div>
+          </div>
+          <div class="week-deliverable">
+            <span class="icon">📄</span>
+            <span>週產出：3 個上線自動化工作流 + 營運手冊模板</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 4 -->
+      <div class="week-card reveal">
+        <div class="week-header" onclick="toggleWeek(this)">
+          <div class="week-num">
+            <span class="wk">Week</span>
+            <span class="n">4</span>
+          </div>
+          <div class="week-title">
+            <h3>第四週：正式開業</h3>
+            <p>Launch & Scale — 出貨、收費、成長</p>
+          </div>
+          <span class="week-duration">3 小時</span>
+          <div class="week-toggle">▼</div>
+        </div>
+        <div class="week-body">
+          <div class="week-theme">「Ship it. Get paid. Grow.」</div>
+          <div class="week-modules">
+            <div class="week-module">
+              <h4>定價心理學與模式</h4>
+              <p>價值定價、分層方案、月費、產品化服務</p>
+            </div>
+            <div class="week-module">
+              <h4>銷售與轉化</h4>
+              <p>需求發現電話、提案、異議處理、成交</p>
+            </div>
+            <div class="week-module">
+              <h4>法律與合規（香港）</h4>
+              <p>商業登記、薪俸稅 vs 利得稅、知識產權、合約</p>
+            </div>
+            <div class="week-module">
+              <h4>30 天啟動計劃</h4>
+              <p>上市時間軸、指標、快速獲勝策略</p>
+            </div>
+          </div>
+          <div class="week-frameworks">
+            <h4>核心框架</h4>
+            <div class="framework-tags">
+              <span class="framework-tag">價值定價計算器</span>
+              <span class="framework-tag">銷售電話腳本</span>
+              <span class="framework-tag">香港合規清單</span>
+              <span class="framework-tag">30-60-90 天計劃</span>
+            </div>
+          </div>
+          <div class="week-deliverable">
+            <span class="icon">📄</span>
+            <span>週產出：完整啟動計劃 + 定價模型 + 香港合規清單</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- What You Get -->
+<section class="section included-section" id="included">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">課程有啲乜</div>
+      <h2 class="section-title">你獲得的不只是課程</h2>
+      <p class="section-subtitle">從工具到模板，從社群到支援，一次到位，確保你學到做到。</p>
+    </div>
+    <div class="included-grid">
+      <div class="included-card reveal">
+        <div class="included-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8"/><path d="M8 11h6"/></svg></div>
+        <h3>50+ 頁工作手冊</h3>
+        <p>繁體中文數碼版，每週練習與模板</p>
+      </div>
+      <div class="included-card reveal">
+        <div class="included-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>20+ 提示詞模板</h3>
+        <p>涵蓋內容、銷售、營運各場景</p>
+      </div>
+      <div class="included-card reveal">
+        <div class="included-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <h3>10+ 自動化模板</h3>
+        <p>Make / Zapier 即用工作流模板</p>
+      </div>
+      <div class="included-card reveal">
+        <div class="included-icon"><svg viewBox="0 0 24 24"><path d="M12 3l3 6h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z"/></svg></div>
+        <h3>香港法律指南</h3>
+        <p>商業登記、稅務、合約範本</p>
+      </div>
+      <div class="included-card reveal">
+        <div class="included-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+        <h3>終身課程錄影</h3>
+        <p>課後無限回看，隨時溫習</p>
+      </div>
+      <div class="included-card reveal">
+        <div class="included-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>校友網絡</h3>
+        <p>連接志同道合的一人公司創辦人</p>
+      </div>
+      <div class="included-card reveal">
+        <div class="included-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <h3>WhatsApp 群組</h3>
+        <p>每日問答、進度追蹤、勝利分享</p>
+      </div>
+      <div class="included-card reveal">
+        <div class="included-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg></div>
+        <h3>每週 Office Hour</h3>
+        <p>1 小時一對多答疑與個案輔導</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section pricing-section" id="pricing">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">收費</div>
+      <h2 class="section-title">報名費用</h2>
+      <p class="section-subtitle">12 小時系統訓練，從策略到啟動，幫你打造一人公司。</p>
+    </div>
+    <div class="pricing-grid">
+
+      <!-- Standard -->
+      <div class="price-card reveal">
+        <div class="price-name">OPC 4 週深度課程</div>
+        <div class="price-tagline">每週三 7:00-10:00 PM · 連續 4 週</div>
+        <div class="price-amount"><span class="currency">HK$</span><span id="dynamicPrice">3,880</span></div>
+        <div class="price-period">/ 人</div>
+        <div class="price-features">
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 4 週 12 小時實戰課程</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 50+ 頁數碼工作手冊</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 20+ 提示詞模板</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 10+ 自動化模板</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 香港法律合規指南</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 終身課程錄影權限</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> WhatsApp 學習群組</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 校友網絡存取</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 每週 1 小時 Office Hour</div>
+          <div class="price-feature"><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 3 人 accountability 小組</div>
+        </div>
+        <button class="price-btn" id="priceBtn" onclick="openPayment('standard', 'OPC 4 週深度課程', 3880)">立即報名</button>
+      </div>
+
+    </div>
+    <div id="discountNote" style="text-align:center;margin-top:24px;font-size:14px;color:var(--text-secondary);line-height:1.8;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px">
+      <svg style="width:16px;height:16px;vertical-align:middle;margin-right:4px" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>早鳥優惠 HK$3,280（開課前 7 天）
+    </div>
+  </div>
+</section>
+
+<!-- Who It's For -->
+<section class="section audience-section" id="audience">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">邊個適合嚟？</div>
+      <h2 class="section-title">這門課為你而設計</h2>
+      <p class="section-subtitle">不論你是在職人士、自由工作者，還是想轉型中的創業者，只要你想建立自己的一人公司。</p>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-list">
+        <div class="audience-item reveal">
+          <div class="audience-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+          <div>
+            <h3>在職想副業的上班族</h3>
+            <p>有正職但想發展副業收入，不確定從哪開始，想用 AI 快速驗證構想。</p>
+          </div>
+        </div>
+        <div class="audience-item reveal">
+          <div class="audience-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+          <div>
+            <h3>自由工作者 / 顧問</h3>
+            <p>已經在接案，但收入靠時間換，想建立系統化被動收入。</p>
+          </div>
+        </div>
+        <div class="audience-item reveal">
+          <div class="audience-icon"><svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
+          <div>
+            <h3>想創業的人</h3>
+            <p>不想開傳統公司、不想請人，想用最少資源啟動自己的事業。</p>
+          </div>
+        </div>
+        <div class="audience-item reveal">
+          <div class="audience-icon"><svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 1 4 12.9V17H8v-2.1A7 7 0 0 1 12 2z"/></svg></div>
+          <div>
+            <h3>內容創作者 / KOL</h3>
+            <p>有粉絲但變現困難，想把影響力轉化為可持續的商業模式。</p>
+          </div>
+        </div>
+        <div class="audience-item reveal">
+          <div class="audience-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div>
+            <h3>想回港發展的港漂 / 移民</h3>
+            <p>了解香港市場，用 AI 工具降低創業門檻，快速建立本地業務。</p>
+          </div>
+        </div>
+      </div>
+      <div class="audience-visual">
+        <div class="audience-card reveal">
+          <h3>課程數據</h3>
+          <div class="audience-stats">
+            <div class="aud-stat">
+              <div class="num">90%</div>
+              <div class="lbl">完成率</div>
+            </div>
+            <div class="aud-stat">
+              <div class="num">50+</div>
+              <div class="lbl">NPS 分數</div>
+            </div>
+            <div class="aud-stat">
+              <div class="num">20%</div>
+              <div class="lbl">推薦率</div>
+            </div>
+            <div class="aud-stat">
+              <div class="num">30%</div>
+              <div class="lbl">升級大師班</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section" id="faq">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">常見問題</div>
+      <h2 class="section-title">你可能想問的</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item active reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>需要什麼基礎才能參加？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer">建議先參加 OPC 入門工作坊（3 小時）或具備基本一人公司概念。課程從實戰出發，不需要程式或技術背景。只要你有創業熱情、會基本電腦操作就可以。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>課程是線上還是實體？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer">香港實體課程，每週三晚上 7:00-10:00 PM，連續 4 週。地點待定（確認後會通知學員）。課程會全程錄影，事後可回看。每 2 個月開一期。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>每週需要投入多少時間？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer">除了每週 3 小時課程 + 1 小時 Office Hour，建議每週額外投入 3-5 小時完成練習和作業。這是實戰課程，動手做才能真正學會。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>AI 工具需要額外付費嗎？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer">課程中使用的工具大多有免費方案，可從零開始。如果要深度使用，每月大約 HK$200-500 用於 AI 工具訂閱。我們會教你如何從免費方案開始，有收入再升級。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>跟 3 小時工作坊有什麼分別？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer">3 小時工作坊是概覽體驗，適合想了解一人公司概念的人。4 週深度課程會由頭到尾帶你打造你的 OPC，包含策略定位、AI 工具、自動化營運、啟動變現的完整訓練，還有每週練習和社群支援。工作坊學員可享深度課程 HK$300 折扣。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>參加後可以退款嗎？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer">開課前 7 天可全額退款。開課後 7 天內如不滿意，可按比例退款。如因特殊情況無法出席，可轉移至下一期。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>人數上限是多少？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer">每期 12-20 人小班制，確保每個學員都能得到足夠的關注和互動。額滿即截止報名。</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>課後有持續支援嗎？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer">有的。課程結束後，你可以繼續留在 WhatsApp 群組和校友網絡，也可以報名每月大師班（HK$1,200/月）獲得持續的學習和同儕支持。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="signup">
+  <div class="section-inner">
+    <h2>準備好建立你嘅一人公司未？</h2>
+    <p>第一期 2026 年 9 月 16 日（三）開課，每週三晚上 7:00-10:00 PM，連續 4 週。名額有限，最多 20 人小班制。</p>
+    <div class="hero-cta" style="justify-content:center">
+      <button class="btn-primary" id="ctaBtn" onclick="openPayment('standard', 'OPC 4 週深度課程', 3880)" style="border:none;cursor:pointer;font-family:inherit;font-size:16px">
+        <span>立即報名留位</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <p style="margin-top:24px;font-size:14px;opacity:.6">或 Email 查詢：<a href="mailto:account@beehivestrategy.com" style="color:var(--sky-light);text-decoration:none">account@beehivestrategy.com</a> · 付款方式：Stripe（信用卡 / Apple Pay / Google Pay）</p>
+  </div>
+</section>
+
+<!-- Payment Overlay -->
+<div class="payment-overlay" id="paymentOverlay">
+  <div class="payment-card">
+    <!-- Form View -->
+    <div id="paymentFormView">
+      <div class="payment-header">
+        <button class="payment-close" onclick="closePayment()">&times;</button>
+        <h3>報名 OPC 4 週深度課程</h3>
+        <div class="tier" id="payTier">方案</div>
+        <div class="amount"><span class="currency">HK$</span><span id="payAmount">0</span></div>
+      </div>
+      <div class="payment-body">
+        <div class="payment-field">
+          <label>姓名 Name</label>
+          <input type="text" id="payName" placeholder="你的姓名">
+        </div>
+        <div class="payment-field">
+          <label>電郵 Email</label>
+          <input type="email" id="payEmail" placeholder="you@example.com">
+        </div>
+        <div class="payment-field">
+          <label>電話 Phone</label>
+          <input type="tel" id="payPhone" placeholder="+852 XXXX XXXX">
+        </div>
+        <div class="payment-divider"></div>
+        <div class="payment-field">
+          <label>付款方式 Payment Method</label>
+          <div id="paymentElement"><!-- Stripe Payment Element mounts here --></div>
+          <div id="paymentElementErrors"></div>
+        </div>
+        <button class="pay-btn" id="payBtn" onclick="processPayment()">
+          <span id="payBtnText">確認付款</span>
+        </button>
+      </div>
+    </div>
+    <!-- Success View -->
+    <div id="paymentSuccessView" style="display:none">
+      <div class="payment-header">
+        <button class="payment-close" onclick="closePayment()">&times;</button>
+        <h3>報名成功！</h3>
+      </div>
+      <div class="payment-body">
+        <div class="payment-success">
+          <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h3>付款已完成</h3>
+          <p id="successMsg">我們已發送確認電郵給你。</p>
+          <div class="next-steps">
+            <h4>下一步：</h4>
+            <ul>
+              <li>確認電郵已發送至你的信箱</li>
+              <li>開課前 7 天將收到詳細通知（地點、須知）</li>
+              <li>加入 WhatsApp 學員群組（連結將在電郵中）</li>
+            </ul>
+          </div>
+          <button class="pay-btn" onclick="closePayment()">完成</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><img src="beehive-logo.png" alt="Beehive Strategy" style="height:28px;margin-right:8px"></div>
+      <p>蜂啟咨詢 · Beehive Strategy — 幫助你用 AI 打造一人公司，實現時間自由與財務獨立。</p>
+    </div>
+    <div class="footer-col">
+      <h4>課程</h4>
+      <a href="../workshop/">入門工作坊</a>
+      <a href="#">4 週深度課程</a>
+      <a href="#">企業內訓</a>
+    </div>
+    <div class="footer-col">
+      <h4>資源</h4>
+      <a href="#">創業日誌</a>
+      <a href="#">工具推薦</a>
+      <a href="#">免費模板</a>
+    </div>
+    <div class="footer-col">
+      <h4>聯絡</h4>
+      <a href="https://wa.me/85294427290">WhatsApp</a>
+      <a href="https://www.linkedin.com/company/beehivestrategy" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:account@beehivestrategy.com">account@beehivestrategy.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Beehive Strategy 蜂啟咨詢</p>
+  </div>
+</footer>
+
+<script>
+// ===== Navigation Toggle =====
+const navToggle = document.getElementById('navToggle');
+const navOverlay = document.getElementById('navOverlay');
+const navMobile = document.getElementById('navMobile');
+
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('active');
+  navOverlay.classList.toggle('open');
+  navMobile.classList.toggle('open');
+});
+navOverlay.addEventListener('click', () => {
+  navToggle.classList.remove('active');
+  navOverlay.classList.remove('open');
+  navMobile.classList.remove('open');
+});
+document.querySelectorAll('.nav-mobile a').forEach(link => {
+  link.addEventListener('click', () => {
+    navToggle.classList.remove('active');
+    navOverlay.classList.remove('open');
+    navMobile.classList.remove('open');
+  });
+});
+
+// ===== Week Accordion =====
+function toggleWeek(header) {
+  const card = header.closest('.week-card');
+  const wasActive = card.classList.contains('active');
+  document.querySelectorAll('.week-card').forEach(c => c.classList.remove('active'));
+  if (!wasActive) card.classList.add('active');
+}
+
+// ===== FAQ Toggle =====
+function toggleFaq(question) {
+  const item = question.closest('.faq-item');
+  const wasActive = item.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+  if (!wasActive) item.classList.add('active');
+}
+
+// ===== Countdown Timer =====
+function updateCountdown() {
+  const target = new Date('2026-09-16T19:00:00+08:00').getTime();
+  const now = new Date().getTime();
+  const diff = target - now;
+  if (diff <= 0) {
+    document.getElementById('cdDays').textContent = '00';
+    document.getElementById('cdHours').textContent = '00';
+    document.getElementById('cdMinutes').textContent = '00';
+    document.getElementById('cdSeconds').textContent = '00';
+    return;
+  }
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  document.getElementById('cdDays').textContent = String(days).padStart(2, '0');
+  document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cdMinutes').textContent = String(minutes).padStart(2, '0');
+  document.getElementById('cdSeconds').textContent = String(seconds).padStart(2, '0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ===== Scroll to Signup =====
+function scrollToSignup() {
+  document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===== Dynamic Pricing =====
+const COURSE_START = new Date('2026-09-16T19:00:00+08:00');
+const EARLYBIRD_DAYS = 7;
+const STANDARD_PRICE = 3880;
+const EARLYBIRD_PRICE = 3280;
+let currentDisplayPrice = STANDARD_PRICE;
+
+function initPricing() {
+  const now = new Date();
+  const diffMs = COURSE_START.getTime() - now.getTime();
+  const daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+  const priceEl = document.getElementById('dynamicPrice');
+  const noteEl = document.getElementById('discountNote');
+  const btn = document.getElementById('priceBtn');
+  const ctaBtn = document.getElementById('ctaBtn');
+
+  if (daysLeft > EARLYBIRD_DAYS) {
+    // Early bird period
+    currentDisplayPrice = EARLYBIRD_PRICE;
+    if (priceEl) priceEl.textContent = EARLYBIRD_PRICE.toLocaleString();
+    if (noteEl) noteEl.innerHTML = '<svg style="width:16px;height:16px;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span> 早鳥優惠進行中 · 開課前 ' + daysLeft + ' 天恢復原價 HK$' + STANDARD_PRICE.toLocaleString() + '</span>';
+  } else if (daysLeft > 0) {
+    // Standard period (within 7 days)
+    currentDisplayPrice = STANDARD_PRICE;
+    if (priceEl) priceEl.textContent = STANDARD_PRICE.toLocaleString();
+    if (noteEl) noteEl.innerHTML = '<svg style="width:16px;height:16px;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="#0369A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span> 早鳥優惠已結束 · 標準價格 HK$' + STANDARD_PRICE.toLocaleString() + '（開課前 ' + daysLeft + ' 天）</span>';
+  } else {
+    // Course started or past
+    currentDisplayPrice = STANDARD_PRICE;
+    if (priceEl) priceEl.textContent = STANDARD_PRICE.toLocaleString();
+    if (noteEl) noteEl.innerHTML = '<svg style="width:16px;height:16px;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span> 本期課程已開始 · 請關注下期開課時間</span>';
+  }
+
+  if (btn) btn.setAttribute('onclick', 'openPayment("standard", "OPC 4 週深度課程", ' + currentDisplayPrice + ')');
+  if (ctaBtn) ctaBtn.setAttribute('onclick', 'openPayment("standard", "OPC 4 週深度課程", ' + currentDisplayPrice + ')');
+}
+initPricing();
+
+// ===== Payment Logic =====
+const API_BASE = '/training/opc/workshop';
+const STRIPE_PUB_KEY = 'pk_live_BbnNCr74efoXu2h1zaeDuKaq00wd5ulNzk';
+let stripeInstance = null;
+let elementsInstance = null;
+let paymentElementInstance = null;
+let currentClientSecret = null;
+let currentTier = null;
+let currentAmount = 0;
+let currentTierName = '';
+
+// Initialize Stripe Payment Element
+async function initStripePaymentElement(amount) {
+  if (typeof Stripe === 'undefined') return;
+
+  try {
+    // Step 1: Create PaymentIntent on server
+    const res = await fetch(API_BASE + '/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: amount * 100, currency: 'HKD' })
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+      document.getElementById('paymentElementErrors').textContent = '付款初始化失敗，請重新整理頁面。';
+      return;
+    }
+
+    currentClientSecret = data.client_secret;
+
+    // Step 2: Initialize Stripe
+    stripeInstance = Stripe(STRIPE_PUB_KEY);
+
+    // Step 3: Create and mount Payment Element
+    elementsInstance = stripeInstance.elements({
+      clientSecret: currentClientSecret,
+      locale: 'zh-TW',
+      appearance: {
+        theme: 'stripe',
+        variables: {
+          colorPrimary: '#0284C7',
+          fontFamily: 'Noto Sans TC, sans-serif',
+          fontSizeBase: '15px'
+        }
+      }
+    });
+
+    paymentElementInstance = elementsInstance.create('payment');
+    paymentElementInstance.mount('#paymentElement');
+    paymentElementInstance.on('change', (e) => {
+      document.getElementById('paymentElementErrors').textContent = e.error ? e.error.message : '';
+    });
+  } catch (err) {
+    document.getElementById('paymentElementErrors').textContent = '付款系統錯誤：' + err.message;
+  }
+}
+
+// Open payment overlay with selected tier
+function openPayment(tier, tierName, amount) {
+  currentTier = tier;
+  currentTierName = tierName;
+  currentAmount = amount;
+
+  // Update header
+  document.getElementById('payTier').textContent = tierName;
+  document.getElementById('payAmount').textContent = amount.toLocaleString();
+
+  // Show overlay
+  document.getElementById('paymentOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Reset views
+  document.getElementById('paymentFormView').style.display = '';
+  document.getElementById('paymentSuccessView').style.display = 'none';
+  document.getElementById('payBtnText').textContent = '確認付款';
+  document.getElementById('payBtn').disabled = false;
+
+  // Initialize Stripe Payment Element
+  initStripePaymentElement(amount);
+}
+
+// Close payment overlay
+function closePayment() {
+  document.getElementById('paymentOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  // Reset Stripe instances
+  if (paymentElementInstance) {
+    paymentElementInstance.destroy();
+    paymentElementInstance = null;
+  }
+  elementsInstance = null;
+  stripeInstance = null;
+  currentClientSecret = null;
+  // Clear form
+  document.getElementById('payName').value = '';
+  document.getElementById('payEmail').value = '';
+  document.getElementById('payPhone').value = '';
+  document.getElementById('paymentElementErrors').textContent = '';
+}
+
+// Process payment
+async function processPayment() {
+  const name = document.getElementById('payName').value.trim();
+  const email = document.getElementById('payEmail').value.trim();
+  const phone = document.getElementById('payPhone').value.trim();
+
+  // Validate form
+  if (!name || !email || !phone) {
+    document.getElementById('paymentElementErrors').textContent = '請填寫所有欄位。';
+    return;
+  }
+
+  if (!stripeInstance || !elementsInstance || !currentClientSecret) {
+    document.getElementById('paymentElementErrors').textContent = '付款系統尚未就緒，請稍候。';
+    return;
+  }
+
+  // Disable button
+  const payBtn = document.getElementById('payBtn');
+  payBtn.disabled = true;
+  document.getElementById('payBtnText').textContent = '處理中...';
+
+  try {
+    // Confirm payment with Stripe
+    const { error, paymentIntent } = await stripeInstance.confirmPayment({
+      elements: elementsInstance,
+      confirmParams: {
+        return_url: window.location.href,
+        payment_method_data: {
+          billing_details: {
+            name: name,
+            email: email,
+            phone: phone
+          }
+        }
+      },
+      redirect: 'if_required'
+    });
+
+    if (error) {
+      document.getElementById('paymentElementErrors').textContent = error.message;
+      payBtn.disabled = false;
+      document.getElementById('payBtnText').textContent = '確認付款';
+      return;
+    }
+
+    // Payment succeeded - confirm with backend
+    await fetch(API_BASE + '/api/confirm-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        payment_intent_id: paymentIntent.id,
+        status: 'succeeded'
+      })
+    });
+
+    // Show success view
+    document.getElementById('paymentFormView').style.display = 'none';
+    document.getElementById('paymentSuccessView').style.display = '';
+    document.getElementById('successMsg').textContent =
+      '付款已完成！確認電郵已發送至 ' + email + '。';
+
+  } catch (err) {
+    document.getElementById('paymentElementErrors').textContent = '付款失敗：' + err.message;
+    payBtn.disabled = false;
+    document.getElementById('payBtnText').textContent = '確認付款';
+  }
+}
+
+// ===== Scroll Reveal =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => {
+  observer.observe(el);
+});
+
+// ===== Stagger reveal for grid items =====
+document.querySelectorAll('.problem-card, .included-card, .price-card, .audience-item, .faq-item').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.1 + 's';
+});
+
+// ===== Language Switching =====
+const translations = {
+  'en': {
+    'nav-curriculum': 'Curriculum',
+    'nav-included': 'What\'s Included',
+    'nav-pricing': 'Pricing',
+    'nav-audience': 'Who It\'s For',
+    'nav-faq': 'FAQ',
+    'nav-cta': 'Enroll Now',
+    'countdown-label-text': 'Cohort 1 starts <span class="highlight">Sep 16 (Wed)</span> 7-10PM',
+    'countdown-cta-text': 'Enroll Now'
+  },
+  'zh-hans': {
+    'nav-curriculum': '课程大纲',
+    'nav-included': '课程包含',
+    'nav-pricing': '价格方案',
+    'nav-audience': '适合谁',
+    'nav-faq': '常见问题',
+    'nav-cta': '立即报名',
+    'countdown-label-text': '第一期开课 <span class="highlight">9月16日（三）</span> 晚上 7-10PM',
+    'countdown-cta-text': '立即报名'
+  }
+};
+
+let currentLang = 'zh-hant';
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  document.querySelectorAll('.lang-btn button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.setLang === lang);
+  });
+}
+
+document.querySelectorAll('.lang-btn button').forEach(btn => {
+  btn.addEventListener('click', () => setLang(btn.dataset.setLang));
+});
+</script>
+</body>
+</html>

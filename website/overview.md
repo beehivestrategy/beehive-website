@@ -2,7 +2,7 @@
 
 ## What Was Built
 
-A comprehensive, production-ready company website for **Beehive Strategy Co., Ltd.** (蜂启咨询有限公司) — featuring rich animations, scroll-triggered effects, complete SEO optimization, blog infrastructure, and a daily automated content generation system.
+A comprehensive, production-ready company website for **Beehive Strategy Limited** (深圳蜂启咨询有限公司) — featuring rich animations, scroll-triggered effects, complete SEO optimization, blog infrastructure, and a daily automated content generation system.
 
 ## Round 3 Updates: SEO Architecture + Blog System + Daily Automation
 

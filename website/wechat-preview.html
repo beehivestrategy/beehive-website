@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeChat OA Article Preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background: #ededed;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  
+  /* Device frame for mobile preview */
+  .device-container {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .phone-frame {
+    width: 375px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+    border: 8px solid #1a1a1a;
+    position: relative;
+  }
+  
+  .phone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 28px;
+    background: #1a1a1a;
+    border-radius: 0 0 18px 18px;
+    z-index: 100;
+  }
+  
+  /* WeChat status bar */
+  .wechat-statusbar {
+    background: #ededed;
+    padding: 6px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    padding-top: 28px;
+  }
+  
+  .wechat-statusbar .right-icons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  
+  /* WeChat nav bar */
+  .wechat-navbar {
+    background: #ededed;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid #d9d9d9;
+  }
+  
+  .wechat-navbar .back-arrow {
+    font-size: 20px;
+    color: #181818;
+  }
+  
+  .wechat-navbar .nav-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #181818;
+  }
+  
+  .wechat-navbar .nav-dots {
+    font-size: 20px;
+    color: #181818;
+  }
+  
+  /* Article content area */
+  .wechat-article {
+    background: #fff;
+    padding: 20px 16px;
+    min-height: 600px;
+  }
+  
+  /* Account header */
+  .account-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .account-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #07c160, #06ad56);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .account-info {
+    flex: 1;
+  }
+  
+  .account-name {
+    font-size: 15px;
+    color: #576b95;
+    font-weight: 500;
+  }
+  
+  .account-meta {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+  }
+  
+  /* Article title */
+  .article-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  
+  .article-meta {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .article-meta .author {
+    color: #576b95;
+  }
+  
+  /* Article body — WeChat style */
+  .article-body {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #333;
+  }
+  
+  .article-body p {
+    margin-bottom: 16px;
+  }
+  
+  .article-body h2 {
+    font-size: 19px;
+    font-weight: 700;
+    color: #222;
+    margin: 28px 0 14px;
+    padding-left: 12px;
+    border-left: 4px solid #07c160;
+  }
+  
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #222;
+    margin: 22px 0 10px;
+  }
+  
+  .article-body strong {
+    color: #222;
+    font-weight: 700;
+  }
+  
+  .article-body blockquote {
+    background: #f7f7f7;
+    border-left: 3px solid #07c160;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 15px;
+    color: #666;
+    line-height: 1.7;
+    border-radius: 0 4px 4px 0;
+  }
+  
+  .article-body blockquote cite {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #999;
+    font-style: normal;
+  }
+  
+  .article-body ul, .article-body ol {
+    margin: 14px 0;
+    padding-left: 20px;
+  }
+  
+  .article-body li {
+    margin-bottom: 8px;
+    line-height: 1.75;
+  }
+  
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  
+  .article-body th {
+    background: #07c160;
+    color: #fff;
+    padding: 10px 8px;
+    text-align: left;
+    font-weight: 600;
+  }
+  
+  .article-body td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .article-body tr:nth-child(even) td {
+    background: #f9f9f9;
+  }
+  
+  /* WeChat specific elements */
+  .wechat-section-divider {
+    text-align: center;
+    margin: 24px 0;
+    color: #ccc;
+    font-size: 14px;
+  }
+  
+  .wechat-lead {
+    background: linear-gradient(135deg, #f0f9f4, #e8f5e9);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #333;
+    line-height: 1.7;
+  }
+  
+  .wechat-stats {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+  }
+  
+  .wechat-stats strong {
+    color: #07c160;
+  }
+  
+  /* FAQ section */
+  .wechat-faq {
+    margin: 24px 0;
+  }
+  
+  .wechat-faq-item {
+    background: #f7f9fc;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  
+  .wechat-faq-q {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 6px;
+  }
+  
+  .wechat-faq-a {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+  }
+  
+  /* Bottom action bar */
+  .wechat-bottom {
+    padding: 16px;
+    border-top: 0.5px solid #eee;
+  }
+  
+  .read-original {
+    color: #576b95;
+    font-size: 15px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .read-original::before {
+    content: "📄";
+    font-size: 16px;
+  }
+  
+  .wechat-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 0.5px solid #f0f0f0;
+  }
+  
+  .wechat-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #576b95;
+  }
+  
+  .wechat-action .icon {
+    font-size: 22px;
+  }
+  
+  /* WeChat footer */
+  .wechat-footer {
+    background: #ededed;
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+  }
+  
+  /* Tags */
+  .wechat-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px 0;
+  }
+  
+  .wechat-tag {
+    background: #f0f9f4;
+    color: #07c160;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    border: 1px solid #d4f0dd;
+  }
+  
+  /* CTA card */
+  .wechat-cta {
+    background: linear-gradient(135deg, #07c160, #06ad56);
+    color: #fff;
+    padding: 18px 20px;
+    border-radius: 10px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  
+  .wechat-cta h3 {
+    color: #fff !important;
+    font-size: 17px;
+    margin-bottom: 6px;
+    border: none !important;
+    padding: 0 !important;
+  }
+  
+  .wechat-cta p {
+    font-size: 13px;
+    opacity: 0.9;
+    margin-bottom: 0;
+  }
+  
+  /* Desktop view */
+  .desktop-frame {
+    width: 420px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+  
+  .desktop-header {
+    background: #2e2e2e;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .desktop-header .dots {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .desktop-header .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  
+  .desktop-header .dot.red { background: #ff5f57; }
+  .desktop-header .dot.yellow { background: #ffbd2e; }
+  .desktop-header .dot.green { background: #28ca42; }
+  
+  .desktop-header .url-bar {
+    flex: 1;
+    background: #525252;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: #ccc;
+    margin-left: 10px;
+  }
+  
+  .desktop-content {
+    background: #f5f5f5;
+    padding: 30px 20px;
+    min-height: 600px;
+  }
+  
+  .desktop-article {
+    max-width: 380px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px 24px;
+    border-radius: 4px;
+  }
+  
+  /* Label */
+  .preview-label {
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  
+  /* Tab switcher */
+  .tab-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  
+  .tab-btn {
+    padding: 8px 20px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.2s;
+  }
+  
+  .tab-btn.active {
+    background: #07c160;
+    color: #fff;
+    border-color: #07c160;
+  }
+  
+  /* QR code placeholder */
+  .qr-placeholder {
+    width: 80px;
+    height: 80px;
+    background: #f0f0f0;
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #999;
+    margin: 16px auto;
+    border-radius: 4px;
+  }
+  
+  /* Hidden by default */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div style="width: 100%; max-width: 900px;">
+  
+  <!-- Header -->
+  <div style="text-align: center; margin-bottom: 30px;">
+    <h1 style="font-size: 24px; color: #222; margin-bottom: 8px;">WeChat OA Article Preview</h1>
+    <p style="font-size: 14px; color: #999;">How your blog article will look inside WeChat</p>
+  </div>
+  
+  <!-- Tab Switcher -->
+  <div class="tab-switcher">
+    <button class="tab-btn active" onclick="switchTab('mobile')">📱 Mobile (微信 App)</button>
+    <button class="tab-btn" onclick="switchTab('desktop')">💻 Desktop (微信网页版)</button>
+  </div>
+  
+  <!-- Mobile View -->
+  <div id="mobile-view" class="device-container">
+    <div>
+      <div class="preview-label">WeChat Mobile — 中文版 (Chinese)</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        
+        <!-- Status Bar -->
+        <div class="wechat-statusbar">
+          <span>9:00</span>
+          <div class="right-icons">
+            <span>📶</span>
+            <span>📡</span>
+            <span>🔋</span>
+          </div>
+        </div>
+        
+        <!-- Nav Bar -->
+        <div class="wechat-navbar">
+          <span class="back-arrow">‹</span>
+          <span class="nav-title">深圳蜂启咨询有限公司</span>
+          <span class="nav-dots">···</span>
+        </div>
+        
+        <!-- Article Content -->
+        <div class="wechat-article">
+          
+          <!-- Account Header -->
+          <div class="account-header">
+            <div class="account-avatar">蜂</div>
+            <div class="account-info">
+              <div class="account-name">深圳蜂启咨询有限公司</div>
+              <div class="account-meta">2026年8月5日 09:00</div>
+            </div>
+          </div>
+          
+          <!-- Title -->
+          <h1 class="article-title">什么是对话式BI？AI驱动的自然语言分析</h1>
+          
+          <!-- Meta -->
+          <div class="article-meta">
+            <span class="author">Kenneth Kwok</span>
+            <span>·</span>
+            <span>原创</span>
+          </div>
+          
+          <!-- Body -->
+          <div class="article-body">
+            
+            <div class="wechat-lead">
+              对话式BI用自然语言界面取代了静态仪表板，让业务用户可以用日常语言或中文询问数据问题。据Gartner预测，到2026年，75%的新BI部署将包含对话式界面作为标准功能。
+            </div>
+            
+            <div class="wechat-stats">
+              <strong>📊 关键数据：</strong><br>
+              • Gartner预测：2026年75%的新BI部署将包含对话式界面<br>
+              • Forrester报告：对话式BI实现5-10倍更快的洞察速度<br>
+              • 不到25%的员工定期使用传统BI工具
+            </div>
+            
+            <div class="wechat-section-divider">— · —</div>
+            
+            <h2>什么是对话式BI？</h2>
+            <p><strong>对话式BI是一种商业智能类别，使用户能够通过自然语言对话查询数据、获取洞察并触发工作流，而非传统的仪表板。</strong>由大语言模型和语义层驱动，对话式BI将企业中的分析采用率提高5-10倍。</p>
+            
+            <blockquote>
+              "下一代商业智能不再关乎更好的仪表板——而是通过业务用户每天使用的自然语言界面让数据变得触手可及。"
+              <cite>— Gartner BI Summit, 2025</cite>
+            </blockquote>
+            
+            <h2>传统BI vs 对话式BI</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>特性</th>
+                  <th>传统BI</th>
+                  <th>对话式BI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>查询方式</td>
+                  <td>SQL、拖拽</td>
+                  <td>自然语言</td>
+                </tr>
+                <tr>
+                  <td>学习曲线</td>
+                  <td>数周至数月</td>
+                  <td>几分钟</td>
+                </tr>
+                <tr>
+                  <td>洞察速度</td>
+                  <td>数小时至数天</td>
+                  <td>数秒</td>
+                </tr>
+                <tr>
+                  <td>用户采用率</td>
+                  <td>&lt;25%</td>
+                  <td>70%+</td>
+                </tr>
+                <tr>
+                  <td>平台</td>
+                  <td>独立仪表板</td>
+                  <td>企业微信、钉钉、飞书</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h2>对话式BI如何工作？</h2>
+            <p>当用户提问——"上个月亚太区销售额是多少？"——对话式BI系统解析意图，通过语义层将业务术语映射到数据库字段，生成相应的SQL或API查询，执行查询，并将结果以自然语言答案、图表或数据表格的形式返回。</p>
+            
+            <p>高级系统支持多轮对话上下文，允许追问"那与欧洲相比如何？"而无需重复约束条件。系统还集成了协作工具（企业微信、钉钉、Slack），让洞察在决策发生的地方浮现。</p>
+            
+            <h2>核心组件</h2>
+            <ol>
+              <li><strong>自然语言理解</strong> — 解析用户意图、实体、过滤器和聚合</li>
+              <li><strong>语义层</strong> — 将业务术语映射到物理数据字段</li>
+              <li><strong>查询生成与执行</strong> — 转换为SQL或API调用并安全执行</li>
+              <li><strong>响应格式化</strong> — 以叙述、图表或表格呈现结果</li>
+              <li><strong>上下文与记忆</strong> — 维护对话历史支持追问</li>
+            </ol>
+            
+            <h2>企业应用场景</h2>
+            <ul>
+              <li><strong>高管问答</strong>：管理层在会议中用自然语言询问营收、成本问题</li>
+              <li><strong>销售运营</strong>：区域经理通过聊天查询销售管道和预测</li>
+              <li><strong>自助分析</strong>：业务用户无需SQL培训即可探索数据</li>
+              <li><strong>自动报告</strong>：定时推送自然语言摘要到团队频道</li>
+            </ul>
+            
+            <!-- CTA -->
+            <div class="wechat-cta">
+              <h3>🚀 体验蜂启策略对话式BI</h3>
+              <p>在企业微信、钉钉、Slack和Teams中<br>用自然语言查询您的业务数据</p>
+            </div>
+            
+            <h2>常见问题</h2>
+            <div class="wechat-faq">
+              <div class="wechat-faq-item">
+                <div class="wechat-faq-q">Q：对话式BI安全吗？</div>
+                <div class="wechat-faq-a">A：是的，在实施得当的治理下，语义层强制执行行级安全，查询日志提供完整审计跟踪，原始数据不会离开数据仓库。</div>
+              </div>
+              <div class="wechat-faq-item">
+                <div class="wechat-faq-q">Q：对话式BI能取代仪表板吗？</div>
+                <div class="wechat-faq-a">A：它是补充而非替代。仪表板擅长监控已知KPI；对话式BI擅长临时探索和回答意外问题。</div>
+              </div>
+              <div class="wechat-faq-item">
+                <div class="wechat-faq-q">Q：支持哪些数据源？</div>
+                <div class="wechat-faq-a">A：几乎任何结构化或半结构化数据源：SQL数据库、数据仓库、云分析平台，甚至API。</div>
+              </div>
+            </div>
+            
+            <!-- Tags -->
+            <div class="wechat-tags">
+              <span class="wechat-tag">#对话式BI</span>
+              <span class="wechat-tag">#AI分析</span>
+              <span class="wechat-tag">#企业BI</span>
+              <span class="wechat-tag">#数据民主化</span>
+              <span class="wechat-tag">#自然语言分析</span>
+            </div>
+            
+          </div>
+          
+          <!-- Bottom -->
+          <div class="wechat-bottom">
+            <div class="read-original">阅读原文</div>
+            <div class="wechat-actions">
+              <div class="wechat-action">
+                <span class="icon">💬</span>
+                <span>留言</span>
+              </div>
+              <div class="wechat-action">
+                <span class="icon">👍</span>
+                <span>赞</span>
+              </div>
+              <div class="wechat-action">
+                <span class="icon">↗️</span>
+                <span>在看</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Footer -->
+          <div class="wechat-footer">
+            <div style="margin-bottom: 8px;">喜欢此内容的人还喜欢</div>
+            <div style="font-size: 11px; color: #bbb;">已是底部</div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <!-- English Version -->
+    <div>
+      <div class="preview-label">WeChat Mobile — English Version</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        
+        <div class="wechat-statusbar">
+          <span>9:00</span>
+          <div class="right-icons">
+            <span>📶</span>
+            <span>📡</span>
+            <span>🔋</span>
+          </div>
+        </div>
+        
+        <div class="wechat-navbar">
+          <span class="back-arrow">‹</span>
+          <span class="nav-title">Beehive Strategy</span>
+          <span class="nav-dots">···</span>
+        </div>
+        
+        <div class="wechat-article">
+          
+          <div class="account-header">
+            <div class="account-avatar" style="background: linear-gradient(135deg, #576b95, #364567);">B</div>
+            <div class="account-info">
+              <div class="account-name">Beehive Strategy Limited</div>
+              <div class="account-meta">Aug 5, 2026 09:00</div>
+            </div>
+          </div>
+          
+          <h1 class="article-title">What is Conversational BI? AI-Powered Analytics</h1>
+          
+          <div class="article-meta">
+            <span class="author">Kenneth Kwok</span>
+            <span>·</span>
+            <span>Original</span>
+          </div>
+          
+          <div class="article-body">
+            
+            <div class="wechat-lead">
+              Conversational BI replaces static dashboards with natural-language interfaces, letting business users ask data questions in plain English or Chinese. By 2026, Gartner predicts 75% of new BI deployments will include conversational interfaces.
+            </div>
+            
+            <div class="wechat-stats">
+              <strong>📊 Key Statistics:</strong><br>
+              • Gartner: 75% of new BI deployments include conversational interfaces by 2026<br>
+              • Forrester: 5-10x faster time-to-insight vs traditional dashboards<br>
+              • Fewer than 25% of employees use traditional BI tools regularly
+            </div>
+            
+            <div class="wechat-section-divider">— · —</div>
+            
+            <h2>What is Conversational BI?</h2>
+            <p><strong>Conversational BI is a category of business intelligence that enables users to query data, receive insights, and trigger workflows through natural-language conversations instead of traditional dashboards.</strong> Powered by large language models and semantic layers, Conversational BI increases analytics adoption by 5–10x in enterprises.</p>
+            
+            <blockquote>
+              "The next generation of business intelligence won't be about better dashboards — it will be about making data accessible through natural language interfaces."
+              <cite>— Gartner BI Summit, 2025</cite>
+            </blockquote>
+            
+            <h2>Traditional BI vs Conversational BI</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Traditional BI</th>
+                  <th>Conversational BI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Query Method</td><td>SQL, drag-and-drop</td><td>Natural language</td></tr>
+                <tr><td>Learning Curve</td><td>Weeks to months</td><td>Minutes</td></tr>
+                <tr><td>Time to Insight</td><td>Hours to days</td><td>Seconds</td></tr>
+                <tr><td>User Adoption</td><td>&lt;25%</td><td>70%+</td></tr>
+                <tr><td>Platform</td><td>Standalone dashboard</td><td>WeChat Work, DingTalk, Teams</td></tr>
+              </tbody>
+            </table>
+            
+            <h2>How Does It Work?</h2>
+            <p>When a user asks "What were sales in APAC last month?" — the system parses the intent, maps business terms to database fields via a semantic layer, generates SQL, executes it, and returns the result as a natural-language answer, chart, or table.</p>
+            
+            <p>Advanced systems maintain conversation context, allowing follow-up questions like "And how does that compare to Europe?" without repeating constraints. They also integrate with collaboration tools (Slack, Teams, WeChat Work).</p>
+            
+            <h2>Key Components</h2>
+            <ol>
+              <li><strong>Natural Language Understanding</strong> — Parses intent, entities, filters</li>
+              <li><strong>Semantic Layer</strong> — Maps business terms to data fields</li>
+              <li><strong>Query Generation</strong> — Translates to SQL or API calls</li>
+              <li><strong>Response Formatter</strong> — Presents as narratives, charts, tables</li>
+              <li><strong>Context & Memory</strong> — Supports multi-turn conversations</li>
+            </ol>
+            
+            <h2>Enterprise Use Cases</h2>
+            <ul>
+              <li><strong>Executive Q&A</strong>: C-suite asks revenue questions during meetings</li>
+              <li><strong>Sales Operations</strong>: Managers query pipeline via chat</li>
+              <li><strong>Self-Service Analytics</strong>: Business users explore data without SQL</li>
+              <li><strong>Automated Reporting</strong>: Daily NL summaries to team channels</li>
+            </ul>
+            
+            <div class="wechat-cta">
+              <h3>🚀 Experience Beehive Strategy BI</h3>
+              <p>Natural-language analytics inside WeChat Work,<br>DingTalk, Slack, and Microsoft Teams</p>
+            </div>
+            
+            <h2>FAQ</h2>
+            <div class="wechat-faq">
+              <div class="wechat-faq-item">
+                <div class="wechat-faq-q">Q: Is Conversational BI secure?</div>
+                <div class="wechat-faq-a">A: Yes. The semantic layer enforces row-level security, query logs provide audit trails, and no raw data leaves the warehouse.</div>
+              </div>
+              <div class="wechat-faq-item">
+                <div class="wechat-faq-q">Q: Can it replace dashboards?</div>
+                <div class="wechat-faq-a">A: It complements rather than replaces them. Dashboards excel at monitoring known KPIs; Conversational BI excels at ad-hoc exploration.</div>
+              </div>
+              <div class="wechat-faq-item">
+                <div class="wechat-faq-q">Q: What data sources are supported?</div>
+                <div class="wechat-faq-a">A: Virtually any structured or semi-structured source: SQL databases, data warehouses, cloud analytics platforms, and APIs.</div>
+              </div>
+            </div>
+            
+            <div class="wechat-tags">
+              <span class="wechat-tag">#ConversationalBI</span>
+              <span class="wechat-tag">#AIAnalytics</span>
+              <span class="wechat-tag">#EnterpriseBI</span>
+              <span class="wechat-tag">#DataDemocratisation</span>
+            </div>
+            
+          </div>
+          
+          <div class="wechat-bottom">
+            <div class="read-original">Read Original</div>
+            <div class="wechat-actions">
+              <div class="wechat-action">
+                <span class="icon">💬</span>
+                <span>Comment</span>
+              </div>
+              <div class="wechat-action">
+                <span class="icon">👍</span>
+                <span>Like</span>
+              </div>
+              <div class="wechat-action">
+                <span class="icon">↗️</span>
+                <span>Wow</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="wechat-footer">
+            <div style="margin-bottom: 8px;">People who liked this also liked</div>
+            <div style="font-size: 11px; color: #bbb;">End of article</div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Desktop View -->
+  <div id="desktop-view" class="device-container hidden">
+    <div>
+      <div class="preview-label">WeChat Desktop — 中文版 (Chinese)</div>
+      <div class="desktop-frame">
+        <div class="desktop-header">
+          <div class="dots">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+          </div>
+          <div class="url-bar">🔒 mp.weixin.qq.com/s/xxxxx</div>
+        </div>
+        <div class="desktop-content">
+          <div class="desktop-article">
+            
+            <div class="account-header">
+              <div class="account-avatar">蜂</div>
+              <div class="account-info">
+                <div class="account-name">深圳蜂启咨询有限公司</div>
+                <div class="account-meta">2026年8月5日 09:00 · 原创</div>
+              </div>
+            </div>
+            
+            <h1 class="article-title" style="font-size: 26px;">什么是对话式BI？AI驱动的自然语言分析</h1>
+            
+            <div class="article-meta" style="margin-bottom: 24px;">
+              <span class="author">Kenneth Kwok</span>
+              <span>·</span>
+              <span>2026年8月5日</span>
+            </div>
+            
+            <div class="article-body" style="font-size: 15px;">
+              <div class="wechat-lead">
+                对话式BI用自然语言界面取代了静态仪表板，让业务用户可以用日常语言询问数据问题。据Gartner预测，到2026年，75%的新BI部署将包含对话式界面作为标准功能。
+              </div>
+              
+              <div class="wechat-stats">
+                <strong>📊 关键数据：</strong> Gartner预测2026年75%新BI部署含对话界面 · Forrester报告5-10倍更快洞察 · 不到25%员工使用传统BI
+              </div>
+              
+              <h2>什么是对话式BI？</h2>
+              <p><strong>对话式BI是一种商业智能类别，使用户能够通过自然语言对话查询数据、获取洞察并触发工作流。</strong>由大语言模型和语义层驱动，将企业分析采用率提高5-10倍。</p>
+              
+              <blockquote>
+                "下一代商业智能不再关乎更好的仪表板——而是通过自然语言界面让数据触手可及。"
+                <cite>— Gartner BI Summit, 2025</cite>
+              </blockquote>
+              
+              <h2>传统BI vs 对话式BI</h2>
+              <table>
+                <thead>
+                  <tr><th>特性</th><th>传统BI</th><th>对话式BI</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>查询方式</td><td>SQL、拖拽</td><td>自然语言</td></tr>
+                  <tr><td>学习曲线</td><td>数周至数月</td><td>几分钟</td></tr>
+                  <tr><td>洞察速度</td><td>数小时至数天</td><td>数秒</td></tr>
+                  <tr><td>采用率</td><td>&lt;25%</td><td>70%+</td></tr>
+                </tbody>
+              </table>
+              
+              <h2>核心组件</h2>
+              <ol>
+                <li><strong>自然语言理解</strong> — 解析用户意图和实体</li>
+                <li><strong>语义层</strong> — 映射业务术语到数据字段</li>
+                <li><strong>查询生成</strong> — 转换为SQL或API调用</li>
+                <li><strong>响应格式化</strong> — 呈现叙述、图表、表格</li>
+                <li><strong>上下文记忆</strong> — 支持多轮对话</li>
+              </ol>
+              
+              <div class="wechat-cta">
+                <h3>🚀 体验蜂启策略对话式BI</h3>
+                <p>在企业微信、钉钉、Slack和Teams中用自然语言查询业务数据</p>
+              </div>
+              
+              <h2>常见问题</h2>
+              <div class="wechat-faq">
+                <div class="wechat-faq-item">
+                  <div class="wechat-faq-q">Q：对话式BI安全吗？</div>
+                  <div class="wechat-faq-a">A：语义层强制行级安全，查询日志提供完整审计跟踪，原始数据不离开数据仓库。</div>
+                </div>
+                <div class="wechat-faq-item">
+                  <div class="wechat-faq-q">Q：能取代仪表板吗？</div>
+                  <div class="wechat-faq-a">A：互补而非替代。仪表板擅长监控已知KPI，对话式BI擅长临时探索。</div>
+                </div>
+              </div>
+              
+              <div class="wechat-tags">
+                <span class="wechat-tag">#对话式BI</span>
+                <span class="wechat-tag">#AI分析</span>
+                <span class="wechat-tag">#企业BI</span>
+              </div>
+            </div>
+            
+            <div style="border-top: 1px solid #eee; padding-top: 16px; margin-top: 20px;">
+              <div class="read-original">阅读原文</div>
+              <div class="wechat-actions" style="border: none;">
+                <div class="wechat-action"><span class="icon">💬</span><span>留言</span></div>
+                <div class="wechat-action"><span class="icon">👍</span><span>赞</span></div>
+                <div class="wechat-action"><span class="icon">↗️</span><span>在看</span></div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Info Section -->
+  <div style="margin-top: 40px; padding: 24px; background: #fff; border-radius: 12px; max-width: 600px; margin-left: auto; margin-right: auto;">
+    <h3 style="font-size: 16px; margin-bottom: 16px; color: #222;">📋 WeChat OA Publishing Notes</h3>
+    <div style="font-size: 14px; color: #666; line-height: 1.8;">
+      <p style="margin-bottom: 10px;"><strong>Article format:</strong> WeChat uses rich-text HTML (no Markdown). Content is pasted into the WeChat editor at mp.weixin.qq.com.</p>
+      <p style="margin-bottom: 10px;"><strong>Images:</strong> Must be uploaded separately via the WeChat media library. External image links are blocked.</p>
+      <p style="margin-bottom: 10px;"><strong>Styling:</strong> WeChat strips external CSS. All styling must be inline. The green accent (#07c160) matches WeChat's brand.</p>
+      <p style="margin-bottom: 10px;"><strong>Publishing:</strong> Free Official Accounts can publish 1 article/day. Subscription accounts push to followers' feed.</p>
+      <p style="margin-bottom: 10px;"><strong>Automation:</strong> Use <a href="https://github.com/wechatsync/Wechatsync" style="color: #07c160;">Wechatsync</a> Chrome extension or <a href="https://github.com/doocs/md" style="color: #07c160;">doocs/md</a> editor for Markdown-to-WeChat conversion.</p>
+    </div>
+  </div>
+  
+</div>
+
+<script>
+function switchTab(tab) {
+  const mobile = document.getElementById('mobile-view');
+  const desktop = document.getElementById('desktop-view');
+  const btns = document.querySelectorAll('.tab-btn');
+  
+  if (tab === 'mobile') {
+    mobile.classList.remove('hidden');
+    desktop.classList.add('hidden');
+    btns[0].classList.add('active');
+    btns[1].classList.remove('active');
+  } else {
+    mobile.classList.add('hidden');
+    desktop.classList.remove('hidden');
+    btns[0].classList.remove('active');
+    btns[1].classList.add('active');
+  }
+}
+</script>
+
+</body>
+</html>
