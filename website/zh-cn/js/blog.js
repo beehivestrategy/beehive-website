@@ -1,5 +1,5 @@
 /**
- * Beehive Strategy Blog — Article listing & pagination
+ * 蜂启咨询 Blog — Article listing & pagination
  * Loads articles from manifest.json and renders them dynamically
  */
 
@@ -57,7 +57,7 @@
             <h2 class="blog-card-title" itemprop="headline">${article.title}</h2>
             <p class="blog-card-excerpt" itemprop="description">${excerpt}</p>
             <div class="blog-card-footer">
-              <span class="blog-card-author" itemprop="author">Beehive Strategy</span>
+              <span class="blog-card-author" itemprop="author">蜂启咨询</span>
               <span class="blog-card-readmore">Read more &rarr;</span>
             </div>
           </div>
