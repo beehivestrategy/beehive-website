@@ -90,6 +90,36 @@
     `;
   }
 
+  async function renderPage(pageNum) {
+    const container = document.getElementById('blog-list-container');
+    if (!container) return;
+
+    const start = (pageNum - 1) * ARTICLES_PER_PAGE;
+    const pageArticles = allArticles.slice(start, start + ARTICLES_PER_PAGE);
+
+    container.innerHTML = pageArticles.map(renderArticleCard).join('');
+
+    const paginationEl = document.getElementById('blog-pagination');
+    if (paginationEl) {
+      paginationEl.innerHTML = renderPagination(totalPages, pageNum);
+      paginationEl.querySelectorAll('.pagination-page[data-page]').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          currentPage = parseInt(this.dataset.page, 10);
+          renderPage(currentPage);
+          window.scrollTo({ top: document.getElementById('blog-list').offsetTop - 80, behavior: 'smooth' });
+        });
+      });
+    }
+
+    // Trigger reveal animations
+    if (window.RevealManager) {
+      window.RevealManager.refresh();
+    }
+  }
+
+  let totalPages = 1;
+
   async function init() {
     const container = document.getElementById('blog-list-container');
     if (!container) return;
@@ -105,29 +135,8 @@
     // Sort by date descending
     allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    const totalPages = Math.ceil(allArticles.length / ARTICLES_PER_PAGE);
-    const start = (currentPage - 1) * ARTICLES_PER_PAGE;
-    const pageArticles = allArticles.slice(start, start + ARTICLES_PER_PAGE);
-
-    container.innerHTML = pageArticles.map(renderArticleCard).join('');
-
-    const paginationEl = document.getElementById('blog-pagination');
-    if (paginationEl) {
-      paginationEl.innerHTML = renderPagination(totalPages, currentPage);
-      paginationEl.querySelectorAll('.pagination-page[data-page]').forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          currentPage = parseInt(this.dataset.page, 10);
-          init();
-          window.scrollTo({ top: document.getElementById('blog-list').offsetTop - 80, behavior: 'smooth' });
-        });
-      });
-    }
-
-    // Trigger reveal animations
-    if (window.RevealManager) {
-      window.RevealManager.refresh();
-    }
+    totalPages = Math.ceil(allArticles.length / ARTICLES_PER_PAGE);
+    await renderPage(currentPage);
   }
 
   document.addEventListener('DOMContentLoaded', init);

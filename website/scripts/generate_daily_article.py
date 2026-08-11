@@ -35,6 +35,10 @@ BLOG_CN_DIR = Path(__file__).parent.parent / "zh-cn" / "blog" / "articles"
 BLOG_TW_DIR = Path(__file__).parent.parent / "zh-tw" / "blog" / "articles"
 BLOG_INDEX = Path(__file__).parent.parent / "blog.html"
 SITEMAP = Path(__file__).parent.parent / "sitemap.xml"
+SITEMAP_EN = Path(__file__).parent.parent / "sitemap-blog-en.xml"
+SITEMAP_ZHCN = Path(__file__).parent.parent / "sitemap-blog-zhcn.xml"
+SITEMAP_ZHTW = Path(__file__).parent.parent / "sitemap-blog-zhtw.xml"
+SITEMAP_INDEX = Path(__file__).parent.parent / "sitemap-index.xml"
 FEED_XML = Path(__file__).parent.parent / "blog" / "feed.xml"
 
 # OpenRouter config
@@ -548,32 +552,62 @@ def update_blog_index(article, date_str):
 
 
 def update_sitemap(slug, date_str):
-    """Add new article URLs to sitemap.xml."""
-    if not SITEMAP.exists():
-        print(f"WARNING: Sitemap not found at {SITEMAP}")
-        return
-
-    xml = SITEMAP.read_text(encoding="utf-8")
+    """Add new article URLs to sitemap.xml and all sub-sitemaps."""
     urls = [
         f"{SITE_BASE_URL}/blog/articles/{slug}",
         f"{SITE_BASE_URL}/zh-cn/blog/articles/{slug}",
         f"{SITE_BASE_URL}/zh-tw/blog/articles/{slug}",
     ]
 
-    new_entries = ""
-    for url in urls:
-        new_entries += f"""
+    # Update legacy combined sitemap.xml
+    if SITEMAP.exists():
+        xml = SITEMAP.read_text(encoding="utf-8")
+        new_entries = ""
+        for url in urls:
+            new_entries += f"""
   <url>
     <loc>{url}</loc>
     <lastmod>{date_str}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>"""
+        xml = xml.replace("</urlset>", new_entries + "\n</urlset>")
+        SITEMAP.write_text(xml, encoding="utf-8")
+        print(f"  Added 3 URLs to sitemap.xml")
 
-    # Insert before </urlset>
-    xml = xml.replace("</urlset>", new_entries + "\n</urlset>")
-    SITEMAP.write_text(xml, encoding="utf-8")
-    print(f"  Added 3 URLs to sitemap")
+    # Build hreflang alternates for sub-sitemaps
+    alternates_xml = ""
+    for lang_code, url in [("en", urls[0]), ("zh-CN", urls[1]), ("zh-TW", urls[2])]:
+        alternates_xml += f'\n    <xhtml:link rel="alternate" hreflang="{lang_code}" href="{url}"/>'
+    alternates_xml += f'\n    <xhtml:link rel="alternate" hreflang="x-default" href="{urls[0]}"/>'
+
+    # Update each sub-sitemap with proper hreflang annotations
+    sub_sitemaps = [
+        (SITEMAP_EN, urls[0]),
+        (SITEMAP_ZHCN, urls[1]),
+        (SITEMAP_ZHTW, urls[2]),
+    ]
+
+    for sitemap_path, url in sub_sitemaps:
+        if sitemap_path.exists():
+            xml = sitemap_path.read_text(encoding="utf-8")
+            entry = f"""
+  <url>
+    <loc>{url}</loc>
+    <lastmod>{date_str}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>{alternates_xml}
+  </url>"""
+            xml = xml.replace("</urlset>", entry + "\n</urlset>")
+            sitemap_path.write_text(xml, encoding="utf-8")
+
+    # Update sitemap-index.xml lastmod dates
+    if SITEMAP_INDEX.exists():
+        xml = SITEMAP_INDEX.read_text(encoding="utf-8")
+        xml = re.sub(r"<lastmod>\d{4}-\d{2}-\d{2}</lastmod>", f"<lastmod>{date_str}</lastmod>", xml)
+        SITEMAP_INDEX.write_text(xml, encoding="utf-8")
+
+    print(f"  Added URLs to all sub-sitemaps with hreflang annotations")
 
 
 def update_feed(article, date_str):

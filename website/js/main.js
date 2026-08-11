@@ -19,7 +19,8 @@
   };
 
   // Determine particle count based on device capability
-  CONFIG.particleCount = CONFIG.isMobile ? 80 : 150;
+  // Reduced counts for better INP (Interaction to Next Paint) performance
+  CONFIG.particleCount = CONFIG.isMobile ? 30 : 60;
 
   // ——— DOM Cache ———
   const DOM = {
@@ -65,25 +66,52 @@
     }
   };
 
+  // ——— Consolidated Scroll Handler (reduces INP by using single rAF) ———
+  let scrollTicking = false;
+  let lastScrollY = 0;
+
+  function onScroll() {
+    lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        // Header effect
+        if (DOM.header) {
+          if (lastScrollY > CONFIG.headerScrollThreshold) {
+            DOM.header.classList.add('scrolled');
+          } else {
+            DOM.header.classList.remove('scrolled');
+          }
+        }
+
+        // Scroll progress bar
+        const progressBar = document.getElementById('scroll-progress');
+        if (progressBar) {
+          const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const progress = docHeight > 0 ? (lastScrollY / docHeight) * 100 : 0;
+          progressBar.style.width = progress + '%';
+        }
+
+        // Back to top button
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (backToTopBtn) {
+          if (lastScrollY > 500) {
+            backToTopBtn.classList.add('visible');
+          } else {
+            backToTopBtn.classList.remove('visible');
+          }
+        }
+
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }
+
   // ——— Header Scroll Effect ———
   function initHeader() {
     if (!DOM.header) return;
-
-    let lastScroll = 0;
-    const scrollHandler = utils.throttle(() => {
-      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-
-      // Add/remove scrolled class
-      if (currentScroll > CONFIG.headerScrollThreshold) {
-        DOM.header.classList.add('scrolled');
-      } else {
-        DOM.header.classList.remove('scrolled');
-      }
-
-      lastScroll = currentScroll;
-    }, 50);
-
-    window.addEventListener('scroll', scrollHandler, { passive: true });
+    // Uses consolidated onScroll handler — no separate listener needed
   }
 
   // ——— Mobile Menu ———
@@ -187,22 +215,61 @@
     }
 
     function connectParticles() {
-      const maxDistance = 120;
+      // Use spatial grid for O(n) connection check instead of O(n²)
+      const maxDistance = 100;
+      const cellSize = maxDistance;
+      const cols = Math.ceil(canvas.width / cellSize) + 1;
+      const rows = Math.ceil(canvas.height / cellSize) + 1;
+      const grid = new Array(cols * rows);
 
+      // Assign particles to grid cells
       for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        const p = particles[i];
+        const cx = Math.max(0, Math.min(cols - 1, Math.floor(p.x / cellSize)));
+        const cy = Math.max(0, Math.min(rows - 1, Math.floor(p.y / cellSize)));
+        const idx = cy * cols + cx;
+        if (!grid[idx]) grid[idx] = [];
+        grid[idx].push(i);
+      }
 
-          if (distance < maxDistance) {
-            const opacity = (1 - distance / maxDistance) * 0.15;
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(43, 158, 139, ${opacity})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
+      // Check only neighboring cells
+      for (let cy = 0; cy < rows; cy++) {
+        for (let cx = 0; cx < cols; cx++) {
+          const idx = cy * cols + cx;
+          const cell = grid[idx];
+          if (!cell) continue;
+
+          // Check particles in current and adjacent cells
+          for (let dy = 0; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              if (dy === 0 && dx < 0) continue;
+              const nx = cx + dx;
+              const ny = cy + dy;
+              if (nx < 0 || nx >= cols || ny >= rows) continue;
+              const nidx = ny * cols + nx;
+              const ncell = grid[nidx];
+              if (!ncell) continue;
+
+              for (let i = 0; i < cell.length; i++) {
+                const pi = particles[cell[i]];
+                for (let j = 0; j < ncell.length; j++) {
+                  if (idx === nidx && cell[i] >= ncell[j]) continue;
+                  const pj = particles[ncell[j]];
+                  const ddx = pi.x - pj.x;
+                  const ddy = pi.y - pj.y;
+                  const distance = Math.sqrt(ddx * ddx + ddy * ddy);
+                  if (distance < maxDistance) {
+                    const opacity = (1 - distance / maxDistance) * 0.15;
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(43, 158, 139, ${opacity})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.moveTo(pi.x, pi.y);
+                    ctx.lineTo(pj.x, pj.y);
+                    ctx.stroke();
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -691,17 +758,7 @@
 
   // ——— Scroll Progress Indicator ———
   function initScrollProgress() {
-    if (CONFIG.prefersReducedMotion) return;
-
-    const progressBar = document.getElementById('scroll-progress');
-    if (!progressBar) return;
-
-    window.addEventListener('scroll', utils.throttle(() => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      progressBar.style.width = progress + '%';
-    }, 50), { passive: true });
+    // Uses consolidated onScroll handler — no separate listener needed
   }
 
   // ——— Back to Top Button ———
@@ -709,15 +766,7 @@
     const btn = document.getElementById('back-to-top');
     if (!btn) return;
 
-    window.addEventListener('scroll', utils.throttle(() => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollTop > 500) {
-        btn.classList.add('visible');
-      } else {
-        btn.classList.remove('visible');
-      }
-    }, 100), { passive: true });
-
+    // Visibility handled by consolidated onScroll handler
     btn.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
@@ -947,30 +996,47 @@
   function init() {
     // Run lang switcher FIRST — it's critical UX, must work even if other inits fail
     try { initLangSwitcher(); } catch(e) { console.warn('Lang switcher init failed:', e); }
+    
+    // Register consolidated scroll listener (replaces 3 separate listeners)
+    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    // Critical above-the-fold interactions — run immediately
     try { initHeader(); } catch(e) {}
     try { initMobileMenu(); } catch(e) {}
-    try { initHeroParticles(); } catch(e) {}
-    try { initScrollReveal(); } catch(e) {}
-    try { initCounterAnimation(); } catch(e) {}
-    try { initNewAnimations(); } catch(e) {}
-    try { initLineDrawAnimation(); } catch(e) {}
-    try { initBarGrowthAnimation(); } catch(e) {}
-    try { initSparklineDrawAnimation(); } catch(e) {}
-    try { initCompBarFillAnimation(); } catch(e) {}
-    try { initDonutDrawAnimation(); } catch(e) {}
     try { initFAQ(); } catch(e) {}
-    try { initSmoothScroll(); } catch(e) {}
-    try { initTiltEffect(); } catch(e) {}
-    try { initMagneticButtons(); } catch(e) {}
-    try { initGSAPHero(); } catch(e) {}
-    try { initLenis(); } catch(e) {}
-    try { initScrollProgress(); } catch(e) {}
-    try { initBackToTop(); } catch(e) {}
-    try { initSkeletonLoading(); } catch(e) {}
-    try { initPerformanceMonitoring(); } catch(e) {}
     try { initActiveSectionNav(); } catch(e) {}
-    try { initBarChart(); } catch(e) {}
-    try { initComparisonBars(); } catch(e) {}
+    
+    // Defer non-critical visual enhancements to improve INP
+    // Use requestIdleCallback if available, otherwise setTimeout
+    const deferFn = window.requestIdleCallback || function(cb) { setTimeout(cb, 50); };
+    
+    deferFn(() => {
+      try { initHeroParticles(); } catch(e) {}
+      try { initScrollReveal(); } catch(e) {}
+      try { initCounterAnimation(); } catch(e) {}
+      try { initNewAnimations(); } catch(e) {}
+      try { initLineDrawAnimation(); } catch(e) {}
+      try { initBarGrowthAnimation(); } catch(e) {}
+      try { initSparklineDrawAnimation(); } catch(e) {}
+      try { initCompBarFillAnimation(); } catch(e) {}
+      try { initDonutDrawAnimation(); } catch(e) {}
+      try { initSmoothScroll(); } catch(e) {}
+      try { initScrollProgress(); } catch(e) {}
+      try { initBackToTop(); } catch(e) {}
+      try { initSkeletonLoading(); } catch(e) {}
+      try { initBarChart(); } catch(e) {}
+      try { initComparisonBars(); } catch(e) {}
+    });
+    
+    // Further defer heavy animation libraries
+    const deferHeavyFn = window.requestIdleCallback || function(cb) { setTimeout(cb, 200); };
+    deferHeavyFn(() => {
+      try { initTiltEffect(); } catch(e) {}
+      try { initMagneticButtons(); } catch(e) {}
+      try { initGSAPHero(); } catch(e) {}
+      try { initLenis(); } catch(e) {}
+      try { initPerformanceMonitoring(); } catch(e) {}
+    });
   }
 
   // Start when DOM is ready

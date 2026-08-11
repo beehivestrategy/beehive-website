@@ -81,11 +81,12 @@ function htmlToMarkdown(html) {
 export async function onRequest(context) {
   const url = new URL(context.request.url);
 
-  // Redirect beehivestrategy.com (without www) to www.beehivestrategy.com
-  if (url.hostname === 'beehivestrategy.com') {
-    url.hostname = 'www.beehivestrategy.com';
-    return Response.redirect(url.toString(), 301);
-  }
+  try {
+    // Redirect beehivestrategy.com (without www) to www.beehivestrategy.com
+    if (url.hostname === 'beehivestrategy.com') {
+      url.hostname = 'www.beehivestrategy.com';
+      return Response.redirect(url.toString(), 301);
+    }
 
   // Handle CORS preflight for .well-known paths
   if (url.pathname.startsWith('/.well-known/') && context.request.method === 'OPTIONS') {
@@ -102,8 +103,10 @@ export async function onRequest(context) {
 
   // Markdown content negotiation (Markdown for Agents)
   // When Accept: text/markdown is requested, return a markdown version of the page
+  // Skip markdown negotiation for blog articles to prevent timeouts on large pages
   const acceptHeader = context.request.headers.get('Accept') || '';
-  if (acceptHeader.includes('text/markdown') && context.request.method === 'GET') {
+  const isBlogArticle = url.pathname.includes('/blog/articles/');
+  if (acceptHeader.includes('text/markdown') && context.request.method === 'GET' && !isBlogArticle) {
     const securityHeaders = {
       'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
       'X-Frame-Options': 'SAMEORIGIN',
@@ -138,35 +141,43 @@ export async function onRequest(context) {
     }
 
     // For pages without .md files, convert HTML to markdown on the fly
-    const htmlResponse = await context.next();
-    if (htmlResponse.ok) {
-      const contentType = htmlResponse.headers.get('Content-Type') || '';
-      if (contentType.includes('text/html')) {
-        const html = await htmlResponse.text();
-        const markdown = htmlToMarkdown(html);
-        if (markdown && markdown.length > 50) {
-          const tokenEstimate = Math.ceil(markdown.length / 4);
-          return new Response(markdown, {
-            status: 200,
-            headers: {
-              ...securityHeaders,
-              'Content-Type': 'text/markdown; charset=utf-8',
-              'x-markdown-tokens': tokenEstimate.toString(),
-            },
-          });
+    // Wrapped in try-catch to prevent 5xx errors on large/complex pages
+    try {
+      const htmlResponse = await context.next();
+      if (htmlResponse.ok) {
+        const contentType = htmlResponse.headers.get('Content-Type') || '';
+        if (contentType.includes('text/html')) {
+          const html = await htmlResponse.text();
+          // Skip conversion for very large pages to prevent timeouts
+          if (html.length < 100000) {
+            const markdown = htmlToMarkdown(html);
+            if (markdown && markdown.length > 50) {
+              const tokenEstimate = Math.ceil(markdown.length / 4);
+              return new Response(markdown, {
+                status: 200,
+                headers: {
+                  ...securityHeaders,
+                  'Content-Type': 'text/markdown; charset=utf-8',
+                  'x-markdown-tokens': tokenEstimate.toString(),
+                },
+              });
+            }
+          }
         }
       }
-    }
 
-    // If markdown conversion failed, return the HTML response with security headers
-    const fallbackHeaders = new Headers(htmlResponse.headers);
-    Object.entries(securityHeaders).forEach(([k, v]) => fallbackHeaders.set(k, v));
-    return new Response(htmlResponse.body, {
-      status: htmlResponse.status,
-      statusText: htmlResponse.statusText,
-      headers: fallbackHeaders,
-    });
-  }
+      // If markdown conversion failed, return the HTML response with security headers
+      const fallbackHeaders = new Headers(htmlResponse.headers);
+      Object.entries(securityHeaders).forEach(([k, v]) => fallbackHeaders.set(k, v));
+      return new Response(htmlResponse.body, {
+        status: htmlResponse.status,
+        statusText: htmlResponse.statusText,
+        headers: fallbackHeaders,
+      });
+    } catch (mdErr) {
+      // If markdown conversion fails, fall through to normal response
+      console.error('Markdown conversion error:', mdErr);
+    }
 
   // Return 410 Gone for old WordPress/WooCommerce URL patterns
   // This speeds up de-indexing compared to 404 (Google treats 410 as "permanently removed")
@@ -276,4 +287,19 @@ export async function onRequest(context) {
     statusText: response.statusText,
     headers: newHeaders,
   });
-}
+
+  } catch (err) {
+    // Return 500 error page for any unhandled errors
+    console.error('Middleware error:', err);
+    const errorHtml = '<!DOCTYPE html><html><head><title>Server Error | Beehive Strategy</title><meta name="robots" content="noindex"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-family:system-ui,sans-serif;background:#0a0e0d;color:#e8efe9;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:2rem;text-align:center}.container{max-width:500px}h1{font-size:2.5rem;margin-bottom:1rem;color:#4ade80}p{color:#88998c;line-height:1.6}a{display:inline-block;margin-top:2rem;padding:0.75rem 2rem;background:#4ade80;color:#0a0e0d;text-decoration:none;border-radius:8px;font-weight:600}</style></head><body><div class="container"><h1>500</h1><p>Something went wrong on our end. We\'ve been notified and are working on it.</p><a href="/">Back to Home</a></div></body></html>';
+    return new Response(errorHtml, {
+      status: 500,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+        'X-Frame-Options': 'SAMEORIGIN',
+        'X-Content-Type-Options': 'nosniff',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+      },
+    });
+  }
