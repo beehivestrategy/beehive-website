@@ -76,7 +76,7 @@ A comprehensive, production-ready company website for **Beehive Strategy Limited
 1. Replace GA4/Clarity placeholder IDs with actual tracking codes
 2. Create OpenGraph image (1200x630)
 3. Generate favicon variants
-4. Deploy to hosting (Vercel/Netlify/AWS)
+4. Deploy to Cloudflare Pages (www.beehivestrategy.com)
 5. Build Chinese language version (`/zh/`)
 6. Configure Google Search Console + Bing Webmaster Tools
 7. Submit sitemap.xml and RSS feed to Google Search Console
