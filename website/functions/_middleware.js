@@ -178,6 +178,7 @@ export async function onRequest(context) {
       // If markdown conversion fails, fall through to normal response
       console.error('Markdown conversion error:', mdErr);
     }
+  }
 
   // Return 410 Gone for old WordPress/WooCommerce URL patterns
   // This speeds up de-indexing compared to 404 (Google treats 410 as "permanently removed")
@@ -303,3 +304,4 @@ export async function onRequest(context) {
       },
     });
   }
+}

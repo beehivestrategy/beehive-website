@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>事件驱动架构与AI智能体编排：第二部分 | 蜂启咨询</title>
+  <meta name="description" content="在第二部分中，我们深入探讨用于大规模协调AI智能体的生产级事件驱动系统的高级模式——从Saga工作流和模式治理到可观测性与对话式闭环。">
+  <meta name="keywords" content="事件驱动架构, AI智能体编排, 企业AI, Saga模式, 模式治理, 蜂启咨询">
+  <meta name="author" content="Beehive Strategy Limited">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
+  <link rel="alternate" hreflang="en" href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
+  <link rel="alternate" hreflang="zh-CN" href="https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
+  <link rel="alternate" hreflang="zh-TW" href="https://www.beehivestrategy.com/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
+  <link rel="alternate" hreflang="x-default" href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
+  <meta name="geo.region" content="CN-GD">
+  <meta name="geo.placename" content="Shenzhen, Guangdong, China">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="蜂启咨询">
+  <meta property="og:title" content="事件驱动架构与AI智能体编排：第二部分 | 蜂启咨询">
+  <meta property="og:description" content="在第二部分中，我们深入探讨用于大规模协调AI智能体的生产级事件驱动系统的高级模式——从Saga工作流和模式治理到可观测性与对话式闭环。">
+  <meta property="og:url" content="https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
+  <meta property="og:image" content="https://www.beehivestrategy.com/assets/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="article:published_time" content="2026-07-24T13:00:00+08:00">
+  <meta property="article:author" content="蜂启咨询">
+  <meta property="article:section" content="工程">
+  <meta property="article:tag" content="事件驱动架构">
+  <meta property="article:tag" content="AI智能体编排">
+  <meta property="article:tag" content="企业AI">
+  <meta property="article:tag" content="Saga模式">
+  <meta property="article:tag" content="蜂启咨询">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@beehivestrategy">
+  <meta name="twitter:creator" content="@kenkw">
+  <meta name="twitter:title" content="事件驱动架构与AI智能体编排：第二部分 | 蜂启咨询">
+  <meta name="twitter:description" content="在第二部分中，我们深入探讨用于大规模协调AI智能体的生产级事件驱动系统的高级模式——从Saga工作流和模式治理到可观测性与对话式闭环。">
+  <meta name="twitter:image" content="https://www.beehivestrategy.com/assets/images/og-image.jpg">
+  <link rel="alternate" type="application/rss+xml" title="蜂启咨询博客RSS订阅" href="https://www.beehivestrategy.com/blog/feed.xml">
+  <meta name="theme-color" content="#0a0e0d">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css?v=20260811">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2#article", "headline": "事件驱动架构与AI智能体编排：第二部分", "description": "在第二部分中，我们深入探讨用于大规模协调AI智能体的生产级事件驱动系统的高级模式——从Saga工作流和模式治理到可观测性与对话式闭环。", "datePublished": "2026-07-24T13:00:00+08:00", "dateModified": "2026-08-16T09:00:00+08:00", "wordCount": "1420", "articleSection": "工程", "keywords": "事件驱动架构, AI智能体编排, 企业AI, Saga模式, 模式治理, 蜂启咨询", "inLanguage": "zh-CN", "isPartOf": {"@id": "https://www.beehivestrategy.com/zh-cn/blog/#blog"}, "author": {"@type": "Organization", "name": "蜂启咨询", "url": "https://www.beehivestrategy.com"}, "publisher": {"@id": "https://www.beehivestrategy.com/#organization"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首页", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog/"}, {"@type": "ListItem", "position": 3, "name": "事件驱动架构与AI智能体编排：第二部分"}]}
+  </script>
+</head>
+<body>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="https://www.beehivestrategy.com/zh-cn/" class="logo" aria-label="蜂启咨询 — 回到首页">
+        <img src="/assets/images/beehive-logo.png" alt="蜂启咨询 Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="主导航">
+        <a href="/zh-cn/solution" class="nav-link">解决方案</a>
+        <a href="/zh-cn/services" class="nav-link">咨询服务</a>
+        <a href="/zh-cn/industries" class="nav-link">行业方案</a>
+        <a href="/zh-cn/case-studies" class="nav-link">客户案例</a>
+        <a href="/zh-cn/pricing" class="nav-link">定价</a>
+        <a href="/zh-cn/about" class="nav-link">关于我们</a>
+        <a href="/zh-cn/blog" class="nav-link active">博客</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="切换语言" aria-expanded="false">
+            <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            <span id="current-lang-label">简</span>
+            <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="lang-switcher-dropdown" role="menu">
+            <a href="/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+            <a href="/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem" class="active" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+            <a href="/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem" data-lang="zh-tw"><span>繁體中文</span><span class="lang-code">繁</span></a>
+          </div>
+        </div>
+        <a href="/zh-cn/contact" class="btn btn-primary">预约演示</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="切换菜单" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <a href="/zh-cn/solution">解决方案</a>
+    <a href="/zh-cn/services">咨询服务</a>
+    <a href="/zh-cn/industries">行业方案</a>
+    <a href="/zh-cn/case-studies">客户案例</a>
+    <a href="/zh-cn/pricing">定价</a>
+    <a href="/zh-cn/about">关于我们</a>
+    <a href="/zh-cn/blog">博客</a>
+    <div class="mobile-lang-switcher">
+      <a href="/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" data-lang="en">English</a>
+      <a href="/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" data-lang="zh-cn" class="active">简体中文</a>
+      <a href="/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" data-lang="zh-tw">繁體中文</a>
+    </div>
+    <a href="/zh-cn/contact" class="btn btn-primary btn-lg">预约演示</a>
+  </div>
+  <nav aria-label="面包屑导航" class="breadcrumb-nav">
+    <div class="container">
+      <ol>
+        <li><a href="https://www.beehivestrategy.com/zh-cn/">首页</a></li>
+        <li><a href="https://www.beehivestrategy.com/zh-cn/blog">博客</a></li>
+        <li aria-current="page">事件驱动架构与AI智能体编排：第二部分</li>
+      </ol>
+    </div>
+  </nav>
+  <main role="main">
+    <article class="article">
+      <div class="container">
+        <header class="article-header">
+          <span class="label">工程</span>
+          <h1>事件驱动架构与AI智能体编排：第二部分</h1>
+          <div class="article-meta">
+            <span class="article-author">蜂启咨询</span>
+            <span aria-hidden="true">&middot;</span>
+            <time datetime="2026-07-24T13:00:00+08:00">July 24, 2026</time>
+            <span aria-hidden="true">&middot;</span>
+            <span>7 分钟阅读</span>
+          </div>
+        </header>
+        <div class="article-content">
+<p class="article-lead">在我们就事件驱动架构与AI智能体编排进行初步探索的六个月后，企业格局已显著成熟。各组织已从概念验证型智能体演示，迈向跨财务、运营、供应链和客户服务协调数十个专用智能体的生产系统。这一转变暴露出一类早期架构决策鲜少预见的新挑战：处理跨智能体边界的部分故障、在团队规模扩大时治理事件模式，以及在确定性业务逻辑让位于概率性智能体行为时保持可观测性。本文中，我们分享那些将成功生产部署与停滞试点区分开来的架构模式、治理规范和运营实践。</p>
+
+          <h2>超越发布-订阅的高级协调模式</h2>
+<p>为初始智能体原型提供良好支撑的发布-订阅基础模式，在智能体产生依赖关系时开始崩裂。在生产环境中，订单处理工作流可能涉及信用风险智能体、库存智能体、欺诈检测智能体和履约智能体——每个智能体都发布下游智能体消费的事件。当欺诈智能体标记一笔交易时，履约智能体不得继续执行。当库存不可用时，信用检查变得无关紧要。这些并非理论上的担忧；它们每天都在缺乏显式协调语义的多智能体系统中显现。</p>
+<p>Saga模式已成为管理长时间运行、多智能体业务流程的事实标准。与依赖于脆弱且在自主智能体服务间扩展性差的分布式事务不同，Saga将工作流分解为一系列本地事务，每个事务后跟随一个事件。如果某一步失败，补偿事件将撤销前面的操作。在实践中，这意味着为每个智能体操作定义显式的补偿处理程序：如果支付智能体成功但配送智能体失败，支付智能体接收反转事件并发起退款。实现Saga需要仔细的事件设计，但由此产生的弹性对于生产可靠性至关重要。</p>
+<p>熔断器提供了另一种关键防御机制。智能体服务，特别是那些封装外部API或大语言模型的服务，其故障模式与传统微服务不同。速率限制、上下文窗口耗尽和模型漂移可能以不可预测的方式降低性能。熔断器监控调用失败率，并暂时阻止对故障智能体的请求，使其得以恢复，同时更广泛的系统以降级但可预测的行为继续运行。我们建议将熔断器与回退智能体配对——更小、更简单的模型，在主智能体不可用时处理常规查询。</p>
+<p>Outbox模式解决了一种微妙但常见的故障模式：智能体更新其状态数据库并发出事件，但其中一个操作失败，导致系统不一致。通过Outbox表，数据库事务以原子方式提交状态变更和事件记录。单独的中继进程轮询Outbox并将事件发布到消息总线。这消除了双写问题，并确保每次状态变更恰好产生一个相应的事件。</p>
+<p>最后，具有语义重试策略的死信队列防止瞬态故障级联。并非所有智能体故障都等同。第三方API的超时值得立即以指数退避重试。模式验证失败需要人工干预。模型幻觉可能触发具有更强约束的重新提示。对故障进行分类并将其路由到适当的重试或升级路径，是成熟事件驱动智能体系统的标志。</p>
+
+          <h2>模式治理与事件契约</h2>
+<p>在小型智能体系统中，临时JSON事件很方便。在规模上，它们成为隐式契约、破坏性变更和调试噩梦的分布式单体。我们观察到一些拥有五十个智能体的企业，其中没有一个团队理解完整的事件拓扑——而且在一个领域中看似无害的模式变更，会在三个服务之外触发级联故障。</p>
+<p>模式治理始于区分命令、事件和查询。命令指示智能体执行操作（"验证这张发票"）。事件宣告某事已发生（"发票已验证"）。查询请求信息（"发票#4421的状态是什么？"）。模糊这些边界会产生耦合：如果消费者将命令视为事件，它们会构建脆弱的集成，在命令语义演进时崩溃。</p>
+<p>模式注册表为治理提供技术骨干。Confluent Schema Registry、AWS Glue Schema Registry或基于Git的自定义注册表等工具强制执行向前和向后兼容性规则。当团队提议模式变更时，自动检查验证现有消费者是否仍能解析事件。我们建议智能体间通信使用Avro或Protocol Buffers而非JSON：类型安全和紧凑序列化可减少错误和带宽，尤其对于高容量事件流。</p>
+<p>版本控制策略需要组织纪律。我们主张对事件模式采用语义化版本控制，并设定明确的弃用时间表。当智能体的能力演进时——例如，当客户服务智能体除一般咨询外开始处理退款请求——事件模式应显式反映这一点，而非重载现有字段。清晰的版本控制策略可防止使许多企业集成项目瘫痪的"版本混乱"。</p>
+<p>领域边界与技术边界同等重要。事件模式应与领域驱动设计中的有界上下文对齐。当财务智能体和物流智能体需要共享信息时，它们应交换粗粒度的领域事件，而非泄露内部数据模型。这种解耦允许每个智能体团队独立演进，这对于在智能体舰队增长时维持开发速度至关重要。</p>
+
+          <h2>概率系统中的可观测性</h2>
+<p>传统应用监控假设确定性行为：如果输入相同，输出应相同。AI智能体违背了这一假设。相同的提示发送到相同的模型，可能根据温度设置、上下文窗口构成和模型更新产生不同的响应。这种概率主义要求根本不同的可观测性策略。</p>
+<p>分布式追踪提供了基础。遍历系统的每个事件都应携带关联标识符，且每个智能体都应通过所有下游事件和外部调用传播此标识符。当用户报告不正确的推荐时，工程师必须能够在单个追踪视图中重建完整的事件链——从初始用户查询经过意图分类、知识检索、推理到响应生成。OpenTelemetry已成为这方面的标准，自定义跨度捕获智能体特定的元数据，如模型版本、提示令牌和检索到的上下文块。</p>
+<p>仅结构化日志是不够的。智能体系统产生巨大的日志量，搜索原始日志以查找根本原因是不切实际的。相反，我们建议将日志聚合为事件谱系图，可视化信息如何在智能体间流动和转换。这些图谱揭示了线性日志中不可见的模式：循环依赖、多个智能体争夺同一数据源的热点，以及交接边界处的延迟累积。</p>
+<p>智能体系统的指标应捕获意图漂移、交接延迟和解决时间。意图漂移衡量智能体对请求的解释在多次交接后与原始用户意图的偏差程度——这是多智能体链中的关键质量指标。交接延迟跟踪智能体发出事件与下一个智能体开始处理之间的时间，暴露事件总线或消费者扩展中的瓶颈。解决时间汇总从初始请求到最终答案的完整持续时间，这与用户满意度直接相关。</p>
+<p>构建我们称之为智能体舰队"神经系统"的东西——一个具有实时事件谱系、事件模式异常检测和意图漂移自动告警的集中式可观测性平面——不是奢侈品，而是企业规模生产系统的要求。</p>
+
+          <h2>从事件流到对话式行动</h2>
+<p>事件只有在驱动决策时才有价值。太多事件驱动架构终止于无人查看的仪表板或默默增长的数据库。当事件流直接连接到决策接口——特别是那些融入用户日常工作流的对话式接口时，智能体编排的真正投资回报才会显现。</p>
+<p>考虑一个制造场景。质量控制智能体检测到传感器数据中的异常，并发布"质量阈值 breached"事件。在传统架构中，此事件写入数据库并可能触发仪表板告警。在对话式架构中，事件触发自然语言摘要，直接通过微信企业版或钉钉交付给质量经理："3号线温度在14:32超过阈值。预测缺陷率：4.2%。建议操作：暂停批次#8841并检查冷却单元。需要我通知维护并安排更换吗？"经理用自然语言回复，编排层将此回复转换为维护智能体和调度智能体的事件。</p>
+<p>这个闭环——事件&rarr;洞察&rarr;自然语言&rarr;行动&rarr;新事件——正是蜂启咨询的对话式BI平台运作之处。我们的系统消费来自智能体编排层的事件流，应用语义理解将复杂的事件模式提炼为业务相关的叙事，并在团队已使用的IM平台内交付这些叙事。当高管问"Q3预测准确率为何下降？"时，平台追踪跨预测智能体、数据质量智能体和外部数据馈送的相关事件，然后呈现一个带有下钻选项的通俗语言答案。</p>
+<p>闭环需要仔细关注授权边界。并非每个事件都应呈现给每个用户。基于角色的过滤、数据脱敏和审计追踪确保对话式接口保持安全合规，同时保持可访问性。</p>
+
+          <h2>核心要点</h2>
+          <ul>
+            <li>多智能体协调需要Saga模式和熔断器——仅靠发布-订阅不足以应对具有相互依赖智能体的生产工作流。</li>
+            <li>具有注册表、显式版本控制策略和命令-事件-查询分离的模式治理，可防止技术债务在智能体舰队扩展时复合增长。</li>
+            <li>可观测性必须为概率系统重新设计，纳入分布式追踪、事件谱系图以及意图漂移和交接延迟等指标。</li>
+            <li>事件驱动架构只有在连接到决策接口时才能交付变革性价值；对话式BI弥合了事件检测与高管行动之间的差距。</li>
+            <li>在将事件驱动编排扩展到整个企业之前，从单个有界上下文和少量智能体舰队开始——过早扩大会放大每个架构弱点。</li>
+          </ul>
+          <h2>结论</h2>
+<p>事件驱动架构与AI智能体编排已从新兴模式演变为认真考虑规模化AI的企业的生产必需品。成功的组织不仅投资于智能体能力，还投资于围绕它们的协调、治理和可观测性基础设施。孤立的技术卓越是不够的；弹性系统需要深思熟虑的架构选择、规范的模式治理和为概率行为设计的可观测性。</p>
+<p>在蜂启咨询，我们帮助企业构建事件驱动基础、语义层和对话式接口，将智能体编排从技术好奇心转变为竞争优势。我们的平台连接50多个数据源和智能体端点，两周内部署，并直接在团队已使用的IM工具内交付洞察。<a href="/zh-cn/contact">预约免费演示</a>，了解我们如何加速您的智能体编排和分析之旅。</p>
+
+<h2>相关文章</h2>
+<ul><li><a href="/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration">事件驱动架构与AI智能体编排</a></li><li><a href="/zh-cn/blog/articles/semantic-layer-design-for-self-service-analytics">自助分析语义层设计</a></li><li><a href="/zh-cn/blog/articles/data-pipeline-observability-monitoring-beyond-failure">数据管道可观测性：超越故障的监控</a></li></ul>
+        </div>
+        <footer class="article-footer">
+          <div class="article-tags">
+    <span class="article-tag">工程</span>
+    <span class="article-tag">企业AI</span>
+    <span class="article-tag">AI智能体</span>
+    <span class="article-tag">事件驱动架构</span>
+    <span class="article-tag">蜂启咨询</span>
+          </div>
+          <div class="article-share">
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">LinkedIn</a>
+            <a href="https://twitter.com/intent/tweet?url=https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2&text=%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84%E4%B8%8EAI%E6%99%BA%E8%83%BD%E4%BD%93%E7%BC%96%E6%8E%92%EF%BC%9A%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">X</a>
+          </div>
+        </footer>
+        <nav class="article-nav" aria-label="文章导航">
+          <a href="https://www.beehivestrategy.com/zh-cn/blog/" class="article-nav-back">&larr; 返回全部文章</a>
+        </nav>
+      </div>
+    </article>
+    <section class="section section-alt cta" aria-label="行动号召">
+      <div class="container">
+        <div class="cta-content reveal">
+          <h2>亲自体验</h2>
+          <p>预约免费演示，了解AI驱动的对话式BI如何在两周内交付洞察——直接融入您的IM平台。</p>
+          <div class="cta-buttons">
+            <a href="/zh-cn/contact" class="btn btn-primary btn-lg">预约免费演示</a>
+            <a href="https://www.beehivestrategy.com/zh-cn/solution" class="btn btn-secondary btn-lg">探索平台</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="https://www.beehivestrategy.com/zh-cn/" class="nav-logo footer-logo" aria-label="蜂启咨询 — 回到首页">Beehive</a>
+          <p>企业AI与数据分析咨询。我们交付AI驱动的对话式智能，改变企业与数据交互的方式。</p>
+          <div class="social">
+            <a href="https://www.linkedin.com/company/beehive-strategy" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="/cdn-cgi/l/email-protection#c9a8aaaaa6bca7bd89abacaca1a0bfacbabdbba8bdacaeb0e7aaa6a4" aria-label="电子邮件"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>产品</h4>
+          <ul>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/solution">平台</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/solution">AI智能体</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/case-studies">客户案例</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/security">安全</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/pricing">定价</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>行业</h4>
+          <ul>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/industries">零售与电商</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/industries">金融服务</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/industries">制造业</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/industries">专业服务</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/industries">房地产</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>公司</h4>
+          <ul>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/about">关于我们</a></li>
+            <li><a href="/zh-cn/contact">联系我们</a></li>
+            <li><a href="https://www.beehivestrategy.com/zh-cn/solution">常见问题</a></li>
+            <li><a href="/cdn-cgi/l/email-protection#4a2b2929253f243e0a282f2f22233c2f393e382b3e2f2d3364292527">加入我们</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024&ndash;2026 Beehive Strategy Limited. 保留所有权利。</p>
+        <div class="footer-legal">
+          <a href="https://www.beehivestrategy.com/zh-cn/privacy">隐私政策</a>
+          <a href="https://www.beehivestrategy.com/zh-cn/terms">服务条款</a>
+          <a href="https://www.beehivestrategy.com/zh-cn/cookies">Cookie政策</a>
+        </div>
+        <p>中国深圳构建</p>
+      </div>
+    </div>
+  </footer>
+  <button class="back-to-top" id="back-to-top" aria-label="回到顶部">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/main.js?v=20260811" defer></script>
+</body>
+</html>
