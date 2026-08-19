@@ -1,267 +1,287 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html dir="ltr" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Event-Driven Architecture for AI Agent Orchestration: Part 2 | Beehive Strategy</title>
-  <meta name="description" content="In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops.">
-  <meta name="keywords" content="event-driven-architecture, ai-agent-orchestration, enterprise-ai, saga-pattern, schema-governance, beehive-strategy">
-  <meta name="author" content="Beehive Strategy Limited">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
-  <link rel="alternate" hreflang="en" href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
-  <link rel="alternate" hreflang="zh-CN" href="https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
-  <link rel="alternate" hreflang="zh-TW" href="https://www.beehivestrategy.com/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
-  <link rel="alternate" hreflang="x-default" href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
-  <meta name="geo.region" content="CN-GD">
-  <meta name="geo.placename" content="Shenzhen, Guangdong, China">
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Beehive Strategy">
-  <meta property="og:title" content="Event-Driven Architecture for AI Agent Orchestration: Part 2 | Beehive Strategy">
-  <meta property="og:description" content="In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops.">
-  <meta property="og:url" content="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
-  <meta property="og:image" content="https://www.beehivestrategy.com/assets/images/og-image.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="en_US">
-  <meta property="article:published_time" content="2026-07-24T13:00:00+08:00">
-  <meta property="article:author" content="Beehive Strategy">
-  <meta property="article:section" content="Engineering">
-  <meta property="article:tag" content="event-driven-architecture">
-  <meta property="article:tag" content="ai-agent-orchestration">
-  <meta property="article:tag" content="enterprise-ai">
-  <meta property="article:tag" content="saga-pattern">
-  <meta property="article:tag" content="beehive-strategy">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@beehivestrategy">
-  <meta name="twitter:creator" content="@kenkw">
-  <meta name="twitter:title" content="Event-Driven Architecture for AI Agent Orchestration: Part 2 | Beehive Strategy">
-  <meta name="twitter:description" content="In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops.">
-  <meta name="twitter:image" content="https://www.beehivestrategy.com/assets/images/og-image.jpg">
-  <link rel="alternate" type="application/rss+xml" title="Beehive Strategy Blog RSS Feed" href="https://www.beehivestrategy.com/blog/feed.xml">
-  <meta name="theme-color" content="#0a0e0d">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=20260811">
-  <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2#article", "headline": "Event-Driven Architecture for AI Agent Orchestration: Part 2", "description": "In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops.", "datePublished": "2026-07-24T13:00:00+08:00", "dateModified": "2026-08-16T09:00:00+08:00", "wordCount": "1420", "articleSection": "Engineering", "keywords": "event-driven-architecture, ai-agent-orchestration, enterprise-ai, saga-pattern, schema-governance, beehive-strategy", "inLanguage": "en", "isPartOf": {"@id": "https://www.beehivestrategy.com/blog/#blog"}, "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@id": "https://www.beehivestrategy.com/#organization"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2"}}
-  </script>
-  <script type="application/ld+json">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<title>Event-Driven Architecture for AI Agent Orchestration: Part 2 | Beehive Strategy</title>
+<meta content="In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops." name="description"/>
+<meta content="event-driven-architecture, ai-agent-orchestration, enterprise-ai, saga-pattern, schema-governance, beehive-strategy" name="keywords"/>
+<meta content="Beehive Strategy Limited" name="author"/>
+<meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/>
+<link href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" rel="canonical"/>
+<link href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" hreflang="en" rel="alternate"/>
+<link href="https://www.beehivestrategy.com/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" hreflang="zh-CN" rel="alternate"/>
+<link href="https://www.beehivestrategy.com/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" hreflang="zh-TW" rel="alternate"/>
+<link href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" hreflang="x-default" rel="alternate"/>
+<meta content="CN-GD" name="geo.region"/>
+<meta content="Shenzhen, Guangdong, China" name="geo.placename"/>
+<meta content="article" property="og:type"/>
+<meta content="Beehive Strategy" property="og:site_name"/>
+<meta content="Event-Driven Architecture for AI Agent Orchestration: Part 2 | Beehive Strategy" property="og:title"/>
+<meta content="In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops." property="og:description"/>
+<meta content="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" property="og:url"/>
+<meta content="https://www.beehivestrategy.com/assets/blog/covers/en/event-driven-architecture-for-ai-agent-orchestration-part-2.jpg" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="2026-07-24T13:00:00+08:00" property="article:published_time"/>
+<meta content="Beehive Strategy" property="article:author"/>
+<meta content="Engineering" property="article:section"/>
+<meta content="event-driven-architecture" property="article:tag"/>
+<meta content="ai-agent-orchestration" property="article:tag"/>
+<meta content="enterprise-ai" property="article:tag"/>
+<meta content="saga-pattern" property="article:tag"/>
+<meta content="beehive-strategy" property="article:tag"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="@beehivestrategy" name="twitter:site"/>
+<meta content="@kenkw" name="twitter:creator"/>
+<meta content="Event-Driven Architecture for AI Agent Orchestration: Part 2 | Beehive Strategy" name="twitter:title"/>
+<meta content="In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops." name="twitter:description"/>
+<meta content="https://www.beehivestrategy.com/assets/blog/covers/en/event-driven-architecture-for-ai-agent-orchestration-part-2.jpg" name="twitter:image"/>
+<link href="https://www.beehivestrategy.com/blog/feed.xml" rel="alternate" title="Beehive Strategy Blog RSS Feed" type="application/rss+xml"/>
+<meta content="#0a0e0d" name="theme-color"/>
+<link href="/assets/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="/css/styles.css?v=20260811" rel="stylesheet"/>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2#article",
+  "headline": "Event-Driven Architecture for AI Agent Orchestration: Part 2",
+  "description": "In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops.",
+  "datePublished": "2026-07-24T13:00:00+08:00",
+  "dateModified": "2026-08-16T09:00:00+08:00",
+  "wordCount": "1420",
+  "articleSection": "Engineering",
+  "keywords": "event-driven-architecture, ai-agent-orchestration, enterprise-ai, saga-pattern, schema-governance, beehive-strategy",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://www.beehivestrategy.com/blog/#blog"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Beehive Strategy",
+    "url": "https://www.beehivestrategy.com"
+  },
+  "publisher": {
+    "@id": "https://www.beehivestrategy.com/#organization"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2"
+  },
+  "image": "https://www.beehivestrategy.com/assets/blog/covers/en/event-driven-architecture-for-ai-agent-orchestration-part-2.jpg"
+}</script>
+<script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog/"}, {"@type": "ListItem", "position": 3, "name": "Event-Driven Architecture for AI Agent Orchestration: Part 2"}]}
   </script>
 </head>
 <body>
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-  <header class="header" id="header" role="banner">
-    <div class="header-inner">
-      <a href="https://www.beehivestrategy.com/" class="logo" aria-label="Beehive Strategy Home">
-        <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="eager">
-      </a>
-      <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
-        <a href="/solution" class="nav-link">Solution</a>
-        <a href="/services" class="nav-link">Services</a>
-        <a href="/industries" class="nav-link">Industries</a>
-        <a href="/case-studies" class="nav-link">Case Studies</a>
-        <a href="/pricing" class="nav-link">Pricing</a>
-        <a href="/about" class="nav-link">About</a>
-        <a href="/blog" class="nav-link active">Blog</a>
-      </nav>
-      <div class="nav-cta">
-        <div class="lang-switcher" id="lang-switcher">
-          <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
-            <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-            <span id="current-lang-label">EN</span>
-            <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="lang-switcher-dropdown" role="menu">
-            <a href="/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem" class="active" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
-            <a href="/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
-            <a href="/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem" data-lang="zh-tw"><span>繁體中文</span><span class="lang-code">繁</span></a>
-          </div>
-        </div>
-        <a href="/contact" class="btn btn-primary">Book a Demo</a>
-      </div>
-      <div class="nav-mobile">
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-    <a href="/solution">Solution</a>
-    <a href="/services">Services</a>
-    <a href="/industries">Industries</a>
-    <a href="/case-studies">Case Studies</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
-    <div class="mobile-lang-switcher">
-      <a href="/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" data-lang="en" class="active">English</a>
-      <a href="/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" data-lang="zh-cn">简体中文</a>
-      <a href="/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" data-lang="zh-tw">繁體中文</a>
-    </div>
-    <a href="/contact" class="btn btn-primary btn-lg">Book a Demo</a>
-  </div>
-  <nav aria-label="Breadcrumb" class="breadcrumb-nav">
-    <div class="container">
-      <ol>
-        <li><a href="https://www.beehivestrategy.com/">Home</a></li>
-        <li><a href="https://www.beehivestrategy.com/blog/">Blog</a></li>
-        <li aria-current="page">Event-Driven Architecture for AI Agent Orchestration: Part 2</li>
-      </ol>
-    </div>
-  </nav>
-  <main role="main">
-    <article class="article">
-      <div class="container">
-        <header class="article-header">
-          <span class="label">Engineering</span>
-          <h1>Event-Driven Architecture for AI Agent Orchestration: Part 2</h1>
-          <div class="article-meta">
-            <span class="article-author">By Beehive Strategy</span>
-            <span aria-hidden="true">&middot;</span>
-            <time datetime="2026-07-24T13:00:00+08:00">July 24, 2026</time>
-            <span aria-hidden="true">&middot;</span>
-            <span>7 min read</span>
-          </div>
-        </header>
-        <div class="article-content">
+<noscript><iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" style="display:none;visibility:hidden" width="0"></iframe></noscript>
+<div aria-hidden="true" class="scroll-progress" id="scroll-progress"></div>
+<header class="header" id="header" role="banner">
+<div class="header-inner">
+<a aria-label="Beehive Strategy Home" class="logo" href="https://www.beehivestrategy.com/">
+<img alt="Beehive Strategy Logo" height="36" loading="eager" src="/assets/images/beehive-logo.png" width="144"/>
+</a>
+<nav aria-label="Main navigation" class="nav-desktop" role="navigation">
+<a class="nav-link" href="/solution">Solution</a>
+<a class="nav-link" href="/services">Services</a>
+<a class="nav-link" href="/industries">Industries</a>
+<a class="nav-link" href="/case-studies">Case Studies</a>
+<a class="nav-link" href="/pricing">Pricing</a>
+<a class="nav-link" href="/about">About</a>
+<a class="nav-link active" href="/blog">Blog</a>
+</nav>
+<div class="nav-cta">
+<div class="lang-switcher" id="lang-switcher">
+<button aria-expanded="false" aria-label="Switch language" class="lang-switcher-btn" id="lang-switcher-btn">
+<svg class="globe-icon" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"></path></svg>
+<span id="current-lang-label">EN</span>
+<svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+</button>
+<div class="lang-switcher-dropdown" role="menu">
+<a class="active" data-lang="en" href="/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem"><span>English</span><span class="lang-code">EN</span></a>
+<a data-lang="zh-cn" href="/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem"><span>简体中文</span><span class="lang-code">简</span></a>
+<a data-lang="zh-tw" href="/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" role="menuitem"><span>繁體中文</span><span class="lang-code">繁</span></a>
+</div>
+</div>
+<a class="btn btn-primary" href="/contact">Book a Demo</a>
+</div>
+<div class="nav-mobile">
+<button aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu" class="hamburger" id="hamburger">
+<span></span><span></span><span></span>
+</button>
+</div>
+</div>
+</header>
+<div aria-hidden="true" class="mobile-menu" id="mobile-menu">
+<a href="/solution">Solution</a>
+<a href="/services">Services</a>
+<a href="/industries">Industries</a>
+<a href="/case-studies">Case Studies</a>
+<a href="/pricing">Pricing</a>
+<a href="/about">About</a>
+<a href="/blog">Blog</a>
+<div class="mobile-lang-switcher">
+<a class="active" data-lang="en" href="/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">English</a>
+<a data-lang="zh-cn" href="/zh-cn/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">简体中文</a>
+<a data-lang="zh-tw" href="/zh-tw/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">繁體中文</a>
+</div>
+<a class="btn btn-primary btn-lg" href="/contact">Book a Demo</a>
+</div>
+<nav aria-label="Breadcrumb" class="breadcrumb-nav">
+<div class="container">
+<ol>
+<li><a href="https://www.beehivestrategy.com/">Home</a></li>
+<li><a href="https://www.beehivestrategy.com/blog/">Blog</a></li>
+<li aria-current="page">Event-Driven Architecture for AI Agent Orchestration: Part 2</li>
+</ol>
+</div>
+</nav>
+<main role="main">
+<article class="article">
+<div class="container">
+<header class="article-header">
+<span class="label">Engineering</span>
+<h1>Event-Driven Architecture for AI Agent Orchestration: Part 2</h1>
+<div class="article-meta">
+<span class="article-author">By Beehive Strategy</span>
+<span aria-hidden="true">·</span>
+<time datetime="2026-07-24T13:00:00+08:00">July 24, 2026</time>
+<span aria-hidden="true">·</span>
+<span>7 min read</span>
+</div>
+</header>
+<div class="article-content">
 <p class="article-lead">Six months after our initial exploration of event-driven architecture for AI agent orchestration, the enterprise landscape has matured considerably. Organisations have moved beyond proof-of-concept agent demonstrations to production systems coordinating dozens of specialised agents across finance, operations, supply chain, and customer service. This shift has exposed a new class of challenges that early architectural decisions rarely anticipated: handling partial failures across agent boundaries, governing event schemas as teams scale, and maintaining observability when deterministic business logic gives way to probabilistic agent behaviour. In this article, we share the architectural patterns, governance disciplines, and operational practices that separate successful production deployments from stalled pilots.</p>
-
-          <h2>Advanced Coordination Patterns Beyond Pub-Sub</h2>
+<h2>Advanced Coordination Patterns Beyond Pub-Sub</h2>
 <p>The foundational publish-subscribe pattern that served initial agent prototypes well begins to fracture when agents develop dependencies. In production, an order-processing workflow might involve a credit-risk agent, an inventory agent, a fraud-detection agent, and a fulfilment agent — each publishing events that downstream agents consume. When the fraud agent flags a transaction, the fulfilment agent must not proceed. When inventory is unavailable, the credit check becomes irrelevant. These are not theoretical concerns; they manifest daily in multi-agent systems that lack explicit coordination semantics.</p>
 <p>The saga pattern has emerged as the de facto standard for managing long-running, multi-agent business processes. Rather than relying on distributed transactions — which are brittle and scale poorly across autonomous agent services — a saga breaks a workflow into a sequence of local transactions, each followed by an event. If a step fails, compensating events undo preceding actions. In practice, this means defining explicit compensation handlers for every agent action: if a payment agent succeeds but a shipping agent fails, the payment agent receives a reversal event and issues a refund. Implementing sagas requires careful event design, but the resulting resilience is essential for production reliability.</p>
 <p>Circuit breakers provide another critical defence mechanism. Agent services, particularly those wrapping external APIs or large language models, exhibit failure modes that differ from traditional microservices. Rate limits, context-window exhaustion, and model drift can degrade performance unpredictably. A circuit breaker monitors call failure rates and temporarily blocks requests to a failing agent, allowing it to recover while the broader system continues operating with degraded but predictable behaviour. We recommend pairing circuit breakers with fallback agents — smaller, simpler models that handle routine queries when primary agents are unavailable.</p>
 <p>The outbox pattern addresses a subtle but common failure mode: an agent updates its state database and emits an event, but one of these operations fails, leaving the system inconsistent. With an outbox table, the database transaction commits both the state change and the event record atomically. A separate relay process polls the outbox and publishes events to the message bus. This eliminates the dual-write problem and ensures that every state change produces exactly one corresponding event.</p>
 <p>Finally, dead-letter queues with semantic retry policies prevent transient failures from cascading. Not all agent failures are equal. A timeout from a third-party API merits an immediate retry with exponential backoff. A schema validation failure requires human intervention. A model hallucination might trigger a re-prompt with stronger constraints. Classifying failures and routing them to appropriate retry or escalation paths is a hallmark of mature event-driven agent systems.</p>
-
-          <h2>Schema Governance and Event Contracts</h2>
+<h2>Schema Governance and Event Contracts</h2>
 <p>In small agent systems, ad-hoc JSON events are convenient. At scale, they become a distributed monolith of implicit contracts, breaking changes, and debugging nightmares. We have observed enterprises with fifty-agent fleets where no single team understands the full event topology — and where a seemingly harmless schema change in one domain triggers cascading failures three services removed.</p>
-<p>Schema governance begins with distinguishing commands, events, and queries. A command instructs an agent to perform an action (&ldquo;validate this invoice&rdquo;). An event announces that something has happened (&ldquo;invoice validated&rdquo;). A query requests information (&ldquo;what is the status of invoice #4421?&rdquo;). Blurring these boundaries creates coupling: if consumers treat commands as events, they build fragile integrations that break when command semantics evolve.</p>
+<p>Schema governance begins with distinguishing commands, events, and queries. A command instructs an agent to perform an action (“validate this invoice”). An event announces that something has happened (“invoice validated”). A query requests information (“what is the status of invoice #4421?”). Blurring these boundaries creates coupling: if consumers treat commands as events, they build fragile integrations that break when command semantics evolve.</p>
 <p>A schema registry provides the technical backbone for governance. Tools like Confluent Schema Registry, AWS Glue Schema Registry, or custom Git-backed registries enforce forward and backward compatibility rules. When a team proposes a schema change, automated checks verify whether existing consumers can still parse the event. We recommend Avro or Protocol Buffers over JSON for agent-to-agent communication: the type safety and compact serialisation reduce errors and bandwidth, particularly for high-volume event streams.</p>
-<p>Versioning strategy requires organisational discipline. We advocate semantic versioning for event schemas, with explicit deprecation timelines. When an agent&rsquo;s capabilities evolve — for example, when a customer-service agent begins handling refund requests in addition to general inquiries — the event schema should reflect this explicitly rather than overloading existing fields. A clear versioning policy prevents the &ldquo;version soup&rdquo; that paralyses many enterprise integration programmes.</p>
+<p>Versioning strategy requires organisational discipline. We advocate semantic versioning for event schemas, with explicit deprecation timelines. When an agent’s capabilities evolve — for example, when a customer-service agent begins handling refund requests in addition to general inquiries — the event schema should reflect this explicitly rather than overloading existing fields. A clear versioning policy prevents the “version soup” that paralyses many enterprise integration programmes.</p>
 <p>Domain boundaries matter as much as technical boundaries. Event schemas should align with bounded contexts from domain-driven design. When a finance agent and a logistics agent need to share information, they should exchange coarse-grained domain events rather than leaking internal data models. This decoupling allows each agent team to evolve independently, which is essential for sustaining development velocity as the agent fleet grows.</p>
-
-          <h2>Observability in Probabilistic Systems</h2>
+<h2>Observability in Probabilistic Systems</h2>
 <p>Traditional application monitoring assumes deterministic behaviour: if the inputs are identical, the outputs should be identical. AI agents violate this assumption. The same prompt, sent to the same model, can produce different responses depending on temperature settings, context window composition, and model updates. This probabilism demands a fundamentally different observability strategy.</p>
 <p>Distributed tracing provides the foundation. Every event that traverses the system should carry a correlation identifier, and every agent should propagate this identifier through all downstream events and external calls. When a user reports an incorrect recommendation, engineers must be able to reconstruct the full event chain — from the initial user query through intent classification, knowledge retrieval, reasoning, and response generation — in a single trace view. OpenTelemetry has become the standard for this, with custom spans capturing agent-specific metadata such as model version, prompt tokens, and retrieved context chunks.</p>
 <p>Structured logging alone is insufficient. Agent systems generate enormous log volumes, and searching raw logs for root causes is impractical. Instead, we recommend aggregating logs into event lineage graphs that visualise how information flows and transforms across agents. These graphs reveal patterns invisible in linear logs: circular dependencies, hot spots where multiple agents contend for the same data source, and latency accumulations at handoff boundaries.</p>
-<p>Metrics for agent systems should capture intent drift, handoff latency, and time-to-resolution. Intent drift measures how much an agent&rsquo;s interpretation of a request deviates from the original user intent across multiple handoffs — a critical quality indicator in multi-agent chains. Handoff latency tracks the time between an agent emitting an event and the next agent beginning processing, exposing bottlenecks in the event bus or consumer scaling. Time-to-resolution aggregates the full duration from initial request to final answer, which correlates directly with user satisfaction.</p>
-<p>Building what we call a &ldquo;nervous system&rdquo; for your agent fleet — a centralised observability plane with real-time event lineage, anomaly detection on event patterns, and automated alerting on intent drift — is not a luxury but a requirement for production systems operating at enterprise scale.</p>
-
-          <h2>From Event Streams to Conversational Action</h2>
+<p>Metrics for agent systems should capture intent drift, handoff latency, and time-to-resolution. Intent drift measures how much an agent’s interpretation of a request deviates from the original user intent across multiple handoffs — a critical quality indicator in multi-agent chains. Handoff latency tracks the time between an agent emitting an event and the next agent beginning processing, exposing bottlenecks in the event bus or consumer scaling. Time-to-resolution aggregates the full duration from initial request to final answer, which correlates directly with user satisfaction.</p>
+<p>Building what we call a “nervous system” for your agent fleet — a centralised observability plane with real-time event lineage, anomaly detection on event patterns, and automated alerting on intent drift — is not a luxury but a requirement for production systems operating at enterprise scale.</p>
+<h2>From Event Streams to Conversational Action</h2>
 <p>Events are only valuable when they drive decisions. Too many event-driven architectures terminate in dashboards that nobody consults or databases that grow silently. The true return on investment of agent orchestration emerges when event streams connect directly to decision-making interfaces — particularly conversational ones that meet users in their daily workflows.</p>
-<p>Consider a manufacturing scenario. A quality-control agent detects an anomaly in sensor data and publishes a &ldquo;quality-threshold-breached&rdquo; event. In a traditional architecture, this event writes to a database and perhaps triggers a dashboard alert. In a conversational architecture, the event triggers a natural-language summary delivered directly to the quality manager via WeChat Work or DingTalk: &ldquo;Line 3 temperature exceeded threshold at 14:32. Predicted defect rate: 4.2%. Recommended action: pause batch #8841 and inspect cooling unit. Shall I notify maintenance and schedule a replacement?&rdquo; The manager responds in plain language, and the orchestration layer translates this response into events for the maintenance agent and scheduling agent.</p>
-<p>This closed loop — event &rarr; insight &rarr; natural language &rarr; action &rarr; new event — is where Beehive Strategy&rsquo;s conversational BI platform operates. Our system consumes event streams from agent orchestration layers, applies semantic understanding to distil complex event patterns into business-relevant narratives, and delivers these narratives inside the IM platforms teams already use. When an executive asks, &ldquo;Why did Q3 forecast accuracy drop?&rdquo; the platform traces the relevant events across forecasting agents, data-quality agents, and external data feeds, then presents a plain-language answer with drill-down options.</p>
+<p>Consider a manufacturing scenario. A quality-control agent detects an anomaly in sensor data and publishes a “quality-threshold-breached” event. In a traditional architecture, this event writes to a database and perhaps triggers a dashboard alert. In a conversational architecture, the event triggers a natural-language summary delivered directly to the quality manager via WeChat Work or DingTalk: “Line 3 temperature exceeded threshold at 14:32. Predicted defect rate: 4.2%. Recommended action: pause batch #8841 and inspect cooling unit. Shall I notify maintenance and schedule a replacement?” The manager responds in plain language, and the orchestration layer translates this response into events for the maintenance agent and scheduling agent.</p>
+<p>This closed loop — event → insight → natural language → action → new event — is where Beehive Strategy’s conversational BI platform operates. Our system consumes event streams from agent orchestration layers, applies semantic understanding to distil complex event patterns into business-relevant narratives, and delivers these narratives inside the IM platforms teams already use. When an executive asks, “Why did Q3 forecast accuracy drop?” the platform traces the relevant events across forecasting agents, data-quality agents, and external data feeds, then presents a plain-language answer with drill-down options.</p>
 <p>Closing the loop requires careful attention to authorisation boundaries. Not every event should surface to every user. Role-based filtering, data masking, and audit trails ensure that conversational interfaces remain secure and compliant while remaining accessible.</p>
-
-          <h2>Key Takeaways</h2>
-          <ul>
-            <li>Multi-agent coordination requires saga patterns and circuit breakers — pub-sub alone is insufficient for production workflows with interdependent agents.</li>
-            <li>Schema governance with a registry, explicit versioning policy, and command-event-query separation prevents technical debt from compounding as agent fleets scale.</li>
-            <li>Observability must be redesigned for probabilistic systems, incorporating distributed tracing, event lineage graphs, and metrics such as intent drift and handoff latency.</li>
-            <li>Event-driven architectures only deliver transformational value when connected to decision-making interfaces; conversational BI closes the gap between event detection and executive action.</li>
-            <li>Begin with a single bounded context and a small agent fleet before expanding event-driven orchestration enterprise-wide — premature scaling amplifies every architectural weakness.</li>
-          </ul>
-          <h2>Conclusion</h2>
+<h2>Key Takeaways</h2>
+<ul>
+<li>Multi-agent coordination requires saga patterns and circuit breakers — pub-sub alone is insufficient for production workflows with interdependent agents.</li>
+<li>Schema governance with a registry, explicit versioning policy, and command-event-query separation prevents technical debt from compounding as agent fleets scale.</li>
+<li>Observability must be redesigned for probabilistic systems, incorporating distributed tracing, event lineage graphs, and metrics such as intent drift and handoff latency.</li>
+<li>Event-driven architectures only deliver transformational value when connected to decision-making interfaces; conversational BI closes the gap between event detection and executive action.</li>
+<li>Begin with a single bounded context and a small agent fleet before expanding event-driven orchestration enterprise-wide — premature scaling amplifies every architectural weakness.</li>
+</ul>
+<h2>Conclusion</h2>
 <p>Event-driven architecture for AI agent orchestration has evolved from an emerging pattern to a production necessity for enterprises serious about AI at scale. The organisations that succeed are those that invest not only in agent capabilities but in the coordination, governance, and observability infrastructure that surrounds them. Technical excellence in isolation is insufficient; resilient systems require deliberate architectural choices, disciplined schema governance, and observability designed for probabilistic behaviour.</p>
 <p>At Beehive Strategy, we help enterprises build the event-driven foundations, semantic layers, and conversational interfaces that turn agent orchestration from a technical curiosity into a competitive advantage. Our platform connects to 50+ data sources and agent endpoints, deploys in two weeks, and delivers insights directly inside the IM tools your teams already use. <a href="/contact">Book a free demo</a> to see how we can accelerate your agent orchestration and analytics journey.</p>
-
 <h2>Related Articles</h2>
 <ul><li><a href="/blog/articles/event-driven-architecture-for-ai-agent-orchestration">Event-Driven Architecture for AI Agent Orchestration</a></li><li><a href="/blog/articles/semantic-layer-design-for-self-service-analytics">Semantic Layer Design for Self-Service Analytics</a></li><li><a href="/blog/articles/data-pipeline-observability-monitoring-beyond-failure">Data Pipeline Observability: Monitoring Beyond Failure</a></li></ul>
-        </div>
-        <footer class="article-footer">
-          <div class="article-tags">
-    <span class="article-tag">engineering</span>
-    <span class="article-tag">enterprise-ai</span>
-    <span class="article-tag">ai-agents</span>
-    <span class="article-tag">event-driven-architecture</span>
-    <span class="article-tag">beehive-strategy</span>
-          </div>
-          <div class="article-share">
-            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">LinkedIn</a>
-            <a href="https://twitter.com/intent/tweet?url=https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2&text=Event-Driven%20Architecture%20for%20AI%20Agent%20Orchestration%3A%20Part%202" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">X</a>
-          </div>
-        </footer>
-        <nav class="article-nav" aria-label="Article navigation">
-          <a href="https://www.beehivestrategy.com/blog/" class="article-nav-back">&larr; Back to All Articles</a>
-        </nav>
-      </div>
-    </article>
-    <section class="section section-alt cta" aria-label="Call to action">
-      <div class="container">
-        <div class="cta-content reveal">
-          <h2>See It in Action</h2>
-          <p>Book a free demo and see how AI-powered conversational BI delivers insights in 2 weeks &mdash; right inside your IM platform.</p>
-          <div class="cta-buttons">
-            <a href="/contact" class="btn btn-primary btn-lg">Book a Free Demo</a>
-            <a href="https://www.beehivestrategy.com/solution" class="btn btn-secondary btn-lg">Explore the Platform</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="https://www.beehivestrategy.com/" class="nav-logo footer-logo" aria-label="Beehive Strategy Home">Beehive</a>
-          <p>Enterprise AI &amp; data analytics consulting. We deliver AI-powered conversational intelligence that transforms how businesses interact with their data.</p>
-          <div class="social">
-            <a href="https://www.linkedin.com/company/beehive-strategy" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-            <a href="/cdn-cgi/l/email-protection#c9a8aaaaa6bca7bd89abacaca1a0bfacbabdbba8bdacaeb0e7aaa6a4" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="https://www.beehivestrategy.com/solution">Platform</a></li>
-            <li><a href="https://www.beehivestrategy.com/solution">AI Agents</a></li>
-            <li><a href="https://www.beehivestrategy.com/case-studies">Case Studies</a></li>
-            <li><a href="https://www.beehivestrategy.com/security">Security</a></li>
-            <li><a href="https://www.beehivestrategy.com/pricing">Pricing</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Industries</h4>
-          <ul>
-            <li><a href="https://www.beehivestrategy.com/industries">Retail &amp; E-Commerce</a></li>
-            <li><a href="https://www.beehivestrategy.com/industries">Financial Services</a></li>
-            <li><a href="https://www.beehivestrategy.com/industries">Manufacturing</a></li>
-            <li><a href="https://www.beehivestrategy.com/industries">Professional Services</a></li>
-            <li><a href="https://www.beehivestrategy.com/industries">Real Estate</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="https://www.beehivestrategy.com/about">About Us</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="https://www.beehivestrategy.com/solution">FAQ</a></li>
-            <li><a href="/cdn-cgi/l/email-protection#4a2b2929253f243e0a282f2f22233c2f393e382b3e2f2d3364292527">Careers</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2024&ndash;2026 Beehive Strategy Limited. All rights reserved.</p>
-        <div class="footer-legal">
-          <a href="https://www.beehivestrategy.com/privacy">Privacy Policy</a>
-          <a href="https://www.beehivestrategy.com/terms">Terms of Service</a>
-          <a href="https://www.beehivestrategy.com/cookies">Cookie Policy</a>
-        </div>
-        <p>Built in Shenzhen, China</p>
-      </div>
-    </div>
-  </footer>
-  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
-  </button>
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/main.js?v=20260811" defer></script>
+</div>
+<footer class="article-footer">
+<div class="article-tags">
+<span class="article-tag">engineering</span>
+<span class="article-tag">enterprise-ai</span>
+<span class="article-tag">ai-agents</span>
+<span class="article-tag">event-driven-architecture</span>
+<span class="article-tag">beehive-strategy</span>
+</div>
+<div class="article-share">
+<a class="btn btn-secondary" href="https://www.linkedin.com/sharing/share-offsite/?url=https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+<a class="btn btn-secondary" href="https://twitter.com/intent/tweet?url=https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2&amp;text=Event-Driven%20Architecture%20for%20AI%20Agent%20Orchestration%3A%20Part%202" rel="noopener noreferrer" target="_blank">X</a>
+</div>
+</footer>
+<nav aria-label="Article navigation" class="article-nav">
+<a class="article-nav-back" href="https://www.beehivestrategy.com/blog/">← Back to All Articles</a>
+</nav>
+</div>
+</article>
+<section aria-label="Call to action" class="section section-alt cta">
+<div class="container">
+<div class="cta-content reveal">
+<h2>See It in Action</h2>
+<p>Book a free demo and see how AI-powered conversational BI delivers insights in 2 weeks — right inside your IM platform.</p>
+<div class="cta-buttons">
+<a class="btn btn-primary btn-lg" href="/contact">Book a Free Demo</a>
+<a class="btn btn-secondary btn-lg" href="https://www.beehivestrategy.com/solution">Explore the Platform</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer" role="contentinfo">
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand">
+<a aria-label="Beehive Strategy Home" class="nav-logo footer-logo" href="https://www.beehivestrategy.com/">Beehive</a>
+<p>Enterprise AI &amp; data analytics consulting. We deliver AI-powered conversational intelligence that transforms how businesses interact with their data.</p>
+<div class="social">
+<a aria-label="LinkedIn" href="https://www.linkedin.com/company/beehive-strategy" rel="noopener noreferrer" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a>
+<a aria-label="Email" href="/cdn-cgi/l/email-protection#c9a8aaaaa6bca7bd89abacaca1a0bfacbabdbba8bdacaeb0e7aaa6a4"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a>
+</div>
+</div>
+<div class="footer-col">
+<h4>Product</h4>
+<ul>
+<li><a href="https://www.beehivestrategy.com/solution">Platform</a></li>
+<li><a href="https://www.beehivestrategy.com/solution">AI Agents</a></li>
+<li><a href="https://www.beehivestrategy.com/case-studies">Case Studies</a></li>
+<li><a href="https://www.beehivestrategy.com/security">Security</a></li>
+<li><a href="https://www.beehivestrategy.com/pricing">Pricing</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Industries</h4>
+<ul>
+<li><a href="https://www.beehivestrategy.com/industries">Retail &amp; E-Commerce</a></li>
+<li><a href="https://www.beehivestrategy.com/industries">Financial Services</a></li>
+<li><a href="https://www.beehivestrategy.com/industries">Manufacturing</a></li>
+<li><a href="https://www.beehivestrategy.com/industries">Professional Services</a></li>
+<li><a href="https://www.beehivestrategy.com/industries">Real Estate</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Company</h4>
+<ul>
+<li><a href="https://www.beehivestrategy.com/about">About Us</a></li>
+<li><a href="/contact">Contact</a></li>
+<li><a href="https://www.beehivestrategy.com/solution">FAQ</a></li>
+<li><a href="/cdn-cgi/l/email-protection#4a2b2929253f243e0a282f2f22233c2f393e382b3e2f2d3364292527">Careers</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024–2026 Beehive Strategy Limited. All rights reserved.</p>
+<div class="footer-legal">
+<a href="https://www.beehivestrategy.com/privacy">Privacy Policy</a>
+<a href="https://www.beehivestrategy.com/terms">Terms of Service</a>
+<a href="https://www.beehivestrategy.com/cookies">Cookie Policy</a>
+</div>
+<p>Built in Shenzhen, China</p>
+</div>
+</div>
+</footer>
+<button aria-label="Back to top" class="back-to-top" id="back-to-top">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script defer="" src="/js/main.js?v=20260811"></script>
 </body>
 </html>
