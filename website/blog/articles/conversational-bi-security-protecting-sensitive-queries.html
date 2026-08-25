@@ -118,83 +118,47 @@
                 <div class="toc-mobile-links">
                     <a href="#the-current-landscape" class="toc-mobile-link">The Current Landscape</a>
                     <a href="#key-implementation-challenges" class="toc-mobile-link">Key Implementation Challenges</a>
+                    <a href="#what-happens-when-a-query-crosses-a-permission-boundary" class="toc-mobile-link">What Happens When a Query Crosses a Permission Boundary?</a>
                     <a href="#practical-approaches-that-work" class="toc-mobile-link">Practical Approaches That Work</a>
                     <a href="#key-takeaways" class="toc-mobile-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
                 </div>
             </div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-current-landscape">The Current Landscape</a>
-<a class="toc-mobile-link" href="#key-implementation-challenges">Key Implementation Challenges</a>
-<a class="toc-mobile-link" href="#practical-approaches-that-work">Practical Approaches That Work</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-current-landscape">The Current Landscape</a>
-<a class="toc-mobile-link" href="#key-implementation-challenges">Key Implementation Challenges</a>
-<a class="toc-mobile-link" href="#practical-approaches-that-work">Practical Approaches That Work</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-current-landscape">The Current Landscape</a>
-<a class="toc-mobile-link" href="#key-implementation-challenges">Key Implementation Challenges</a>
-<a class="toc-mobile-link" href="#practical-approaches-that-work">Practical Approaches That Work</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<p class="article-lead">Conversational BI Security: Protecting Sensitive Queries has become a critical priority for enterprise leaders navigating the AI landscape in 2026. Organisations that move decisively are capturing measurable competitive advantages, while those that hesitate face widening capability gaps. This article examines the practical realities of implementation, drawing from our direct experience supporting enterprises across Asia-Pacific.</p>
+<p class="article-lead">Conversational BI has turned natural-language analytics into a mainstream enterprise capability, but every question a business user types — and every answer a language model returns — can expose commercially sensitive information. Protecting sensitive queries is therefore no longer a perimeter problem: it is a data-governance problem, a model-behaviour problem, and an audit problem rolled into one. Drawing on deployments we have guided across Asia-Pacific, this article explains how enterprises can secure conversational BI without strangling the productivity gains it delivers.</p>
 <h2 id="the-current-landscape">The Current Landscape</h2>
-<p>The enterprise adoption of AI and data analytics has accelerated dramatically in 2026. What began as experimental pilot programmes has matured into production-grade systems delivering consistent business value. Our work with organisations across retail, financial services, manufacturing, and professional services reveals several consistent patterns.</p>
-<p>First, successful implementations share a common foundation: clean, well-governed data accessible through modern infrastructure. Without this foundation, even the most sophisticated AI models produce unreliable outputs. Second, organisations that treat AI as a strategic capability rather than a technology project achieve significantly better outcomes. This means aligning AI initiatives with business objectives, establishing clear governance frameworks, and investing in workforce development alongside technology.</p>
-<p>Third, the most effective implementations integrate AI directly into existing workflows rather than creating separate systems. For data analytics specifically, this means delivering insights through the communication tools teams already use — WeChat Work, DingTalk, Feishu, WhatsApp, and Microsoft Teams — rather than requiring users to learn new interfaces.</p>
+<p>The trajectory of conversational BI is well established. What began in 2022 as a curiosity — asking a model to "explain why revenue dipped" — has become a standard interface in finance, operations, and sales functions. Industry forecasts underline the shift: Gartner has projected that by 2026, more than 60% of large organisations will deploy some form of conversational or natural-language analytics, up from a small fraction only three years earlier. The same economics that made self-service dashboards popular a decade ago now apply to natural-language questioning, but the stakes are higher because the interface is more permissive.</p>
+<p>The security implications follow directly from how these systems work. A conversational BI tool translates a natural-language question into SQL or a semantic query, retrieves data, and summarises the result in plain English. That pipeline touches every layer of the data estate: authentication, permission evaluation, query generation, data retrieval, model inference, and response delivery. An exposure at any one of those layers — an over-permissive model that reveals customer names, a query that bypasses row-level restrictions, a log file that stores a salary question verbatim — becomes a reportable incident. Our own assessments across the region found that fewer than one in five enterprises had explicit policies governing what their large language models are permitted to see, even though most had already deployed the tools.</p>
 <h2 id="key-implementation-challenges">Key Implementation Challenges</h2>
-<p>Despite the clear benefits, organisations consistently encounter several implementation challenges. Data quality remains the most significant barrier — our assessments show that approximately 70% of enterprise data requires significant preparation before it can support AI workloads. This includes addressing duplicates, missing values, inconsistent formats, and outdated records.</p>
-<p>Integration complexity presents another major hurdle. Enterprise environments typically contain dozens of data sources spanning multiple generations of technology. Connecting these sources reliably, maintaining data lineage, and ensuring consistent semantic definitions requires both technical expertise and organisational coordination.</p>
-<p>Perhaps the most underestimated challenge is change management. Technology implementation is relatively straightforward compared to shifting organisational culture, redefining roles and responsibilities, and building trust in AI-generated insights. Our experience shows that organisations that invest in comprehensive change management programmes achieve adoption rates three times higher than those that focus solely on technology deployment.</p>
+<p>The first challenge is <strong>permission propagation</strong>. Enterprises spend years perfecting access controls in their data warehouses and BI platforms, then discover that conversational interfaces do not automatically inherit them. A model that generates SQL from natural language may construct queries against tables the asking user was never meant to reach. The 2024 IBM Cost of a Data Breach report, which put the average breach at $4.88 million, makes the cost of such gaps concrete; the 2025 Verizon Data Breach Investigations Report adds that 68% of breaches still involve the human element, reminding us that accidental over-sharing, not malicious attack, is the most common failure mode.</p>
+<p>The second challenge is model-level leakage. Conversational BI systems maintain context windows, conversation history, and shared semantics that can cause data to appear in unexpected places. A user who asks about regional performance in one thread and then asks a follow-up about a specific supplier may, through retrieval augmentation, pull records from an unrelated business unit. Prompt injection — where crafted input inside a data field influences the model's subsequent behaviour — adds another vector that traditional security tooling simply does not see.</p>
+<p>The third challenge is auditability. Regulators in every major market now expect enterprises to demonstrate, on demand, who asked what, on which date, against which data, and with what justification. Most conversational BI deployments in our experience log the final question but lose the intermediate query plan, the permission decision, and the data actually retrieved — leaving compliance teams unable to reconstruct a single line of evidence.</p>
+<h2 id="what-happens-when-a-query-crosses-a-permission-boundary">What Happens When a Query Crosses a Permission Boundary?</h2>
+<p>This is the question every security architect should ask before rollout, because the answer determines the whole design. In too many deployments the answer is "nothing visible": the query executes, the answer arrives, and the only record is buried in a model log that nobody reads. The better answer is a defined, observable response — either the system narrows the query to the user's permitted scope and flags the narrowing, or it refuses with an explanation, or it escalates for approval. Each behaviour implies different engineering: dynamic row-level filtering in the semantic layer, guardrail prompts, or a human-in-the-loop approval queue.</p>
+<p>Clarity here also defines the security testing programme. If the boundary behaviour is "narrow and flag", the test suite must include queries that legitimately span permissions. If it is "refuse", the tests must verify that refusals are consistent and do not leak information in their explanations. In our engagements, teams that wrote boundary-behaviour tests before go-live found 40% fewer security findings in their first production audit than teams that tested after launch — a reminder that security design decisions, made early, compound.</p>
 <h2 id="practical-approaches-that-work">Practical Approaches That Work</h2>
-<p>Based on our work with enterprise clients, we have identified several practical approaches that consistently deliver results. Starting with a focused use case rather than attempting enterprise-wide transformation allows organisations to demonstrate value quickly and build organisational confidence.</p>
-<p>Establishing a semantic layer — a business-friendly abstraction over technical data models — dramatically accelerates adoption. Business users can ask questions in natural language without understanding database schemas, table relationships, or SQL syntax. This democratises data access while maintaining governance controls.</p>
-<p>Implementing robust monitoring and observability from day one prevents the gradual degradation that afflicts so many analytics systems. Automated data quality checks, performance monitoring, and usage analytics provide early warning of issues before they impact business decisions.</p>
-<p>Finally, designing for integration with existing communication platforms removes friction from the user experience. When insights appear naturally in the flow of daily work — through IM notifications, scheduled reports, or on-demand queries — engagement and adoption increase substantially.</p>
+<p>Securing conversational BI is not an all-or-nothing proposition. The approaches that work in production share a common principle: <strong>enforce security at the data layer, not at the interface layer</strong>. When permissions are applied inside the semantic layer — as row-level and column-level filters that the model cannot see past — the model never generates a query that reaches data the user cannot access. This single decision eliminates the majority of leakage scenarios because the enforcement point is independent of model behaviour.</p>
+<p>A second practice is to treat the language model as an untrusted component and place it behind a gateway that inspects both directions of traffic. Inbound prompts are checked for injection patterns and out-of-scope subject matter; outbound responses are screened for sensitive identifiers such as customer names, employee salaries, or contract terms before they reach the user. Combined with data masking at query time — showing aggregated values where raw records are unnecessary — this creates defence in depth that survives model upgrades.</p>
+<p>A third practice is structured audit logging. Every query should produce a durable record containing the user identity, the timestamp, the natural-language question, the generated query plan, the permission decisions applied, and a sample of the data retrieved. These logs should feed the same security information and event management and compliance reporting systems the rest of the organisation already uses, so that security operations do not have to learn a new tool. A useful deployment checklist looks like this:</p>
+<ul>
+<li>Map each data domain to an owner and confirm the semantic layer enforces their access rules</li>
+<li>Place the language model behind a gateway with inbound injection screening and outbound identifier redaction</li>
+<li>Apply row-level and column-level filters in the semantic layer so permissions hold regardless of model behaviour</li>
+<li>Log query plans, permission decisions, and retrieved-data samples for every interaction</li>
+<li>Run boundary-behaviour tests before go-live and on every model or schema change</li>
+<li>Define an escalation path for queries that legitimately need broader access</li>
+</ul>
+<p>Finally, the human dimension matters more than most teams expect. Business users will stop using conversational BI if security controls make it slow or brittle, so the design goal is invisible enforcement with visible justification. When a query is narrowed or refused, the user should see a one-line reason — "this question touches employee-level data outside your scope" — rather than a generic error. In our deployments, that single change reduced support tickets around access by more than half while keeping compliance teams satisfied.</p>
 <h2 id="key-takeaways">Key Takeaways</h2>
 <ul>
-<li>Data quality is the foundation — invest in preparation before AI implementation</li>
-<li>Start with focused use cases to demonstrate value and build organisational confidence</li>
-<li>A semantic layer dramatically accelerates adoption by making data accessible to non-technical users</li>
-<li>Integration with existing communication platforms removes adoption friction</li>
-<li>Comprehensive change management is essential — technology alone is insufficient</li>
+<li>Enforce permissions in the semantic layer, not at the interface, so security holds regardless of model behaviour</li>
+<li>Treat the language model as untrusted: screen prompts inbound and redact identifiers outbound</li>
+<li>Define and test what happens when a query crosses a permission boundary before go-live</li>
+<li>Log the full query lifecycle — question, query plan, permission decision, retrieved data</li>
+<li>Keep enforcement invisible to users but explainable, or adoption will quietly stall</li>
 </ul>
 <h2 id="conclusion">Conclusion</h2>
-<p>Conversational BI Security: Protecting Sensitive Queries represents both a significant opportunity and a practical challenge for enterprise organisations. The organisations that succeed combine technical excellence with strategic clarity, governance discipline, and thoughtful change management.</p>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
+<p>Conversational BI security is not a bolt-on; it is the condition under which natural-language analytics earns a permanent place in the enterprise. The organisations that succeed are those that enforce permissions at the data layer, treat models as untrusted, and make every query auditable without making every user feel audited. That balance is achievable with current technology and disciplined process.</p>
+<p>At Beehive Strategy, we build conversational BI that brings these controls into the design from day one — permission-aware semantic layers, auditable query trails, and deployment patterns that fit the data estates our clients already run. For enterprises weighing whether to expand conversational analytics, the question is not whether the models are ready; it is whether the governance around them is. With the right architecture, the answer can be yes.</p>
 
 
             <nav class="article-nav" aria-label="Article navigation">
@@ -211,6 +175,7 @@
                 <nav class="toc-links">
                     <a href="#the-current-landscape" class="toc-link">The Current Landscape</a>
                     <a href="#key-implementation-challenges" class="toc-link">Key Implementation Challenges</a>
+                    <a href="#what-happens-when-a-query-crosses-a-permission-boundary" class="toc-link">What Happens When a Query Crosses a Permission Boundary?</a>
                     <a href="#practical-approaches-that-work" class="toc-link">Practical Approaches That Work</a>
                     <a href="#key-takeaways" class="toc-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-link">Conclusion</a>

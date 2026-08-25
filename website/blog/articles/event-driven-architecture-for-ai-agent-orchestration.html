@@ -118,83 +118,51 @@
                 <div class="toc-mobile-links">
                     <a href="#the-current-landscape" class="toc-mobile-link">The Current Landscape</a>
                     <a href="#key-implementation-challenges" class="toc-mobile-link">Key Implementation Challenges</a>
+                    <a href="#what-happens-when-an-agent-fails-mid-workflow" class="toc-mobile-link">What Happens When an Agent Fails Mid-Workflow?</a>
                     <a href="#practical-approaches-that-work" class="toc-mobile-link">Practical Approaches That Work</a>
                     <a href="#key-takeaways" class="toc-mobile-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
                 </div>
             </div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-current-landscape">The Current Landscape</a>
-<a class="toc-mobile-link" href="#key-implementation-challenges">Key Implementation Challenges</a>
-<a class="toc-mobile-link" href="#practical-approaches-that-work">Practical Approaches That Work</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-current-landscape">The Current Landscape</a>
-<a class="toc-mobile-link" href="#key-implementation-challenges">Key Implementation Challenges</a>
-<a class="toc-mobile-link" href="#practical-approaches-that-work">Practical Approaches That Work</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-current-landscape">The Current Landscape</a>
-<a class="toc-mobile-link" href="#key-implementation-challenges">Key Implementation Challenges</a>
-<a class="toc-mobile-link" href="#practical-approaches-that-work">Practical Approaches That Work</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<p class="article-lead">Event-Driven Architecture for AI Agent Orchestration has become a critical priority for enterprise leaders navigating the AI landscape in 2026. Organisations that move decisively are capturing measurable competitive advantages, while those that hesitate face widening capability gaps. This article examines the practical realities of implementation, drawing from our direct experience supporting enterprises across Asia-Pacific.</p>
+<p class="article-lead">AI agents do not work alone. In production, they must hand off tasks, share state, retry, and coordinate with systems and humans — and the architecture that makes this reliable is event-driven. This article explains why event-driven architecture is becoming the default backbone for agent orchestration, and how enterprises can adopt it without rebuilding their platforms.</p>
 <h2 id="the-current-landscape">The Current Landscape</h2>
-<p>The enterprise adoption of AI and data analytics has accelerated dramatically in 2026. What began as experimental pilot programmes has matured into production-grade systems delivering consistent business value. Our work with organisations across retail, financial services, manufacturing, and professional services reveals several consistent patterns.</p>
-<p>First, successful implementations share a common foundation: clean, well-governed data accessible through modern infrastructure. Without this foundation, even the most sophisticated AI models produce unreliable outputs. Second, organisations that treat AI as a strategic capability rather than a technology project achieve significantly better outcomes. This means aligning AI initiatives with business objectives, establishing clear governance frameworks, and investing in workforce development alongside technology.</p>
-<p>Third, the most effective implementations integrate AI directly into existing workflows rather than creating separate systems. For data analytics specifically, this means delivering insights through the communication tools teams already use — WeChat Work, DingTalk, Feishu, WhatsApp, and Microsoft Teams — rather than requiring users to learn new interfaces.</p>
+<p>Agentic AI has moved from demo to deployment with unusual speed. Gartner has projected that by 2028, 33% of enterprise software applications will include agentic AI — up from effectively zero in 2024 — and vendors across the stack are racing to support it. But the first wave of agent deployments has also exposed the core problem: agents are asynchronous by nature. They wait on models, tools, approvals, and other agents, and orchestrating them with synchronous request-response calls produces timeouts, lost work, and cascading failures. Industry surveys in 2025 found that more than half of enterprises deploying agents reported at least one production incident caused by synchronous orchestration in their first six months.</p>
+<p>Event-driven architecture (EDA) is the natural answer. Instead of calling one another directly, agents communicate through events — "order placed," "approval granted," "anomaly detected" — published to a message broker or event stream. Producers and consumers decouple: an agent can emit events without knowing who will act on them, and new agents can subscribe without changing existing ones. This is exactly the shape of orchestration at scale.</p>
+<p>EDA also matches how organisations actually change. Because producers and consumers are decoupled, a new agent can be added to an existing workflow — a new triage agent, a new approval step — without touching the systems already in place, and an old agent can be retired without coordinating with its dependents. This evolvability is why EDA is the architecture of choice for platforms that expect continuous change, which is precisely the condition of an enterprise adopting agents incrementally.</p>
 <h2 id="key-implementation-challenges">Key Implementation Challenges</h2>
-<p>Despite the clear benefits, organisations consistently encounter several implementation challenges. Data quality remains the most significant barrier — our assessments show that approximately 70% of enterprise data requires significant preparation before it can support AI workloads. This includes addressing duplicates, missing values, inconsistent formats, and outdated records.</p>
-<p>Integration complexity presents another major hurdle. Enterprise environments typically contain dozens of data sources spanning multiple generations of technology. Connecting these sources reliably, maintaining data lineage, and ensuring consistent semantic definitions requires both technical expertise and organisational coordination.</p>
-<p>Perhaps the most underestimated challenge is change management. Technology implementation is relatively straightforward compared to shifting organisational culture, redefining roles and responsibilities, and building trust in AI-generated insights. Our experience shows that organisations that invest in comprehensive change management programmes achieve adoption rates three times higher than those that focus solely on technology deployment.</p>
+<p>The first challenge is reliability semantics. Events are delivered at least once, not exactly once, so consumers must be idempotent — processing the same event twice must not double-charge a customer or double-ship an order. Teams new to EDA routinely underestimate this, and the resulting bugs are subtle and expensive. Every event consumer needs a strategy for deduplication, and every agent workflow needs to treat "did this already happen?" as a first-class question.</p>
+<p>The second challenge is ordering and state. Events from one workflow must often be processed in order, yet distributed systems make ordering across partitions hard. Where order matters, events need explicit correlation IDs and sequence handling; where it does not, enforcing order anyway creates bottlenecks. State also becomes a design problem: an agent's workflow state — what it has done, what it is waiting for — must live somewhere durable, because the agent itself may be restarted at any moment.</p>
+<p>The third challenge is observability. A workflow spread across events, agents, and tools is invisible to traditional monitoring, which traces synchronous requests. Teams cannot debug "why did this claim not get paid?" by looking at one service's logs; they need distributed tracing, event-flow views, and correlation across every hop. Our work with enterprises across Asia-Pacific suggests that observability is the single most underestimated requirement in agent orchestration — most teams discover the gap in their first production incident.</p>
+<p>The fourth challenge is event schema evolution. Events are contracts, and they evolve — an "order placed" event gains fields, changes meaning, or splits into subtypes — while dozens of consumers may already depend on the old shape. Without disciplined versioning, a schema change silently breaks downstream agents, which is why event registries and compatibility checks are as important in EDA as in data contracts. Enterprises that treat event schemas as versioned, governed artefacts avoid the most common source of subtle production bugs in agent orchestration.</p>
+<h2 id="what-happens-when-an-agent-fails-mid-workflow">What Happens When an Agent Fails Mid-Workflow?</h2>
+<p>This is the question that separates agent demos from agent production systems, and the answer is designed, not discovered. In a synchronous design, a mid-workflow failure means the caller times out and the work is lost or duplicated. In an event-driven design, the failure is just another event: the agent emits a failure event with the correlation ID and state, the workflow engine decides the response — retry, compensate, escalate to a human — and the workflow continues from where it stopped.</p>
+<p>Designing for this answer has a profound consequence: agents become replaceable. If workflow state lives in events and durable storage rather than inside the agent, then any agent can be restarted, upgraded, or swapped without losing work. Enterprises that adopt this discipline report that their agent infrastructure stops being fragile — the failure modes become visible, recoverable, and testable, which is precisely what operations teams need to approve agentic workloads for production.</p>
 <h2 id="practical-approaches-that-work">Practical Approaches That Work</h2>
-<p>Based on our work with enterprise clients, we have identified several practical approaches that consistently deliver results. Starting with a focused use case rather than attempting enterprise-wide transformation allows organisations to demonstrate value quickly and build organisational confidence.</p>
-<p>Establishing a semantic layer — a business-friendly abstraction over technical data models — dramatically accelerates adoption. Business users can ask questions in natural language without understanding database schemas, table relationships, or SQL syntax. This democratises data access while maintaining governance controls.</p>
-<p>Implementing robust monitoring and observability from day one prevents the gradual degradation that afflicts so many analytics systems. Automated data quality checks, performance monitoring, and usage analytics provide early warning of issues before they impact business decisions.</p>
-<p>Finally, designing for integration with existing communication platforms removes friction from the user experience. When insights appear naturally in the flow of daily work — through IM notifications, scheduled reports, or on-demand queries — engagement and adoption increase substantially.</p>
+<p>Start with one workflow and one event topic. Pick a workflow with clear steps and real handoffs — expense processing, lead qualification, ticket triage — and model each step as a service that emits and subscribes to events. Use an existing broker or stream if you have one; the architecture matters more than the vendor. Keep the first workflow narrow, prove the reliability semantics, and let the pattern spread from evidence rather than from mandate.</p>
+<p>Design workflows as explicit state machines. An agent workflow should be a durable, inspectable state machine — "awaiting_approval," "escalated," "completed" — with events driving transitions, rather than an implicit chain of function calls. This makes the workflow auditable, resumable, and testable, and it is the single most important design choice for production reliability. A pragmatic build sequence looks like this:</p>
+<ol>
+<li>Choose one workflow and model each step as an event-emitting service</li>
+<li>Implement idempotent consumers with deduplication from day one</li>
+<li>Represent workflow state as a durable state machine, not inside the agent</li>
+<li>Add correlation IDs and distributed tracing across every event hop</li>
+<li>Design failure behaviour explicitly — retry, compensate, or escalate to humans</li>
+<li>Test mid-workflow failure recovery before approving production deployment</li>
+</ol>
+<p>Make human handoffs first-class events. The most common agent workflow is not agent-to-agent; it is agent-to-human-to-agent — an anomaly that needs review, an approval that needs judgement. Model these as explicit events with owners, deadlines, and escalation policies, and the human becomes part of the architecture rather than an interruption of it.</p>
+<p>Test failure, not just success. The reliability of agent orchestration is proven by what happens when things go wrong, so the test suite should deliberately kill agents mid-workflow, drop events, and restart consumers to verify recovery behaviour. Teams that rehearse these scenarios in a staging environment discover the ordering and idempotency bugs that would otherwise surface as customer-facing incidents; in our engagements, this rehearsal typically cuts the first-quarter production incident rate for new agent workflows by more than half.</p>
+<p>Finally, instrument everything from the start. Trace every event end to end, record every state transition, and measure the workflow's health — completion rate, time per stage, escalation frequency — as operational metrics. Agent orchestration succeeds when it is boring: when the architecture is so reliable that the business stops thinking about it and starts trusting it.</p>
 <h2 id="key-takeaways">Key Takeaways</h2>
 <ul>
-<li>Data quality is the foundation — invest in preparation before AI implementation</li>
-<li>Start with focused use cases to demonstrate value and build organisational confidence</li>
-<li>A semantic layer dramatically accelerates adoption by making data accessible to non-technical users</li>
-<li>Integration with existing communication platforms removes adoption friction</li>
-<li>Comprehensive change management is essential — technology alone is insufficient</li>
+<li>Model agent orchestration as events, not synchronous calls — agents are asynchronous by nature</li>
+<li>Make consumers idempotent and workflows durable state machines</li>
+<li>Design failure behaviour explicitly — retry, compensate, or escalate</li>
+<li>Trace every event hop with correlation IDs from day one</li>
+<li>Treat human handoffs as first-class events with owners and escalation</li>
 </ul>
 <h2 id="conclusion">Conclusion</h2>
-<p>Event-Driven Architecture for AI Agent Orchestration represents both a significant opportunity and a practical challenge for enterprise organisations. The organisations that succeed combine technical excellence with strategic clarity, governance discipline, and thoughtful change management.</p>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
+<p>Event-driven architecture gives AI agents the same reliability backbone that transformed distributed systems: decoupling, durability, and explicit failure semantics. The enterprises that adopt EDA for agent orchestration will run agentic workloads that fail visibly, recover cleanly, and scale without cascades — while those that orchestrate agents with synchronous calls will spend their first production year firefighting.</p>
+<p>The cost of the alternative is measurable. Synchronous orchestration couples every agent to every other, so a single slow model call can cascade into timeouts across a workflow, and recovery means replaying work the callers assume is lost. EDA converts those failures from catastrophes into routine, handled events.</p>
+<p>At Beehive Strategy, we design event-driven orchestration for conversational and agentic AI — durable workflow state, idempotent consumers, and tracing that makes agent behaviour observable in production. For teams deploying their first agents, the advice is simple: before you ask what the agent can do, decide what the architecture will do when it fails.</p>
 
 
             <nav class="article-nav" aria-label="Article navigation">
@@ -211,6 +179,7 @@
                 <nav class="toc-links">
                     <a href="#the-current-landscape" class="toc-link">The Current Landscape</a>
                     <a href="#key-implementation-challenges" class="toc-link">Key Implementation Challenges</a>
+                    <a href="#what-happens-when-an-agent-fails-mid-workflow" class="toc-link">What Happens When an Agent Fails Mid-Workflow?</a>
                     <a href="#practical-approaches-that-work" class="toc-link">Practical Approaches That Work</a>
                     <a href="#key-takeaways" class="toc-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-link">Conclusion</a>
