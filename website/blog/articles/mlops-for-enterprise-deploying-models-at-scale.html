@@ -120,81 +120,54 @@
                     <a href="#model-registry-the-source-of-truth" class="toc-mobile-link">Model Registry: The Source of Truth</a>
                     <a href="#monitoring-beyond-uptime" class="toc-mobile-link">Monitoring: Beyond Uptime</a>
                     <a href="#automated-retraining" class="toc-mobile-link">Automated Retraining</a>
+                    <a href="#what-should-you-automate-first" class="toc-mobile-link">What Should You Automate First?</a>
+                    <a href="#mlops-for-llms-and-generative-ai" class="toc-mobile-link">MLOps for LLMs and Generative AI</a>
                     <a href="#key-takeaways" class="toc-mobile-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
                 </div>
             </div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-mlops-pipeline">The MLOps Pipeline</a>
-<a class="toc-mobile-link" href="#model-registry-the-source-of-truth">Model Registry: The Source of Truth</a>
-<a class="toc-mobile-link" href="#monitoring-beyond-uptime">Monitoring: Beyond Uptime</a>
-<a class="toc-mobile-link" href="#automated-retraining">Automated Retraining</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-mlops-pipeline">The MLOps Pipeline</a>
-<a class="toc-mobile-link" href="#model-registry-the-source-of-truth">Model Registry: The Source of Truth</a>
-<a class="toc-mobile-link" href="#monitoring-beyond-uptime">Monitoring: Beyond Uptime</a>
-<a class="toc-mobile-link" href="#automated-retraining">Automated Retraining</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#the-mlops-pipeline">The MLOps Pipeline</a>
-<a class="toc-mobile-link" href="#model-registry-the-source-of-truth">Model Registry: The Source of Truth</a>
-<a class="toc-mobile-link" href="#monitoring-beyond-uptime">Monitoring: Beyond Uptime</a>
-<a class="toc-mobile-link" href="#automated-retraining">Automated Retraining</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<p class="article-lead">MLOps is to machine learning what DevOps is to software engineering: the set of practices that make deployment reliable, repeatable, and scalable. The difference is that ML models degrade over time in ways that software doesn't — making monitoring and retraining essential, not optional.</p>
+<p class="article-lead">MLOps is to machine learning what DevOps is to software engineering: the set of practices that make deployment reliable, repeatable, and scalable. The difference is that ML models degrade over time in ways that software doesn't — making monitoring and retraining essential, not optional. And the gap between prototype and production is still the graveyard of enterprise AI.</p>
 <h2 id="the-mlops-pipeline">The MLOps Pipeline</h2>
-<p>A production MLOps pipeline: (1) Data validation — check input data for schema changes and quality. (2) Training — automated retraining when performance drops. (3) Evaluation — automated quality, bias, and latency checks. (4) Registry — version every model with metadata. (5) Deployment — canary or blue-green rollout. (6) Monitoring — track prediction quality, drift, and latency in production.</p>
+<p>A production MLOps pipeline has six stages, and the order matters: data validation, training, evaluation, registry, deployment, and monitoring. (1) Data validation checks input data for schema changes and quality before it reaches a model. (2) Training runs automatically when performance drops. (3) Evaluation applies automated quality, bias, and latency checks. (4) The registry versions every model with metadata. (5) Deployment uses canary or blue-green rollouts. (6) Monitoring tracks prediction quality, drift, and latency in production.</p>
+<p>The evidence that this pipeline is missing in most enterprises is stark. The widely cited 2022 State of Enterprise Machine Learning survey found that only 54% of models make it from pilot to production, and the gap between a working prototype and a reliable production service is where the rest die. The failures are rarely about the model; they are about the plumbing — data pipelines that break silently, retraining that never happens, and no way to roll back a bad version.</p>
+<p>The pipeline is also where the team's time goes. Analysts have long estimated that data scientists spend up to 80% of their time on data preparation and integration rather than modelling — an inversion that MLOps directly attacks, because every hour spent automating validation, training, and deployment is an hour returned to the work that differentiates the business.</p>
 <h2 id="model-registry-the-source-of-truth">Model Registry: The Source of Truth</h2>
-<p>Every model in production should be registered with: version number, training data hash, evaluation metrics, owner, and deployment status. When something goes wrong, the registry tells you exactly which model version is running, what data it was trained on, and who to contact.</p>
+<p>Every model in production should be registered with: version number, training data hash, evaluation metrics, owner, and deployment status. When something goes wrong, the registry tells you exactly which model version is running, what data it was trained on, and who to contact. Without it, an incident becomes an archaeological dig.</p>
+<p>The registry is the difference between reproducible and anecdotal ML. 'We changed something and the numbers moved' is not an acceptable engineering statement, but it is the honest state of most ML deployments without a registry. With one, every production decision is traceable: this version, this training data, these metrics, this owner, deployed at this time — and the rollback path is a one-click operation to the previous registered version.</p>
+<p>Treat the registry as a product, not a ledger. It should answer the questions people actually ask in meetings — which model is live, when did we last retrain, why did accuracy dip — without requiring anyone to read code. When the registry can be queried conversationally, the discipline of versioning becomes something the business can verify, which is the condition for trusting the whole stack.</p>
 <h2 id="monitoring-beyond-uptime">Monitoring: Beyond Uptime</h2>
 <p>Software monitoring checks if the system is up. ML monitoring must also check: is the model still accurate? Has the input data distribution shifted? Are predictions biased? Is latency increasing? These ML-specific metrics need dedicated dashboards and alerting — not just infrastructure monitoring.</p>
+<p>The three ML-specific signals worth instrumenting from day one are drift, quality, and latency. Data drift — the input distribution changing under the model — is the earliest warning of trouble, because it precedes accuracy loss by days or weeks. Prediction quality must be monitored even where ground truth is delayed: a fraud model's true labels arrive in weeks, but proxy signals can flag degradation immediately. Latency matters because models that were fast at launch grow slower as features accumulate, and a model that cannot answer in time is a model that fails.</p>
+<p>Monitoring without alerting is a screensaver. The discipline is exception-based alerting: a handful of thresholds that page the on-call engineer, set at levels that catch real problems without firing every day. Alert fatigue is the silent killer of ML monitoring programmes — teams mute the dashboard, then stop looking, then discover the degradation in the quarterly business review.</p>
 <h2 id="automated-retraining">Automated Retraining</h2>
-<p>Models degrade. The question is when to retrain: on a schedule (weekly/monthly), when accuracy drops below a threshold, or when data drift is detected. Automated retraining with evaluation gates — only deploy the new model if it's better than the current one — is the gold standard.</p>
+<p>Models degrade. The question is when to retrain: on a schedule (weekly/monthly), when accuracy drops below a threshold, or when data drift is detected. Automated retraining with evaluation gates — only deploy the new model if it's better than the current one — is the gold standard, because it turns model upkeep from a project into a background process.</p>
+<p>The trigger strategy depends on the data. Scheduled retraining is simple and predictable, but it ignores the possibility that the market changed overnight. Drift-triggered retraining responds to reality but requires drift detection to be reliable, and it can thrash if the drift signal is noisy. The pragmatic answer for most teams is a hybrid: scheduled retraining as the baseline, drift detection as the accelerator, and an evaluation gate that decides whether the new model actually earns its place.</p>
+<p>The evaluation gate is non-negotiable. Without it, automated retraining can deploy a worse model — the new training data may be noisier, the world may have shifted, the offline metrics may not hold online. The gate runs the candidate against a holdout set and against the incumbent, and promotes only the winner. Enterprises that skip the gate because it slows things down pay for the shortcut in the first silent regression.</p>
+<h2 id="what-should-you-automate-first">What Should You Automate First?</h2>
+<p>Automate the parts of the pipeline where a human mistake is most expensive and most likely: model registration, deployment, and rollback. These three are cheap to automate, needed for every model, and they convert the riskiest moments — putting a model live and undoing that decision — into standard, tested procedures.</p>
+<ul>
+<li>Stand up the model registry first; every other automation references it, and it is the fastest win per hour of effort.</li>
+<li>Automate deployment with canary and rollback built in, so shipping a new model version is a routine action, not an event.</li>
+<li>Add data validation before training, so bad input fails loudly at ingestion instead of silently at inference.</li>
+<li>Instrument drift and quality metrics before the first production model, not after an incident.</li>
+<li>Then automate retraining with an evaluation gate; it is the last step because it depends on everything before it being solid.</li>
+</ul>
+<p>There is a corollary worth stating plainly: automation must be boring. The goal is not clever infrastructure; it is that the thousandth deployment is as uneventful as the first, and that any engineer can operate the pipeline. Enterprises that remember this build MLOps that survives staff turnover; enterprises that treat MLOps as a research project rebuild it every two years.</p>
+<h2 id="mlops-for-llms-and-generative-ai">MLOps for LLMs and Generative AI</h2>
+<p>Generative AI adds a new layer to MLOps — prompt, context, and evaluation management — but the underlying discipline is the same: version everything, evaluate continuously, and roll back fast. The difference is that the 'model' is now a system: base model, prompts, retrieval configuration, and guardrails, each of which can change behaviour independently.</p>
+<p>Versioning a generative system means versioning the whole stack. The prompt that worked in April can silently degrade in July when the base model is updated, so the registry must capture the model version, the prompt version, the retrieval index, and the evaluation results as one deployable unit. This is the same reproducibility principle as classical MLOps, applied to a system with more moving parts.</p>
+<p>Evaluation is harder and therefore more important. LLM outputs are not single-number correct or wrong; they are quality-judged, and the judging itself often needs models. The practical answer is a golden set of representative questions with expected behaviours, evaluated automatically at every change — because in generative systems, the cost of a bad change is not a wrong number but a wrong answer that people trust.</p>
 <h2 id="key-takeaways">Key Takeaways</h2>
 <ul>
-<li>The MLOps Pipeline</li>
-<li>Model Registry: The Source of Truth</li>
-<li>Monitoring: Beyond Uptime</li>
-<li>Automated Retraining</li>
+<li>Fewer than 60% of models reach production in most enterprises; the gap is pipeline discipline, not model quality.</li>
+<li>The registry is the source of truth: version, data hash, metrics, owner, and deployment status for every model.</li>
+<li>Monitor drift, quality, and latency — not just uptime — with exception-based alerting that survives contact with reality.</li>
+<li>Automate retraining with an evaluation gate so only demonstrably better models are deployed.</li>
+<li>Automate registry, deployment, and rollback first; version generative systems as one stack of model, prompt, retrieval, and guards.</li>
 </ul>
 <h2 id="conclusion">Conclusion</h2>
-<p>
-            Models degrade. The question is when to retrain: on a schedule (weekly/monthly), when accuracy drops below a threshold, or when data drift is detected. Automated retraining with evaluation gates — onl...
-          </p>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
+<p>MLOps is what turns a promising model into a dependable business asset. The enterprises that close the prototype-to-production gap do it with unglamorous discipline — registries, evaluation gates, drift monitoring, boring automation — and the enterprises that skip it keep re-learning the same lesson at the same cost.</p>
+<p>The discipline scales down as well as up. Even a conversational BI deployment benefits from the same versioning and evaluation thinking applied to its semantic layer and its answer quality — which is why a managed service model is attractive for most enterprises. Beehive Strategy ships IM-native conversational BI as a managed service with a two-week deployment, so the registry, monitoring, and retraining burden lives with the operator rather than with a small in-house ML team that is already stretched. For most enterprises, that is the difference between owning the models and owning the outcome.</p>
 
 
             <nav class="article-nav" aria-label="Article navigation">
@@ -213,6 +186,8 @@
                     <a href="#model-registry-the-source-of-truth" class="toc-link">Model Registry: The Source of Truth</a>
                     <a href="#monitoring-beyond-uptime" class="toc-link">Monitoring: Beyond Uptime</a>
                     <a href="#automated-retraining" class="toc-link">Automated Retraining</a>
+                    <a href="#what-should-you-automate-first" class="toc-link">What Should You Automate First?</a>
+                    <a href="#mlops-for-llms-and-generative-ai" class="toc-link">MLOps for LLMs and Generative AI</a>
                     <a href="#key-takeaways" class="toc-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-link">Conclusion</a>
                 </nav>

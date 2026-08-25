@@ -120,81 +120,42 @@
                     <a href="#business-cost-weighted-evaluation" class="toc-mobile-link">Business-Cost-Weighted Evaluation</a>
                     <a href="#human-baseline-comparison" class="toc-mobile-link">Human Baseline Comparison</a>
                     <a href="#production-drift-monitoring" class="toc-mobile-link">Production Drift Monitoring</a>
+                    <a href="#how-should-executives-evaluate-ai-in-practice" class="toc-mobile-link">How Should Executives Evaluate AI in Practice?</a>
                     <a href="#key-takeaways" class="toc-mobile-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
                 </div>
             </div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#why-accuracy-alone-is-misleading">Why Accuracy Alone Is Misleading</a>
-<a class="toc-mobile-link" href="#business-cost-weighted-evaluation">Business-Cost-Weighted Evaluation</a>
-<a class="toc-mobile-link" href="#human-baseline-comparison">Human Baseline Comparison</a>
-<a class="toc-mobile-link" href="#production-drift-monitoring">Production Drift Monitoring</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#why-accuracy-alone-is-misleading">Why Accuracy Alone Is Misleading</a>
-<a class="toc-mobile-link" href="#business-cost-weighted-evaluation">Business-Cost-Weighted Evaluation</a>
-<a class="toc-mobile-link" href="#human-baseline-comparison">Human Baseline Comparison</a>
-<a class="toc-mobile-link" href="#production-drift-monitoring">Production Drift Monitoring</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#why-accuracy-alone-is-misleading">Why Accuracy Alone Is Misleading</a>
-<a class="toc-mobile-link" href="#business-cost-weighted-evaluation">Business-Cost-Weighted Evaluation</a>
-<a class="toc-mobile-link" href="#human-baseline-comparison">Human Baseline Comparison</a>
-<a class="toc-mobile-link" href="#production-drift-monitoring">Production Drift Monitoring</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key Takeaways</a>
-<a class="toc-mobile-link" href="#conclusion">Conclusion</a>
-</div>
-</div>
-<p class="article-lead">Data scientists evaluate models with metrics like accuracy, F1 score, and AUC-ROC. Executives evaluate models with a different question: 'Does this make the business better?' Bridging this gap — connecting technical metrics to business outcomes — is essential for justifying AI investment.</p>
+<p class="article-lead">Data scientists evaluate models with metrics like accuracy, F1 score, and AUC-ROC. Executives evaluate models with a different question: "Does this make the business better?" Bridging that gap — connecting technical metrics to business outcomes — is essential for justifying AI investment and for catching the failures that technical metrics hide.</p>
 <h2 id="why-accuracy-alone-is-misleading">Why Accuracy Alone Is Misleading</h2>
-<p>A model with 95% accuracy sounds impressive — until you realise that always predicting 'no' gives you 94% accuracy on an imbalanced dataset. Accuracy doesn't tell you how the model performs on the cases that matter. For business evaluation, focus on: precision (when the model says yes, is it right?), recall (how many of the real positives does it catch?), and the business cost of each error type.</p>
+<p>Accuracy is the most dangerous metric in AI because it rewards models that are trivially right. A model with 95% accuracy sounds impressive — until you realise that always predicting "no" gives you 94% accuracy on an imbalanced dataset. In a fraud dataset where only 1 in 1,000 transactions is fraudulent, a naive model scores 99.9% accuracy while catching nothing at all.</p>
+<p>For business evaluation, the metrics that matter are precision — when the model says yes, is it right? — and recall — how many of the real positives does it catch? — plus the business cost of each error type. The confusion matrix tells the story accuracy hides: which errors the model makes, in which direction, and how often. Threshold choice then becomes a business decision: lower the threshold to catch more positives at the cost of more false alarms, or raise it to keep operations clean at the cost of missed cases.</p>
 <h2 id="business-cost-weighted-evaluation">Business-Cost-Weighted Evaluation</h2>
-<p>Not all errors are equal. A false positive in fraud detection (blocking a legitimate transaction) costs customer goodwill. A false negative (missing actual fraud) costs money. Weight evaluation by business cost: calculate the expected monetary impact of each error type and optimise for minimum total cost, not maximum accuracy.</p>
+<p>Not all errors are equal, and weighting evaluation by business cost often changes which model is "best". A false positive in fraud detection — blocking a legitimate transaction — costs customer goodwill and support effort; a false negative — missing actual fraud — costs money directly. Weight each error type by its expected monetary impact and optimise for minimum total cost, not maximum accuracy.</p>
+<p>The cost matrix turns a technical choice into a financial one. In credit underwriting, a false rejection loses a good customer's lifetime value; a false approval risks a default. In churn prediction, a false alert costs a retention call; a missed churner costs the customer. Teams that build the cost matrix first discover two things: the optimal threshold is usually not the one that maximises F1, and the model with the best headline accuracy is rarely the one with the best expected value. This is the discipline that lets executives and data scientists speak the same language — money.</p>
+<p>A worked example makes the principle concrete. Suppose a churn model's false negative costs 2,000 CNY (the customer is lost) and its false positive costs 50 CNY (one wasted retention call). At a 10% churn base rate, a model that catches 70% of churners with 50% precision — modest by technical standards — saves roughly 40 times what it spends per alert, while a model with 99% accuracy that catches 5% of churners destroys value. The threshold that maximises expected value is found by walking the cost curve, not by chasing the best F1.</p>
 <h2 id="human-baseline-comparison">Human Baseline Comparison</h2>
-<p>Before deploying an AI model, compare its performance to the current human process. If the model is 85% accurate and humans are 80% accurate on the same task, the AI adds value. If humans are 90% accurate, the AI isn't ready. The comparison should use the same evaluation criteria on the same data.</p>
+<p>Before deploying any AI model, benchmark it against the people it will replace or augment. If the model is 85% accurate and humans are 80% on the same task, the AI adds value; if humans are 90%, the AI is not ready. The comparison must use the same evaluation criteria on the same data — the classic mistake is comparing a model's machine-scored accuracy against a human's self-reported performance.</p>
+<p>Measuring the human baseline is itself valuable, because most organisations have never measured it. That 80% number — the real accuracy of the current process, warts and all — becomes the deployment bar and, later, the monitoring threshold. The comparison also clarifies the operating model: in many tasks the winning design is human-plus-AI, where the model handles the confident cases and routes the uncertain ones to people, beating both alone. The honest baseline is what makes that claim testable.</p>
 <h2 id="production-drift-monitoring">Production Drift Monitoring</h2>
-<p>Model performance in production drifts over time as data distributions change. Set up monitoring that tracks business-relevant metrics (not just technical accuracy) and alerts when performance drops below the human baseline. This ensures the model continues to add value — or gets retrained when it doesn't.</p>
+<p>A model that was accurate at launch is not the same model six months later. Model performance in production drifts as data distributions change — customers change, markets change, the world changes — so monitoring must track business-relevant metrics (not just technical accuracy) and alert when performance drops below the human baseline.</p>
+<p>Drift is common and consequential: industry studies find that a significant share of models in production show measurable performance decay within the first year, and Gartner has warned that through 2024, 85% of AI projects would deliver erroneous outcomes due to bias in data, models, or the teams managing them. The monitoring design should mirror the original evaluation: the same cost-weighted metrics, the same human baseline, tracked over time with alerting on meaningful deterioration. When the alert fires, the choice is retrain, recalibrate the threshold, or retire the model — and the evaluation framework built at launch is what makes that decision fast and defensible.</p>
+<p>Operationally, drift monitoring blends statistical and business signals. Population stability tests on key features, distribution comparisons, and segment-level accuracy tracking tell the data team where to look; the business dashboard tells the executive whether it matters yet. Alerting should be layered: informational at first signal, actionable when the cost-weighted metric moves, and urgent when performance crosses the human baseline — because the one number executives trust is the one they agreed on at launch.</p>
+<h2 id="how-should-executives-evaluate-ai-in-practice">How Should Executives Evaluate AI in Practice?</h2>
+<p>Ask three questions of every model: what does it get wrong, what does each kind of error cost, and how does it compare with the humans it replaces? If the answer to the third is "we never measured the humans", that is the first measurement to make — it is the baseline for everything else.</p>
+<p>Then insist the answers be automated. Evaluation that depends on a data scientist running a notebook is evaluation that stops happening; drift monitoring and cost-weighted dashboards should run continuously and surface in the tools executives already use. That is where a conversational BI layer earns its place: "has the fraud model's cost-weighted error rate changed this month?" is a question a business owner should be able to ask in plain language, in an IM conversation, and get a straight answer — the same way they ask about revenue. With a managed service wrapping the deployment, evaluation and monitoring are maintained as an ongoing discipline rather than a launch-day ceremony.</p>
+<p>Fix the cadence too. Monthly review of cost-weighted metrics, quarterly review of thresholds and the human baseline, and an annual re-examination of whether the business problem itself has changed — a model built to reduce fraud in 2023 may be optimising for the wrong objective by 2025. Evaluation that runs on a calendar, not on an incident, is what keeps models aligned with the business as both evolve.</p>
 <h2 id="key-takeaways">Key Takeaways</h2>
+<p>Evaluation is a continuous discipline, not a launch-day checkbox. The following points are the ones that matter most in practice.</p>
 <ul>
-<li>Why Accuracy Alone Is Misleading</li>
-<li>Business-Cost-Weighted Evaluation</li>
-<li>Human Baseline Comparison</li>
-<li>Production Drift Monitoring</li>
+<li><strong>Accuracy lies:</strong> on imbalanced data, a 95%-accurate model can be useless — evaluate precision, recall, and error costs instead.</li>
+<li><strong>Weight errors by money:</strong> the cost matrix, not the F1 score, determines which model and which threshold are best for the business.</li>
+<li><strong>Benchmark against humans:</strong> same criteria, same data — and measure the human baseline, which most organisations never have.</li>
+<li><strong>Monitor drift in business terms:</strong> cost-weighted metrics, tracked against the human baseline, with alerts that trigger retraining or retirement.</li>
+<li><strong>Automate the answers:</strong> evaluation and monitoring belong in continuous systems, surfaced conversationally to the people accountable for outcomes.</li>
 </ul>
 <h2 id="conclusion">Conclusion</h2>
-<p>
-            Model performance in production drifts over time as data distributions change. Set up monitoring that tracks business-relevant metrics (not just technical accuracy) and alerts when performance drops b...
-          </p>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
+<p>The gap between technical metrics and business outcomes is the most expensive blind spot in enterprise AI. A model can be technically excellent and commercially wrong — or technically mediocre and commercially valuable — and only cost-weighted, baseline-against-human evaluation can tell the difference.</p>
+<p>The fix is a discipline, not a report: build the cost matrix, measure the human baseline, and monitor drift in business terms for the life of the model. Organisations that do this deploy AI with confidence, kill the models that do not earn their keep, and justify every model in the language their executives speak — money.</p>
 
 
             <nav class="article-nav" aria-label="Article navigation">
@@ -213,6 +174,7 @@
                     <a href="#business-cost-weighted-evaluation" class="toc-link">Business-Cost-Weighted Evaluation</a>
                     <a href="#human-baseline-comparison" class="toc-link">Human Baseline Comparison</a>
                     <a href="#production-drift-monitoring" class="toc-link">Production Drift Monitoring</a>
+                    <a href="#how-should-executives-evaluate-ai-in-practice" class="toc-link">How Should Executives Evaluate AI in Practice?</a>
                     <a href="#key-takeaways" class="toc-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-link">Conclusion</a>
                 </nav>
