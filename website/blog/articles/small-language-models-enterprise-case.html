@@ -118,183 +118,44 @@
                 <div class="toc-mobile-links">
                     <a href="#why-it-matters" class="toc-mobile-link">Why it matters</a>
                     <a href="#common-challenges" class="toc-mobile-link">Common challenges</a>
+                    <a href="#which-workloads-should-move-to-small-models-first" class="toc-mobile-link">Which workloads should move to small models first?</a>
                     <a href="#how-to-get-started" class="toc-mobile-link">How to get started</a>
                     <a href="#key-takeaways" class="toc-mobile-link">Key takeaways</a>
                     <a href="#frequently-asked-questions" class="toc-mobile-link">Frequently asked questions</a>
-                    <a href="#frequently-asked-questions-2" class="toc-mobile-link">Frequently Asked Questions</a>
-                    <a href="#frequently-asked-questions-3" class="toc-mobile-link">Frequently Asked Questions</a>
-                    <a href="#frequently-asked-questions-4" class="toc-mobile-link">Frequently Asked Questions</a>
                 </div>
             </div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#why-it-matters">Why it matters</a>
-<a class="toc-mobile-link" href="#common-challenges">Common challenges</a>
-<a class="toc-mobile-link" href="#how-to-get-started">How to get started</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key takeaways</a>
-<a class="toc-mobile-link" href="#frequently-asked-questions">Frequently asked questions</a>
-<a class="toc-mobile-link" href="#frequently-asked-questions-2">Frequently Asked Questions</a>
-<a class="toc-mobile-link" href="#frequently-asked-questions-3">Frequently Asked Questions</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#why-it-matters">Why it matters</a>
-<a class="toc-mobile-link" href="#common-challenges">Common challenges</a>
-<a class="toc-mobile-link" href="#how-to-get-started">How to get started</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key takeaways</a>
-<a class="toc-mobile-link" href="#frequently-asked-questions">Frequently asked questions</a>
-<a class="toc-mobile-link" href="#frequently-asked-questions-2">Frequently Asked Questions</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#why-it-matters">Why it matters</a>
-<a class="toc-mobile-link" href="#common-challenges">Common challenges</a>
-<a class="toc-mobile-link" href="#how-to-get-started">How to get started</a>
-<a class="toc-mobile-link" href="#key-takeaways">Key takeaways</a>
-<a class="toc-mobile-link" href="#frequently-asked-questions">Frequently asked questions</a>
-</div>
-</div>
-<p class="article-lead">What is The Case for Small Language Models in the Enterprise? Why smaller, specialised models are winning enterprise workloads. It is one of the most important shifts in AI Strategy today.</p>
+<p class="article-lead">What is The Case for Small Language Models in the Enterprise? Smaller, specialised models — typically in the 1 to 10 billion parameter range — are winning enterprise workloads on cost, latency, privacy, and control. It is one of the most important shifts in AI Strategy today.</p>
 <h2 id="why-it-matters">Why it matters</h2>
-<p>Why does The Case for Small Language Models in the Enterprise matter? Organisations that embed it into their AI Strategy workflows see faster decisions, fewer manual hand-offs, and clearer alignment between data and action.</p>
+<p>Small language models matter because they fix the three things that keep frontier models out of production: cost, latency, and control. A frontier model with hundreds of billions of parameters is enormously capable, but every API call carries a price, every response carries seconds of latency, and every interaction sends data to a third-party endpoint. For high-volume, repetitive, internal workloads — classification, summarization, extraction, routing, and guided query — those costs are simply not justified, and small models are the answer.</p>
+<p>The economics are stark. Inference on a small model is typically 10 to 50 times cheaper per token than on a frontier model, and a model in the 1 to 10 billion parameter range can run on a single GPU, often inside the enterprise's own environment. Industry analysts have projected that by 2026, more than half of enterprise generative AI deployments will shift toward smaller, more efficient models — not because large models are bad, but because most enterprise workloads do not need their scale.</p>
+<p>There is also a quality argument that surprises many teams. On narrow, well-defined tasks — a specific document type, a specific domain vocabulary, a specific schema — a fine-tuned small model can reach 80 to 95 percent of frontier-model quality, because the model is optimized for exactly the task at hand rather than for everything at once. When the remaining few percentage points cost an order of magnitude more in inference and expose data to a third party, the trade is easy to make.</p>
 <h2 id="common-challenges">Common challenges</h2>
-<p>Most teams face three obstacles: fragmented data, unclear ownership, and tooling that was built for an earlier era of analytics.</p>
+<p>The first challenge is choosing the wrong model for the wrong task. Teams evaluate small models against frontier models on broad general benchmarks and conclude they are "not as good," then miss that the relevant test is performance on their specific workload with their specific data. Benchmark scores on general knowledge are not a proxy for quality on a curated enterprise task.</p>
+<p>The second challenge is data for fine-tuning. A small model realizes its potential only when tuned on task-specific examples, and many enterprises do not have labeled data at the outset. The practical answer is to start with strong prompts and retrieval on a foundation small model, capture the question-and-answer pairs from real usage, and fine-tune once a few thousand high-quality examples accumulate — a few weeks of real traffic usually provides enough.</p>
+<p>The third challenge is the infrastructure decision itself. Small models require someone to serve them — a GPU allocation, an inference service, monitoring, and version management — and teams that are not prepared for operational ownership find that "free" self-hosting is not free. The framework should compare total cost of ownership honestly: a small model you operate versus a frontier API you consume, measured over a year of real volume.</p>
+<p>A fourth challenge deserves attention: security-review friction. Small models that run on-premises sound like the privacy answer, but they still require the full security and compliance review — model provenance, license terms, vulnerability scanning, and monitoring. Teams sometimes find that the review process for a self-hosted model takes longer than the technical deployment itself, because the organization has no established pattern for approving open-weight models. Building the review playbook early, before the first model arrives, prevents a privacy advantage from turning into an approval bottleneck.</p>
+<h2 id="which-workloads-should-move-to-small-models-first">Which workloads should move to small models first?</h2>
+<p>Start with the workloads that are high-volume, repetitive, and narrow in scope — the ones where cost and latency multiply across thousands of calls a day. Document classification, contract clause extraction, invoice data capture, email triage, ticket categorization, and guided natural-language query against a fixed schema are ideal first candidates. Each is a bounded task with a bounded vocabulary, which is exactly the shape a small model handles best.</p>
+<p>Keep frontier models for the genuinely open-ended work: complex reasoning, long-horizon planning, nuanced creative drafting, or tasks where the cost of an error is low and the value of breadth is high. The mature pattern is a tiered architecture — a router that sends simple, high-volume requests to a small model and escalates only the hard cases to a larger one. Teams running tiered setups report cutting inference spend by 60 to 70 percent while keeping overall quality flat, because most traffic is simple traffic.</p>
+<p>The strategic point is that model choice should follow workload economics, not fashion. A small model is not a compromise version of a large one; it is the right tool for a large class of enterprise problems, with the added benefit that it can run on-premises, which settles data-residency and security objections that a cloud-only frontier model can never answer.</p>
 <h2 id="how-to-get-started">How to get started</h2>
-<p>A practical starting point is to map the top five decisions the business makes weekly, identify the data each requires, and then build a thin, governed layer that delivers answers in natural language.</p>
+<p>Pick one high-volume workload and define the quality bar before choosing a model. Collect a test set of real examples — a few hundred is enough to start — and score candidate models against it on the outcomes that matter: extraction accuracy, classification precision, answer correctness, and latency. Then run a head-to-head between a frontier API and a small model candidate on the same test set, including the cost per thousand requests.</p>
+<p>Stand up the small model with the simplest serving path that meets your needs, capture usage and errors from day one, and start accumulating labeled examples for fine-tuning. Plan the router: a lightweight classifier that decides which requests are simple enough for the small model and which need escalation. This architecture is where the cost savings and the quality control actually live.</p>
+<p>Finally, treat the deployment as an evaluation program, not a one-time choice. Retest candidates monthly as models improve, and let volume data — cost per request, latency, escalation rate — drive the allocation between small and large models. A partner such as Beehive Strategy can help you benchmark candidates on your own data, design the router, and set up the evaluation loop that keeps the tiering decision honest.</p>
 <h2 id="key-takeaways">Key takeaways</h2>
 <ul>
-<li>Start with a specific decision, not a platform purchase.</li><li>Governance and usability must be designed together.</li><li>Adoption depends on trust; trust depends on transparent, explainable outputs.</li><li>Measure value in time-to-decision, not in model accuracy alone.</li>
+<li>Small models in the 1 to 10 billion parameter range deliver 80 to 95 percent of frontier quality on narrow tasks at a fraction of the cost.</li>
+<li>Inference is typically 10 to 50 times cheaper per token, with sub-second latency and on-premises deployment options.</li>
+<li>Evaluate on your workload and your data, never on general benchmarks alone.</li>
+<li>Start with high-volume, bounded tasks — classification, extraction, guided query — and keep frontier models for open-ended reasoning.</li>
+<li>Run a tiered architecture with a router: small model for the simple majority, escalation for the hard cases.</li>
+<li>Capture real usage to build the labeled data for fine-tuning; retest candidates as models improve.</li>
 </ul>
-<div class="article-related"></div>
-<div class="article-faq"><h2 id="frequently-asked-questions">Frequently asked questions</h2><div itemscope="" itemtype="https://schema.org/FAQPage"><div itemprop="mainEntity" itemscope="" itemtype="https://schema.org/Question">
-<h3 itemprop="name">What is The Case for Small Language Models in the Enterprise?</h3>
-<div itemprop="acceptedAnswer" itemscope="" itemtype="https://schema.org/Answer">
-<div itemprop="text"><p>The Case for Small Language Models in the Enterprise is Why smaller, specialised models are winning enterprise workloads.</p></div>
-</div>
-</div><div itemprop="mainEntity" itemscope="" itemtype="https://schema.org/Question">
-<h3 itemprop="name">Why does The Case for Small Language Models in the Enterprise matter for AI Strategy?</h3>
-<div itemprop="acceptedAnswer" itemscope="" itemtype="https://schema.org/Answer">
-<div itemprop="text"><p>It reduces friction in how AI Strategy teams access, interpret, and act on information, leading to measurable productivity gains.</p></div>
-</div>
-</div><div itemprop="mainEntity" itemscope="" itemtype="https://schema.org/Question">
-<h3 itemprop="name">How should teams get started with The Case for Small Language Models in the Enterprise?</h3>
-<div itemprop="acceptedAnswer" itemscope="" itemtype="https://schema.org/Answer">
-<div itemprop="text"><p>Start with one high-value decision, connect the minimum data needed, and iterate with business users until the output is trusted.</p></div>
-</div>
-</div></div></div>
-<div class="article-cta">
-<p>Ready to move The Case for Small Language Models in the Enterprise from discussion to delivery? Contact Beehive Strategy for a demo tailored to your AI Strategy environment.</p>
-</div>
-<section aria-label="Frequently Asked Questions" class="faq-section" id="faq">
-<h2 class="faq-section-title" id="frequently-asked-questions-2">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
-                    Frequently Asked Questions
-                </h2>
-<div class="faq-list">
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">1</span><span>What is The Case for Small Language Models in the Enterprise?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">The Case for Small Language Models in the Enterprise is Why smaller, specialised models are winning enterprise workloads.</div></div>
-</div>
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">2</span><span>Why does The Case for Small Language Models in the Enterprise matter for AI Strategy?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">It reduces friction in how AI Strategy teams access, interpret, and act on information, leading to measurable productivity gains.</div></div>
-</div>
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">3</span><span>How should teams get started with The Case for Small Language Models in the Enterprise?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">Start with one high-value decision, connect the minimum data needed, and iterate with business users until the output is trusted.</div></div>
-</div>
-</div>
-</section>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<section aria-label="Frequently Asked Questions" class="faq-section" id="faq">
-<h2 class="faq-section-title" id="frequently-asked-questions-3">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
-                    Frequently Asked Questions
-                </h2>
-<div class="faq-list">
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">1</span><span>What is The Case for Small Language Models in the Enterprise?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">The Case for Small Language Models in the Enterprise is Why smaller, specialised models are winning enterprise workloads.</div></div>
-</div>
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">2</span><span>Why does The Case for Small Language Models in the Enterprise matter for AI Strategy?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">It reduces friction in how AI Strategy teams access, interpret, and act on information, leading to measurable productivity gains.</div></div>
-</div>
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">3</span><span>How should teams get started with The Case for Small Language Models in the Enterprise?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">Start with one high-value decision, connect the minimum data needed, and iterate with business users until the output is trusted.</div></div>
-</div>
-</div>
-</section>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<section aria-label="Frequently Asked Questions" class="faq-section" id="faq">
-<h2 class="faq-section-title" id="frequently-asked-questions-4">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
-                    Frequently Asked Questions
-                </h2>
-<div class="faq-list">
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">1</span><span>What is The Case for Small Language Models in the Enterprise?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">The Case for Small Language Models in the Enterprise is Why smaller, specialised models are winning enterprise workloads.</div></div>
-</div>
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">2</span><span>Why does The Case for Small Language Models in the Enterprise matter for AI Strategy?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">It reduces friction in how AI Strategy teams access, interpret, and act on information, leading to measurable productivity gains.</div></div>
-</div>
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">3</span><span>How should teams get started with The Case for Small Language Models in the Enterprise?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">Start with one high-value decision, connect the minimum data needed, and iterate with business users until the output is trusted.</div></div>
-</div>
-</div>
-</section>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
+<h2 id="frequently-asked-questions">Frequently asked questions</h2>
+<p>What is a small language model? A language model in roughly the 1 to 10 billion parameter range, small enough to run on a single GPU or modest infrastructure, and typically fine-tuned on a specific task or domain. It trades some general breadth for dramatically lower cost, latency, and infrastructure requirements.</p>
+<p>Are small models good enough for enterprise use? For narrow, well-defined tasks, yes — a fine-tuned small model reaches 80 to 95 percent of frontier-model quality, and the gap matters less than the cost and control advantages. The relevant comparison is on your workload with your data, not on general benchmarks.</p>
+<p>When should an enterprise use a small model instead of a frontier one? When the workload is high-volume, repetitive, and bounded, when cost or latency matters at scale, or when data-residency and privacy rules require the model to run inside your environment. Most internal enterprise traffic fits this description.</p>
+<p>How do teams get started with small models? Pick one workload, build a real test set, benchmark candidates including cost per request, stand up the simplest serving path, and capture usage data to drive fine-tuning. Design a router early so simple requests never pay frontier prices.</p>
 
             <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
@@ -340,12 +201,10 @@
                 <nav class="toc-links">
                     <a href="#why-it-matters" class="toc-link">Why it matters</a>
                     <a href="#common-challenges" class="toc-link">Common challenges</a>
+                    <a href="#which-workloads-should-move-to-small-models-first" class="toc-link">Which workloads should move to small models first?</a>
                     <a href="#how-to-get-started" class="toc-link">How to get started</a>
                     <a href="#key-takeaways" class="toc-link">Key takeaways</a>
                     <a href="#frequently-asked-questions" class="toc-link">Frequently asked questions</a>
-                    <a href="#frequently-asked-questions-2" class="toc-link">Frequently Asked Questions</a>
-                    <a href="#frequently-asked-questions-3" class="toc-link">Frequently Asked Questions</a>
-                    <a href="#frequently-asked-questions-4" class="toc-link">Frequently Asked Questions</a>
                 </nav>
             </div>
             <div class="sidebar-card">
@@ -369,11 +228,11 @@
                     </a>
                     <a href="blog/articles/ai-personalization-enterprise-scale" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">AI Personalisation at Enterprise Scale</h4>
-                        <span class="sidebar-related-meta">3 min read</span>
+                        <span class="sidebar-related-meta">7 min read</span>
                     </a>
                     <a href="blog/articles/ai-training-programs-enterprise" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Building AI Training Programmes That Actually Upskill</h4>
-                        <span class="sidebar-related-meta">3 min read</span>
+                        <span class="sidebar-related-meta">7 min read</span>
                     </a>
                 </div>
             </div>
