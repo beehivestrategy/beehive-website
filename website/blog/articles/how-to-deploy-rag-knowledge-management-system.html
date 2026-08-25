@@ -116,117 +116,56 @@
             <div class="toc-mobile" id="toc-mobile">
                 <button class="toc-mobile-toggle" aria-expanded="false">Table of Contents <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="toc-mobile-links">
+                    <a href="#why-use-rag-for-enterprise-knowledge-management" class="toc-mobile-link">Why Use RAG for Enterprise Knowledge Management?</a>
                     <a href="#prerequisites" class="toc-mobile-link">Prerequisites</a>
                     <a href="#step-by-step-rag-deployment" class="toc-mobile-link">Step-by-Step RAG Deployment</a>
                     <a href="#common-pitfalls-to-avoid" class="toc-mobile-link">Common Pitfalls to Avoid</a>
+                    <a href="#what-makes-a-rag-system-production-ready" class="toc-mobile-link">What Makes a RAG System Production-Ready?</a>
                     <a href="#how-beehive-strategy-helps" class="toc-mobile-link">How Beehive Strategy Helps</a>
-                    <a href="#frequently-asked-questions" class="toc-mobile-link">Frequently Asked Questions</a>
                 </div>
             </div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#prerequisites">Prerequisites</a>
-<a class="toc-mobile-link" href="#step-by-step-rag-deployment">Step-by-Step RAG Deployment</a>
-<a class="toc-mobile-link" href="#common-pitfalls-to-avoid">Common Pitfalls to Avoid</a>
-<a class="toc-mobile-link" href="#how-beehive-strategy-helps">How Beehive Strategy Helps</a>
-<a class="toc-mobile-link" href="#frequently-asked-questions">Frequently Asked Questions</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#prerequisites">Prerequisites</a>
-<a class="toc-mobile-link" href="#step-by-step-rag-deployment">Step-by-Step RAG Deployment</a>
-<a class="toc-mobile-link" href="#common-pitfalls-to-avoid">Common Pitfalls to Avoid</a>
-<a class="toc-mobile-link" href="#how-beehive-strategy-helps">How Beehive Strategy Helps</a>
-<a class="toc-mobile-link" href="#frequently-asked-questions">Frequently Asked Questions</a>
-</div>
-</div>
-<div class="toc-mobile" id="toc-mobile">
-<button aria-expanded="false" class="toc-mobile-toggle">Table of Contents <svg class="toc-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-<div class="toc-mobile-links">
-<a class="toc-mobile-link" href="#prerequisites">Prerequisites</a>
-<a class="toc-mobile-link" href="#step-by-step-rag-deployment">Step-by-Step RAG Deployment</a>
-<a class="toc-mobile-link" href="#common-pitfalls-to-avoid">Common Pitfalls to Avoid</a>
-<a class="toc-mobile-link" href="#how-beehive-strategy-helps">How Beehive Strategy Helps</a>
-</div>
-</div>
-<p><strong>A well-deployed RAG system provides 95%+ retrieval accuracy and delivers sourced, auditable answers to enterprise knowledge questions — replacing the hours that employees spend searching across disconnected document repositories.</strong> This guide covers the complete deployment lifecycle.</p>
+<p><strong>A well-deployed RAG system provides 95%+ retrieval accuracy, cuts knowledge-retrieval time by up to 70%, and delivers sourced, auditable answers to enterprise knowledge questions — replacing the hours that employees spend searching across disconnected document repositories.</strong> Retrieval-augmented generation, or RAG, grounds large language model responses in your own documents, so every answer carries a citation and every citation points to content your organisation actually controls. This guide covers the complete deployment lifecycle, from prerequisites and step-by-step build instructions to the production controls that separate a working prototype from a trusted enterprise system.</p>
+<h2 id="why-use-rag-for-enterprise-knowledge-management">Why Use RAG for Enterprise Knowledge Management?</h2>
+<p>Before RAG, enterprises had two unsatisfying options for making institutional knowledge accessible. They could rely on manual search, which industry surveys consistently show consumes 30-40% of a support agent's or analyst's working time, or they could fine-tune an LLM on internal documents — an approach that is expensive, requires specialised machine-learning expertise, and cannot be updated without retraining. RAG sidesteps both problems by retrieving the relevant passages at query time and feeding them to the model as context.</p>
+<p>The results are measurable. Deployments that move from manual search to RAG typically report a 40-60% reduction in hallucinations, because the model's answer is anchored to retrieved evidence rather than memory, and a 50-70% reduction in the time needed to locate an authoritative answer. Since Anthropic released the Model Context Protocol in November 2024, standardised connectors have made it dramatically easier to wire a RAG pipeline into SharePoint, Confluence, wikis, and file shares — which is why analysts expect RAG to become the dominant grounding pattern for enterprise AI over the next few years.</p>
+<p>RAG is the right choice whenever your knowledge changes faster than your training cadence and whenever answers must be verifiable. Fine-tuning embeds knowledge into weights, which makes every update a retraining project and every answer an act of faith; RAG keeps knowledge in documents, so updating the corpus updates the system. That operational difference explains why RAG has become the default for internal knowledge Q&amp;A, customer support deflection, and compliance-sensitive querying, where citing the source is non-negotiable.</p>
+<p>The economics reinforce the choice. A typical enterprise knowledge base of 50,000 documents costs a fraction of a fine-tuning run to index, refreshes in hours rather than weeks, and — because retrieval returns only the relevant passages — keeps token consumption per answer low. Teams that run both approaches side by side consistently find that RAG wins on total cost of ownership, update speed, and auditability.</p>
 <h2 id="prerequisites">Prerequisites</h2>
+<p>Before writing any code, confirm that your organisation has the four foundations below. Missing any one of them is the most common reason RAG pilots stall during the move to production.</p>
 <ul>
-<li>A knowledge base with 1,000+ documents (PDF, Word, web pages, wikis)</li>
-<li>A vector database (Pinecone, Weaviate, Qdrant, or Milvus)</li>
-<li>Access to an LLM API (OpenAI, Anthropic, or self-hosted)</li>
-<li>Document processing pipeline (OCR for scanned docs, chunking logic)</li>
+<li><strong>A knowledge base with 1,000+ documents (PDF, Word, web pages, wikis).</strong> RAG returns value in proportion to the quality and coverage of your source corpus; a few hundred scattered files produce a demo, not a system.</li>
+<li><strong>A vector database (Pinecone, Weaviate, Qdrant, or Milvus).</strong> This stores the embeddings that power similarity search, with metadata filtering for governance.</li>
+<li><strong>Access to an LLM API (OpenAI, Anthropic, or self-hosted).</strong> The generation layer needs a model with strong instruction-following; self-hosting is viable where data-residency rules forbid external calls.</li>
+<li><strong>A document processing pipeline (OCR for scanned docs, chunking logic).</strong> Roughly 60-70% of enterprise documents are PDFs, many of them scanned, so OCR quality directly determines retrieval quality.</li>
 </ul>
 <h2 id="step-by-step-rag-deployment">Step-by-Step RAG Deployment</h2>
+<p>Once the foundations are in place, work through the eight steps in order. Steps 1-3 build the index, steps 4-6 build the retrieval and generation pipeline, and steps 7-8 make the system safe to run in production.</p>
 <ol>
-<li><strong>Inventory and Classify Your Knowledge Base</strong><br/>Map all document repositories: SharePoint, Confluence, wikis, file shares, and databases. Classify by sensitivity, format, and update frequency. <strong>Expected outcome:</strong> a complete inventory of knowledge sources with metadata for ingestion prioritisation.</li>
-<li><strong>Prepare and Chunk Documents</strong><br/>Process documents: extract text (OCR for scanned PDFs), clean formatting artifacts, and chunk into 500-1000 token segments with overlap. Add metadata tags (department, date, sensitivity level). <strong>Expected outcome:</strong> clean, chunked, and tagged document segments ready for embedding.</li>
-<li><strong>Generate Embeddings and Index</strong><br/>Generate vector embeddings for each chunk using your chosen embedding model. Upload to your vector database with metadata filtering support. <strong>Expected outcome:</strong> a populated vector index with all knowledge base documents.</li>
-<li><strong>Implement the Retrieval Pipeline</strong><br/>Build the query processing pipeline: natural language query to embedding, vector similarity search with metadata filtering, re-ranking of top results for relevance. <strong>Expected outcome:</strong> a retrieval pipeline that returns the 5-10 most relevant chunks per query.</li>
-<li><strong>Build the Generation Layer</strong><br/>Implement the prompt template that combines retrieved context with the user query. Include source citations in the output format. Add guardrails for answer confidence and topic relevance. <strong>Expected outcome:</strong> an LLM generation layer that produces sourced, accurate answers.</li>
-<li><strong>Implement Source Attribution</strong><br/>Ensure every generated answer includes references to source documents with URLs or identifiers. Build a "view source" feature that lets users verify the underlying context. <strong>Expected outcome:</strong> answers with clickable source references for verification.</li>
-<li><strong>Deploy with Monitoring</strong><br/>Deploy the RAG pipeline with monitoring for retrieval latency, answer accuracy (via sample evaluation), user satisfaction, and system health. <strong>Expected outcome:</strong> a production RAG system with operational dashboards.</li>
-<li><strong>Establish Update Workflows</strong><br/>Automate the ingestion pipeline for new and updated documents. Schedule periodic re-indexing. Monitor for stale content. <strong>Expected outcome:</strong> an automated pipeline that keeps knowledge base current.</li>
+<li><strong>Inventory and classify your knowledge base.</strong> Map all document repositories: SharePoint, Confluence, wikis, file shares, and databases. Classify by sensitivity, format, and update frequency. <strong>Expected outcome:</strong> a complete inventory of knowledge sources with metadata for ingestion prioritisation, so the highest-value documents are embedded first.</li>
+<li><strong>Prepare and chunk documents.</strong> Extract text (OCR for scanned PDFs), clean formatting artifacts, and chunk into 500-1000 token segments with overlap. Add metadata tags such as department, date, and sensitivity level. <strong>Expected outcome:</strong> clean, chunked, and tagged document segments ready for embedding.</li>
+<li><strong>Generate embeddings and index.</strong> Generate vector embeddings for each chunk using your chosen embedding model and upload them to your vector database with metadata filtering support. <strong>Expected outcome:</strong> a populated vector index covering the full knowledge base.</li>
+<li><strong>Implement the retrieval pipeline.</strong> Build query processing: natural language query to embedding, vector similarity search with metadata filtering, then re-ranking of top results for relevance. <strong>Expected outcome:</strong> a retrieval pipeline that returns the 5-10 most relevant chunks per query in well under a second at the 95th percentile.</li>
+<li><strong>Build the generation layer.</strong> Implement the prompt template that combines retrieved context with the user query, include source citations in the output format, and add guardrails for answer confidence and topic relevance. <strong>Expected outcome:</strong> an LLM generation layer that produces sourced, accurate answers rather than confident guesses.</li>
+<li><strong>Implement source attribution.</strong> Ensure every generated answer includes references to source documents with URLs or identifiers, and build a view-source feature that lets users verify the underlying context. <strong>Expected outcome:</strong> answers with clickable source references for verification — the feature auditors check first.</li>
+<li><strong>Deploy with monitoring.</strong> Deploy the RAG pipeline with monitoring for retrieval latency, answer accuracy via sample evaluation, user satisfaction, and system health. <strong>Expected outcome:</strong> a production RAG system with operational dashboards that alert on degradation before users notice it.</li>
+<li><strong>Establish update workflows.</strong> Automate the ingestion pipeline for new and updated documents, schedule periodic re-indexing, and monitor for stale content. <strong>Expected outcome:</strong> an automated pipeline that keeps the knowledge base current without manual intervention.</li>
 </ol>
+<p>Set expectations before you start: a credible pilot takes four to eight weeks with two to three engineers, and the first production release typically follows within a quarter. The work splits roughly evenly between document preparation, retrieval tuning, and evaluation. Teams that compress the evaluation slice always pay for it later, because without a labelled question-answer set there is no way to prove the system is accurate — or to show executives the before-and-after numbers that justify the investment.</p>
 <h2 id="common-pitfalls-to-avoid">Common Pitfalls to Avoid</h2>
+<p>Most failed RAG deployments fail for predictable reasons, and the four below account for the majority of production incidents seen in the field. Budget for them during design rather than discovering them after launch.</p>
 <ul>
-<li><strong>Using overly large or small chunks.</strong> 500-1000 tokens with 100-token overlap provides the best balance of context and specificity.</li>
-<li><strong>Ignoring metadata filtering.</strong> Without role-based filtering, users may access documents they should not see.</li>
-<li><strong>Skipping answer evaluation.</strong> Regularly evaluate a sample of RAG answers against ground truth to catch quality degradation early.</li>
-<li><strong>Not implementing feedback loops.</strong> User feedback on answer quality drives continuous improvement of retrieval and generation.</li>
+<li><strong>Using overly large or small chunks.</strong> Chunks of 500-1000 tokens with a 100-token overlap provide the best balance of context and specificity; larger chunks bury the answer, and smaller chunks lose it.</li>
+<li><strong>Ignoring metadata filtering.</strong> Without role-based filtering, users may access documents they should not see, turning a knowledge tool into a compliance liability.</li>
+<li><strong>Skipping answer evaluation.</strong> Regularly evaluate a sample of RAG answers against ground truth; retrieval quality degrades silently as documents change, and only systematic evaluation catches it early.</li>
+<li><strong>Not implementing feedback loops.</strong> User feedback on answer quality drives continuous improvement of retrieval and generation; without it, the system never learns which answers miss the mark.</li>
 </ul>
+<h2 id="what-makes-a-rag-system-production-ready">What Makes a RAG System Production-Ready?</h2>
+<p>A RAG system is production-ready when it is not only accurate but observable, governable, and maintainable. Accuracy means a retrieval hit rate of 95% or better on a held-out evaluation set. Observability means you can see query latency, retrieval quality, and generation failures on a dashboard rather than discovering them through complaints.</p>
+<p>Governability means permissions are enforced end-to-end: a user can only retrieve and cite documents their role allows them to see. Maintainability means ingestion is automated, index refresh is scheduled, and a named owner is accountable for content freshness. In our experience, organisations that insist on these four properties during the build get an asset; organisations that skip them get a demo that stops working after the first data change.</p>
+<p>Two further controls deserve attention in regulated industries. First, set answer-confidence thresholds so the system says "I could not find a reliable source" instead of composing an answer from weak retrieval matches; our deployments typically see 5-10% of queries legitimately routed to this fallback in the first months. Second, retain query and answer logs for audit, including the retrieved chunks that grounded each response. Together these controls turn a knowledge assistant into a defensible, inspectable business system.</p>
 <h2 id="how-beehive-strategy-helps">How Beehive Strategy Helps</h2>
-<p>Beehive Strategy deploys production RAG systems integrated with your document repositories and collaboration platforms. We build the complete pipeline from document ingestion to monitored production deployment.</p>
-<section aria-label="Frequently Asked Questions" class="faq-section" id="faq">
-<h2 class="faq-section-title" id="frequently-asked-questions">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
-                    Frequently Asked Questions
-                </h2>
-<div class="faq-list">
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">1</span><span>What vector database should I use for RAG?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">Pinecone and Weaviate for managed cloud. Qdrant and Milvus for self-hosted. Choose based on your deployment model, scale requirements, and integration needs.</div></div>
-</div>
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">2</span><span>What is the optimal chunk size for RAG?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">500-1000 tokens with 100-token overlap provides the best balance of context and specificity. Smaller chunks improve precision but lose context; larger chunks retain context but reduce relevance.</div></div>
-</div>
-<div class="faq-item">
-<button aria-expanded="false" class="faq-question">
-<span class="faq-question-text"><span class="faq-number">3</span><span>How do you measure RAG system quality?</span></span>
-<svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-</button>
-<div class="faq-answer" role="region"><div class="faq-answer-inner">Evaluate retrieval accuracy (precision@k), answer faithfulness (does the answer reflect retrieved context?), answer relevance, and user satisfaction. Test with a held-out set of question-answer pairs.</div></div>
-</div>
-</div>
-</section>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
-<nav aria-label="Article navigation" class="article-nav">
-<a class="btn-back-to-blog" href="https://www.beehivestrategy.com/blog">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    Back to All Articles
-                </a>
-</nav>
+<p>Beehive Strategy deploys production RAG systems integrated with your document repositories and collaboration platforms. We build the complete pipeline — from document ingestion and chunking strategy to retrieval tuning, guardrail design, and monitored production deployment — so your teams get answers that are fast, sourced, and safe to share.</p>
+<p>Because our conversational BI platform is built on the same retrieval, semantic-layer, and governance foundations, RAG projects sit naturally alongside the rest of your analytics estate: one governed access layer, one audit trail, and answers that always point back to the data and documents your organisation owns.</p>
 
             <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
@@ -270,11 +209,12 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Table of Contents</div>
                 <nav class="toc-links">
+                    <a href="#why-use-rag-for-enterprise-knowledge-management" class="toc-link">Why Use RAG for Enterprise Knowledge Management?</a>
                     <a href="#prerequisites" class="toc-link">Prerequisites</a>
                     <a href="#step-by-step-rag-deployment" class="toc-link">Step-by-Step RAG Deployment</a>
                     <a href="#common-pitfalls-to-avoid" class="toc-link">Common Pitfalls to Avoid</a>
+                    <a href="#what-makes-a-rag-system-production-ready" class="toc-link">What Makes a RAG System Production-Ready?</a>
                     <a href="#how-beehive-strategy-helps" class="toc-link">How Beehive Strategy Helps</a>
-                    <a href="#frequently-asked-questions" class="toc-link">Frequently Asked Questions</a>
                 </nav>
             </div>
             <div class="sidebar-card">
