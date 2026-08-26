@@ -122,6 +122,7 @@
                     <a href="#security-principle-3-no-data-retention-in-the-ai-model" class="toc-mobile-link">Security Principle 3: No Data Retention in the AI Model</a>
                     <a href="#security-principle-4-im-native-authentication" class="toc-mobile-link">Security Principle 4: IM-Native Authentication</a>
                     <a href="#what-cisos-should-ask-their-conversational-bi-vendor" class="toc-mobile-link">What CISOs Should Ask Their Conversational BI Vendor</a>
+                    <a href="#how-should-cisos-approach-conversational-bi-governance" class="toc-mobile-link">How Should CISOs Approach Conversational BI Governance?</a>
                 </div>
             </div>
 <p class="article-lead">Conversational BI brings enterprise data into chat tools like WeChat Work, DingTalk, and Feishu — where employees already spend hours every day. For business users, this is a breakthrough. For CISOs, it raises questions that traditional BI security frameworks were never designed to answer. Who can ask what? Where does the data live? How do we audit a conversation?</p>
@@ -149,7 +150,9 @@
 <p><strong>2. What is the audit trail format?</strong> The answer must be "structured, immutable logs of every AI-to-data interaction with user identity, timestamp, and data source." Any answer that involves manual logging or partial records is insufficient.</p>
 <p><strong>3. Does the AI retain enterprise data?</strong> The answer must be "no." The AI must use RAG or equivalent real-time retrieval with no data retention in model weights or provider systems.</p>
 <p><strong>4. How is authentication handled?</strong> The answer must be "IM-native SSO with enterprise identity provider integration." Any answer that involves a separate credential system or basic auth is insufficient.</p>
-<p>At <a href="/">Beehive Strategy</a>, our MCP-powered conversational BI platform was designed with these principles from day one. We do not retrofit security. We build it into the architecture. <a href="/contact">Talk to us</a> about a security review of your current BI setup or a secure deployment of conversational BI in your enterprise.</p>
+<h2 id="how-should-cisos-approach-conversational-bi-governance">How Should CISOs Approach Conversational BI Governance?</h2>
+<p>The answer is to treat a conversational BI layer the way you already treat any identity-aware data access system: bring your own identity provider, enforce row- and column-level entitlements at the semantic layer, and log every query to an immutable audit trail. The most common mistake is bolting chat access onto a warehouse without an abstraction layer, which forces you to choose between over-broad data grants and endless per-user policy sprawl. A semantic layer gives you a single control point where the model's view of the data is already filtered to what the caller is allowed to see.</p>
+<p>Second, separate the model's reasoning from the data it is allowed to touch. The language model should never hold a direct connection string; it should only ever see a governed, parameterised query surface. That way a prompt-injection attempt can at worst produce a well-formed query that still fails the entitlement check, rather than a raw database read. This is why MCP-native connectors are valuable: they make the trust boundary explicit and auditable by design.</p>
 
 
             <nav class="article-nav" aria-label="Article navigation">
@@ -170,6 +173,7 @@
                     <a href="#security-principle-3-no-data-retention-in-the-ai-model" class="toc-link">Security Principle 3: No Data Retention in the AI Model</a>
                     <a href="#security-principle-4-im-native-authentication" class="toc-link">Security Principle 4: IM-Native Authentication</a>
                     <a href="#what-cisos-should-ask-their-conversational-bi-vendor" class="toc-link">What CISOs Should Ask Their Conversational BI Vendor</a>
+                    <a href="#how-should-cisos-approach-conversational-bi-governance" class="toc-link">How Should CISOs Approach Conversational BI Governance?</a>
                 </nav>
             </div>
             <div class="sidebar-card">
