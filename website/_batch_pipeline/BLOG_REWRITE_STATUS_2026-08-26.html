@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beehive Blog Rewrite — Full Status (2026-08-26)</title>
+<style>
+  :root{--teal:#2B9E8B;--teal-d:#1e7a6b;--teal-l:#3dd4b0;--gold:#d4a843;--ink:#16201d;--mut:#5a6e66;--bg:#f6f9f8;--card:#fff;--line:#e2ece9;border:#dce8e4;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 80px}
+  header{border-bottom:3px solid var(--teal);padding-bottom:18px;margin-bottom:28px}
+  h1{font-size:28px;margin:0 0 6px;color:var(--teal-d)}
+  .sub{color:var(--mut);font-size:14px}
+  h2{font-size:21px;margin:38px 0 14px;color:var(--teal-d);border-left:5px solid var(--teal);padding-left:12px}
+  h3{font-size:16px;margin:22px 0 8px;color:var(--ink)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:18px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .card .n{font-size:30px;font-weight:700;color:var(--teal)}
+  .card .l{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+  .card.warn .n{color:#c0651b}.card.bad .n{color:#c0392b}.card.good .n{color:var(--teal-d)}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14px;background:var(--card);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  th,td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left}
+  th{background:#eef5f3;color:var(--teal-d);font-weight:600}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums;text-align:right}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600}
+  .p-pass{background:#e3f5ef;color:var(--teal-d)}
+  .p-fail{background:#fdecea;color:#c0392b}
+  .p-warn{background:#fdf2e3;color:#b9760f}
+  .bar{background:#eef5f3;border-radius:6px;height:22px;position:relative;overflow:hidden;min-width:120px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-l))}
+  .bar.warn>i{background:linear-gradient(90deg,#e0a23b,#f0c46b)}
+  .bar.bad>i{background:linear-gradient(90deg,#c0392b,#e07a6e)}
+  .row{display:flex;align-items:center;gap:10px}
+  .row .lab{width:130px;font-size:13px;color:var(--mut)}
+  .row .val{width:54px;text-align:right;font-size:13px;font-variant-numeric:tabular-nums}
+  .layout{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:16px 0}
+  .layer{border:1px dashed var(--teal);border-radius:10px;padding:10px 14px;margin:8px 0;background:#f3faf8}
+  .layer.cta{background:#fdf6e9;border-color:var(--gold)}
+  .layer.faq{background:#eef4fb;border-color:#5b8fd6}
+  .layer .t{font-weight:600;color:var(--teal-d);font-size:13px}
+  .layer .d{font-size:12px;color:var(--mut)}
+  .note{background:#fff8ec;border:1px solid #f0dca8;border-radius:10px;padding:14px 16px;font-size:14px;color:#6b531a}
+  .crit{background:#fdecea;border:1px solid #f3b5ad;border-radius:10px;padding:14px 16px;font-size:14px;color:#7a2018}
+  code{background:#eef5f3;padding:1px 6px;border-radius:5px;font-size:12.5px;color:var(--teal-d)}
+  .foot{margin-top:40px;border-top:1px solid var(--line);padding-top:14px;color:var(--mut);font-size:12px}
+  ul.tight{margin:8px 0;padding-left:20px}ul.tight li{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Beehive Blog Rewrite — Full Status Report</h1>
+  <div class="sub">Generated 2026-08-26 · 1,061 articles · EN / zh-CN / zh-TW · measured directly from on-disk HTML</div>
+</header>
+
+<div class="cards">
+  <div class="card"><div class="n">1,061</div><div class="l">Total articles</div></div>
+  <div class="card warn"><div class="n">0%</div><div class="l">EN meet 2,500-wd floor</div></div>
+  <div class="card warn"><div class="n">~50%</div><div class="l">zh meet 3,500-CJK floor</div></div>
+  <div class="card bad"><div class="n">21</div><div class="l">Strict GEO pass (all 3 langs)</div></div>
+  <div class="card good"><div class="n">100%</div><div class="l">hreflang ×4 + canonical</div></div>
+</div>
+
+<div class="crit">
+  <strong>Headline correction vs. <code>status.json</code>:</strong> the checkpoint's "553 verified / GEO-intent PASS" was based only on <em>GEO structure presence</em> (FAQ block + CTA button + demo phrase). A fresh word-count + GEO-marker measurement of the actual files shows the rewrite <strong>added structure but missed the length floors entirely</strong>. EN articles average ~1,573 words (max 2,281) — none reach the 2,500-word standard. The "verified" label is therefore optimistic and should not be treated as deploy-ready.
+</div>
+
+<h2>1 · Updated Blog Example &amp; New Layout (deepseek harness)</h2>
+<p>The harness produced a consistent, GEO-oriented template. Below is the structure of a real rewritten article — <code>what-is-data-mesh-architecture-explained</code> (EN) — exactly as written to disk.</p>
+
+<div class="layout">
+  <div class="layer"><div class="t">① Article header</div><div class="d">H1 title + meta row (author / date / read-time / avatar)</div></div>
+  <div class="layer"><div class="t">② Table of Contents</div><div class="d">Auto-generated sticky TOC linking to each H2</div></div>
+  <div class="layer"><div class="t">③ Body — question-style H2 sections</div><div class="d">e.g. "What Is Data Mesh?" · "The Four Pillars of Data Mesh" · "Why Enterprises Adopt Data Mesh" · "Is Data Mesh Right for Your Organisation?" · "Beehive Strategy and Data Mesh" · "Key Considerations for Implementation" · "Beehive Strategy Comprehensive Approach" · "Next Steps"</div></div>
+  <div class="layer faq"><div class="t">④ FAQ section <span class="pill p-pass">faq-section</span></div><div class="d">H2 "Frequently Asked Questions" + Q&amp;A block. <span class="pill p-fail">FAQPage JSON-LD missing on this article</span></div></div>
+  <div class="layer"><div class="t">⑤ Recommended Articles</div><div class="d">Related-posts block with cards</div></div>
+  <div class="layer cta"><div class="t">⑥ CTA card <span class="pill p-pass">article-cta</span></div><div class="d">H2 "Ready to transform your data strategy?" + <code>article-cta-btn</code> → "Book a Demo" + 3–4 stat callouts</div></div>
+</div>
+<p style="font-size:13px;color:var(--mut)">Language variants: zh-CN uses <code>常见问题</code> / <code>预约演示</code>; zh-TW uses <code>常見問題</code> / <code>預約示範</code>. The section skeleton is identical across all three languages.</p>
+
+<h2>2 · Word-Count Status — All Languages</h2>
+<p>Floors from the GEO design standard: <strong>EN ≥ 2,500 words (hard)</strong>; <strong>zh-CN / zh-TW ≥ 3,500 CJK chars (hard)</strong>. Measured from the <code>id="article-content"</code> prose container.</p>
+
+<table>
+<thead><tr><th>Language</th><th class="num">n</th><th class="num">Avg</th><th class="num">Median</th><th class="num">Min</th><th class="num">Max</th><th class="num">Meet floor</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>EN (words)</td><td class="num">1,061</td><td class="num">1,573</td><td class="num">1,526</td><td class="num">928</td><td class="num">2,281</td><td class="num">0 / 1,061 (0%)</td><td><span class="pill p-fail">FAIL — below floor</span></td></tr>
+<tr><td>zh-CN (CJK)</td><td class="num">1,060</td><td class="num">3,304</td><td class="num">2,734</td><td class="num">0</td><td class="num">8,437</td><td class="num">~526 / 1,060 (≈50%)</td><td><span class="pill p-warn">PARTIAL</span></td></tr>
+<tr><td>zh-TW (CJK)</td><td class="num">1,060</td><td class="num">3,357</td><td class="num">2,740</td><td class="num">0</td><td class="num">8,437</td><td class="num">~526 / 1,060 (≈50%)</td><td><span class="pill p-warn">PARTIAL</span></td></tr>
+</tbody>
+</table>
+
+<h3>EN distribution (floor = 2,500)</h3>
+<div class="row"><div class="lab">1,250–2,499</div><div class="bar bad" style="flex:1"><i style="width:99%"></i></div><div class="val">1,049</div></div>
+<div class="row"><div class="lab">&lt;1,250</div><div class="bar bad" style="flex:1"><i style="width:1%"></i></div><div class="val">12</div></div>
+<div class="row"><div class="lab">≥2,500</div><div class="bar" style="flex:1"><i style="width:0%"></i></div><div class="val">0</div></div>
+
+<h3>zh-CN distribution (floor = 3,500 CJK)</h3>
+<div class="row"><div class="lab">&lt;1,750</div><div class="bar bad" style="flex:1"><i style="width:3%"></i></div><div class="val">33</div></div>
+<div class="row"><div class="lab">1,750–3,499</div><div class="bar warn" style="flex:1"><i style="width:47%"></i></div><div class="val">500</div></div>
+<div class="row"><div class="lab">3,500–5,249</div><div class="bar" style="flex:1"><i style="width:46%"></i></div><div class="val">483</div></div>
+<div class="row"><div class="lab">≥5,250</div><div class="bar" style="flex:1"><i style="width:4%"></i></div><div class="val">43</div></div>
+
+<h3>zh-TW distribution (floor = 3,500 CJK)</h3>
+<div class="row"><div class="lab">&lt;1,750</div><div class="bar bad" style="flex:1"><i style="width:2%"></i></div><div class="val">19</div></div>
+<div class="row"><div class="lab">1,750–3,499</div><div class="bar warn" style="flex:1"><i style="width:48%"></i></div><div class="val">513</div></div>
+<div class="row"><div class="lab">3,500–5,249</div><div class="bar" style="flex:1"><i style="width:45%"></i></div><div class="val">476</div></div>
+<div class="row"><div class="lab">≥5,250</div><div class="bar" style="flex:1"><i style="width:5%"></i></div><div class="val">50</div></div>
+
+<div class="note">EN is the biggest gap: the harness wrote ~1,500-word articles, roughly 60% of the required length. zh is split — about half the corpus clears 3,500 CJK, half sits in the 1,750–3,499 band.</div>
+
+<h2>3 · SEO &amp; GEO Readiness</h2>
+<p>Per-language coverage of the GEO markers (share of articles containing each element). "Strict pass" = all 7 markers present in <em>all three languages</em> for the same article.</p>
+
+<table>
+<thead><tr><th>Marker</th><th class="num">EN</th><th class="num">zh-CN</th><th class="num">zh-TW</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>FAQ section block</td><td class="num">80%</td><td class="num">80%</td><td class="num">80%</td><td>~20% of articles missing a FAQ block</td></tr>
+<tr><td>FAQPage JSON-LD</td><td class="num">81%</td><td class="num">81%</td><td class="num">81%</td><td>Structured Q&amp;A not emitted on ~19%</td></tr>
+<tr><td>CTA button (<code>article-cta-btn</code>)</td><td class="num">99%</td><td class="num">99%</td><td class="num">99%</td><td>Near-universal</td></tr>
+<tr><td>Demo phrase</td><td class="num">100%</td><td class="num">99%</td><td class="num">83%</td><td>zh-TW missing <code>預約示範</code> on ~17%</td></tr>
+<tr><td>hreflang ×4 (en/zh-CN/zh-TW/x-default)</td><td class="num">100%</td><td class="num">100%</td><td class="num">100%</td><td>Solid</td></tr>
+<tr><td>Canonical link</td><td class="num">100%</td><td class="num">100%</td><td class="num">100%</td><td>Solid</td></tr>
+<tr><td>Question-style H2</td><td class="num">93%</td><td class="num">18%</td><td class="num">18%</td><td>zh FAQ headings are statements, not questions</td></tr>
+</tbody>
+</table>
+
+<div class="cards">
+  <div class="card bad"><div class="n">21</div><div class="l">Articles passing ALL markers in all 3 langs (strict)</div></div>
+  <div class="card warn"><div class="n">553</div><div class="l">"Verified" in status.json (lenient GEO-intent only)</div></div>
+  <div class="card good"><div class="n">100%</div><div class="l">hreflang + canonical coverage</div></div>
+</div>
+
+<div class="note">GEO takeaway: technical SEO (hreflang, canonical) is fully in place and CTA/demo are nearly universal — good foundations. The weak spots are (a) <strong>length</strong> (fails floors), (b) <strong>FAQPage JSON-LD</strong> on ~19%, (c) <strong>question-style headings</strong> in zh (only 18%), and (d) <strong>zh-TW demo phrase</strong> on 83%.</div>
+
+<h2>4 · Data-Integrity Issues</h2>
+<table>
+<thead><tr><th>File</th><th>Problem</th></tr></thead>
+<tbody>
+<tr><td><code>conversational-analytics-energy-sector</code></td><td>zh-CN &amp; zh-TW versions contain <strong>0 Chinese characters</strong> (untranslated / blank body)</td></tr>
+<tr><td><code>text-to-sql-transformation-modern-bi-platforms</code></td><td>zh-CN &amp; zh-TW versions contain <strong>0 Chinese characters</strong></td></tr>
+<tr><td><code>data-catalog-lineage-tracking-compliance</code></td><td>zh-TW version contains <strong>0 Chinese characters</strong></td></tr>
+</tbody>
+</table>
+<div class="crit">These 3 slugs render as English-only (or empty) in the Chinese locales — a visible defect that must be regenerated before any deploy.</div>
+
+<h2>5 · Recommended Next Steps</h2>
+<ul class="tight">
+  <li><strong>Do not deploy yet.</strong> status.json "553 verified" overstates readiness; real strict pass = 21 articles.</li>
+  <li><strong>Fix length first (biggest gap):</strong> expand EN articles from ~1,500 → ≥2,500 words, and top up the ~500 zh articles in the 1,750–3,499 band to ≥3,500 CJK.</li>
+  <li><strong>Backfill FAQPage JSON-LD</strong> on the ~19% missing it (incl. the example article above).</li>
+  <li><strong>Regenerate the 3 blank zh articles</strong> so they actually contain Chinese.</li>
+  <li><strong>Align zh headings to question style</strong> where feasible (GEO signal) and fix the 17% zh-TW missing <code>預約示範</code>.</li>
+  <li>Re-run this measurement after fixes, then reconcile status.json before deploying.</li>
+</ul>
+
+<div class="foot">Measurement method: Python extraction of <code>id="article-content"</code> prose; EN word tokens via <code>[A-Za-z0-9]+(?:['\-]…)*</code>; zh CJK via <code>[一-鿿]</code>. GEO markers detected by class/string presence. Baseline: <code>website/_batch_pipeline/analyze_full.py</code>. Report file: <code>BLOG_REWRITE_STATUS_2026-08-26.html</code>.</div>
+</div>
+</body>
+</html>
