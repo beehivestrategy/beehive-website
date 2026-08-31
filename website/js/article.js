@@ -1,16 +1,14 @@
-<script>
-
 (function() {
     'use strict';
 
     // ---- Elements ----
     var progressBar = document.getElementById('readingProgress');
     var header = document.getElementById('header');
-    var hamburger = document.getElementById('hamburger-btn');
+    var hamburger = document.getElementById('hamburger') || document.getElementById('hamburger-btn');
     var mobileMenu = document.getElementById('mobile-menu');
     var langSwitcher = document.getElementById('lang-switcher');
     var langBtn = langSwitcher.querySelector('.lang-switcher-btn');
-    var langDropdown = langSwitcher.querySelector('.lang-dropdown');
+    var langDropdown = langSwitcher.querySelector('.lang-switcher-dropdown') || langSwitcher.querySelector('.lang-dropdown');
     var backToTop = document.getElementById('backToTop');
     var articleContent = document.getElementById('article-content');
     var tocLinks = document.querySelectorAll('.toc-sidebar .toc-link');
@@ -75,6 +73,44 @@
             langDropdown.classList.remove('open');
             langBtn.setAttribute('aria-expanded', 'false');
         }
+    });
+
+    // ---- 5b. Desktop Services dropdown (click + keyboard, parity with main.js) ----
+    function closeAllNavDropdowns(except) {
+        document.querySelectorAll('.nav-item-dropdown.open').forEach(function(d) {
+            if (d === except) return;
+            d.classList.remove('open');
+            var t = d.querySelector(':scope > .nav-link');
+            if (t) t.setAttribute('aria-expanded', 'false');
+        });
+    }
+    document.querySelectorAll('.nav-item-dropdown').forEach(function(dropdown) {
+        var trigger = dropdown.querySelector(':scope > .nav-link');
+        if (!trigger) return;
+        trigger.setAttribute('aria-haspopup', 'true');
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            var willOpen = !dropdown.classList.contains('open');
+            closeAllNavDropdowns(dropdown);
+            dropdown.classList.toggle('open', willOpen);
+            trigger.setAttribute('aria-expanded', String(willOpen));
+        });
+        trigger.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeAllNavDropdowns();
+        });
+    });
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-item-dropdown')) closeAllNavDropdowns();
+    });
+
+    // ---- 5c. Mobile submenu toggles ----
+    mobileMenu.querySelectorAll('.mobile-submenu-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var submenu = this.closest('.mobile-submenu');
+            if (submenu) submenu.classList.toggle('open');
+        });
     });
 
     // ---- 6. FAQ Accordion (one at a time) ----
@@ -171,21 +207,32 @@
 
     // ---- 10. Share Buttons ----
     var articleUrl = window.location.href;
-    var articleTitle = 'Conversational Analytics for the Energy Sector';
+    var articleTitle = (window.__ARTICLE_TITLE__) || document.title || 'Beehive Strategy';
 
-    document.getElementById('share-linkedin').addEventListener('click', function() {
-        window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(articleUrl), '_blank', 'width=600,height=500');
-    });
+    var shareLinkedin = document.getElementById('share-linkedin');
+    if (shareLinkedin) {
+        shareLinkedin.addEventListener('click', function() {
+            window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(articleUrl), '_blank', 'width=600,height=500');
+        });
+    }
 
-    document.getElementById('share-x').addEventListener('click', function() {
-        window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(articleTitle) + '&url=' + encodeURIComponent(articleUrl), '_blank', 'width=600,height=400');
-    });
+    var shareX = document.getElementById('share-x');
+    if (shareX) {
+        shareX.addEventListener('click', function() {
+            window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(articleTitle) + '&url=' + encodeURIComponent(articleUrl), '_blank', 'width=600,height=400');
+        });
+    }
 
-    document.getElementById('share-wechat').addEventListener('click', function() {
-        alert('WeChat sharing requires the WeChat app. Copy the link and share it in a WeChat conversation.');
-    });
+    var shareWechat = document.getElementById('share-wechat');
+    if (shareWechat) {
+        shareWechat.addEventListener('click', function() {
+            alert('WeChat sharing requires the WeChat app. Copy the link and share it in a WeChat conversation.');
+        });
+    }
 
-    document.getElementById('share-copy').addEventListener('click', function() {
+    var shareCopy = document.getElementById('share-copy');
+    if (shareCopy) {
+        shareCopy.addEventListener('click', function() {
         if (navigator.clipboard) {
             navigator.clipboard.writeText(articleUrl).then(function() {
                 showToast('Link copied to clipboard!');
@@ -200,6 +247,7 @@
             showToast('Link copied to clipboard!');
         }
     });
+    }
 
     function showToast(msg) {
         toast.textContent = msg;
@@ -229,5 +277,3 @@
     handleBackToTop();
 
 })();
-
-</script>

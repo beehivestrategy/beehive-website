@@ -35,10 +35,49 @@
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="/css/article.css" rel="stylesheet">
+    <link href="/css/article.css?v=20260826" rel="stylesheet">
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/llm-gateway-implementation#article", "headline": "Building an LLM Gateway: Routing, Caching, and Fallback", "description": "Enterprise patterns for managing multiple LLM providers. Learn how to build LLM gateways with intelligent routing, response caching, and fallback strategies.", "datePublished": "2026-04-04T13:00:00+08:00", "dateModified": "2026-04-04T13:00:00+08:00", "articleSection": "Technology", "keywords": "llm-gateway, llm-routing, enterprise-ai, ai-infrastructure, beehive-strategy", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/llm-gateway-implementation"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/llm-gateway-implementation.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Building an LLM Gateway: Routing, Caching, and Fallback"}]}</script>
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "1 What are the key considerations for LLM gateway implementation?", "acceptedAnswer": {"@type": "Answer", "text": "The key considerations include strategic alignment with business outcomes, data readiness, cross-functional collaboration, and sustained governance. Organizations must approach managing multiple LLM providers with routing and caching with clear success criteria and phased execution to achieve meaningful results."}}, {"@type": "Question", "name": "2 How does this relate to Beehive Strategy's expertise?", "acceptedAnswer": {"@type": "Answer", "text": "Beehive Strategy specializes in MCP-powered conversational BI and enterprise AI consulting. Our work in LLM gateway implementation directly supports enterprises implementing AI-driven analytics, governance frameworks, and data strategies that deliver measurable business outcomes."}}, {"@type": "Question", "name": "3 What should enterprises prioritize when starting with LLM gateway implementation?", "acceptedAnswer": {"@type": "Answer", "text": "Enterprises should begin with a thorough assessment of current capabilities, identify high-value use cases, establish a data foundation, and create a phased roadmap with 90-day value delivery cycles. Investing in change management and governance from the start is essential for long-term success."}}]}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are the key considerations for LLM gateway implementation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The key considerations are strategic alignment with business outcomes, data readiness, cross-functional collaboration, and sustained governance. Organizations should approach multi-provider routing and caching with clear success criteria and phased execution — start with one high-volume workload, measure before and after, then extend workload by workload."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does this relate to Beehive Strategy&#x27;s expertise?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Beehive Strategy specializes in MCP-powered conversational BI and enterprise AI consulting. Our gateway design applies routing, caching, guardrails, and lineage logging uniformly across proprietary and open models, so the same controls ship as managed features of the conversational analytics platform rather than a separate infrastructure project."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should enterprises prioritize when starting with LLM gateway implementation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Begin with a thorough assessment of current capabilities, identify high-value use cases, establish a data foundation, and create a phased roadmap with 90-day value delivery cycles. Investing in change management, identity integration, and governance from the start is essential for long-term success."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between an LLM gateway and a simple API proxy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A proxy forwards requests and maybe handles retries; a gateway adds policy. It routes by workload, caches semantically, enforces guardrails and identity-based data access, meters cost per team, and logs a full audit trail. Without that policy layer, a proxy is just a network hop — the gateway is what turns model APIs into a governed service."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -46,45 +85,114 @@
 
 <header class="header" id="header" role="banner">
     <div class="header-inner">
-        <a href="/" class="header-logo" aria-label="Beehive Strategy Home">
-            <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="eager">
-        </a>
-        <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
-            <a href="/solution" class="nav-link">Solution</a>
-            <a href="/services" class="nav-link">Services</a>
-            <a href="/industries" class="nav-link">Industries</a>
-            <a href="/case-studies" class="nav-link">Case Studies</a>
-            <a href="/pricing" class="nav-link">Pricing</a>
-            <a href="/about" class="nav-link">About</a>
-            <a href="/blog" class="nav-link active">Blog</a>
-        </nav>
-        <div class="header-cta">
-            <div class="lang-switcher" id="lang-switcher">
-                <button class="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
-                    <svg style="width:20px;height:20px;opacity:0.9;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                    <span>EN</span>
-                    <svg style="width:14px;height:14px;opacity:0.6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
-                <div class="lang-dropdown">
-                    <a href="/blog/articles/llm-gateway-implementation"><span>English</span><span>EN</span></a>
-                    <a href="/zh-cn/blog/articles/llm-gateway-implementation"><span>简体中文</span><span>简</span></a>
-                    <a href="/zh-tw/blog/articles/llm-gateway-implementation"><span>繁體中文</span><span>繁</span></a>
-                </div>
+      <a href="/" class="logo" aria-label="Beehive Strategy Home">
+        <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
+        <a href="/solution" class="nav-link">Solution</a>
+                <div class="nav-item-dropdown">
+          <a href="/services" class="nav-link" aria-haspopup="true" aria-expanded="false">Services <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-grid">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Build</div>
+                <a href="/services" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>All Services</span>
+                  <span class="dropdown-subtitle">Four service pathways to AI maturity</span>
+                </a>
+                <a href="/fde" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>Forward Deployed Engineering</span>
+                  <span class="dropdown-subtitle">IM-native AI deployment, embedded</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Run</div>
+                <a href="/token-hub" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>Token Hub <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Managed AI token supply & routing</span>
+                </a>
+                <a href="/agentic-tools" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>Agentic Tools <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Deploy & govern agentic AI</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Enable</div>
+                <a href="/training" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>AI Deployment Training <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Teach your team to ship AI</span>
+                </a>
+              </div>
             </div>
-            <a href="contact" class="btn-primary">Book a Demo</a>
+          </div>
         </div>
-        <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <a href="/industries" class="nav-link">Industries</a>
+        <a href="/case-studies" class="nav-link">Case Studies</a>
+        <a href="/pricing" class="nav-link">Pricing</a>
+        <a href="/about" class="nav-link">About</a>
+        <a href="/blog" class="nav-link active">Blog</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">EN</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/llm-gateway-implementation" role="menuitem" class="active" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/llm-gateway-implementation" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-tw/blog/articles/llm-gateway-implementation" role="menuitem" data-lang="zh-tw"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
-</header>
-<div class="mobile-menu" id="mobile-menu">
-    <div class="mobile-menu-langs" role="radiogroup" aria-label="Language">
-        <a href="/blog/articles/llm-gateway-implementation" class="mobile-menu-lang-link active" role="radio" aria-checked="true">EN</a>
-        <a href="/zh-cn/blog/articles/llm-gateway-implementation" class="mobile-menu-lang-link" role="radio" aria-checked="false">简</a>
-        <a href="/zh-tw/blog/articles/llm-gateway-implementation" class="mobile-menu-lang-link" role="radio" aria-checked="false">繁</a>
+  </header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="/solution">Solution</a>
+    <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">Services <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Build</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/services">All Services <span class="dropdown-subtitle">Four service pathways to AI maturity</span></a>
+          <a href="/fde">Forward Deployed Engineering <span class="dropdown-subtitle">IM-native AI deployment, embedded</span></a>
+        </div>
+      </div>
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Run</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/token-hub">Token Hub <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Managed AI token supply & routing</span></a>
+          <a href="/agentic-tools">Agentic Tools <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Deploy & govern agentic AI</span></a>
+        </div>
+      </div>
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Enable</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/training">AI Deployment Training <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Teach your team to ship AI</span></a>
+        </div>
+      </div>
     </div>
-    <a href="/solution">Solution</a><a href="/services">Services</a><a href="/industries">Industries</a><a href="/case-studies">Case Studies</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/blog">Blog</a>
-    <a href="contact" class="mobile-menu-cta">Book a Demo</a>
-</div>
+  </div>
+  <a href="/industries">Industries</a>
+  <a href="/case-studies">Case Studies</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/about">About</a>
+  <a href="/blog">Blog</a>
+  <div class="mobile-lang-switcher">
+    <a href="/blog/articles/llm-gateway-implementation" data-lang="en" class="active">English</a>
+    <a href="/zh-cn/blog/articles/llm-gateway-implementation" data-lang="zh-cn">简体中文</a>
+    <a href="/zh-tw/blog/articles/llm-gateway-implementation" data-lang="zh-tw">繁體中文</a>
+  </div>
+  <a href="/contact" class="btn btn-primary btn-lg">Book a Demo</a>
+  </div>
 
 <main>
 <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -116,51 +224,75 @@
             <div class="toc-mobile" id="toc-mobile">
                 <button class="toc-mobile-toggle" aria-expanded="false">Table of Contents <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="toc-mobile-links">
-                    <a href="#understanding-the-current-landscape" class="toc-mobile-link">Understanding the Current Landscape</a>
-                    <a href="#key-principles-and-strategic-framework" class="toc-mobile-link">Key Principles and Strategic Framework</a>
-                    <a href="#implementation-approach-and-best-practices" class="toc-mobile-link">Implementation Approach and Best Practices</a>
-                    <a href="#when-does-multi-provider-routing-actually-pay-off" class="toc-mobile-link">When Does Multi-Provider Routing Actually Pay Off?</a>
-                    <a href="#measuring-success-and-demonstrating-roi" class="toc-mobile-link">Measuring Success and Demonstrating ROI</a>
-                    <a href="#common-pitfalls-and-how-to-avoid-them" class="toc-mobile-link">Common Pitfalls and How to Avoid Them</a>
+                    <a href="#what-is-an-llm-gateway" class="toc-mobile-link">What Is an LLM Gateway and What Problem Does It Solve?</a>
+                    <a href="#why-route-multiple-providers" class="toc-mobile-link">Why Route Across Multiple Providers Instead of One?</a>
+                    <a href="#design-routing-and-fallback" class="toc-mobile-link">How Should You Design Routing and Fallback?</a>
+                    <a href="#caching-cost-latency" class="toc-mobile-link">How Does Caching Cut Cost and Latency?</a>
+                    <a href="#security-compliance-controls" class="toc-mobile-link">What Security and Compliance Controls Belong at the Gateway?</a>
+                    <a href="#govern-cost-quality" class="toc-mobile-link">How Do You Govern Cost and Quality?</a>
+                    <a href="#reference-implementation" class="toc-mobile-link">What Does a Reference Implementation Look Like Step by Step?</a>
+                    <a href="#build-buy-manage" class="toc-mobile-link">Should You Build, Buy, or Use a Managed Gateway?</a>
+                    <a href="#industry-differences" class="toc-mobile-link">How Do Gateway Needs Differ Across Industries?</a>
+                    <a href="#measure-success-roi" class="toc-mobile-link">How Do You Measure Gateway Success and ROI?</a>
+                    <a href="#common-pitfalls" class="toc-mobile-link">What Are the Common Pitfalls and How Do You Avoid Them?</a>
                     <a href="#key-takeaways" class="toc-mobile-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
                 </div>
             </div>
 <p class="article-lead">The direct answer: an LLM gateway is the control plane that turns a pile of model APIs into one governed, observable, cost-managed service — and in 2026 it is the minimum viable architecture for any enterprise running more than one generative AI workload. Gartner predicted that by 2026, more than 80% of enterprises will have used generative AI APIs or deployed GenAI-enabled applications in production, while Menlo Ventures' enterprise research put company spending on generative AI at $13.8 billion in 2024, up from $2.3 billion the year before. That combination — universal API adoption and exploding spend — is exactly the situation where a gateway pays for itself: it centralizes routing, caching, security, and cost control in one layer instead of scattering them through every application.</p>
-<h2 id="understanding-the-current-landscape">Understanding the Current Landscape</h2>
-<p>The gateway's rise tracks the shape of the generative AI market. McKinsey's 2024 State of AI survey found 65% of organizations regularly using generative AI in at least one function, nearly double the share a year earlier. Few of those organizations are locked to a single provider: most run a mix of frontier models, open-weight models, and specialized fine-tunes, selected per workload for quality, latency, and price. Meanwhile Gartner's warning that 30% of generative AI projects would be abandoned after proof of concept by the end of 2025 reflects the operational reality that models alone do not make a service — production needs keys, quotas, retries, fallbacks, and an audit trail, which is precisely the gateway's job.</p>
-<p>The security dimension sharpened the case further. The OWASP Top 10 for LLM Applications puts prompt injection and supply-chain vulnerabilities near the top of its list, and those controls are far easier to implement once — at the gateway boundary — than once per application. The result is that the gateway has become the standard answer to three questions at once: how do we manage multiple providers, how do we control cost, and how do we secure the boundary?</p>
-<h2 id="key-principles-and-strategic-framework">Key Principles and Strategic Framework</h2>
-<p>A gateway that lasts is built on five capabilities, and teams should check their design against all of them:</p>
-<ul>
-<li><strong>Intelligent routing.</strong> Route each request by policy — model capability, latency budget, cost ceiling, data sensitivity — and fail over automatically when a provider degrades or rate-limits.</li>
-<li><strong>Semantic caching.</strong> Cache responses for repeated questions at the semantic level, not just exact-string level, so common queries stop burning tokens and latency.</li>
-<li><strong>Centralized security.</strong> Inject guardrails, prompt-injection filters, and data-loss-prevention checks in one place; enforce tenant and permission boundaries before anything reaches a model.</li>
-<li><strong>Cost and quota governance.</strong> Per-team budgets, per-workload quotas, spend dashboards, and hard caps that prevent a runaway loop from becoming a runaway invoice.</li>
-<li><strong>Observability.</strong> Every request logged with model, latency, tokens, cost, and outcome — the audit trail that regulators, finance, and security all demand.</li>
-</ul>
-<p>The architectural principle underneath all five is simple: the gateway is the only thing that talks to model providers. Applications talk to the gateway. That single seam is what makes routing, caching, security, and cost control possible at all — and it is the same seam that lets a team swap models, negotiate prices, or migrate providers without touching application code.</p>
-<h2 id="implementation-approach-and-best-practices">Implementation Approach and Best Practices</h2>
-<p>Implementation should be incremental and workload-first. Start by putting one production workload — the one with the highest token volume or the most painful provider dependency — behind the gateway, with routing, caching, and logging enabled. Measure the before and after: latency, cost per request, error rate. Then extend workload by workload, adding guardrails and permission enforcement as each new application joins, and standing up per-team budgets once spend data is real.</p>
-<p>Three practices separate durable implementations from fragile ones. First, make the provider layer swappable from day one: pin versions, abstract provider-specific parameters, and test fallbacks explicitly rather than hoping they work. Second, treat prompts and models as versioned artifacts with their own review process — a gateway without prompt governance is just a faster way to spread a bad prompt everywhere. Third, wire the gateway into existing identity: requests should carry the user's real identity and permissions, so the gateway can enforce data access at the boundary rather than trusting every caller to do it. In conversational BI terms, that means the same gateway that routes the LLM also enforces which datasets each user's questions may touch — one seam, both capabilities.</p>
-<h2 id="when-does-multi-provider-routing-actually-pay-off">When Does Multi-Provider Routing Actually Pay Off?</h2>
-<p>Routing across multiple providers pays off when workloads are heterogeneous — and in most enterprises they are. Cheap, fast models handle high-volume routine tasks like classification and extraction; frontier models handle complex reasoning and generation; specialized models handle domain tasks. Routing by workload type cuts cost without cutting quality, which is the economic engine behind the Menlo Ventures finding that enterprise generative AI spend grew from $2.3 billion to $13.8 billion in a single year — the budget grew because it could be spent efficiently, and routing is the efficiency mechanism.</p>
-<p>Routing also pays off operationally. Provider outages, rate limits, and version churn are facts of life in the model market, and automatic fallback keeps applications alive through all of them. The condition for that value is honest measurement: if routing decisions are not logged with per-provider quality and cost data, teams cannot tune the policy and the savings never materialize. A gateway without a routing telemetry loop is a proxy server with extra steps.</p>
-<h2 id="measuring-success-and-demonstrating-roi">Measuring Success and Demonstrating ROI</h2>
-<p>Gateway ROI is unusually measurable because the gateway sees every dollar. Track cost per 1,000 tokens by workload and by model; cache hit rate, since cached answers cost nearly nothing; p95 latency before and after; request error rate and fallback success rate; and spend per business unit against quotas. Two effects typically show up within weeks: token spend on repeated queries collapses as semantic caching engages, and the blended cost per request drops as routing pushes routine traffic to cheaper models.</p>
-<p>The strategic numbers matter just as much. Gartner's prediction that 80% of enterprises will use GenAI APIs by 2026 implies that almost everyone will be paying the model market's prices; the differentiator is who manages that spend with discipline. When the gateway doubles as the security boundary — injection filters, permission enforcement, full audit logs — the ROI statement gains a second line: the cost of controls that would otherwise be implemented, inconsistently, in every application. For a managed conversational BI layer, both lines are included: routing, caching, guardrails, and lineage logging ship as platform features, which is why a governed answer service can go live in about two weeks without a separate infrastructure project.</p>
-<h2 id="common-pitfalls-and-how-to-avoid-them">Common Pitfalls and How to Avoid Them</h2>
-<p>The most common failure is the gateway as passthrough: deployed for appearances, but with routing, caching, and guardrails disabled because nobody configured them — the operational equivalent of buying a firewall and never writing rules. The second is ignoring identity: passing a shared service key through the gateway and forfeiting per-user permissions and audit. The third is caching without invalidation: serving stale semantic responses to questions where data freshness matters, which is fatal for analytics and pricing. The fourth is gateway sprawl — five teams running five gateways with different policies, recreating the fragmentation the gateway was supposed to eliminate. The fifth is treating the gateway as a one-time project instead of a continuously tuned control plane; provider markets move quarterly, and routing policy, model versions, and cost ceilings need the same cadence.</p>
+<h2 id="what-is-an-llm-gateway">What Is an LLM Gateway and What Problem Does It Solve?</h2>
+<p>An LLM gateway is the single layer that sits between your applications and every model provider you use. It unifies routing, authentication, rate limiting, caching, guardrails, and observability behind one seam, so no application ever talks to a provider SDK directly. Without it, each team integrates providers on its own, manages keys and retries independently, and re-implements the same fragile calling logic in every service.</p>
+<p>The core value is lifting three questions — which model, at what cost, under what policy — out of scattered business code and into a platform capability. When a provider changes price, latency, or capability, you adjust routing in the gateway rather than editing every downstream app. For any enterprise using more than one model, a gateway is close to mandatory: it lets teams switch between proprietary and open-weight models on demand, gaining cost and elasticity without surrendering governance.</p>
+<p>McKinsey's 2024 State of AI survey found 65% of organizations regularly using generative AI in at least one function, nearly double the year before — and almost none of them run a single provider. The gateway is the standard answer to how you manage that mix, control spend, and secure the boundary at once. It is also where the OWASP Top 10 for LLM Applications controls — prompt injection and supply-chain risks sit near the top — are enforced once, instead of being patched inconsistently into every application.</p>
+<h2 id="why-route-multiple-providers">Why Route Across Multiple Providers Instead of One?</h2>
+<p>Routing pays off when workloads are heterogeneous, which in most enterprises they are. Cheap, fast models handle high-volume routine tasks like classification, extraction, and summarization; frontier models handle complex reasoning and open-ended generation; domain fine-tunes handle specialized tasks. Routing by workload type cuts cost without cutting quality — the economic engine behind the Menlo Ventures finding that enterprise generative AI spend grew from $2.3 billion to $13.8 billion in a single year. The budget grew because it could be spent efficiently, and routing is the efficiency mechanism.</p>
+<p>Routing also removes single points of failure. Provider outages, rate limits, and version churn are facts of life in the model market; automatic fallback keeps applications alive through all of them. The condition for that value is honest measurement: if routing decisions are not logged with per-provider quality and cost data, teams cannot tune the policy and the savings never materialize. A gateway without a routing telemetry loop is just a proxy server with extra steps.</p>
+<p>The alternative — standardizing on one provider — trades flexibility for convenience. It simplifies procurement but exposes you to that provider's price changes, outages, and capability gaps, and it forfeits the ability to send sensitive workloads to a self-hosted model. A gateway lets you keep one provider as the default while preserving the option to diverge per request.</p>
+<h2 id="design-routing-and-fallback">How Should You Design Routing and Fallback?</h2>
+<p>Routing should follow task characteristics, not provider loyalty. Split traffic by intent, prompt length, data sensitivity, or a quality-confidence score, and escalate to a stronger model when confidence falls below a threshold. A practical policy: route internal, high-volume, low-stakes tasks to the cheapest capable model; route customer-facing or regulated tasks to the model with the best evaluated quality; route anything touching sensitive data to a model you self-host or that sits inside your compliance boundary.</p>
+<p>Fallback is the key resilience design. When the primary model times out, is rate-limited, or errors, the gateway should switch seamlessly to a backup or return a safe degraded answer rather than surfacing the error to the end user. Continuous health checks let the switch happen before users notice. Define fallback tiers explicitly — primary, secondary, and a deterministic fallback such as a cached answer, a templated response, or a human-handoff trigger — so a full-provider outage degrades gracefully instead of failing loudly.</p>
+<p>Caching compounds the effect. For identical or near-identical prompts, a cache hit returns in milliseconds and costs almost nothing. The gateway should support semantic, not just exact-string, cache keys so paraphrased questions still hit. In conversational analytics, where the same metric question is asked dozens of times a day, semantic caching is often the single largest cost lever.</p>
+<h2 id="caching-cost-latency">How Does Caching Cut Cost and Latency?</h2>
+<p>Semantic caching works by embedding the incoming prompt, checking whether a sufficiently similar prompt has been answered recently, and returning the stored answer if it has. The win is twofold: token spend on repeated questions collapses, and p95 latency drops because no model call is made. For frequently asked analytics questions — sales by region last quarter, open headcount by team — cache hit rates of 40 to 60 percent are common once the cache warms up.</p>
+<p>The discipline is invalidation. Analytics and pricing questions need fresh data, so a gateway that caches without a freshness rule will serve stale answers, which is fatal for decision-making. Tie cache entries to a time-to-live and to the underlying data's refresh cadence: cache a static reference answer for hours, but expire a revenue figure the moment its source table updates. A gateway that exposes per-namespace TTLs turns caching from a hazard into a controllable knob.</p>
+<p>Cache strategy also interacts with routing. If you route the same question to different models on different days, the cache key must be model-independent or you fragment the cache and lose hits. Key on the normalized task and the semantic intent, not on the provider, so caching and routing reinforce each other.</p>
+<h2 id="security-compliance-controls">What Security and Compliance Controls Belong at the Gateway?</h2>
+<p>The gateway is the right, and often only practical, place to enforce security, because it is the single seam every request crosses. It should apply input filtering, output filtering, and strict tool-use boundaries to prevent prompt injection and data exfiltration through tool calls. The model is not the security boundary; the system is. Those controls are far easier to implement once at the gateway than once per application.</p>
+<p>Keep the model stateless and scoped: it receives only the data the task needs, writes only through guarded APIs, and never holds credentials. Combined with logging of prompts and responses, misuse becomes both detectable and reversible. Wire the gateway into your existing identity provider so each request carries the user's real identity and permissions — then the gateway enforces data access at the boundary rather than trusting every caller to do it.</p>
+<p>For regulated industries, add human approval for any action the model can trigger and retain a full audit trail. Beehive Strategy's gateway design applies exactly these controls uniformly across proprietary and open models, so security posture does not depend on which model answers. That uniformity is what lets a team swap models freely without re-litigating compliance.</p>
+<h2 id="govern-cost-quality">How Do You Govern Cost and Quality?</h2>
+<p>Without governance, the model bill inflates unnoticed. The gateway should meter usage by team, application, and model, with budget alerts and hard caps that turn cost into a manageable engineering metric instead of an end-of-month surprise. Per-business-unit quotas also make showback real: a team sees its own spend and is incentivized to route routine traffic to cheaper models.</p>
+<p>Quality governance matters as much. Sample and evaluate outputs for hallucination rate, format compliance, and task success, so experience stays stable across model version changes. A durable evaluation set — the gate every new model must pass before release — is the difference between a gateway that drifts and one that holds the line. Track these quality numbers next to cost on the same dashboard: the pricier model is only worth it when it genuinely improves the business result, and unified metering makes that trade-off quantifiable for the first time.</p>
+<p>The most mature enterprises treat cost and quality as two curves on one chart. They accept a higher blended cost only where it moves a business metric, and they cap it with hard limits so an experiment can never become an incident. The gateway is what makes both curves visible and actionable.</p>
+<h2 id="reference-implementation">What Does a Reference Implementation Look Like Step by Step?</h2>
+<p>Implement incrementally and workload-first. Phase 1 (weeks 1 to 2): put one production workload — the one with the highest token volume or the most painful provider dependency — behind the gateway with routing, logging, and a single cache namespace enabled. Measure before and after: latency, cost per request, error rate. This establishes the baseline that every later ROI claim depends on.</p>
+<p>Phase 2 (weeks 3 to 6): extend workload by workload, adding guardrails and permission enforcement as each new application joins, and standing up per-team budgets once spend data is real. Make the provider layer swappable from day one — pin versions, abstract provider-specific parameters, and test fallbacks explicitly rather than hoping they work. Treat prompts and model versions as versioned artifacts with their own review process; a gateway without prompt governance is just a faster way to spread a bad prompt everywhere.</p>
+<p>Phase 3 (weeks 7 to 12): turn on semantic caching broadly, publish the cost-and-quality dashboard to finance and security, and formalize the routing policy as code with quarterly review. By this point the gateway is a control plane, not a proxy: providers can be renegotiated or replaced without touching application code, and every request carries identity, cost, and an audit trail.</p>
+<h2 id="build-buy-manage">Should You Build, Buy, or Use a Managed Gateway?</h2>
+<p>The decision turns on three factors: how many distinct workloads you have, how regulated your data is, and whether platform engineering is a core competency you want to fund. Build when you have unusual routing needs, strict data-residency requirements that no vendor meets, or a team that will own the gateway as a product. Buy or use a managed layer when you want the controls — routing, caching, guardrails, lineage — as features rather than a project, and you would rather spend engineering effort on the application than the infrastructure.</p>
+<p>The hidden cost of building is the long tail: identity integration, audit logging, eval pipelines, provider SDK churn, and the quarterly tuning cadence all have to be staffed forever. Managed layers externalize that tail. For a conversational BI deployment, a managed gateway plus a governed semantic layer can go live in about two weeks; a self-built equivalent is typically a quarter of platform work before the first business question is answered.</p>
+<p>A common middle path is managed gateway, owned policies: you adopt a vendor's control plane but keep routing, caching, and guardrail policy as code in your own repository, so you are never locked to one provider's behavior. That preserves portability while avoiding the infrastructure tax.</p>
+<h2 id="industry-differences">How Do Gateway Needs Differ Across Industries?</h2>
+<p>Financial services lead with compliance: every model call that touches client data must stay inside a residency boundary, and any action — a trade, a payment, a record change — needs human approval and a tamper-evident log. Their gateways are heavy on policy enforcement and lighter on model experimentation.</p>
+<p>Healthcare adds PHI handling: prompts and responses must be filtered for protected health information, and caching must respect minimum-necessary access, so cache keys are scoped to the requesting clinician's permissions. Retail and e-commerce care most about latency and cost at peak: routing pushes the bulk of product-copy and support-classification traffic to the cheapest model, reserving frontier models for the moments that affect conversion.</p>
+<p>Manufacturing and supply chain value fallback above all — a planning query that fails during a disruption is costly, so their gateways emphasize deterministic fallback tiers and health-checked providers. The pattern is the same gateway; the weighted policy differs by what each industry cannot afford to lose.</p>
+<h2 id="measure-success-roi">How Do You Measure Gateway Success and ROI?</h2>
+<p>Gateway ROI is unusually measurable because the gateway sees every dollar. Track cost per 1,000 tokens by workload and by model; cache hit rate, since cached answers cost nearly nothing; p95 latency before and after; request error rate and fallback success rate; and spend per business unit against quota. Two effects typically show within weeks: token spend on repeated queries collapses as semantic caching engages, and blended cost per request drops as routing pushes routine traffic to cheaper models.</p>
+<p>The strategic numbers matter too. With 80% of enterprises expected to use GenAI APIs by 2026, almost everyone pays the model market's prices; the differentiator is who manages that spend with discipline. When the gateway also serves as the security boundary — injection filters, permission enforcement, full audit logs — the ROI statement gains a second line: the cost of controls that would otherwise be implemented, inconsistently, in every application. For a managed conversational BI layer, both lines are included, which is why a governed answer service can show payback in the first quarter rather than the first year.</p>
+<h2 id="common-pitfalls">What Are the Common Pitfalls and How Do You Avoid Them?</h2>
+<p>The most common failure is the gateway as passthrough: deployed for appearances but with routing, caching, and guardrails disabled because nobody configured them — the operational equivalent of a firewall with no rules. Avoid it by making each control a launch gate, not a future nice-to-have.</p>
+<p>The second is ignoring identity: passing a shared service key through the gateway and forfeiting per-user permissions and audit. Wire real user identity in from the start. The third is caching without invalidation — serving stale answers where freshness matters; solve it with per-namespace TTLs tied to data refresh. The fourth is gateway sprawl: five teams running five gateways with different policies, recreating the fragmentation the gateway was meant to eliminate; consolidate on one control plane. The fifth is treating the gateway as a one-time project instead of a continuously tuned control plane; provider markets move quarterly, and routing policy, model versions, and cost ceilings need the same cadence.</p>
 <h2 id="key-takeaways">Key Takeaways</h2>
 <ul>
 <li>An LLM gateway centralizes routing, caching, security, and cost control behind one seam — make it the only thing that talks to providers</li>
-<li>Multi-provider routing pays off through workload heterogeneity: cheap models for routine tasks, frontier models for complex ones</li>
-<li>Wire real user identity and permissions into the gateway so the boundary enforces data access</li>
+<li>Route by workload, not provider: cheap models for routine tasks, frontier models for complex ones, self-hosted for sensitive data</li>
+<li>Semantic caching with per-namespace invalidation is often the single biggest cost lever</li>
+<li>Wire real user identity into the gateway so the boundary enforces data access and audit</li>
 <li>Measure cost per token, cache hit rate, p95 latency, and fallback success — the gateway sees every dollar</li>
 <li>With 80% of enterprises expected to use GenAI APIs by 2026, gateway discipline is the competitive differentiator</li>
 </ul>
 <h2 id="conclusion">Conclusion</h2>
-<p>The LLM gateway has moved from pattern to platform in less than two years, and the direction is settled: enterprise generative AI will be consumed through a governed control plane, not scattered API calls. The organizations that implement gateways well — with routing policy grounded in telemetry, identity enforced at the boundary, and costs visible per workload — will treat the model market as a managed supply chain. Those that skip the layer will discover the cost, security, and audit problems the gateway exists to solve, one incident at a time. The architecture is not the hard part; the discipline is — and it starts with making the gateway the single seam through which every model request flows.</p>
+<p>The LLM gateway has moved from pattern to platform in less than two years, and the direction is settled: enterprise generative AI will be consumed through a governed control plane, not scattered API calls. The organizations that implement gateways well — with routing policy grounded in telemetry, identity enforced at the boundary, and costs visible per workload — treat the model market as a managed supply chain. Those that skip the layer discover the cost, security, and audit problems the gateway exists to solve, one incident at a time. The architecture is not the hard part; the discipline is — and it starts with making the gateway the single seam through which every model request flows. Beehive Strategy's conversational analytics platform ships routing, caching, guardrails, and lineage as managed features, so teams get the gateway's benefits without building the infrastructure themselves.</p>
 
             <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
@@ -169,25 +301,32 @@
                 </h2>
                 <div class="faq-list">
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">1</span><span>1 What are the key considerations for LLM gateway implementation?</span></span>
+                        <h3><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">1</span><span>What are the key considerations for LLM gateway implementation?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">The key considerations include strategic alignment with business outcomes, data readiness, cross-functional collaboration, and sustained governance. Organizations must approach managing multiple LLM providers with routing and caching with clear success criteria and phased execution to achieve meaningful results.</div></div>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">The key considerations are strategic alignment with business outcomes, data readiness, cross-functional collaboration, and sustained governance. Organizations should approach multi-provider routing and caching with clear success criteria and phased execution — start with one high-volume workload, measure before and after, then extend workload by workload.</div></div>
                     </div>
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">2</span><span>2 How does this relate to Beehive Strategy&#x27;s expertise?</span></span>
+                        <h3><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">2</span><span>How does this relate to Beehive Strategy&#x27;s expertise?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Beehive Strategy specializes in MCP-powered conversational BI and enterprise AI consulting. Our work in LLM gateway implementation directly supports enterprises implementing AI-driven analytics, governance frameworks, and data strategies that deliver measurable business outcomes.</div></div>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Beehive Strategy specializes in MCP-powered conversational BI and enterprise AI consulting. Our gateway design applies routing, caching, guardrails, and lineage logging uniformly across proprietary and open models, so the same controls ship as managed features of the conversational analytics platform rather than a separate infrastructure project.</div></div>
                     </div>
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">3</span><span>3 What should enterprises prioritize when starting with LLM gateway implementation?</span></span>
+                        <h3><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">3</span><span>What should enterprises prioritize when starting with LLM gateway implementation?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Enterprises should begin with a thorough assessment of current capabilities, identify high-value use cases, establish a data foundation, and create a phased roadmap with 90-day value delivery cycles. Investing in change management and governance from the start is essential for long-term success.</div></div>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Begin with a thorough assessment of current capabilities, identify high-value use cases, establish a data foundation, and create a phased roadmap with 90-day value delivery cycles. Investing in change management, identity integration, and governance from the start is essential for long-term success.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">4</span><span>What is the difference between an LLM gateway and a simple API proxy?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">A proxy forwards requests and maybe handles retries; a gateway adds policy. It routes by workload, caches semantically, enforces guardrails and identity-based data access, meters cost per team, and logs a full audit trail. Without that policy layer, a proxy is just a network hop — the gateway is what turns model APIs into a governed service.</div></div>
                     </div>
                 </div>
             </section>
@@ -204,12 +343,17 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Table of Contents</div>
                 <nav class="toc-links">
-                    <a href="#understanding-the-current-landscape" class="toc-link">Understanding the Current Landscape</a>
-                    <a href="#key-principles-and-strategic-framework" class="toc-link">Key Principles and Strategic Framework</a>
-                    <a href="#implementation-approach-and-best-practices" class="toc-link">Implementation Approach and Best Practices</a>
-                    <a href="#when-does-multi-provider-routing-actually-pay-off" class="toc-link">When Does Multi-Provider Routing Actually Pay Off?</a>
-                    <a href="#measuring-success-and-demonstrating-roi" class="toc-link">Measuring Success and Demonstrating ROI</a>
-                    <a href="#common-pitfalls-and-how-to-avoid-them" class="toc-link">Common Pitfalls and How to Avoid Them</a>
+                    <a href="#what-is-an-llm-gateway" class="toc-link">What Is an LLM Gateway and What Problem Does It Solve?</a>
+                    <a href="#why-route-multiple-providers" class="toc-link">Why Route Across Multiple Providers Instead of One?</a>
+                    <a href="#design-routing-and-fallback" class="toc-link">How Should You Design Routing and Fallback?</a>
+                    <a href="#caching-cost-latency" class="toc-link">How Does Caching Cut Cost and Latency?</a>
+                    <a href="#security-compliance-controls" class="toc-link">What Security and Compliance Controls Belong at the Gateway?</a>
+                    <a href="#govern-cost-quality" class="toc-link">How Do You Govern Cost and Quality?</a>
+                    <a href="#reference-implementation" class="toc-link">What Does a Reference Implementation Look Like Step by Step?</a>
+                    <a href="#build-buy-manage" class="toc-link">Should You Build, Buy, or Use a Managed Gateway?</a>
+                    <a href="#industry-differences" class="toc-link">How Do Gateway Needs Differ Across Industries?</a>
+                    <a href="#measure-success-roi" class="toc-link">How Do You Measure Gateway Success and ROI?</a>
+                    <a href="#common-pitfalls" class="toc-link">What Are the Common Pitfalls and How Do You Avoid Them?</a>
                     <a href="#key-takeaways" class="toc-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-link">Conclusion</a>
                 </nav>
@@ -259,7 +403,7 @@
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
                     <h3 class="recommended-card-title">Technical Architecture Enterprise Ai Agents</h3>
-                    <p class="recommended-card-excerpt"></p>
+                    <p class="recommended-card-excerpt">The direct answer: an LLM gateway is the control plane that turns a pile of model APIs into one governed, observable, cost-managed service — and in 2026 it is the minimum viable architecture for any enterprise running more than one generative AI workload.</p>
                     <div class="recommended-card-meta">
                         <span>10 min read</span>
                         <span aria-hidden="true">&middot;</span>
@@ -272,7 +416,7 @@
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
                     <h3 class="recommended-card-title">Supply Chain Resilience Ai Scenario Planning</h3>
-                    <p class="recommended-card-excerpt"></p>
+                    <p class="recommended-card-excerpt">The direct answer: an LLM gateway is the control plane that turns a pile of model APIs into one governed, observable, cost-managed service — and in 2026 it is the minimum viable architecture for any enterprise running more than one generative AI workload.</p>
                     <div class="recommended-card-meta">
                         <span>7 min read</span>
                         <span aria-hidden="true">&middot;</span>
@@ -285,7 +429,7 @@
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
                     <h3 class="recommended-card-title">Supply Chain Resilience Ai Demand Sensing</h3>
-                    <p class="recommended-card-excerpt"></p>
+                    <p class="recommended-card-excerpt">The direct answer: an LLM gateway is the control plane that turns a pile of model APIs into one governed, observable, cost-managed service — and in 2026 it is the minimum viable architecture for any enterprise running more than one generative AI workload.</p>
                     <div class="recommended-card-meta">
                         <span>8 min read</span>
                         <span aria-hidden="true">&middot;</span>
@@ -357,6 +501,6 @@
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "Building an LLM Gateway: Routing, Caching, and Fallback";</script>
-<script src="/js/article.js"></script>
+<script src="/js/article.js?v=20260826"></script>
 </body>
 </html>

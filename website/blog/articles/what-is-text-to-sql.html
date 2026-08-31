@@ -35,10 +35,49 @@
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="/css/article.css" rel="stylesheet">
+    <link href="/css/article.css?v=20260826" rel="stylesheet">
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/what-is-text-to-sql#article", "headline": "What is Text-to-SQL? Natural Language Database Queries", "description": "Learn what Text-to-SQL is, how AI converts natural language into database queries, and why it accelerates enterprise analytics. Read the guide.", "datePublished": "2026-07-02T13:00:00+08:00", "dateModified": "2026-07-02T13:00:00+08:00", "articleSection": "Conversational BI", "keywords": "what is Text-to-SQL, natural language database queries, AI SQL generation, conversational database, Text-to-SQL explained, enterprise analytics, NLP SQL, automated queries", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/what-is-text-to-sql"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/what-is-text-to-sql.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "What is Text-to-SQL? Natural Language Database Queries"}]}</script>
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "1 How accurate is Text-to-SQL?", "acceptedAnswer": {"@type": "Answer", "text": "State-of-the-art models achieve over 90% accuracy on standard benchmarks, but real-world performance depends on schema quality, training examples, and the complexity of the database. A semantic layer significantly improves reliability."}}, {"@type": "Question", "name": "2 Can Text-to-SQL handle complex joins?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, advanced systems support multi-table joins, subqueries, window functions, and CTEs. The key is providing the model with a clear schema map and relationship metadata."}}, {"@type": "Question", "name": "3 Is Text-to-SQL safe for production databases?", "acceptedAnswer": {"@type": "Answer", "text": "With proper safeguards—read-only replicas, query timeouts, row-level security, and SQL validation—it is safe. Never allow generated SQL to write or delete data without human review."}}]}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What exactly is text-to-SQL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Text-to-SQL is a natural-language interface that converts a question asked in plain language into a correct, executable SQL query against a relational database. The output is a query you can inspect and re-run, not just a prose summary, which is what makes it accountable enough for enterprise use."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does schema context matter so much?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A SQL query is only as good as the schema the model can see. Supplying the precise, relevant tables, with column descriptions and business definitions, prevents the model from joining the wrong entities or aggregating the wrong column. Maintaining that context as schemas change is what keeps accuracy high over time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the most dangerous failure mode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The plausible wrong answer. The query runs, returns a number, and looks correct, yet it aggregated the wrong dimension or joined a near-duplicate key. Because the output is authoritative-looking, users trust it, so silent errors are more harmful than queries that simply fail to run."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How should text-to-SQL be deployed safely?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Start read-only against a replica, limit the tables the system can touch, enforce row-level security in the execution layer, and show every query before it runs. Add human approval for consequential queries and log everything, so the system has both a guardrail and a memory for improvement."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -46,45 +85,114 @@
 
 <header class="header" id="header" role="banner">
     <div class="header-inner">
-        <a href="/" class="header-logo" aria-label="Beehive Strategy Home">
-            <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="eager">
-        </a>
-        <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
-            <a href="/solution" class="nav-link">Solution</a>
-            <a href="/services" class="nav-link">Services</a>
-            <a href="/industries" class="nav-link">Industries</a>
-            <a href="/case-studies" class="nav-link">Case Studies</a>
-            <a href="/pricing" class="nav-link">Pricing</a>
-            <a href="/about" class="nav-link">About</a>
-            <a href="/blog" class="nav-link active">Blog</a>
-        </nav>
-        <div class="header-cta">
-            <div class="lang-switcher" id="lang-switcher">
-                <button class="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
-                    <svg style="width:20px;height:20px;opacity:0.9;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                    <span>EN</span>
-                    <svg style="width:14px;height:14px;opacity:0.6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
-                <div class="lang-dropdown">
-                    <a href="/blog/articles/what-is-text-to-sql"><span>English</span><span>EN</span></a>
-                    <a href="/zh-cn/blog/articles/what-is-text-to-sql"><span>简体中文</span><span>简</span></a>
-                    <a href="/zh-tw/blog/articles/what-is-text-to-sql"><span>繁體中文</span><span>繁</span></a>
-                </div>
+      <a href="/" class="logo" aria-label="Beehive Strategy Home">
+        <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
+        <a href="/solution" class="nav-link">Solution</a>
+                <div class="nav-item-dropdown">
+          <a href="/services" class="nav-link" aria-haspopup="true" aria-expanded="false">Services <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-grid">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Build</div>
+                <a href="/services" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>All Services</span>
+                  <span class="dropdown-subtitle">Four service pathways to AI maturity</span>
+                </a>
+                <a href="/fde" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>Forward Deployed Engineering</span>
+                  <span class="dropdown-subtitle">IM-native AI deployment, embedded</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Run</div>
+                <a href="/token-hub" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>Token Hub <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Managed AI token supply & routing</span>
+                </a>
+                <a href="/agentic-tools" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>Agentic Tools <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Deploy & govern agentic AI</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Enable</div>
+                <a href="/training" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>AI Deployment Training <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Teach your team to ship AI</span>
+                </a>
+              </div>
             </div>
-            <a href="contact" class="btn-primary">Book a Demo</a>
+          </div>
         </div>
-        <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <a href="/industries" class="nav-link">Industries</a>
+        <a href="/case-studies" class="nav-link">Case Studies</a>
+        <a href="/pricing" class="nav-link">Pricing</a>
+        <a href="/about" class="nav-link">About</a>
+        <a href="/blog" class="nav-link active">Blog</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">EN</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/what-is-text-to-sql" role="menuitem" class="active" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/what-is-text-to-sql" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-tw/blog/articles/what-is-text-to-sql" role="menuitem" data-lang="zh-tw"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
-</header>
-<div class="mobile-menu" id="mobile-menu">
-    <div class="mobile-menu-langs" role="radiogroup" aria-label="Language">
-        <a href="/blog/articles/what-is-text-to-sql" class="mobile-menu-lang-link active" role="radio" aria-checked="true">EN</a>
-        <a href="/zh-cn/blog/articles/what-is-text-to-sql" class="mobile-menu-lang-link" role="radio" aria-checked="false">简</a>
-        <a href="/zh-tw/blog/articles/what-is-text-to-sql" class="mobile-menu-lang-link" role="radio" aria-checked="false">繁</a>
+  </header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="/solution">Solution</a>
+    <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">Services <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Build</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/services">All Services <span class="dropdown-subtitle">Four service pathways to AI maturity</span></a>
+          <a href="/fde">Forward Deployed Engineering <span class="dropdown-subtitle">IM-native AI deployment, embedded</span></a>
+        </div>
+      </div>
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Run</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/token-hub">Token Hub <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Managed AI token supply & routing</span></a>
+          <a href="/agentic-tools">Agentic Tools <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Deploy & govern agentic AI</span></a>
+        </div>
+      </div>
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Enable</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/training">AI Deployment Training <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Teach your team to ship AI</span></a>
+        </div>
+      </div>
     </div>
-    <a href="/solution">Solution</a><a href="/services">Services</a><a href="/industries">Industries</a><a href="/case-studies">Case Studies</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/blog">Blog</a>
-    <a href="contact" class="mobile-menu-cta">Book a Demo</a>
-</div>
+  </div>
+  <a href="/industries">Industries</a>
+  <a href="/case-studies">Case Studies</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/about">About</a>
+  <a href="/blog">Blog</a>
+  <div class="mobile-lang-switcher">
+    <a href="/blog/articles/what-is-text-to-sql" data-lang="en" class="active">English</a>
+    <a href="/zh-cn/blog/articles/what-is-text-to-sql" data-lang="zh-cn">简体中文</a>
+    <a href="/zh-tw/blog/articles/what-is-text-to-sql" data-lang="zh-tw">繁體中文</a>
+  </div>
+  <a href="/contact" class="btn btn-primary btn-lg">Book a Demo</a>
+  </div>
 
 <main>
 <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -113,69 +221,77 @@
 <div class="container">
     <div class="article-layout">
         <article class="article-content" id="article-content">
-            <div class="toc-mobile" id="toc-mobile">
+<div class="toc-mobile" id="toc-mobile">
                 <button class="toc-mobile-toggle" aria-expanded="false">Table of Contents <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="toc-mobile-links">
-                    <a href="#what-is-text-to-sql-a-concise-definition" class="toc-mobile-link">What is Text-to-SQL? — A Concise Definition</a>
+                    <a href="#what-exactly-is-text-to-sql" class="toc-mobile-link">What Exactly Is Text-to-SQL?</a>
                     <a href="#how-does-text-to-sql-work" class="toc-mobile-link">How Does Text-to-SQL Work?</a>
-                    <a href="#key-components-of-text-to-sql" class="toc-mobile-link">Key Components of Text-to-SQL</a>
-                    <a href="#why-text-to-sql-matters-for-enterprises" class="toc-mobile-link">Why Text-to-SQL Matters for Enterprises</a>
-                    <a href="#common-use-cases" class="toc-mobile-link">Common Use Cases</a>
-                    <a href="#what-makes-text-to-sql-difficult-in-real-enterprises" class="toc-mobile-link">What Makes Text-to-SQL Difficult in Real Enterprises?</a>
-                    <a href="#how-text-to-sql-fits-into-beehive-strategy-s-approach" class="toc-mobile-link">How Text-to-SQL Fits into Beehive Strategy&#x27;s Approach</a>
-                    <a href="#getting-started-with-text-to-sql" class="toc-mobile-link">Getting Started with Text-to-SQL</a>
+                    <a href="#what-architectures-power-it" class="toc-mobile-link">What Architectures Power It?</a>
+                    <a href="#why-is-schema-context-critical" class="toc-mobile-link">Why Is Schema Context Critical?</a>
+                    <a href="#what-are-the-common-failure-modes" class="toc-mobile-link">What Are the Common Failure Modes?</a>
+                    <a href="#how-do-you-measure-accuracy" class="toc-mobile-link">How Do You Measure Accuracy?</a>
+                    <a href="#how-should-you-deploy-it-safely" class="toc-mobile-link">How Should You Deploy It Safely?</a>
+                    <a href="#what-role-does-conversational-bi-play" class="toc-mobile-link">What Role Does Conversational BI Play?</a>
+                    <a href="#which-use-cases-benefit-most" class="toc-mobile-link">Which Use Cases Benefit Most?</a>
+                    <a href="#what-are-the-limits-today" class="toc-mobile-link">What Are the Limits Today?</a>
+                    <a href="#what-makes-a-team-ready" class="toc-mobile-link">What Makes a Team Ready?</a>
+                    <a href="#how-do-you-get-started" class="toc-mobile-link">How Do You Get Started?</a>
                 </div>
             </div>
-<h2 id="what-is-text-to-sql-a-concise-definition">What is Text-to-SQL? — A Concise Definition</h2>
-<p><strong>Text-to-SQL</strong> is the capability of AI systems to translate natural-language questions into executable Structured Query Language (SQL) statements. Instead of writing complex joins and aggregations by hand, business users simply ask, "What were top-selling products in July?" and the AI generates the correct query, executes it against the database, and presents the results in plain English.</p>
-<p>Text-to-SQL is the technical engine beneath conversational BI, natural-language querying, and many agentic analytics systems. It matters because it collapses the distance between a business question and a data-backed answer from days to seconds. For most enterprises, that distance is the single largest friction point in data-driven decision-making — and Text-to-SQL is the fastest way to remove it.</p>
-<p>The ambition is not new — natural-language interfaces to databases have existed for decades — but the capability only became practical at enterprise scale with modern large language models. Systems today reason about schemas, handle ambiguous phrasing, generate joins across many tables, and explain their results, reaching accuracy levels of around 85% on standard benchmarks and climbing as retrieval and validation techniques improve. The gap between benchmark performance and real-world reliability, however, is where enterprise engineering effort actually goes.</p>
-<h2 id="how-does-text-to-sql-work">How Does Text-to-SQL Work?</h2>
-<p>Modern Text-to-SQL systems combine large language models with database schema awareness. The AI first inspects table names, column types, primary keys, and foreign-key relationships to build an internal map of the database. When a user asks a question, the model translates the intent into a structured query, using the schema to ensure column references and join paths are correct.</p>
-<p>Advanced implementations add a semantic layer or RAG pipeline to improve accuracy. The AI can also validate generated SQL by executing it against a read-only replica, catching syntax errors or empty results before presenting them to the user. Feedback loops—where users correct misinterpretations—continuously refine the model's understanding of domain-specific terminology.</p>
-<p>Under the hood, a production-grade system runs a tight sequence: parse intent, resolve business terms against a semantic layer, select relevant tables and columns, generate candidate SQL, validate against the schema, execute safely against a replica, and format the result. Each step has failure modes, and each failure mode needs a guard. The systems that work in the enterprise are the ones that treat every step as engineered, not just the model call in the middle. This is why Text-to-SQL is rarely a single model — it is a pipeline with a model at its core.</p>
-<h2 id="key-components-of-text-to-sql">Key Components of Text-to-SQL</h2>
-<p>A robust Text-to-SQL architecture is more than an LLM with a database connection. It is a pipeline of components that together convert an ambiguous question into a safe, correct, presentable answer.</p>
-<ol>
-<li><strong>Schema Encoder</strong> — Parses database metadata (tables, columns, relationships) into a format the LLM can reason about.</li>
-<li><strong>Intent Parser</strong> — Extracts entities, filters, and aggregations from the natural-language question.</li>
-<li><strong>Query Generator</strong> — The LLM that writes SQL, constrained by the schema and guided by few-shot examples.</li>
-<li><strong>Validator / Executor</strong> — Runs generated SQL safely (often on a replica) and checks for errors or anomalies.</li>
-<li><strong>Result Formatter</strong> — Translates raw result sets into charts, tables, or narrative summaries the user can act on.</li>
-</ol>
-<p>The validator is the component enterprises underestimate most. It is what makes Text-to-SQL safe: queries run against a read-only replica, timeouts prevent runaway execution, and row-count and type checks catch queries that are technically valid but semantically wrong. A system with a strong validator can be given broad access; a system without one cannot be trusted anywhere near production data. When evaluating platforms, ask what happens when a generated query is wrong — the answer reveals more about production readiness than any demo.</p>
-<h2 id="why-text-to-sql-matters-for-enterprises">Why Text-to-SQL Matters for Enterprises</h2>
-<p>SQL is the lingua franca of data, yet fewer than 30% of business users can write it fluently. This creates a persistent bottleneck: every question requires a ticket to the data team, with wait times measured in hours or days. Text-to-SQL removes this barrier, letting stakeholders interrogate databases directly through conversation.</p>
-<p>For enterprises, the impact is transformative. Decision-makers can explore hypotheses in real time during meetings. Analysts are freed from ad-hoc query queues to focus on deeper modelling. And data teams retain control—approving which tables are queryable, enforcing row-level security, and auditing every generated statement for compliance.</p>
-<p>The economics are compelling. Gartner predicts that by 2026, more than 50% of enterprise data queries will be generated by AI rather than written by hand, and early adopters report that self-service natural-language querying absorbs the majority of routine ad-hoc requests — the same requests that currently consume 30–40% of analytics-team capacity. When the average ad-hoc request costs several business days of latency, cutting that to seconds changes not just efficiency but which decisions get made at all. Questions that were too costly to ask become questions that get asked constantly.</p>
-<h2 id="common-use-cases">Common Use Cases</h2>
-<p>Text-to-SQL delivers value in every function that asks questions of data. The use cases below are representative of how enterprises are deploying it today.</p>
-<ul>
-<li><strong>Executive Q&amp;A</strong>: C-suite asks revenue, cost, and headcount questions during board meetings and gets instant answers.</li>
-<li><strong>Sales Operations</strong>: Regional managers query pipeline, forecast accuracy, and quota attainment without bothering analysts.</li>
-<li><strong>Customer Support</strong>: Support leads investigate ticket volumes, resolution times, and escalation patterns on demand.</li>
-<li><strong>Supply Chain</strong>: Procurement teams check inventory levels, lead times, and supplier performance via chat.</li>
-</ul>
-<p>Across these use cases, one pattern stands out: the questions are simple for a human to ask but expensive for an organisation to answer. Before Text-to-SQL, each one consumed an analyst's attention and days of calendar time. After Text-to-SQL, they become immediate, repeatable, and self-service — which is why adoption of conversational analytics has been fastest in exactly these operational functions, where the backlog of unanswered questions was longest.</p>
-<h2 id="what-makes-text-to-sql-difficult-in-real-enterprises">What Makes Text-to-SQL Difficult in Real Enterprises?</h2>
-<p>Demo systems that work on toy databases often struggle against real enterprise environments, and the reasons are consistent. The first is schema sprawl: production warehouses commonly contain thousands of tables with cryptic names, overlapping columns, and undocumented relationships. The model has to know that "revenue" might live in three different places depending on which region or product line you mean.</p>
-<p>The second difficulty is semantic ambiguity. Business terms rarely map one-to-one to database columns. "Active customers" might be defined differently by sales, marketing, and finance — and the correct answer depends on which definition the asker intends. This is why a governed semantic layer is essential: it resolves terminology before the query is generated, so the SQL reflects the organisation's agreed definitions rather than the model's guess.</p>
-<p>Finally, there is the trust problem. Even at 90% accuracy, a system that silently returns a wrong answer on one query in ten is not deployable in decision-critical settings. Enterprises must therefore pair Text-to-SQL with validation, explanation, and escalation: show the generated query, allow review, and route high-stakes questions to human analysts. The systems that earn trust are the ones that know their own limits and make them visible.</p>
-<h2 id="how-text-to-sql-fits-into-beehive-strategy-s-approach">How Text-to-SQL Fits into Beehive Strategy's Approach</h2>
-<p>Beehive Strategy's conversational BI platform uses Text-to-SQL as the execution layer beneath natural-language interactions. When a user asks a question in Chinese or English, our system generates optimised SQL via MCP-connected database adapters, executes it securely, and returns a visual or narrative answer. The semantic layer ensures that "revenue" always maps to the correct column—regardless of how the user phrases the question.</p>
-<p>Our architecture treats the difficulties above as first-class engineering problems. Schema selection is guided by the semantic layer; generated queries are validated against schema constraints and executed against replicas; and every question-and-answer pair is logged for audit and continuous improvement. We also maintain per-industry prompt and example libraries, so the system learns from every deployment without exposing one client's data to another.</p>
-<p>The practical outcome is conversational analytics that is not just fast, but dependable — the combination enterprises need before they will trust AI-generated SQL in production decision-making. Accuracy, governance, and multilingual support are not add-ons; they are the core engineering of the platform, and they are why Text-to-SQL deployments here behave like enterprise software rather than research demos.</p>
-<h2 id="getting-started-with-text-to-sql">Getting Started with Text-to-SQL</h2>
-<p>Text-to-SQL is best introduced incrementally. Starting narrow, measuring accuracy, and widening scope as the system proves itself is the pattern that reliably works.</p>
-<ul>
-<li>Document your database schema clearly, including table descriptions, column comments, and relationship diagrams.</li>
-<li>Start with a narrow scope: pick one business domain (e.g., sales) and the 5-10 tables it relies on.</li>
-<li>Provide the AI with few-shot examples—pairs of natural-language questions and their correct SQL equivalents.</li>
-<li>Implement read-only access and query timeouts to prevent runaway queries from impacting production.</li>
-<li>Set up a feedback mechanism so users can flag incorrect SQL, continuously improving model accuracy.</li>
-</ul>
-<p>The feedback loop is the engine of long-term accuracy. Every corrected query becomes a training example; every confusion logged becomes documentation for the semantic layer. Enterprises that institutionalise this loop find their Text-to-SQL accuracy improves steadily — and that the capability, once confined to a pilot domain, becomes a natural part of how the whole organisation talks to its data. Start where the pain is greatest, prove the answer quality, and let the questions multiply.</p>
 
+<p class="article-lead">Text-to-SQL is the discipline of turning a question asked in plain language into a correct, executable SQL query. It is the bridge that lets a business user ask what were last quarter’s top products by region and receive the answer without writing a line of code. By removing the translation step between intent and data, it shortens the distance from curiosity to evidence. This article explains what text-to-SQL is, how modern systems work, where they still fail, and how to deploy them safely inside an enterprise.</p>
+<h2 id="what-exactly-is-text-to-sql">What Exactly Is Text-to-SQL?</h2>
+<p>Text-to-SQL is a class of natural-language interfaces that map a user’s question, posed in ordinary language, to a structured query against a relational database. The output is not a prose reply but a SQL statement that the database executes, returning the precise rows the question implied. In short, it converts intent into a query plan a machine can run. The discipline sits at the intersection of natural-language processing and data engineering, and its maturity has accelerated sharply with the arrival of capable large language models.</p>
+<p>The value is access. Most enterprise data lives in tables that only engineers and analysts can query, so every question becomes a ticket and a wait. Text-to-SQL removes that bottleneck by letting anyone who can phrase a question retrieve the data themselves, provided the system is wired to the right schema and governed by the right permissions.</p>
+<p>It is worth separating text-to-SQL from a chatbot that merely summarizes. A true text-to-SQL system is accountable: it produces a query you can inspect, run again, and audit. That query is the contract between the question and the answer, and it is what makes the technology trustworthy enough for real operational use.</p>
+<h2 id="how-does-text-to-sql-work">How Does Text-to-SQL Work?</h2>
+<p>A modern text-to-SQL pipeline has three stages. First, it gathers context: the relevant table and column names, their types, sample values, and any business glossary. Without this schema context, even a strong model guesses blindly, so context assembly is the single most important step in the pipeline.</p>
+<p>Second, a language model translates the question plus the schema context into a candidate SQL query. The model is prompted with the schema, the user’s intent, and often a few examples of similar questions and their correct queries. The result is a SQL string, not yet trusted, that expresses the model’s best interpretation of the request.</p>
+<p>Third, the query is validated and executed. Validation checks that the SQL is syntactically correct and references only permitted tables and columns. Only after it passes is it run against the database, and the result is returned to the user, ideally alongside the query so the answer can be verified. This execute-and-show loop is what separates a demo from a system.</p>
+<p>A fourth, often overlooked stage is the feedback loop. When a user corrects a query or rejects an answer, that signal is captured and used to improve the next attempt, either by updating examples or by refining the schema context. Over weeks, this loop is what turns a generic model into one that understands your specific business, and it is the difference between a tool that frustrates and one that earns trust.</p>
+<h2 id="what-architectures-power-it">What Architectures Power It?</h2>
+<p>The dominant architecture today pairs a large language model with a retrieval step that supplies schema context. The model does the translation; the retriever ensures it sees the right tables. Some systems add a vector index over table descriptions so that only the dozen most relevant tables reach the model, keeping the prompt focused and the cost bounded.</p>
+<p>A more robust pattern adds a planner and a critic. The planner breaks a complex question into sub-queries; the critic reviews the generated SQL for correctness before execution. This two-model design catches the common failure modes, missing a join or aggregating the wrong column, before they reach the database and return a confident but wrong number.</p>
+<p>Enterprises increasingly wrap this in a governed layer. The model sits behind an access-control boundary that maps the user to the rows they may see, rewrites queries to enforce row-level security, and logs every generated statement. Architecture, in other words, is less about the model and more about the guardrails around it.</p>
+<p>Cost and latency shape the practical design as much as accuracy does. Sending every table to a frontier model on each question is expensive and slow, so production systems cache schema embeddings, batch where possible, and route simple questions to smaller models while reserving the largest model for the hardest queries. The architecture that wins is the one that is accurate enough, cheap enough, and fast enough to be used every day.</p>
+<h2 id="why-is-schema-context-critical">Why Is Schema Context Critical?</h2>
+<p>A SQL query is only as good as the schema the model can see. If the model is handed every one of a thousand tables, it will confuse similarly named columns and join the wrong entities. Giving it the precise, relevant slice of the schema is the difference between a query that runs and one that returns nonsense.</p>
+<p>Context also carries meaning. A column named rev means nothing without knowing it is daily revenue in USD; a table called fct_sales needs its grain explained. Good systems enrich the schema with descriptions and business definitions so the model reasons about intent, not just strings, which sharply reduces plausible-looking errors.</p>
+<p>Maintaining that context is an ongoing task. Schemas change: columns are added, renamed, deprecated. A text-to-SQL deployment that does not track those changes will slowly drift into mistakes. Treating schema context as a living, governed asset is what keeps accuracy high over months, not just in the launch demo.</p>
+<h2 id="what-are-the-common-failure-modes">What Are the Common Failure Modes?</h2>
+<p>The most frequent error is the plausible wrong answer. The query runs, returns a number, and looks correct, yet it aggregated the wrong dimension or joined on a near-duplicate key. Because the output is authoritative-looking, users trust it, which is exactly why silent errors are the most dangerous failure mode of all.</p>
+<p>Ambiguity is the second. Top products could mean by revenue, by units, or by margin; last quarter depends on the fiscal calendar. When the question is under-specified, the model fills the gap with an assumption the user never stated. Good systems surface that assumption, or ask a clarifying question, rather than guessing silently.</p>
+<p>The third is permission leakage. If the model can emit queries against any table, a user might retrieve data they should never see. Without row-level enforcement in the execution layer, text-to-SQL becomes a way to bypass governance. The fix is never to trust the model’s self-restraint, but to enforce access at the database boundary.</p>
+<h2 id="how-do-you-measure-accuracy">How Do You Measure Accuracy?</h2>
+<p>Accuracy in text-to-SQL is usually measured by execution accuracy: does the generated query return the same rows as a hand-written reference query for the same question? This is a stricter test than matching the SQL text, because two different queries can be correct while identical text rarely is.</p>
+<p>Pair that with a smaller human review of tricky questions, especially those involving multiple joins, date logic, or negation. Automated metrics catch the bulk of errors, but only a person can judge whether the answered question was the one intended. A combined score gives a realistic picture of production readiness.</p>
+<p>Track accuracy by question type and by table, not just as a single average. If joins involving the customer table fail often, that points to a schema-context gap, not a model weakness. Segmented measurement turns a vague accuracy is 80 percent into an actionable plan for where to add context or examples.</p>
+<h2 id="how-should-you-deploy-it-safely">How Should You Deploy It Safely?</h2>
+<p>Start in a read-only sandbox against a replica, never the production write path. Limit the tables the system can touch, enforce row-level security in the execution layer, and require that every query be shown to the user before it runs. Safe deployment is mostly about boundaries, not about the model’s cleverness.</p>
+<p>Add a human-in-the-loop for anything consequential. A query that merely lists last week’s orders can run freely; one that joins customer PII to external data should prompt for approval and be logged. The escalation policy is a governance decision, not a technical afterthought, and it should be explicit before launch.</p>
+<p>Instrument everything. Log the question, the generated SQL, the user, the rows returned, and any correction. That log is both your audit trail and your improvement dataset: the corrections become examples that raise accuracy for the next user who asks something similar. Deployment without logging is deployment without a memory.</p>
+<p>Roll the capability out in waves rather than all at once. Begin with a single team that has clean data and a clear champion, prove the value, then expand to adjacent teams with their own schemas and vocabulary. Each wave teaches you something about your data and your users, and the staged approach keeps risk contained while momentum builds across the organization.</p>
+<h2 id="what-role-does-conversational-bi-play">What Role Does Conversational BI Play?</h2>
+<p>Conversational BI is the product layer that makes text-to-SQL useful to ordinary users. Instead of a bare query box, the user gets a dialogue: they ask, see the result, ask a follow-up, and refine. Text-to-SQL is the engine; conversational BI is the experience that turns it into daily habit.</p>
+<p>The governance dividend is what makes it enterprise-grade. A conversational BI layer over governed data can be permissioned so each user sees only their authorized rows, with every question logged for audit. Speed arrives without surrendering control, because the conversation itself becomes the compliance record.</p>
+<p>For analytics teams, this shifts the work from building reports to curating trusted semantic models. Once the schema context and permissions are right, the business asks its own questions. Conversational BI thus converts text-to-SQL from a developer tool into a self-service capability the whole organization can use.</p>
+<h2 id="which-use-cases-benefit-most">Which Use Cases Benefit Most?</h2>
+<p>Ad-hoc business questions are the clearest win. A regional manager who wants this month’s churn by plan tier gets an answer in seconds instead of waiting a day for a report. The questions are varied, time-sensitive, and previously blocked by analyst capacity, which is exactly where text-to-SQL removes friction.</p>
+<p>Data exploration during investigations is another. When a number looks wrong, an analyst can drill by asking successive questions, each building on the last, without rewriting queries by hand. The interactive loop accelerates root-cause analysis far more than a static dashboard ever could.</p>
+<p>Executive self-service is the strategic prize. Leaders who can ask plain-language questions of governed data, and receive sourced answers, stop depending on a bottleneck team. The result is a more data-literate organization where decisions are anchored in evidence anyone can retrieve, not just the few who speak SQL.</p>
+<h2 id="what-are-the-limits-today">What Are the Limits Today?</h2>
+<p>Text-to-SQL still struggles with genuinely ambiguous or multi-hop questions that require reasoning across many tables. It performs best on well-modeled schemas with clear names and business definitions, and worst on messy, undocumented, or rapidly changing data where context is thin.</p>
+<p>It is also not a substitute for data governance. The system will faithfully query whatever it is allowed to see, including data of poor quality, and return confident answers built on shaky foundations. Garbage in, query out: the accuracy of the response is bounded by the integrity of the underlying tables.</p>
+<p>Treat it as a force multiplier for people who already understand the business, not a replacement for analytical judgement. The best deployments pair the model’s speed with a human’s skepticism, so that wrong queries are caught, assumptions are surfaced, and the organization learns rather than merely automates its confusion.</p>
+<p>The practice also demands ongoing stewardship. Models and schemas co-evolve, and a query that was accurate last quarter can drift as tables change. A standing regime of evaluation, example curation, and incident review is what keeps a text-to-SQL system dependable, turning a promising prototype into a durable production capability.</p>
+<h2 id="what-makes-a-team-ready">What Makes a Team Ready?</h2>
+<p>Technical readiness is necessary but not sufficient. The teams that succeed treat text-to-SQL as a data-product launch: they assign an owner, define success metrics, and run a review cadence. Without that operating discipline, even a strong model gets adopted unevenly and quietly loses accuracy.</p>
+<p>Business readiness matters just as much. Users must understand what the tool can and cannot do, how to phrase questions, and when to distrust an answer. A short enablement effort, paired with visible examples, converts a skeptical audience into confident everyday users far faster than the model alone ever could.</p>
+<p>Governance readiness is the final pillar. Before launch, agree on who can query what, how escalations work, and how the audit log is used. When technology, business, and governance are ready together, text-to-SQL moves from experiment to infrastructure, which is exactly where its value compounds across the organization.</p>
+<h2 id="how-do-you-get-started">How Do You Get Started?</h2>
+<p>Begin with one well-documented schema and a handful of high-value questions. Curate the schema context, add a few example queries, and measure execution accuracy on real questions from real users. A narrow, accurate launch builds trust faster than a broad, flaky one.</p>
+<p>Invest in the semantic layer before the model. Clean names, clear definitions, and enforced permissions do more for accuracy than swapping one model for another. The model is a commodity compared with the schema context, which is your proprietary, compounding asset.</p>
+<p>Finally, choose a deployment that puts governance first. Platforms such as Beehive Strategy’s conversational analytics wrap text-to-SQL in the permissions, logging, and human review an enterprise requires, so the capability scales without sacrificing the control that regulated businesses depend on. Start small, govern hard, expand with evidence.</p>
             <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -183,25 +299,20 @@
                 </h2>
                 <div class="faq-list">
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">1</span><span>1 How accurate is Text-to-SQL?</span></span>
-                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">State-of-the-art models achieve over 90% accuracy on standard benchmarks, but real-world performance depends on schema quality, training examples, and the complexity of the database. A semantic layer significantly improves reliability.</div></div>
+                        <h3>What exactly is text-to-SQL?</h3>
+                        <div class="faq-answer"><p>Text-to-SQL is a natural-language interface that converts a question asked in plain language into a correct, executable SQL query against a relational database. The output is a query you can inspect and re-run, not just a prose summary, which is what makes it accountable enough for enterprise use.</p></div>
                     </div>
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">2</span><span>2 Can Text-to-SQL handle complex joins?</span></span>
-                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Yes, advanced systems support multi-table joins, subqueries, window functions, and CTEs. The key is providing the model with a clear schema map and relationship metadata.</div></div>
+                        <h3>Why does schema context matter so much?</h3>
+                        <div class="faq-answer"><p>A SQL query is only as good as the schema the model can see. Supplying the precise, relevant tables, with column descriptions and business definitions, prevents the model from joining the wrong entities or aggregating the wrong column. Maintaining that context as schemas change is what keeps accuracy high over time.</p></div>
                     </div>
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">3</span><span>3 Is Text-to-SQL safe for production databases?</span></span>
-                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">With proper safeguards—read-only replicas, query timeouts, row-level security, and SQL validation—it is safe. Never allow generated SQL to write or delete data without human review.</div></div>
+                        <h3>What is the most dangerous failure mode?</h3>
+                        <div class="faq-answer"><p>The plausible wrong answer. The query runs, returns a number, and looks correct, yet it aggregated the wrong dimension or joined a near-duplicate key. Because the output is authoritative-looking, users trust it, so silent errors are more harmful than queries that simply fail to run.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3>How should text-to-SQL be deployed safely?</h3>
+                        <div class="faq-answer"><p>Start read-only against a replica, limit the tables the system can touch, enforce row-level security in the execution layer, and show every query before it runs. Add human approval for consequential queries and log everything, so the system has both a guardrail and a memory for improvement.</p></div>
                     </div>
                 </div>
             </section>
@@ -218,14 +329,18 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Table of Contents</div>
                 <nav class="toc-links">
-                    <a href="#what-is-text-to-sql-a-concise-definition" class="toc-link">What is Text-to-SQL? — A Concise Definition</a>
+                    <a href="#what-exactly-is-text-to-sql" class="toc-link">What Exactly Is Text-to-SQL?</a>
                     <a href="#how-does-text-to-sql-work" class="toc-link">How Does Text-to-SQL Work?</a>
-                    <a href="#key-components-of-text-to-sql" class="toc-link">Key Components of Text-to-SQL</a>
-                    <a href="#why-text-to-sql-matters-for-enterprises" class="toc-link">Why Text-to-SQL Matters for Enterprises</a>
-                    <a href="#common-use-cases" class="toc-link">Common Use Cases</a>
-                    <a href="#what-makes-text-to-sql-difficult-in-real-enterprises" class="toc-link">What Makes Text-to-SQL Difficult in Real Enterprises?</a>
-                    <a href="#how-text-to-sql-fits-into-beehive-strategy-s-approach" class="toc-link">How Text-to-SQL Fits into Beehive Strategy&#x27;s Approach</a>
-                    <a href="#getting-started-with-text-to-sql" class="toc-link">Getting Started with Text-to-SQL</a>
+                    <a href="#what-architectures-power-it" class="toc-link">What Architectures Power It?</a>
+                    <a href="#why-is-schema-context-critical" class="toc-link">Why Is Schema Context Critical?</a>
+                    <a href="#what-are-the-common-failure-modes" class="toc-link">What Are the Common Failure Modes?</a>
+                    <a href="#how-do-you-measure-accuracy" class="toc-link">How Do You Measure Accuracy?</a>
+                    <a href="#how-should-you-deploy-it-safely" class="toc-link">How Should You Deploy It Safely?</a>
+                    <a href="#what-role-does-conversational-bi-play" class="toc-link">What Role Does Conversational BI Play?</a>
+                    <a href="#which-use-cases-benefit-most" class="toc-link">Which Use Cases Benefit Most?</a>
+                    <a href="#what-are-the-limits-today" class="toc-link">What Are the Limits Today?</a>
+                    <a href="#what-makes-a-team-ready" class="toc-link">What Makes a Team Ready?</a>
+                    <a href="#how-do-you-get-started" class="toc-link">How Do You Get Started?</a>
                 </nav>
             </div>
             <div class="sidebar-card">
@@ -243,15 +358,15 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Related Articles</div>
                 <div class="sidebar-related-list">
-                    <a href="blog/articles/natural-language-query-accuracy" class="sidebar-related-card">
+                    <a href="/blog/articles/natural-language-query-accuracy" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Making Natural Language Queries Actually Accurate</h4>
                         <span class="sidebar-related-meta">8 min read</span>
                     </a>
-                    <a href="blog/articles/wechat-work-data-queries-enterprise" class="sidebar-related-card">
+                    <a href="/blog/articles/wechat-work-data-queries-enterprise" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Data Queries in WeChat Work: Analytics for the Mobile Workforce</h4>
                         <span class="sidebar-related-meta">3 min read</span>
                     </a>
-                    <a href="blog/articles/multi-platform-analytics-no-vendor-lock-in" class="sidebar-related-card">
+                    <a href="/blog/articles/multi-platform-analytics-no-vendor-lock-in" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Multi-Platform Analytics Without Vendor Lock-In</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
@@ -268,12 +383,12 @@
             <a href="https://www.beehivestrategy.com/blog" class="recommended-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
         <div class="recommended-grid">
-            <a href="blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
+            <a href="/blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
                 <img src="/assets/blog/covers/en/women-in-data-building-inclusive-ai-teams.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
                     <h3 class="recommended-card-title">Women In Data Building Inclusive Ai Teams</h3>
-                    <p class="recommended-card-excerpt"></p>
+                    <p class="recommended-card-excerpt">Text-to-SQL is the capability of AI systems to translate natural-language questions into executable Structured Query Language (SQL) statements. Instead of writing complex joins and aggregations by han</p>
                     <div class="recommended-card-meta">
                         <span>11 min read</span>
                         <span aria-hidden="true">&middot;</span>
@@ -281,12 +396,12 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
+            <a href="/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
                 <img src="/assets/blog/covers/en/why-data-strategy-needs-ai-agent-layer-2026.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
                     <h3 class="recommended-card-title">Why Data Strategy Needs Ai Agent Layer 2026</h3>
-                    <p class="recommended-card-excerpt"></p>
+                    <p class="recommended-card-excerpt">Text-to-SQL is the capability of AI systems to translate natural-language questions into executable Structured Query Language (SQL) statements. Instead of writing complex joins and aggregations by han</p>
                     <div class="recommended-card-meta">
                         <span>8 min read</span>
                         <span aria-hidden="true">&middot;</span>
@@ -294,12 +409,12 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
+            <a href="/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
                 <img src="/assets/blog/covers/en/vector-databases-enterprise-search-2026-practical-guide.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
                     <h3 class="recommended-card-title">Vector Databases Enterprise Search 2026 Practical Guide</h3>
-                    <p class="recommended-card-excerpt"></p>
+                    <p class="recommended-card-excerpt">Text-to-SQL is the capability of AI systems to translate natural-language questions into executable Structured Query Language (SQL) statements. Instead of writing complex joins and aggregations by han</p>
                     <div class="recommended-card-meta">
                         <span>7 min read</span>
                         <span aria-hidden="true">&middot;</span>
@@ -371,6 +486,6 @@
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "What is Text-to-SQL? Natural Language Database Queries";</script>
-<script src="/js/article.js"></script>
+<script src="/js/article.js?v=20260826"></script>
 </body>
 </html>

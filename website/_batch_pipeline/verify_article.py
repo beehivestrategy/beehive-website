@@ -16,8 +16,10 @@ def main():
     h = open(path, encoding="utf-8").read()
     errors = []
 
-    # 1. extract article region: from <article class="article"> to last </article>
+    # 1. extract article region: from <article ...> to last </article>
     a_start = h.find('<article class="article">')
+    if a_start == -1:
+        a_start = h.find('<article class="article-content"')
     if a_start == -1:
         a_start = h.find('<div class="article-content">')
     if a_start == -1:
