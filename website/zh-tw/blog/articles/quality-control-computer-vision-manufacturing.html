@@ -106,7 +106,7 @@
           <a href="/zh-tw/blog/articles/quality-control-computer-vision-manufacturing" role="menuitem" class="active" data-lang="zh-tw"><span>繁體中文</span><span class="lang-code">繁</span></a>
         </div>
         </div>
-        <a href="/zh-tw/contact" class="btn btn-primary">預約演示</a>
+        <a href="/zh-tw/contact" class="btn btn-primary">預約示範</a>
       </div>
       <div class="nav-mobile">
         <button class="hamburger" id="hamburger" aria-label="切換選單" aria-expanded="false" aria-controls="mobile-menu">
@@ -152,7 +152,7 @@
     <a href="/zh-cn/blog/articles/quality-control-computer-vision-manufacturing" data-lang="zh-cn">简体中文</a>
     <a href="/zh-tw/blog/articles/quality-control-computer-vision-manufacturing" data-lang="zh-tw" class="active">繁體中文</a>
   </div>
-  <a href="/zh-tw/contact" class="btn btn-primary btn-lg">預約演示</a>
+  <a href="/zh-tw/contact" class="btn btn-primary btn-lg">預約示範</a>
   </div>
 
 <main>
@@ -225,6 +225,30 @@
 <li><strong>問：沒有AI團隊的製造企業能落地嗎？</strong>答：可以。蜂啓諮詢等服務商可提供從相機選型、樣本標註到模型訓練與部署的端到端支持，企業只需提供產線場景與數據基礎；蜂啓諮詢可以全程陪伴從樣本採集到模型上線的過程。</li>
 <li><strong>問：模型上線後需要持續投入嗎？</strong>答：需要，但投入可控。關鍵是建立樣本回流與再訓練流程，通常每季度一次的小規模再訓練即可保持性能穩定，避免漂移帶來的漏檢風險，同時及時把新發現的缺陷類型納入標註範圍。</li>
 </ul>
+
+<h2 id="不停產採樣本">如何在不停產的情況下採集訓練樣本？</h2>
+<p>停產採集樣本既不現實也不可取。可行做法是借力現有產線：在質檢工位加裝工業相機，把日常流過的有標籤與無標籤影像持續回收至樣本庫；對罕見缺陷，可用產線換型或檢修的短窗集中補採。這樣樣本來自真實分佈，模型上線後更穩。</p>
+<p>另一個技巧是先做「弱監督」啟動：用人工既有判定記錄做初步標籤，再讓早期模型輔助標註、人工抽檢校正，形成樣本滾雪球。避免在專案初期就追求百萬級完美標註，那會拖死啟動節奏。</p>
+
+<h2 id="優先自動化缺陷">哪些缺陷類型應優先用視覺質檢自動化？</h2>
+<p>優先選三類：高頻且規則明確的（如刮痕、缺件、錯裝）、人眼易疲勞漏檢的微小缺陷、以及影響安全與合規的關鍵項。這三類自動化後回報最快、爭議最少。相反，極度依賴主觀判定的外觀瑕疵，更適合人機協作而非全替代。</p>
+<p>排序時用一個簡單矩陣：發生頻率×漏檢後果×自動化可行性。落在高頻率、高後果、高可行格子的缺陷，就是第一批模型的訓練目標。把範圍先收窄，概念驗證才容易在數週內交付。</p>
+
+<h2 id="接入製造執行系統">怎樣把質檢模型接入既有的製造執行系統？</h2>
+<p>模型不應停在實驗室。它要透過介面把判定結果寫入MES或品質系統，觸發停線、複檢或追溯，讓質檢成為閉環而非孤島。對接方式上，優先用企業已有的訊息佇列或API，避免為AI另建一套平行流程。</p>
+<p>資料回流同樣關鍵：被人工複核修正的結果應自動回到樣本庫，作為再訓練原料。這樣模型隨產線工藝微調而持續適應，而不是上線即固化。蜂啓諮詢在部署時會把這條回流鏈路作為標準交付的一部分。</p>
+
+<h2 id="控制誤檢率">視覺質檢的誤檢率應如何控制？</h2>
+<p>誤檢分兩類：漏檢（放過缺陷）與誤報（良品判廢）。控制策略是先定業務可接受的閾值——對安全件寧可誤報也別漏檢，對成本敏感件則平衡兩者。再用人工複核兜底高風險判定，把模型放在「初篩」位置而非「終審」位置。</p>
+<p>持續側靠樣本回流與定期評測：建立每類缺陷的準確率看板，當某類漏檢率抬頭即觸發再訓練。誤檢率不是一次調好就不變的指標，而是需要隨產線一起被長期照看的營運參數。</p>
+
+<h2 id="成本與回報">計算機視覺質檢的總擁有成本如何估算？</h2>
+<p>很多企業卡在「算不清帳」。TCO至少含四塊：相機與工控機硬體、標註與訓練的人工、平台與運維、以及持續再訓練的投入。硬體一次性、人工持續，真正的隱性成本是樣本回流與再訓練的人力，應當提前列入編制而非事後追加。</p>
+<p>回報側看三筆帳：漏檢下降帶來的重工與召回減少、質檢人力從重複勞動轉向異常處置、以及質檢資料反饋工藝改進的間接收益。把TCO與這三筆帳並排，通常能在兩個季度內看到淨正，前提是先把高風險缺陷自動化、而非追求全覆蓋。</p>
+
+<h2 id="模型版本管理">質檢模型上線後怎樣做版本管理？</h2>
+<p>不要把模型當成一次性交付。每次再訓練都應保留上一版作為回滾基線，並記錄本次樣本量、覆蓋缺陷類型與準確率變化。當產線工藝調整或新缺陷出現，能快速判斷該升哪版、該退回哪版，避免一次糟糕的更新拖累整條線。</p>
+<p>版本管理還要和樣本庫聯動：每個模型版本對應一批樣本與標籤，便於事後審計「當時為什麼這麼判」。對受監管行業，這種可追溯性本身就是合規範疇，能在客戶或監管問詢時拿出證據。</p>
 
             <section class="faq-section" id="faq" aria-label="常見問題">
                 <h2 class="faq-section-title">
@@ -426,7 +450,7 @@
           <p>企業級AI與數據分析諮詢。我們提供基於AI的對話式智能解決方案，助力企業實現數據驅動決策。</p>
           <div class="social">
             <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-            <a href="/cdn-cgi/l/email-protection#8deceeeee2f8e3f9cdefe8e8e5e4fbe8fef9ffecf9e8eaf4a3eee2e0" aria-label="郵箱"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+            <a href="mailto:account@beehivestrategy.com" aria-label="郵箱"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
           </div>
         </div>
         <div class="footer-col">
@@ -434,8 +458,7 @@
           <ul>
             <li><a href="/zh-tw/solution">平台</a></li>
             <li><a href="/zh-tw/solution">AI智能體</a></li>
-            <li><a href="/zh-tw/fde">FDE服務</a></li>
-            <li><a href="/zh-tw/case-studies">客戶案例</a></li>
+            <li><a href="/zh-tw/fde">FDE服務</a></li>            <li><a href="/zh-tw/case-studies">客戶案例</a></li>
             <li><a href="/zh-tw/security">安全</a></li>
             <li><a href="/zh-tw/pricing">定價</a></li>
             <li><a href="/zh-tw/blog">部落格</a></li>
@@ -457,12 +480,12 @@
             <li><a href="/zh-tw/about">關於我們</a></li>
             <li><a href="/zh-tw/contact">聯絡方式</a></li>
             <li><a href="/zh-tw/pricing">常見問題</a></li>
-            <li><a href="/cdn-cgi/l/email-protection#9cfdfffff3e9f2e8dcfef9f9f4f5eaf9efe8eefde8f9fbe5b2fff3f1">加入我們</a></li>
+            <li><a href="mailto:account@beehivestrategy.com">加入我們</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 深圳蜂啓諮詢有限公司 版權所有</p>
+        <p>&copy; 2026 深圳蜂啟諮詢有限公司 版權所有</p>
         <div class="legal">
           <a href="/zh-tw/privacy">隱私政策</a>
           <a href="/zh-tw/terms">服務條款</a>
