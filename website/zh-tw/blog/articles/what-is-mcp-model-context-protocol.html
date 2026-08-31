@@ -186,17 +186,25 @@
                 <button class="toc-mobile-toggle" aria-expanded="false">目錄 <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="toc-mobile-links">
                     <a href="#什麼是mcp-模型上下文協議" class="toc-mobile-link">什麼是MCP（模型上下文協議）？</a>
-                    <a href="#mcp如何運作" class="toc-mobile-link">MCP如何運作？</a>
+                    <a href="#mcp如何工作" class="toc-mobile-link">MCP如何工作？</a>
                     <a href="#mcp的核心組件" class="toc-mobile-link">MCP的核心組件</a>
-                    <a href="#為什麼mcp對企業至關重要" class="toc-mobile-link">為什麼MCP對企業至關重要</a>
+                    <a href="#爲什麼mcp對企業至關重要" class="toc-mobile-link">爲什麼MCP對企業至關重要</a>
                     <a href="#常見企業用例" class="toc-mobile-link">常見企業用例</a>
-                    <a href="#蜂啟諮詢如何使用mcp" class="toc-mobile-link">蜂啟諮詢如何使用MCP</a>
+                    <a href="#蜂啓諮詢如何使用mcp" class="toc-mobile-link">蜂啓諮詢如何使用MCP</a>
                     <a href="#mcp入門指南" class="toc-mobile-link">MCP入門指南</a>
                     <a href="#mcp的技術優勢詳解" class="toc-mobile-link">MCP的技術優勢詳解</a>
-                    <a href="#mcp的生態系統與發展前景" class="toc-mobile-link">MCP的生態系統與發展前景</a>
+                    <a href="#mcp的生態系統與發展前景" class="toc-mobile-link">MCP的生態系統與發展前景</a                    <a href="#如何看待mcp的安全考量" class="toc-mobile-link">採用MCP時需要關注哪些安全考量？</a>
+                    <a href="#如何判斷mcp是否適合你的技術棧" class="toc-mobile-link">如何判斷MCP是否適合你的技術棧？</a>
                 </div>
             </div>
-<h2 id="什麼是mcp-模型上下文協議">什麼是MCP（模型上下文協議）？</h2><p><strong>模型上下文協議（Model Context Protocol，簡稱MCP）</strong>是由Anthropic開發的一個開放標準，它使AI模型能夠安全地連接外部資料來源、工具和企業系統。MCP提供了一個統一的、可發現的介面，讓大型語言模型能夠即時存取資料庫、API、檔案系統和其他服務，從而取代了過去那種脆弱的一次性整合方案。MCP的設計旨在解決企業AI部署中最持久的問題之一：AI模型與資料來源之間大量定製化、難以維護的整合程式碼不斷蔓延，給企業帶來了巨大的技術債務和維護負擔。</p><h2 id="mcp如何運作">MCP如何運作？</h2><p>MCP採用用戶端-伺服器架構。一個<strong>MCP用戶端</strong>（通常是AI應用程式、聊天機器人或自主智能體）發起與一個或多個<strong>MCP伺服器</strong>的連接，每個伺服器暴露特定的能力，例如查詢PostgreSQL資料庫、讀取雲端儲存中的檔案或呼叫REST API。該協議為工具、資源和提示定義了標準化的模式，使AI能夠準確了解哪些操作可用以及每個操作需要什麼參數。當使用者提出問題時，系統會檢查已連接的MCP伺服器，識別出相關的資料連接器，並呼叫適當的工具來完成查詢，整個過程在伺服器級別強制執行完整的稽覈和存取控制。</p><p>這種架構設計的核心優勢在於其解耦性和標準化。MCP用戶端不需要了解每個資料來源的技術細節，只需要透過標準化的協議與MCP伺服器通訊。MCP伺服器作為輕量級適配器，將底層系統的複雜性封裝起來，暴露統一的介面。這種設計使得企業可以在不影響AI應用程式的情況下獨立更新、替換或擴展資料來源連接器。</p><h2 id="mcp的核心組件">MCP的核心組件</h2><ol><li><strong>MCP用戶端</strong> — 發起請求並在多個伺服器之間協調工具呼叫的AI應用程式，是使用者與MCP生態系統互動的入口點。</li><li><strong>MCP伺服器</strong> — 一個輕量級適配器，將現有資料來源或工具封裝起來，透過標準化的MCP介面暴露給用戶端使用。</li><li><strong>工具</strong> — 由伺服器定義的可呼叫函數，例如execute_query、fetch_report或send_notification，每個工具都有明確的參數定義和傳回值格式。</li><li><strong>資源</strong> — AI可以讀取的可定址資料端點，例如特定的資料庫表、檔案路徑或API端點，支援讀取和訂閱操作。</li><li><strong>提示</strong> — 預定義的模板，指導AI建構有效的複雜多步驟操作請求，提高複雜任務的處理效率和準確性。</li></ol><h2 id="為什麼mcp對企業至關重要">為什麼MCP對企業至關重要</h2><p>在MCP出現之前，每個AI-資料整合都是一個定製的工程專案。團隊需要編寫自訂的Python腳本、管理分散的API金鑰、維護在模式變更時就會中斷的脆弱中介軟體。MCP透過提供一個單一且文件齊全的協議來消除這種重複勞動，任何AI應用程式和任何資料來源都可以實現該協議。對企業而言，這意味著對話式BI解決方案的部署速度更快，工程開銷大幅降低，以及在不重寫整合程式碼的情況下靈活切換AI模型或資料後端的能力。安全團隊受益於伺服器級別的集中存取控制，而資料團隊則透過詳細的稽覈日誌保持對AI可存取內容的完全可見性。</p><h2 id="常見企業用例">常見企業用例</h2><ul><li><strong>對話式BI</strong>：高管用自然語言提問，從資料倉庫中即時獲取答案，無需撰寫SQL查詢，顯著降低資料分析的門檻。</li><li><strong>自動化報告</strong>：AI智能體透過MCP伺服器讀取多個儀錶板和資料庫，自動生成日報或週報，減少人工操作。</li><li><strong>跨系統工作流</strong>：透過單一對話介面協調CRM、ERP和分析平台上的操作，實現端到端的業務流程自動化。</li><li><strong>資料治理</strong>：透過集中化的MCP存取日誌強制執行行級安全策略並稽覈每個AI生成的查詢，確保資料安全和合規。</li></ul><h2 id="蜂啟諮詢如何使用mcp">蜂啟諮詢如何使用MCP</h2><p>蜂啟諮詢的對話式BI平台完全基於MCP連接器建構。每個客戶端資料庫、API端點和文件儲存都被視為MCP伺服器，無需自訂整合專案即可實現自然語言分析。這種標準化方法提供更快的實施速度、更低的維護成本和麪向未來的架構，能夠隨您的資料生態系統的成長而靈活演進。</p><h2 id="mcp入門指南">MCP入門指南</h2><ul><li>確定AI應用程式需要存取的資料來源和工具，包括內部資料庫、外部API和文件儲存系統。</li><li>為每個系統安裝或建構MCP伺服器 — 許多流行的資料庫和SaaS平台已有社羣維護的伺服器可直接使用。</li><li>設定MCP用戶端以發現並連接這些伺服器，建立安全可靠的連接通道。</li><li>在暴露生產資料之前，在伺服器級別定義存取控制和稽覈策略，確保資料安全和合規。</li><li>用自然語言查詢進行測試，並迭代工具描述以提高準確性，持續最佳化系統效能。</li></ul><h2 id="mcp的技術優勢詳解">MCP的技術優勢詳解</h2><p>從技術架構的角度來看，MCP的核心優勢在於其標準化和解耦設計。傳統的AI資料整合通常採用點對點的方式，每個AI應用需要為每個資料來源編寫專用的連接程式碼，這種方式不僅開發成本高昂，而且在資料來源發生變化時需要同步修改所有相關連接器。MCP透過引入中間協議層，將AI應用程式的查詢邏輯與資料來源的存取邏輯完全解耦，使得任何支援MCP協議的用戶端都可以無縫存取任何實現了MCP伺服器的資料來源，極大地降低了整合複雜度和維護成本。此外，MCP的標準化設計還促進了工具生態的發展，越來越多的資料來源提供商開始原生支援MCP協議，進一步降低了企業的實施門檻。</p><p>對於正在進行AI轉型的企業來說，MCP提供了一種漸進式的遷移路徑。企業不需要一次性替換現有的資料基礎設施，而是可以逐步將各個資料來源包裝為MCP伺服器，同時保持現有系統的正常運作。這種漸進式策略降低了AI轉型的風險和成本，使企業能夠在可控的範圍內驗證AI應用的價值，然後再逐步擴大應用範圍。</p><h2 id="mcp的生態系統與發展前景">MCP的生態系統與發展前景</h2><p>MCP的生態系統正在快速發展。目前已有數百個開源和商業MCP伺服器可供使用，涵蓋了主流資料庫、雲端服務、開發工具和協作平台。社羣驅動的MCP伺服器庫持續成長，企業可以在其中找到適合自身需求的預建構連接器。同時，主要的AI平台供應商也開始原生支援MCP協議，使其成為AI整合的事實標準。展望未來，隨著越來越多的資料來源和服務提供商原生支援MCP，企業將能夠以更低的成本和更快的速度建構強大的AI資料整合解決方案，進一步加速AIa企業環境中的落地和規模化應用。</p><p>企業評估MCP方案時，應重點關注協議相容性、社羣活躍度和供應商支援情況，確保所選方案能夠滿足長期發展的需要。</p>
+<h2 id="什麼是mcp-模型上下文協議">什麼是MCP（模型上下文協議）？</h2><p><strong>模型上下文協議（Model Context Protocol，簡稱MCP）</strong>是由Anthropic開發的一個開放標準，它使AI模型能夠安全地連接外部數據源、工具和企業系統。MCP提供了一個統一的、可發現的接口，讓大語言模型能夠實時訪問數據庫、API、文件系統和其他服務，從而取代了過去那種脆弱的一次性集成方案。MCP的設計旨在解決企業AI部署中最持久的問題之一：AI模型與數據源之間大量定製化、難以維護的集成代碼不斷蔓延，給企業帶來了巨大的技術債務和維護負擔。</p><h2 id="mcp如何工作">MCP如何工作？</h2><p>MCP採用客戶端-服務器架構。一個<strong>MCP客戶端</strong>（通常是AI應用程序、聊天機器人或自主智能體）發起與一個或多個<strong>MCP服務器</strong>的連接，每個服務器暴露特定的能力，例如查詢PostgreSQL數據庫、讀取雲存儲中的文件或調用REST API。該協議爲工具、資源和提示定義了標準化的模式，使AI能夠準確瞭解哪些操作可用以及每個操作需要什麼參數。當用戶提出問題時，系統會檢查已連接的MCP服務器，識別出相關的數據連接器，並調用適當的工具來完成查詢，整個過程在服務器級別強制執行完整的審計和訪問控制。</p><p>這種架構設計的核心優勢在於其解耦性和標準化。MCP客戶端不需要了解每個數據源的技術細節，只需要通過標準化的協議與MCP服務器通信。MCP服務器作爲輕量級適配器，將底層系統的複雜性封裝起來，暴露統一的接口。這種設計使得企業可以在不影響AI應用程序的情況下獨立更新、替換或擴展數據源連接器。</p><h2 id="mcp的核心組件">MCP有哪些核心組件？</h2><ol><li><strong>MCP客戶端</strong> — 發起請求並在多個服務器之間協調工具調用的AI應用程序，是用戶與MCP生態系統交互的入口點。</li><li><strong>MCP服務器</strong> — 一個輕量級適配器，將現有數據源或工具封裝起來，通過標準化的MCP接口暴露給客戶端使用。</li><li><strong>工具</strong> — 由服務器定義的可調用函數，例如execute_query、fetch_report或send_notification，每個工具都有明確的參數定義和返回值格式。</li><li><strong>資源</strong> — AI可以讀取的可尋址數據端點，例如特定的數據庫表、文件路徑或API端點，支持讀取和訂閱操作。</li><li><strong>提示</strong> — 預定義的模板，指導AI構建有效的複雜多步驟操作請求，提高複雜任務的處理效率和準確性。</li></ol><h2 id="爲什麼mcp對企業至關重要">爲什麼MCP對企業至關重要？</h2><p>在MCP出現之前，每個AI-數據集成都是一個定製的工程項目。團隊需要編寫自定義的Python腳本、管理分散的API密鑰、維護在模式變更時就會中斷的脆弱中間件。MCP通過提供一個單一且文檔齊全的協議來消除這種重複勞動，任何AI應用程序和任何數據源都可以實現該協議。對企業而言，這意味着對話式BI解決方案的部署速度更快，工程開銷大幅降低，以及在不重寫集成代碼的情況下靈活切換AI模型或數據後端的能力。安全團隊受益於服務器級別的集中訪問控制，而數據團隊則通過詳細的審計日誌保持對AI可訪問內容的完全可見性。</p><h2 id="常見企業用例">企業有哪些常見的MCP用例？</h2><ul><li><strong>對話式BI</strong>：高管用自然語言提問，從數據倉庫中實時獲取答案，無需編寫SQL查詢，顯著降低數據分析的門檻。</li><li><strong>自動化報告</strong>：AI智能體通過MCP服務器讀取多個儀表板和數據庫，自動生成日報或週報，減少人工操作。</li><li><strong>跨系統工作流</strong>：通過單一對話界面協調CRM、ERP和分析平臺上的操作，實現端到端的業務流程自動化。</li><li><strong>數據治理</strong>：通過集中化的MCP訪問日誌強制執行行級安全策略並審計每個AI生成的查詢，確保數據安全和合規。</li></ul><h2 id="蜂啓諮詢如何使用mcp">蜂啓諮詢如何使用MCP？</h2><p>蜂啓諮詢的對話式BI平臺完全基於MCP連接器構建。每個客戶端數據庫、API端點和文檔存儲都被視爲MCP服務器，無需自定義集成項目即可實現自然語言分析。這種標準化方法提供更快的實施速度、更低的維護成本和麪向未來的架構，能夠隨您的數據生態系統的增長而靈活演進。</p><h2 id="mcp入門指南">如何開始使用MCP？</h2><ul><li>確定AI應用程序需要訪問的數據源和工具，包括內部數據庫、外部API和文檔存儲系統。</li><li>爲每個系統安裝或構建MCP服務器 — 許多流行的數據庫和SaaS平臺已有社區維護的服務器可直接使用。</li><li>配置MCP客戶端以發現並連接這些服務器，建立安全可靠的連接通道。</li><li>在暴露生產數據之前，在服務器級別定義訪問控制和審計策略，確保數據安全和合規。</li><li>用自然語言查詢進行測試，並迭代工具描述以提高準確性，持續優化系統性能。</li></ul><h2 id="mcp的技術優勢詳解">MCP有哪些技術優勢？</h2><p>從技術架構的角度來看，MCP的核心優勢在於其標準化和解耦設計。傳統的AI數據集成通常採用點對點的方式，每個AI應用需要爲每個數據源編寫專用的連接代碼，這種方式不僅開發成本高昂，而且在數據源發生變化時需要同步修改所有相關連接器。MCP通過引入中間協議層，將AI應用的查詢邏輯與數據源的訪問邏輯完全解耦，使得任何支持MCP協議的客戶端都可以無縫訪問任何實現了MCP服務器的數據源，極大地降低了集成複雜度和維護成本。此外，MCP的標準化設計還促進了工具生態的發展，越來越多的數據源提供商開始原生支持MCP協議，進一步降低了企業的實施門檻。</p><p>對於正在進行AI轉型的企業來說，MCP提供了一種漸進式的遷移路徑。企業不需要一次性替換現有的數據基礎設施，而是可以逐步將各個數據源包裝爲MCP服務器，同時保持現有系統的正常運行。這種漸進式策略降低了AI轉型的風險和成本，使企業能夠在可控的範圍內驗證AI應用的價值，然後再逐步擴大應用範圍。</p><h2 id="mcp的生態系統與發展前景">MCP的生態系統與發展前景如何？</h2><p>MCP的生態系統正在快速發展。目前已有數百個開源和商業MCP服務器可供使用，涵蓋了主流數據庫、雲服務、開發工具和協作平臺。社區驅動的MCP服務器庫持續增長，企業可以在其中找到適合自身需求的預構建連接器。同時，主要的AI平臺供應商也開始原生支持MCP協議，使其成爲AI集成的事實標準。展望未來，隨着越來越多的數據源和服務提供商原生支持MCP，企業將能夠以更低的成本和更快的速度構建強大的AI數據集成解決方案，進一步加速AIa企業環境中的落地和規模化應用。</p><p>企業評估MCP方案時，應重點關注協議兼容性、社區活躍度和供應商支持情況，確保所選方案能夠滿足長期發展的需要。</p><p>建議在正式部署前進行充分的測試和驗證。</p>
+
+<h2 id="如何看待mcp的安全考量">採用MCP時需要關注哪些安全考量？</h2>
+<p>MCP 的優勢——讓模型真正觸達業務系統——同時也是它最主要的風險來源，因此安全必須內建，而非事後補丁。第一是<strong>授權與範圍</strong>：一個能讀取生產數據庫或調用支付接口的 MCP 服務器，應當要求明確且可撤銷的同意，其被允許的動作應是任務所需的最小集合。第二是<strong>憑據隔離</strong>：服務器使用的令牌與密鑰必須置於模型上下文之外，絕不能回顯在回答裏，因爲一個疏忽的摘要就可能泄露它們。第三是<strong>輸入信任</strong>：從一個工具取回的數據可能夾帶劫持後續步驟的指令，所以每條工具結果都應被視爲不可信內容，而非命令。</p>
+<p>一套可行的控制模式，是把 MCP 服務器放在一個網關之後：記錄每一次調用、強制執行逐工具的權限、並篩查出站文本中的密鑰與敏感標識符。再配合一份已批准服務器的許可清單，以及任何新集成的評審環節，協議就從盲區變成了可審計的對象。沒有這些護欄就採用 MCP 的企業，往往在一次事件之後才意識到"模型現在能做這套集成所允許的任何事"——而這恰恰說明集成的權限必須被刻意收窄。</p>
+<h2 id="如何判斷mcp是否適合你的技術棧">如何判斷MCP是否適合你的技術棧？</h2>
+<p>當你有多個 AI 界面——助手、智能體、內部工具——都需要訪問同一批數據源與服務，且這些集成目前爲每個新用例手工重做時，MCP 是高契合的選擇。最典型的信號是集成代碼不斷增殖：每換一個模型或應用，就重新實現一遍同樣的數據庫與 API 連接。MCP 用"每個能力一個標準服務器"來替代這種蔓延。反之，如果你只有一條穩定、且無意複用的集成，或者數據源極其定製、標準協議只增加儀式感而無收益，MCP 的契合度就低。</p>
+<p>一個簡單的評估從盤點開始：列出模型觸及外部系統的每一處，記錄每條連接被重複的次數，並給它能讀取或改動的內容的敏感度打分。高重複加上高價值，就是綠燈。此後，圍繞一個邊界清晰的能力試點一個服務器，衡量定製集成工作量的下降，再決定是否擴展。受益最大的組織，是把 MCP 當作共享基礎設施來對待——有人擁有、有人治理、有版本管理——而不是散落在各團隊的膠水代碼。</p>
 
             <section class="faq-section" id="faq" aria-label="常見問題">
                 <h2 class="faq-section-title">
@@ -209,21 +217,21 @@
                             <span class="faq-question-text"><span class="faq-number">1</span><span>1 MCP只能用於Anthropic Claude嗎？</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">不是。雖然MCP由Anthropic創建，但它是一個開放協議，正在被整個AI產業廣泛採用。任何實現MCP規範的用戶端或伺服器都可以參與。</div></div>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">不是。雖然MCP由Anthropic創建，但它是一個開放協議，正在被整個AI行業廣泛採用。任何實現MCP規範的客戶端或服務器都可以參與。</div></div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-question" aria-expanded="false">
                             <span class="faq-question-text"><span class="faq-number">2</span><span>2 MCP與傳統API有什麼區別？</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">傳統API需要開發者為每個端點編寫自訂整合程式碼。MCP提供了標準化的發現和呼叫約定，使AI智能體能夠動態理解和呼叫功能。</div></div>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">傳統API需要開發者爲每個端點編寫自定義集成代碼。MCP提供了標準化的發現和調用約定，使AI智能體能夠動態理解和調用功能。</div></div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">3</span><span>3 MCP對企業資料安全嗎？</span></span>
+                            <span class="faq-question-text"><span class="faq-number">3</span><span>3 MCP對企業數據安全嗎？</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
-                        <div class="faq-answer" role="region"><div class="faq-answer-inner">是的。MCP伺服器在連接級別強制執行身份驗證和授權。企業可以應用現有的身份提供者、行級安全策略和全面的稽覈日誌。</div></div>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">是的。MCP服務器在連接級別強制執行身份驗證和授權。企業可以應用現有的身份提供者、行級安全策略和全面的審計日誌。</div></div>
                     </div>
                 </div>
             </section>
@@ -237,7 +245,7 @@
       "name": "MCP只能用於Anthropic Claude嗎？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "不是。雖然MCP由Anthropic創建，但它是一個開放協議，正在被整個AI產業廣泛採用。任何實現MCP規範的用戶端或伺服器都可以參與。"
+        "text": "不是。雖然MCP由Anthropic創建，但它是一個開放協議，正在被整個AI行業廣泛採用。任何實現MCP規範的客戶端或服務器都可以參與。"
       }
     },
     {
@@ -245,15 +253,15 @@
       "name": "MCP與傳統API有什麼區別？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "傳統API需要開發者為每個端點編寫自訂整合程式碼。MCP提供了標準化的發現和呼叫約定，使AI智能體能夠動態理解和呼叫功能。"
+        "text": "傳統API需要開發者爲每個端點編寫自定義集成代碼。MCP提供了標準化的發現和調用約定，使AI智能體能夠動態理解和調用功能。"
       }
     },
     {
       "@type": "Question",
-      "name": "MCP對企業資料安全嗎？",
+      "name": "MCP對企業數據安全嗎？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "是的。MCP伺服器在連接級別強制執行身份驗證和授權。企業可以應用現有的身份提供者、行級安全策略和全面的稽覈日誌。"
+        "text": "是的。MCP服務器在連接級別強制執行身份驗證和授權。企業可以應用現有的身份提供者、行級安全策略和全面的審計日誌。"
       }
     }
   ]
@@ -261,7 +269,7 @@
 </script>
 
             <nav class="article-nav" aria-label="Article navigation">
-                <a href="https://www.beehivestrategy.com/zh-tw/blog" class="btn-back-to-blog">
+                <a href="https://www.beehivestrategy.com/zh-cn/blog" class="btn-back-to-blog">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
                     返回全部文章
                 </a>
@@ -341,7 +349,7 @@
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
                     <h3 class="recommended-card-title">Data Quality Automation From Reactive To Proactive Part 2</h3>
-                    <p class="recommended-card-excerpt"></p>
+                    <p class="recommended-card-excerpt">一篇關於 MCP 是什麼、以及它為何關乎企業 AI 集成的務實解讀。</p>
                     <div class="recommended-card-meta">
                         <span>1 分鐘閱讀</span>
                         <span aria-hidden="true">&middot;</span>
@@ -354,7 +362,7 @@
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
                     <h3 class="recommended-card-title">Cfo Guide Ai Budget Allocation</h3>
-                    <p class="recommended-card-excerpt"></p>
+                    <p class="recommended-card-excerpt">對話式介面如何改變團隊消費分析的方式。</p>
                     <div class="recommended-card-meta">
                         <span>1 分鐘閱讀</span>
                         <span aria-hidden="true">&middot;</span>
