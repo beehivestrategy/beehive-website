@@ -193,35 +193,33 @@
                     <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
                 </div>
             </div>
-<p class="article-lead">Every year, the debate over edge versus cloud AI gets louder, and every year the right answer gets more nuanced. The default assumption that all data should travel to the cloud is collapsing under the weight of latency, bandwidth, and privacy constraints — yet few enterprises should swing to the opposite extreme of processing everything locally. The 2026 question is not "edge or cloud" but "which workloads, where, and why", and this article gives leaders a practical framework for deciding.</p>
-<h2 id="the-current-landscape">The Current Landscape</h2>
-<p>The answer-first picture is that edge AI has moved from niche to mainstream. Gartner famously predicted that by 2025, 75% of enterprise-generated data would be created and processed outside traditional data centres and clouds, and that prediction has largely played out — cameras, robots, vehicles, meters, and sensors now generate the majority of enterprise data at the point of creation. In parallel, the edge AI market has grown from roughly US$13 billion in 2023 toward projections in excess of US$60 billion by 2030, powered by inexpensive inference hardware and smaller, more efficient models.</p>
-<p>The drivers are concrete rather than theoretical. Latency is the most obvious: a vision-based quality check on a production line tolerates milliseconds, not the 50–100 milliseconds of a typical cloud round trip, and autonomous systems cannot depend on connectivity at all. Bandwidth follows closely — streaming high-resolution video to the cloud 24/7 is wasteful when a small local model can extract the relevant frames and send only anomalies. Privacy and data residency regulations, from GDPR in Europe to PIPL in China, increasingly require that sensitive data be processed where it is collected, which makes local processing a compliance decision rather than merely a technical one.</p>
-<p>Deloitte estimates that 40% of industrial IoT data will be processed at the edge by 2026, and the pattern is the same across manufacturing, logistics, retail, and energy: real-time decisions happen locally, while aggregated insights flow to the cloud for portfolio-level analytics. The architecture is hybrid, and the skill is knowing where to draw each line.</p>
-<h2 id="key-implementation-challenges">Key Implementation Challenges</h2>
-<p>The first challenge is the skills and operational gap. Edge deployments are distributed by definition — dozens or hundreds of locations, each with constrained hardware, intermittent connectivity, and no local IT. Managing model updates, security patches, and hardware failure across that estate is genuinely harder than managing a data centre, and organisations routinely underestimate the operational burden. A model that works in the lab degrades in the field as data drifts, and without centralised monitoring and remote update capability, edge deployments quietly rot.</p>
-<p>The second challenge is model design. Edge hardware has a fraction of the compute and memory of a cloud GPU, so models must be compressed, quantised, or distilled — techniques that trade a little accuracy for large gains in speed and efficiency. Teams that ignore these constraints end up with inference times that defeat the entire purpose of going local. Equally, edge models must be designed for graceful degradation: when a model is uncertain, it should escalate to the cloud rather than guess, and that routing logic needs to be built in from day one.</p>
-<p>The third challenge is governance across a hybrid estate. When some data stays local and some flows to the cloud, questions of lineage, auditability, and compliance multiply. Regulators increasingly ask where data was processed and by what model, and few organisations can currently answer that question for a distributed fleet. Edge AI multiplies the attack surface too — physical devices are easier to tamper with than servers — so security architecture must be designed for the edge, not bolted on afterwards.</p>
-<h2 id="when-should-you-process-data-locally">When Should You Process Data Locally?</h2>
-<p>Process data locally when any of three conditions hold: the decision has to happen faster than a round trip allows, the data is too large or too sensitive to move economically, or the operation must keep working when connectivity fails. Manufacturing quality inspection, predictive maintenance on rotating equipment, safety monitoring in hazardous environments, and checkout or inventory intelligence in retail all fit this profile — the value is destroyed by the latency of shipping data away.</p>
-<p>Keep processing in the cloud when decisions are strategic rather than operational, when the analytics benefits from the whole portfolio's data, or when the models are too large to run on edge hardware. Demand forecasting, customer segmentation, and board-level reporting are cloud workloads. The rule of thumb: if a human will act on the answer, the cloud is usually fine; if a machine will act on the answer in real time, the edge is usually required.</p>
-<h2 id="practical-approaches-that-work">Practical Approaches That Work</h2>
-<p>The approaches that work start with a workload-by-workload triage, not a platform decision. For each candidate use case, quantify the latency budget, the data volume, the connectivity reality, and the regulatory constraints before choosing an architecture. In our experience at Beehive Strategy, this triage usually resolves 80% of the architecture questions on paper, and the remaining 20% settle quickly in a short pilot.</p>
-<p>Design hybrid by default. Use the edge for real-time inference and pre-processing, and the cloud for training, monitoring, and portfolio analytics. Ship models to the edge from a central registry, collect telemetry and drift signals back, and build the escalation path for low-confidence inferences into the system from the start. This pattern — train centrally, infer locally, monitor continuously — is the architecture that survives contact with reality.</p>
-<p>Finally, treat edge data as part of the enterprise analytics estate. The insights generated at the edge — defect rates, machine health, energy consumption — need to flow into the same governed, semantically consistent layer that powers reporting and conversational analytics. The edge should not create a second, disconnected data silo; it should feed the same business definitions and metrics that the rest of the organisation uses. When it does, a site manager can ask in natural language why a line's reject rate rose on the night shift, and the answer combines edge telemetry with context the edge never had.</p>
-<h2 id="key-takeaways">Key Takeaways</h2>
-<p>The edge-versus-cloud decision in 2026 is a portfolio decision, and these are the principles that should guide it:</p>
-<ul>
-<li>Gartner's prediction that 75% of enterprise data would be created and processed outside the data centre has largely come true — hybrid is the default architecture</li>
-<li>Process locally when decisions are latency-critical, data is too large or sensitive to move, or operations must survive disconnection</li>
-<li>Keep cloud processing for strategic, portfolio-wide analytics where humans act on the answer</li>
-<li>Edge deployments live or die on operational discipline: remote model updates, monitoring, and drift detection are not optional</li>
-<li>Edge insights must flow into the same governed analytics layer as everything else, or they become a second silo</li>
-</ul>
-<h2 id="conclusion">Conclusion</h2>
-<p>Edge computing for AI is not a technology trend; it is the inevitable consequence of data being created where work happens. The enterprises that win in 2026 will not be the ones with the most impressive edge infrastructure, but the ones that draw the line between local and cloud processing deliberately, workload by workload, and keep the whole estate governed as one coherent analytics capability.</p>
-<p>Beehive Strategy designs for exactly this reality: conversational, governed analytics that consumes data wherever it lives — edge, warehouse, or lake — and answers questions in the tools people already use. The architecture question stops being a religion and becomes an engineering decision, which is where it belongs.</p>
+<p class="article-lead">As AI moves from centralized cloud training into production inference, a fundamental question faces every enterprise architect: where should the computation actually happen? Edge computing for AI — processing data close to where it is generated rather than shipping everything to a distant region — has shifted from a niche tactic to a core design decision in 2026. This update examines when local processing is the right call, what it costs, and how to govern it without fragmenting your data platform.</p>
+<h2 id="why-does-edge-computing-matter-for-enterprise-ai-in-2026">Why Does Edge Computing Matter for Enterprise AI in 2026?</h2>
+<p>For most of the last decade, enterprise AI was synonymous with the cloud. Models were trained and served in regional data centers, and devices simply sent data upstream. That model still works, but three forces have made local processing indispensable for a growing set of use cases. The first is latency: applications such as autonomous inspection, in-store personalization, and real-time fraud scoring cannot tolerate a round trip to a cloud region measured in hundreds of milliseconds. The second is bandwidth and cost: a factory floor with two thousand sensors generating video and telemetry would bankrupt a cloud egress budget if every frame were streamed. The third is sovereignty: regulations in the EU, ASEAN, and elsewhere increasingly require that certain data be processed within a defined jurisdiction or even on-premise.</p>
+<p>Edge computing matters in 2026 because the economics have flipped. Small, efficient models — distilled transformers, quantized vision networks, and on-device recommendation engines — now deliver acceptable accuracy at a fraction of the compute. Combined with cheaper inference accelerators and mature orchestration tooling, running AI at the edge is no longer exotic; it is often the default for latency-sensitive or data-heavy workloads. The strategic question is no longer "can we?" but "where should we, and how do we keep it governed?"</p>
+<h2 id="when-should-you-process-ai-data-locally-instead-of-in-the-cloud">When Should You Process AI Data Locally Instead of in the Cloud?</h2>
+<p>A practical rule of thumb is to process locally whenever at least two of three conditions hold: the data is generated continuously and voluminously, the decision must be made in under a second, or the data is sensitive and subject to residency rules. A retail shelf-camera that counts stock every second satisfies all three. A monthly churn model trained on a static customer extract satisfies none, and belongs in the cloud. Most real systems are hybrid, and the skill is drawing the boundary deliberately rather than by accident.</p>
+<p>Local processing is also the right call when connectivity is unreliable. Logistics, mining, agriculture, and maritime operations routinely lose network coverage; an AI system that freezes the moment the link drops is worthless. Running inference on a ruggedized edge node lets the operation continue and reconcile with the cloud later. The same logic applies to stores and branches that cannot afford a hard dependency on a central site for every customer interaction. In these environments, edge processing is not an optimization — it is the difference between a system that works and one that does not.</p>
+<h2 id="how-do-you-decide-between-edge-cloud-and-hybrid-inference">How Do You Decide Between Edge, Cloud, and Hybrid Inference?</h2>
+<p>The decision is best framed as a continuum, not a binary. Start by separating the training plane from the inference plane. Training almost always stays centralized — it needs scale, shared data, and experiment tracking that edge nodes cannot provide. Inference is where the choice lives. Map each use case onto three axes: latency tolerance, data volume, and privacy class. Latency-tolerant, low-volume, public-data use cases stay in the cloud. The opposite corner goes to the edge. Everything between is hybrid, where a lightweight model runs locally for the immediate decision and a heavier model in the cloud refines it asynchronously.</p>
+<p>A useful pattern is edge pre-processing with cloud judgment. The edge node filters, annotates, and acts on the obvious 90% of cases; only the uncertain or novel cases are sent to the cloud for deeper analysis. This hybrid design captures most of the latency and cost benefit while preserving the cloud's superior accuracy for hard cases. We recommend prototyping the boundary early: measure what fraction of decisions the edge model gets right unaided, and only send the remainder upstream. The break-even point tells you exactly how much local compute you need to buy.</p>
+<h2 id="what-are-the-main-trade-offs-of-on-device-ai-processing">What Are the Main Trade-offs of On-Device AI Processing?</h2>
+<p>Every move to the edge trades central control for local performance, and the trade-offs are predictable. The first is model capability: an edge node cannot run the largest frontier models, so you accept smaller, specialized models and manage accuracy expectations explicitly. The second is operations: instead of patching one cluster, you now manage potentially thousands of heterogeneous nodes, each with its own firmware, power, and failure modes. The third is observability — a model that drifts on a remote device is far harder to detect than one in a monitored cloud service. These are solvable, but they require treating edge fleets as first-class infrastructure, not as gadgets.</p>
+<p>The counter-trade is equally important. By keeping raw data local, you shrink your breach surface and your egress bill simultaneously. You also gain resilience: a cloud outage no longer takes down in-store or in-factory AI. The organizations that succeed are those that formalize a threshold — for example, "any model serving more than ten sites must have automated fleet management and a central model registry" — so that edge adoption never outruns their ability to operate it safely.</p>
+<h2 id="how-does-edge-computing-affect-data-privacy-and-compliance">How Does Edge Computing Affect Data Privacy and Compliance?</h2>
+<p>Edge processing is a powerful privacy lever, but only when designed correctly. The privacy win comes from data minimization: if raw video or telemetry never leaves the device because only the inference result is transmitted, you have materially reduced exposure. This directly supports GDPR and ASEAN data-residency expectations. The trap is assuming edge equals compliant. A node that caches personal data on disk, or that ships logs containing identifiers to a central service, can be worse than a clean cloud design because it scatters copies across locations you do not monitor.</p>
+<p>To get the compliance benefit, define a data-handling contract per edge use case: what is processed and discarded in memory, what may be aggregated and sent, and what must never leave the device. Pair that with encryption at rest on the node and signed, auditable model updates. Regulators care about provenance and control, not about whether a server is in a region or a shop; a well-documented edge data contract often satisfies them more easily than a sprawling cloud pipeline. The key is intentionality — edge privacy is earned by design, not by geography.</p>
+<h2 id="what-infrastructure-do-you-need-to-run-ai-at-the-edge">What Infrastructure Do You Need to Run AI at the Edge?</h2>
+<p>You do not need a data center in every store, but you do need four capabilities. First, a model runtime that supports quantization and hardware acceleration on the target chips — CPUs, GPUs, or NPUs depending on the workload. Second, a fleet management layer that pushes models, rolls back bad ones, and reports health, the same way you manage cloud services. Third, a local data store or cache sized for the use case, with a clear retention and wipe policy. Fourth, a sync path to the cloud for the cases that need deeper inference and for telemetry that improves the central model.</p>
+<p>Infrastructure decisions should follow the workload, not the hype. A vision-inspection node may need a discrete GPU; a sensor-anomaly detector may run fine on a microcontroller-class accelerator. Buying uniformly expensive hardware wastes budget, while under-provisioning causes the latency problems edge was meant to solve. We advise starting with one reference edge profile per device class, validating it on a pilot site, and only then standardizing procurement. This avoids the common failure of deploying dozens of bespoke nodes that no one can maintain.</p>
+<h2 id="how-do-you-measure-the-success-of-an-edge-ai-deployment">How Do You Measure the Success of an Edge AI Deployment?</h2>
+<p>Edge success is measured on two planes: the local experience and the platform cost. On the local plane, track decision latency, offline uptime (the fraction of time the system worked without cloud connectivity), and accuracy of the on-device model versus the cloud oracle. On the platform plane, track total cost of ownership per node, including hardware amortization, power, and fleet-management labor, against the cloud egress and compute you avoided. The deployment earns its place only when the local experience clears its threshold and the platform cost is lower than the all-cloud alternative it replaced.</p>
+<p>A less obvious but vital metric is rollback safety: how quickly can you pull a bad model from the entire fleet? If the answer is "manually, per device," you do not yet have an edge capability — you have an edge liability. Measure mean time to rollback and mean time to detect drift, and treat them as seriously as latency. The teams that scale edge confidently are the ones who instrument the fleet as rigorously as they instrument their cloud, so that a thousand nodes feel like one manageable system.</p>
 
+
+<h2 id="what-does-a-reference-edge-ai-deployment-look-like-in-practice">What Does a Reference Edge AI Deployment Look Like in Practice?</h2>
+<p>A useful way to make the abstract decision concrete is to walk through a reference pattern we see repeatedly. Consider a retailer operating four hundred stores that wants real-time out-of-shelf detection on promotional end-caps. Each store runs a compact vision model on a small edge node attached to an overhead camera. The node infers stock status locally and pushes only a small event — "bay 12 empty at 14:03" — to the cloud, never the raw video. A central model is retrained weekly on the aggregated events and the occasional frames flagged as uncertain, then pushed back to every store as a signed update through the fleet manager.</p>
+<p>The result is a system that keeps working during a network outage, sends a fraction of a percent of its raw data to the cloud, and satisfies data-residency expectations because no personal imagery leaves the store. The measurable wins are lower egress cost, sub-second shelf alerts, and a single rollback path for all four hundred sites. The lesson is not that every edge project should copy this topology, but that the winning designs pair a deliberately small local decision with a strong central control plane — edge for immediacy, cloud for intelligence. When you prototype the boundary early and instrument the fleet as rigorously as the cloud, edge computing stops being a risk and becomes a predictable, governed part of the platform.</p>
 
             <nav class="article-nav" aria-label="Article navigation">
                 <a href="https://www.beehivestrategy.com/blog" class="btn-back-to-blog">
@@ -229,7 +227,30 @@
                     Back to All Articles
                 </a>
             </nav>
-        </article>
+
+<section class="faq-section" aria-labelledby="faq-heading">
+<h2 id="faq-heading">Frequently Asked Questions</h2>
+<h3>Is edge AI more expensive than cloud AI?</h3>
+<p>Not necessarily. Edge AI trades cloud compute and egress savings for hardware and fleet-management cost. For high-volume, latency-sensitive, or privacy-bound use cases, the all-cloud alternative is usually more expensive once you price bandwidth and downtime. For low-volume batch work, the cloud remains cheaper. The honest answer is use-case specific, which is why a break-even prototype matters before any rollout.</p>
+<h3>Does running AI at the edge make us more compliant by default?</h3>
+<p>No. Edge processing helps compliance only when you design a data-handling contract that minimizes what leaves the device, encrypts what is stored, and audits model updates. A node that caches personal data or ships identifiers to a central log can be less compliant than a clean cloud pipeline because it scatters copies across unmonitored locations. Geography alone does not create compliance; intentional design does.</p>
+<h3>Can we still train models if inference runs at the edge?</h3>
+<p>Yes, and you should keep training centralized. Training needs shared data, scale, and experiment tracking that edge nodes cannot provide. The standard pattern is edge inference with cloud training: local models make immediate decisions, hard or novel cases are sent upstream, and the resulting labels improve the central model that is later pushed back to the fleet as an updated, signed model.</p>
+<h3>How many edge nodes before we need formal fleet management?</h3>
+<p>The moment a model serves more than a handful of sites — roughly ten in our practice — manual updates become unsafe. At that scale you need automated model delivery, rollback, health reporting, and drift detection treated as first-class infrastructure. Buying fleet-management tooling early is far cheaper than discovering mid-rollout that you cannot reliably patch two hundred stores.</p>
+</section>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is edge AI more expensive than cloud AI?","acceptedAnswer":{"@type":"Answer","text":"Not necessarily. Edge AI trades cloud compute and egress savings for hardware and fleet-management cost. For high-volume, latency-sensitive, or privacy-bound use cases, the all-cloud alternative is usually more expensive once you price bandwidth and downtime. For low-volume batch work, the cloud remains cheaper. The honest answer is use-case specific, which is why a break-even prototype matters before any rollout."}},{"@type":"Question","name":"Does running AI at the edge make us more compliant by default?","acceptedAnswer":{"@type":"Answer","text":"No. Edge processing helps compliance only when you design a data-handling contract that minimizes what leaves the device, encrypts what is stored, and audits model updates. A node that caches personal data or ships identifiers to a central log can be less compliant than a clean cloud pipeline because it scatters copies across unmonitored locations. Geography alone does not create compliance; intentional design does."}},{"@type":"Question","name":"Can we still train models if inference runs at the edge?","acceptedAnswer":{"@type":"Answer","text":"Yes, and you should keep training centralized. Training needs shared data, scale, and experiment tracking that edge nodes cannot provide. The standard pattern is edge inference with cloud training: local models make immediate decisions, hard or novel cases are sent upstream, and the resulting labels improve the central model that is later pushed back to the fleet as an updated, signed model."}},{"@type":"Question","name":"How many edge nodes before we need formal fleet management?","acceptedAnswer":{"@type":"Answer","text":"The moment a model serves more than a handful of sites — roughly ten in our practice — manual updates become unsafe. At that scale you need automated model delivery, rollback, health reporting, and drift detection treated as first-class infrastructure. Buying fleet-management tooling early is far cheaper than discovering mid-rollout that you cannot reliably patch two hundred stores."}}]}</script>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>Process data locally when it is voluminous, latency-critical, or privacy-bound — ideally two of three</li>
+<li>Keep training centralized; run inference at the edge and send only hard cases to the cloud</li>
+<li>Edge buys privacy and resilience but trades away central control and easy observability</li>
+<li>Define a per-use-case data-handling contract so edge geography actually delivers compliance</li>
+<li>Treat edge fleets as first-class infrastructure with automated delivery, rollback, and drift detection</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Edge computing for AI is no longer a fringe technique; in 2026 it is a standard part of the enterprise architect's toolkit. The winning approach is not "cloud versus edge" but a deliberate boundary drawn per use case, governed by a data-handling contract and supported by real fleet management. Organizations that make this decision explicitly — and instrument the edge as rigorously as the cloud — capture the latency, cost, and privacy wins without inheriting an unmanageable sprawl of black boxes. Those that drift into edge by accident usually end up with higher cost and weaker control than the centralized design they were trying to escape.</p></article>
 
         <aside class="toc-sidebar" id="toc-sidebar" aria-label="Article sidebar">
             <div class="sidebar-card">
@@ -258,15 +279,15 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Related Articles</div>
                 <div class="sidebar-related-list">
-                    <a href="blog/articles/neuromorphic-computing-for-edge-ai-applications-a-2026-update" class="sidebar-related-card">
+                    <a href="/blog/articles/neuromorphic-computing-for-edge-ai-applications-a-2026-update" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Neuromorphic Computing for Edge AI Applications: A 2026 Update</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
-                    <a href="blog/articles/financial-services-real-time-fraud-detection-architectures-a-2026-update" class="sidebar-related-card">
+                    <a href="/blog/articles/financial-services-real-time-fraud-detection-architectures-a-2026-update" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Financial Services: Real-Time Fraud Detection Architectures: A 2026 Update</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
-                    <a href="blog/articles/api-first-data-integration-connecting-legacy-and-modern-systems-a-2026-update" class="sidebar-related-card">
+                    <a href="/blog/articles/api-first-data-integration-connecting-legacy-and-modern-systems-a-2026-update" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">API-First Data Integration: Connecting Legacy and Modern Systems: A 2026 Update</h4>
                         <span class="sidebar-related-meta">3 min read</span>
                     </a>
@@ -283,7 +304,7 @@
             <a href="https://www.beehivestrategy.com/blog" class="recommended-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
         <div class="recommended-grid">
-            <a href="blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
+            <a href="/blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
                 <img src="/assets/blog/covers/en/women-in-data-building-inclusive-ai-teams.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -296,7 +317,7 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
+            <a href="/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
                 <img src="/assets/blog/covers/en/why-data-strategy-needs-ai-agent-layer-2026.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -309,7 +330,7 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
+            <a href="/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
                 <img src="/assets/blog/covers/en/vector-databases-enterprise-search-2026-practical-guide.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -353,35 +374,59 @@
 
 <footer class="footer" role="contentinfo">
     <div class="container">
-        <div class="footer-grid">
-            <div>
-                <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy" style="height:32px;width:auto;">
-                <p class="footer-brand-desc">AI-powered conversational intelligence that transforms how enterprises query, analyse, and act on their data.</p>
-                <div class="footer-social">
-                    <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-                    <a href="#" aria-label="X (Twitter)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.232 10.768L20 4"/></svg></a>
-                    <a href="#" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></a>
-                </div>
-            </div>
-            <div>
-                <div class="footer-col-heading">Product</div>
-                <div class="footer-col-links"><a href="solution">Solution</a><a href="services">Services</a><a href="pricing">Pricing</a></div>
-            </div>
-            <div>
-                <div class="footer-col-heading">Company</div>
-                <div class="footer-col-links"><a href="about">About</a><a href="https://www.beehivestrategy.com/blog">Blog</a><a href="contact">Contact</a></div>
-            </div>
-            <div>
-                <div class="footer-col-heading">Resources</div>
-                <div class="footer-col-links"><a href="case-studies">Case Studies</a><a href="industries">Industries</a><a href="solution">Documentation</a></div>
-            </div>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo" aria-label="Beehive Strategy Home">
+            <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="lazy">
+          </a>
+          <p>Enterprise AI &amp; data analytics consulting. We deliver AI-powered conversational intelligence that transforms how businesses interact with their data.</p>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="/cdn-cgi/l/email-protection#432220202c362d37032126262b2a3526303731223726243a6d202c2e" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Beehive Strategy. All rights reserved.</p>
-            <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Preferences</a></div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="/solution">Platform</a></li>
+            <li><a href="/solution">AI Agents</a></li>
+            <li><a href="/fde">FDE Services</a></li>
+            <li><a href="/case-studies">Case Studies</a></li>
+            <li><a href="/security">Security</a></li>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/blog">Blog</a></li>
+          </ul>
         </div>
+        <div class="footer-col">
+          <h4>Industries</h4>
+          <ul>
+            <li><a href="/industries">Retail &amp; E-Commerce</a></li>
+            <li><a href="/industries">Financial Services</a></li>
+            <li><a href="/industries">Manufacturing</a></li>
+            <li><a href="/industries">Professional Services</a></li>
+            <li><a href="/industries">Real Estate</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/pricing">FAQ</a></li>
+            <li><a href="/cdn-cgi/l/email-protection#d1b0b2b2bea4bfa591b3b4b4b9b8a7b4a2a5a3b0a5b4b6a8ffb2bebc">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Beehive Strategy Limited All rights reserved.</p>
+        <div class="legal">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/cookies">Cookie Policy</a>
+        </div>
+      </div>
     </div>
-</footer>
+  </footer>
 
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
 <div class="toast" id="toast"></div>
