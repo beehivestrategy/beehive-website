@@ -18,7 +18,7 @@
     <meta property="og:title" content="企业AI智能体架构：从提示词到生产环境">
     <meta property="og:description" content="A deep dive into the technical architecture behind enterprise AI agents. How large language models connect to data, execute queries, and return trustworthy answers.">
     <meta property="og:url" content="https://www.beehivestrategy.com/zh-cn/blog/articles/architecture-of-an-enterprise-ai-agent">
-    <meta property="og:image" content="https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/architecture-of-an-enterprise-ai-agent.jpg">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-cn/architecture-of-an-enterprise-ai-agent.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="zh_CN">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/architecture-of-an-enterprise-ai-agent#article", "headline": "企业AI智能体架构：从提示词到生产环境", "description": "A deep dive into the technical architecture behind enterprise AI agents. How large language models connect to data, execute queries, and return trustworthy answers.", "datePublished": "2026-06-02T13:00:00+08:00", "dateModified": "2026-06-02T13:00:00+08:00", "articleSection": "技术", "keywords": "AI agent, architecture, LLM, enterprise AI, MCP, AI agent design", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/architecture-of-an-enterprise-ai-agent"}, "image": "https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/architecture-of-an-enterprise-ai-agent.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首页", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog"}, {"@type": "ListItem", "position": 3, "name": "企业AI智能体架构：从提示词到生产环境"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -201,6 +202,11 @@
             </div>
 <p><strong>企业AI代理是一个自主软件系统：它感知环境、推理目标，并跨企业系统（CRM、ERP、BI平台）采取行动，完成多步骤业务任务，而无需对每一步进行人工干预。</strong>架构良好的企业AI代理由五个核心层组成——感知（输入处理）、规划（任务分解）、记忆（上下文与知识保留）、工具使用（API与MCP集成）和行动（工作流执行）。本指南逐层详解，并给出可直接用于生产部署的参考架构。</p>
 <h2 id="第-1-步-意图识别和查询规划">意图识别与查询规划这一步做什么？</h2>
+        <figure class="article-figure" data-fig-slug="architecture-of-an-enterprise-ai-agent">
+          <img src="/assets/blog/svg/architecture-of-an-enterprise-ai-agent.svg" alt="企业AI智能体架构：从提示词到生产环境 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>企业AI智能体架构：从提示词到生产环境</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>AI代理接收自然语言问题并识别用户意图：例如，用户想知道"当前季度按地区分组的销售管道数据"。代理需要判断这属于查询请求、对比分析还是异常预警，再决定调用哪些工具、检索哪些数据、按什么顺序执行。</p>
 <p>可靠的意图识别依赖两套能力：一是分类模型或大语言模型对自然语言的解析，二是与业务语境的持续对齐——同一个"管道"在销售部门与财务部门含义不同。代理通过会话历史与语义层不断校准理解，而不是孤立地处理每一句话。</p>
 <p>蜂启咨询的观察显示，约55%的企业AI代理项目失败在第一步：因为缺少清晰的意图边界与查询规划，后续的准确率、权限与可审计性都无从谈起。意图识别不是模型问题，而是设计问题。</p>
@@ -227,6 +233,11 @@
 <p>编排层还承担成本控制。每一步调用都有延迟与费用，是否需要并行、能否缓存中间结果、何时该终止而不是继续尝试，这些决策集中在编排层执行，比分散在各个工具里更容易优化。</p>
 
 <h2 id="tool-contracts-and-errors">工具调用应该怎么定义契约？</h2>
+        <figure class="article-figure" data-fig-slug2="architecture-of-an-enterprise-ai-agent">
+          <img src="/assets/blog/svg/architecture-of-an-enterprise-ai-agent.svg" alt="企业AI智能体架构：从提示词到生产环境 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>企业AI智能体架构：从提示词到生产环境</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>智能体调用工具失败，绝大多数不是模型不够聪明，而是契约不清晰。一个工具必须说清楚四件事：接受什么参数、参数类型的边界、成功时返回什么结构、失败时返回什么错误码。缺失任何一项，模型就只能猜测。</p>
 <p>错误信息尤其重要。返回"出错了"无法让智能体恢复；返回"参数日期格式应为 YYYY-MM-DD，收到 2026/3/5"则让智能体有机会自我纠正。把错误信息设计成可行动的提示，是提高成功率成本最低的手段之一。</p>
 <p>幂等性是第二契约。同一个工具调用被重试两次时，必须产生相同结果——任何会重复扣款、重复下单、重复发送的工具都不应该直接暴露给自主智能体。对这类动作，要么加幂等键，要么在编排层强制引入人工确认节点。</p>
@@ -411,7 +422,7 @@
             <a href="/zh-cn/blog/articles/data-quality-automation-from-reactive-to-proactive-part-2"
                 <img src="/assets/blog/covers/zh-cn/data-quality-automation-from-reactive-to-proactive-part-2.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
+                    <span class="recommended-card-cat">技术</span>
                     <h3 class="recommended-card-title">Data Quality Automation From Reactive To Proactive Part 2</h3>
                     <p class="recommended-card-excerpt">在第一部分中，我们论证了从被动式数据质量"救火"转向主动式自动化的必要性——用智能监控取代手动规则配置，从事后清洗转向源头预防。…</p>
                     <div class="recommended-card-meta">
@@ -424,7 +435,7 @@
             <a href="/zh-cn/blog/articles/cfo-guide-ai-budget-allocation"
                 <img src="/assets/blog/covers/zh-cn/cfo-guide-ai-budget-allocation.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
+                    <span class="recommended-card-cat">技术</span>
                     <h3 class="recommended-card-title">Cfo Guide Ai Budget Allocation</h3>
                     <p class="recommended-card-excerpt">人工智能已从实验性预算项目发展为核心战略投资。…</p>
                     <div class="recommended-card-meta">
@@ -522,5 +533,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "企业AI智能体架构：从提示词到生产环境";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

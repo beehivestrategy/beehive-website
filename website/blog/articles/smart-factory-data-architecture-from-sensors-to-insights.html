@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-    <title>Smart Factory Data Architecture: From Sensors to Insights | Beehive Strategy</title>
+    <title>Smart Factory Data Architecture: From Sensors to Insights</title>
     <meta name="description" content="How to architect a smart factory data platform. From IoT sensor data collection to real-time analytics and AI-driven optimisation.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/smart-factory-data-architecture-from-sensors-to-insights">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/smart-factory-data-architecture-from-sensors-to-insights#article", "headline": "Smart Factory Data Architecture: From Sensors to Insights", "description": "How to architect a smart factory data platform. From IoT sensor data collection to real-time analytics and AI-driven optimisation.", "datePublished": "2026-03-24T18:00:00+08:00", "dateModified": "2026-03-24T18:00:00+08:00", "articleSection": "Manufacturing", "keywords": "smart factory, IoT, data architecture, manufacturing analytics, industrial data, sensor data", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/smart-factory-data-architecture-from-sensors-to-insights"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/smart-factory-data-architecture-from-sensors-to-insights.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Smart Factory Data Architecture: From Sensors to Insights"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -181,68 +182,256 @@
 
 <div class="container">
     <div class="article-layout">
-        <article class="article-content" id="article-content">
-            <div class="toc-mobile" id="toc-mobile">
+        <article class="article-content" id="article-content">            <div class="toc-mobile" id="toc-mobile">
                 <button class="toc-mobile-toggle" aria-expanded="false">Table of Contents <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="toc-mobile-links">
-                    <a href="#layer-1-data-collection-at-the-edge" class="toc-mobile-link">Layer 1: Data Collection at the Edge</a>
-                    <a href="#layer-2-streaming-ingestion" class="toc-mobile-link">Layer 2: Streaming Ingestion</a>
-                    <a href="#layer-3-processing-and-storage" class="toc-mobile-link">Layer 3: Processing and Storage</a>
-                    <a href="#layer-4-ai-and-analytics" class="toc-mobile-link">Layer 4: AI and Analytics</a>
-                    <a href="#what-should-factories-do-first" class="toc-mobile-link">What Should Factories Do First?</a>
-                    <a href="#key-takeaways" class="toc-mobile-link">Key Takeaways</a>
-                    <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
+                    <a href="#what-does-a-smart-factory-data-architecture-actually-do" class="toc-mobile-link">What does a smart factory data architecture actually do?</a>
+                    <a href="#why-do-most-factory-data-projects-stall" class="toc-mobile-link">Why do most factory data projects stall?</a>
+                    <a href="#what-does-the-edge-collection-layer-need-to-handle" class="toc-mobile-link">What does the edge collection layer need to handle?</a>
+                    <a href="#how-should-streaming-ingestion-be-designed" class="toc-mobile-link">How should streaming ingestion be designed?</a>
+                    <a href="#where-should-processing-and-storage-live-edge-plant-or-cloud" class="toc-mobile-link">Where should processing and storage live — edge, plant, or cloud?</a>
+                    <a href="#what-does-the-analytics-layer-require" class="toc-mobile-link">What does the analytics layer require?</a>
+                    <a href="#where-do-sensor-to-insight-pipelines-most-often-fail" class="toc-mobile-link">Where do sensor-to-insight pipelines most often fail?</a>
+                    <a href="#what-should-factories-do-first" class="toc-mobile-link">What should factories do first?</a>
+                    <a href="#key-takeaways" class="toc-mobile-link">What Are the Key Takeaways on Smart Factory Data Architecture?</a>
                 </div>
             </div>
-<p class="article-lead">A modern factory with 1,000 machines, each generating 50 data points per second, produces over 4 billion data points per day. Without the right architecture, this data is noise. With it, this data becomes predictive maintenance, quality optimisation, and production intelligence that transforms the factory floor. The difference between those two outcomes is not the hardware — it is the architecture that moves data from sensor to insight.</p>
-<h2 id="layer-1-data-collection-at-the-edge">Layer 1: Data Collection at the Edge</h2>
-<p>The edge layer exists to separate signal from noise as close to the source as possible. Sensors measuring vibration, temperature, pressure, current draw, and vision feed edge gateways that filter, aggregate, and forward data — and critically, decide what deserves a trip to the cloud at all.</p>
-<p>Not every data point needs to reach the cloud: edge devices can aggregate 1-second readings into 1-minute summaries for trend analysis while alerting on anomalies in real time. That single design choice cuts network and storage load by over 90% in typical deployments. The gateways also normalise the messy reality of factory protocols — OPC-UA, MQTT, Modbus — into a single time-synchronised stream, which is what makes the downstream layers possible.</p>
-<p>The failure mode to design against is silent misconfiguration: a sensor that stops reporting looks identical to a machine running normally. Edge layers need heartbeat and health checks on every device so that missing data is itself an alert, not a surprise discovered at month-end.</p>
-<h2 id="layer-2-streaming-ingestion">Layer 2: Streaming Ingestion</h2>
-<p>Streaming ingestion is the backbone that makes factory data queryable at all. A streaming platform such as Kafka or Pulsar ingests data from hundreds of edge gateways, partitioned by machine and data type so that parallel processing can keep up with the volume without a single bottleneck.</p>
-<p>The unsung component is the schema registry, which ensures that data format changes — a new sensor, a modified field, a firmware update — are tracked and backward-compatible. Without it, the tenth sensor model change silently corrupts downstream analytics. Ingestion also needs replay capability: when a model is retrained, analysts want to re-process historical streams with the new version, and a system that cannot replay is a system that cannot learn from history.</p>
-<p>Two further properties separate production streaming from lab systems. Exactly-once or at-least-once delivery semantics must be chosen deliberately, because a duplicate alert in an anomaly pipeline is merely annoying while a lost one is a missed bearing failure; and backpressure handling matters when a downstream consumer slows down, so the line's data flows are throttled gracefully instead of buffered without limit. Teams that skip these details end up debugging data, not running analytics.</p>
-<h2 id="layer-3-processing-and-storage">Layer 3: Processing and Storage</h2>
-<p>Storage in a factory data architecture is tiered by how quickly the data must be queried. Stream processing engines such as Flink and Spark Streaming handle real-time analytics — anomaly detection, threshold alerts, and rolling aggregations — on data as it arrives. Time-series databases such as InfluxDB and TimescaleDB store raw sensor data for 30–90 days, long enough for root-cause analysis of incidents and short-term pattern work. A data warehouse holds aggregated metrics for long-term analysis and reporting.</p>
-<p>The tiering is a cost decision as much as a technical one. Raw high-frequency sensor data at full resolution is expensive to keep indefinitely; aggregated data loses fidelity but answers the questions that recur — OEE trends, yield by shift, energy by line. Retention policies should be set against business questions, not storage capacity: if nobody has queried raw data older than 60 days in the last quarter, shorten the window and lengthen the aggregation.</p>
-<p>The warehouse layer deserves the same design attention as the real-time path. Aggregated metrics are typically modelled around the questions the plant actually asks — OEE by line and shift, yield by product, energy by machine — with a semantic layer on top that names those metrics consistently. Without that modelling, the warehouse becomes a dumping ground where every report rebuilds the same definitions differently, and the analytics layer above it inherits the inconsistency.</p>
-<h2 id="layer-4-ai-and-analytics">Layer 4: AI and Analytics</h2>
-<p>The fourth layer is where data becomes decisions. The MCP semantic layer connects to both the time-series database (for real-time queries) and the warehouse (for historical analysis), so AI agents can answer questions like "Which machines have vibration patterns indicating bearing wear?" or "What's the OEE trend for Line 3 this month?" — in natural language, from the factory floor, inside the IM tools the team already uses.</p>
-<p>The value of predictive maintenance alone is well established: manufacturers applying AI to maintenance data typically cut unplanned downtime by 20–50% and extend asset life by years. Gartner projects that by 2025, 75% of enterprise-generated data will be created and processed outside the traditional data centre — at the edge — which makes the architecture described here the default for new factories rather than a differentiator.</p>
-<p>Conversational access matters more than it appears. The people who act on this data — maintenance leads, shift supervisors, plant managers — are not SQL users, and their questions are urgent and ad hoc. An IM-native conversational BI layer turns the entire architecture into a decision tool instead of a data lake that requires an analyst to interpret.</p>
-<h2 id="what-should-factories-do-first">What Should Factories Do First?</h2>
-<p>Start with the machines that hurt most when they fail — the bottleneck assets whose downtime stops the whole line. Instrument those first, establish a baseline for OEE and downtime, and connect them end-to-end through the four layers before expanding to the full fleet.</p>
-<p>Do not build the whole lake before the first query. A single line wired through edge, streaming, storage, and a conversational analytics layer proves the value in weeks; with a managed service and a two-week deployment, the plant can measure before-and-after OEE against a real baseline. Once the first use case has a number attached to it, expansion to the next line, the next machine type, and the next question is a scaling exercise rather than a bet.</p>
-<p>The order of operations matters more than the technology choices. Wire the edge collection and streaming layers first, because every downstream capability depends on data arriving reliably; add the time-series store and the warehouse next, so there is somewhere to answer the questions; and only then put the conversational AI layer on top. Each layer compounds the value of the previous one, and skipping ahead usually means rebuilding the foundation later.</p>
-<h2 id="key-takeaways">Key Takeaways</h2>
-<p>Factories succeed with this architecture when they respect a few hard-won principles. These are the ones that show up consistently across deployments.</p>
-<ul>
-<li><strong>Edge first:</strong> filter and aggregate at the source; 1-second readings become 1-minute summaries, cutting load by over 90%.</li>
-<li><strong>Stream with discipline:</strong> schema registries and replay capability protect analytics from silent sensor drift.</li>
-<li><strong>Tier storage by question:</strong> raw time-series for 30–90 days, aggregated metrics for the long term.</li>
-<li><strong>Make the data conversational:</strong> the MCP semantic layer turns 4 billion daily data points into answers maintenance teams can ask for in plain language.</li>
-<li><strong>Prove it on one line first:</strong> instrument the bottleneck asset, measure the baseline, then scale.</li>
-</ul>
-<h2 id="conclusion">Conclusion</h2>
-<p>Factory data is not scarce — it is overwhelming, and the architecture decides whether it becomes insight or expense. The four layers described here — collection at the edge, streaming ingestion, tiered processing and storage, and AI analytics on top — are not theoretical; they are how modern plants turn sensors into uptime.</p>
-<p>The factories that win will be the ones that close the loop fastest: machines sensed, streams analysed, predictions delivered to the person who can act, in the tool where that person already works. With IM-native conversational BI and a managed service model, that loop can be live in two weeks — and from there, every additional machine connected makes the whole plant smarter.</p>
 
+            <p class="article-lead">A modern factory with 1,000 machines, each generating 50 data points per second, produces over 4 billion data points per day. Without the <a href="/en/blog/articles/data-mesh-vs-data-warehouse-choosing-the-right-architecture" class="inline-ref">right architecture</a>, this data is noise. With it, this data becomes <a href="/en/blog/articles/ai-agents-manufacturing-predictive-maintenance" class="inline-ref">predictive maintenance</a>, quality optimisation, and production intelligence that transforms the <a href="/en/blog/articles/edge-computing-and-ai-bringing-intelligence-to-the-factory-floor" class="inline-ref">factory floor</a>. The difference between those two outcomes is not the hardware — it is the architecture that moves data from sensor to insight.</p>
+
+            <h2  id="what-does-a-smart-factory-data-architecture-actually-do">What does a smart factory data architecture actually do?</h2>
+        <figure class="article-figure" data-fig-slug="smart-factory-data-architecture-from-sensors-to-insights">
+          <img src="/assets/blog/svg/smart-factory-data-architecture-from-sensors-to-insights.svg" alt="Smart Factory Data Architecture: From Sensors to Insights — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>smart factory data architecture: from sensors to insights</b></figcaption>
+        </figure>
+
+<p>A <a href="/en/blog/articles/smart-factory-data-architecture" class="inline-ref">smart factory data</a> architecture moves information from machines that produce it to decisions that need it, without losing fidelity or time along the way. That sounds simple and is not, because the two ends of the pipe operate on incompatible assumptions.</p>
+<p>Machines produce signals: vibration readings at kilohertz, temperature every second, cycle counts, torque curves, camera frames, PLC tag changes. These are high-volume, low-semantic, and time-critical. Decisions consume facts: this bearing will likely fail within nine days, this batch is drifting out of tolerance, this line is losing four percent of theoretical throughput to changeovers. These are low-volume, high-semantic, and time-sensitive in a completely different way.</p>
+<p>The architecture's job is the translation between the two, and it has four responsibilities that are usually described as layers. <strong>Collection</strong> acquires signals at source without disrupting control systems. <strong>Ingestion</strong> moves them reliably and in order. <strong>Processing and storage</strong> turns signals into contextualised, queryable facts at the right latency and cost. <strong>Analytics</strong> turns facts into predictions and recommendations that someone acts on.</p>
+<p>The part that most descriptions omit is the <strong>context model</strong> that sits across all four. A vibration reading is meaningless without knowing which asset, which product, which recipe, which shift, and which maintenance history it belongs to. Most factory data projects fail not because they lack a stream processor but because they never built the model that makes the stream interpretable.</p>
+
+<h2  id="why-do-most-factory-data-projects-stall">Why do most factory data projects stall?</h2>
+<p>The pattern is consistent: a pilot proves value on one asset class, the business case is approved, and then scale-up stalls at twenty to thirty percent coverage. Three causes account for most of it.</p>
+<p><strong>Connectivity heterogeneity.</strong> A plant typically contains equipment from four or five decades of vendors: modern machines with OPC UA servers, older PLCs with proprietary protocols, and legacy equipment with no digital interface at all that requires added sensors. Each integration is a small project, and the long tail does not get cheaper with volume. The mistake is assuming uniformity and discovering heterogeneity after the business case is fixed.</p>
+<p><strong>Operational technology constraints.</strong> OT networks are engineered for determinism and safety, not for data extraction. You cannot simply install an agent on a PLC, and in many plants you cannot open outbound connections from the OT network to the cloud at all. Security architecture, network segmentation, and data diodes are not obstacles to be worked around — they are requirements that shape the design.</p>
+<p><strong>No owner for the outcome.</strong> The pilot was championed by an enthusiastic engineer. Scale-up needs a funded owner with authority over maintenance scheduling, production planning, or quality. Without that, the system produces alerts that nobody is accountable for acting on, and within two quarters people stop looking.</p>
+<p>A fourth, subtler cause deserves mention: pilots are usually run on the best-instrumented asset in the plant. The economics that worked there do not transfer to equipment where a sensor retrofit costs more than the insight is worth.</p>
+
+<h2  id="what-does-the-edge-collection-layer-need-to-handle">What does the edge collection layer need to handle?</h2>
+<p>The edge layer acquires data at or near the machine, and its constraints are different from anything in the IT world.</p>
+<p><strong>Protocol translation.</strong> OPC UA, Modbus, MQTT, PROFINET, EtherNet/IP, and a long tail of vendor-specific protocols. The edge gateway's first job is speaking all of them and normalising what comes back into a consistent schema. Budget more effort here than seems reasonable.</p>
+<p><strong>Sampling discipline.</strong> A high-frequency vibration signal is valuable; a hundred kilohertz stream from every sensor on the plant is not, and it will saturate whatever network you have. The design decision is what to sample at full rate, what to aggregate at the edge, and what to transmit only on exception. The right answer is driven by the failure mode you are trying to detect — bearing wear needs high-frequency capture, temperature monitoring usually does not.</p>
+<p><strong>Buffering and store-and-forward.</strong> Plant networks drop. If the gateway cannot buffer locally and replay when connectivity returns, you will have silent gaps in exactly the periods when something went wrong. Local buffering of at least several days is a reasonable design target.</p>
+<p><strong>Isolation and safety.</strong> Read-only access to control systems, enforced at the network level rather than by convention. Nothing in the data architecture should be capable of writing to a PLC. This is a hard boundary, and it is also what makes the OT security review pass.</p>
+<p><strong>Time synchronisation.</strong> Underrated and routinely wrong. Correlating events across machines requires timestamps that agree to within milliseconds, which means PTP or a properly managed NTP hierarchy — not whatever default each device shipped with. Correlating data that is seconds apart produces confidently wrong conclusions about cause and effect.</p>
+
+<h2  id="how-should-streaming-ingestion-be-designed">How should streaming ingestion be designed?</h2>
+<p>Streaming ingestion moves data from plant edge to wherever it will be processed, and the governing principle is that the ingestion layer must never lose data silently.</p>
+<p>Use a durable, partitioned, ordered log as the backbone — one logical stream per plant or per line, with partitions by asset or asset class. Durability matters because you will reprocess. Every factory analytics team eventually discovers that a transformation was wrong, or that a new model needs features that were never computed, and reprocessing from a retained log is the difference between a two-day fix and a six-month data archaeology project.</p>
+<p>Separate the <strong>hot path</strong> from the <strong>warm path</strong>. The hot path carries the small subset of signals needed for real-time decisions — typically state changes, alarms, and derived aggregates — and feeds a low-latency store queried by dashboards and models. The warm path carries everything, in batch, to cheap object storage for history, reprocessing, and training. Mixing them is the most common cost and performance mistake in the layer.</p>
+<p>Handle <strong>late and out-of-order events</strong> explicitly. Plant networks produce both, and a windowed aggregation that simply discards late data will silently undercount. Define a watermark policy, measure how often it is breached, and design downstream aggregates to be correctable rather than final.</p>
+<p>Finally, make <strong>schema evolution</strong> explicit from day one. Equipment gets retrofitted, tags get renamed, firmware updates add fields. A schema registry with compatibility rules prevents the class of incident where a silent tag rename causes a model to read a different signal than it was trained on.</p>
+
+<h2  id="where-should-processing-and-storage-live">Where should processing and storage live — edge, plant, or cloud?</h2>
+<p>The placement question has a clean answer if you ask it in the right order: start with the decision's latency requirement, then the data's sovereignty and volume constraints, then cost.</p>
+<p><strong>At the edge</strong>, process what must be acted on within milliseconds to seconds: safety interlocks, closed-loop control adjustments, high-frequency anomaly detection on a single asset, and the filtering that decides what leaves the plant. Edge processing is also where you reduce volume — feature extraction on a vibration signal can cut data volume by two or three orders of magnitude with no loss of diagnostic value.</p>
+<p><strong>At the plant level</strong>, process what must keep running when the WAN is down, and what needs cross-asset correlation within a line or cell. A plant-level historian or edge cluster is the right home for short-term high-resolution history, typically days to weeks, queried by operators and maintainers who cannot tolerate a cloud round trip.</p>
+<p><strong>In the cloud or core data platform</strong>, process what benefits from fleet-wide scale: cross-plant benchmarking, model training, long-term history, and anything that integrates manufacturing data with ERP, supply chain, or quality systems. This is where the context model lives and where the expensive compute happens.</p>
+<p>The practical failure is putting everything in the cloud because it is easier, and then discovering that a plant with unreliable connectivity has no analytics during the outage — which is precisely when analytics matter most. Design for degraded operation explicitly: the plant must remain useful when disconnected.</p>
+
+<h2  id="what-does-the-analytics-layer-require">What does the analytics layer require?</h2>
+<p>The analytics layer is where signals become decisions, and three capabilities determine whether it delivers.</p>
+<p><strong>Contextualisation.</strong> Every analytic needs to join signal data to the asset hierarchy, the production context (which product, which recipe, which order), and the event history (maintenance, changeovers, quality incidents). This is a modelling exercise, not a tooling one, and it is the single highest-leverage investment in the layer. Without it, every analysis starts with manual data wrangling and every model is bespoke.</p>
+<p><strong>Appropriate model families.</strong> Predictive maintenance on rotating equipment usually starts with physics-informed thresholds or simple anomaly detection on derived features, not deep learning — because labelled failure data is scarce and the cost of being wrong is high. Quality prediction and yield optimisation tend to use supervised models on batch data, where labels exist. Computer-vision inspection is the mature exception, where supervised learning is clearly established. Choose the simplest approach that meets the accuracy requirement, because the constraint is usually maintenance of the model over years, not initial accuracy.</p>
+<p><strong>Delivery into workflow.</strong> The most accurate prediction in the world delivers nothing if it arrives in a dashboard that nobody opens. Maintenance predictions belong in the CMMS as work orders; quality alerts belong in the operator's station or the MES; throughput insights belong in the production review. Integration into the system where the decision is actually made is not a nice-to-have — it is the difference between a system that is used and one that is demonstrated.</p>
+<p>One more requirement that separates working systems from abandoned ones: <strong>feedback capture</strong>. When a prediction is acted on, was it right? That answer is the training data for the next version, and systems that do not capture it plateau permanently.</p>
+
+<h2  id="where-do-sensor-to-insight-pipelines-most-often-fail">Where do sensor-to-insight pipelines most often fail?</h2>
+        <figure class="article-figure" data-fig-slug2="smart-factory-data-architecture-from-sensors-to-insights">
+          <img src="/assets/blog/svg/smart-factory-data-architecture-from-sensors-to-insights.svg" alt="Smart Factory Data Architecture: From Sensors to Insights — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>smart factory data architecture: from sensors to insights</b></figcaption>
+        </figure>
+
+<p><strong>Between analytics and action.</strong> The most common failure point is not data collection or modelling — it is the last hundred metres. A prediction that surfaces in a standalone dashboard, with no owner, no workflow integration, and no feedback capture, generates no value regardless of its accuracy.</p>
+<p><strong>At the context join.</strong> Signal data that cannot be reliably joined to which product was being made produces models that work in validation and fail in production. Recipe and product context is usually held in the MES, and integrating it is often treated as a later phase that never arrives.</p>
+<p><strong>At scale-up economics.</strong> Per-asset integration cost that does not fall with volume caps coverage. This is a design problem: standardise on a small number of connection patterns, build reusable asset templates, and refuse bespoke integrations for asset classes below a materiality threshold.</p>
+<p><strong>On time synchronisation.</strong> Cross-machine correlation with unsynchronised clocks produces confidently wrong causal conclusions, and this failure is hard to detect because the data looks perfectly plausible.</p>
+<p><strong>On ownership at handover.</strong> The project team moves on and no operational function owns the system. Alerts go untriaged, model accuracy drifts, and within a year the platform is nostalgically described as "the pilot we did in 2024".</p>
+
+<h2  id="what-should-factories-do-first">What should factories do first?</h2>
+<p>Start with the decision, not the data. Name the operational decision that will change — a maintenance task scheduled on condition rather than calendar, a quality hold raised earlier, a changeover sequence reordered — and work backwards to the minimum instrumentation, context, and delivery required to support it.</p>
+<p>Pick the first use case where three conditions hold: the failure mode is well understood by maintenance or process engineers, the signal that indicates it is already available or cheap to add, and the decision it informs has a clear owner. Predictive maintenance on a critical rotating asset with existing vibration monitoring is the canonical example; vision-based inspection of a high-scrap operation is another.</p>
+<p>Build the <strong>context model</strong> in parallel with the first use case rather than after it. The asset hierarchy, the product and recipe mapping, and the maintenance history links are reusable across every subsequent use case, and building them once is far cheaper than rebuilding them per project.</p>
+<p>Design for the plant you have, not the plant in the vendor's reference architecture. If connectivity is unreliable, plan for disconnected operation. If the OT security review takes four months, sequence it first, not last. If the long tail of legacy equipment has no digital interface, decide up front which assets are worth retrofitting and which are not.</p>
+<p>Finally, set the scale-up criterion before the pilot starts. "Eighty percent coverage of critical rotating assets within eighteen months at under X per asset" is a criterion. "Let's see how the pilot goes" is a way to guarantee the stall described at the beginning of this article.</p>
+
+<h2  id="key-takeaways">What Are the Key Takeaways on Smart Factory Data Architecture?</h2>
+<p>Smart factory architecture is a translation problem: high-volume, low-semantic signals in; low-volume, high-semantic decisions out. The context model that makes translation possible is the highest-leverage investment in the stack.</p>
+<ul>
+<li>Design four layers — collection, ingestion, processing and storage, analytics — and build the context model across all of them from the first use case.</li>
+<li>At the edge: translate protocols, sample by failure mode, buffer for days, enforce read-only isolation, and synchronise clocks properly.</li>
+<li>In ingestion: durable ordered log, separate hot and warm paths, explicit watermarking, and a schema registry from day one.</li>
+<li>Place processing by latency requirement, then sovereignty and volume, then cost — and design for degraded operation when the WAN fails.</li>
+<li>Deliver predictions into the system where the decision is made, and capture whether they were right.</li>
+<li>Set the scale-up criterion before the pilot, and standardise connection patterns so per-asset cost falls.</li>
+</ul>
+
+                        <section class="faq-section" id="faq" aria-label="Frequently asked questions">
+                <h2 class="faq-section-title" id="frequently-asked-questions">Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="1-what-are-the-four-layers-of-a-smart-factory-data-architecture"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">1</span><span>What are the four layers of a smart factory data architecture?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Collection acquires signals at source without disrupting control systems; ingestion moves them reliably and in order; processing and storage turn signals into contextualised, queryable facts at the right latency and cost; analytics turn facts into predictions and recommendations someone acts on. A context model spans all four, joining signals to asset hierarchy, product and recipe, and event history.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="2-why-do-smart-factory-pilots-stall-at-scale-up"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">2</span><span>Why do smart factory pilots stall at scale-up?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Three causes account for most stalls: connectivity heterogeneity across decades of equipment vendors, operational technology constraints that prevent simply opening outbound connections from the OT network, and the absence of a funded owner with authority over the decision the system informs. Pilots also tend to run on the best-instrumented asset, whose economics do not transfer to equipment requiring costly sensor retrofits.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="3-should-factory-data-be-processed-at-the-edge-or-in-the-cloud"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">3</span><span>Should factory data be processed at the edge or in the cloud?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Decide by latency requirement first, then data sovereignty and volume, then cost. Process at the edge what must be acted on within milliseconds to seconds, and where volume reduction belongs. Use plant-level systems for what must survive a WAN outage. Use the cloud or core platform for fleet-wide benchmarking, model training, long-term history, and integration with ERP, supply chain, and quality systems.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="4-which-protocol-does-industrial-equipment-use"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">4</span><span>Which protocol does industrial equipment use?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">There is no single answer, which is the problem. A typical plant contains OPC UA, Modbus, MQTT, PROFINET, EtherNet/IP, and vendor-specific protocols, plus legacy equipment with no digital interface. Protocol translation and normalisation at an edge gateway is usually the largest underestimated work item in the collection layer.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="5-how-much-data-should-be-sent-from-the-plant-to-the-cloud"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">5</span><span>How much data should be sent from the plant to the cloud?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Far less than most teams initially plan. Sample at full rate only what the failure mode requires — bearing wear needs high-frequency vibration capture, temperature monitoring usually does not — and aggregate or trigger on exception for the rest. Feature extraction at the edge can reduce volume by two or three orders of magnitude with no loss of diagnostic value.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="6-what-is-the-most-common-point-of-failure-in-sensor-to-insight-pipelines"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">6</span><span>What is the most common point of failure in sensor-to-insight pipelines?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">The last hundred metres: analytics to action. A prediction surfacing in a standalone dashboard with no owner, no workflow integration, and no feedback capture generates no value regardless of accuracy. The runner-up is the context join — signal data that cannot be reliably linked to which product was being made produces models that validate well and fail in production.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="7-what-should-a-factory-choose-as-its-first-use-case"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">7</span><span>What should a factory choose as its first use case?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">One where three conditions hold: the failure mode is already well understood by maintenance or process engineers, the indicating signal is available or cheap to add, and the informed decision has a clear owner. Predictive maintenance on a critical rotating asset with existing vibration monitoring is the canonical choice; vision inspection of a high-scrap operation is another.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="8-do-we-need-deep-learning-for-predictive-maintenance"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">8</span><span>Do we need deep learning for predictive maintenance?</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Usually not to start. Labelled failure data is scarce and the cost of a wrong prediction is high, so physics-informed thresholds or anomaly detection on derived features typically outperform complex models in the early stages. Computer-vision inspection is the mature exception where supervised learning is clearly established. Choose the simplest approach that meets the accuracy requirement, because the real constraint is maintaining the model for years.</div></div>
+                    </div>
+                </div>
+            </section>
+            
+            <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are the four layers of a smart factory data architecture?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Collection acquires signals at source without disrupting control systems; ingestion moves them reliably and in order; processing and storage turn signals into contextualised, queryable facts at the right latency and cost; analytics turn facts into predictions and recommendations someone acts on. A context model spans all four, joining signals to asset hierarchy, product and recipe, and event history."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do smart factory pilots stall at scale-up?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three causes account for most stalls: connectivity heterogeneity across decades of equipment vendors, operational technology constraints that prevent simply opening outbound connections from the OT network, and the absence of a funded owner with authority over the decision the system informs. Pilots also tend to run on the best-instrumented asset, whose economics do not transfer to equipment requiring costly sensor retrofits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should factory data be processed at the edge or in the cloud?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Decide by latency requirement first, then data sovereignty and volume, then cost. Process at the edge what must be acted on within milliseconds to seconds, and where volume reduction belongs. Use plant-level systems for what must survive a WAN outage. Use the cloud or core platform for fleet-wide benchmarking, model training, long-term history, and integration with ERP, supply chain, and quality systems."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which protocol does industrial equipment use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no single answer, which is the problem. A typical plant contains OPC UA, Modbus, MQTT, PROFINET, EtherNet/IP, and vendor-specific protocols, plus legacy equipment with no digital interface. Protocol translation and normalisation at an edge gateway is usually the largest underestimated work item in the collection layer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much data should be sent from the plant to the cloud?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Far less than most teams initially plan. Sample at full rate only what the failure mode requires — bearing wear needs high-frequency vibration capture, temperature monitoring usually does not — and aggregate or trigger on exception for the rest. Feature extraction at the edge can reduce volume by two or three orders of magnitude with no loss of diagnostic value."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the most common point of failure in sensor-to-insight pipelines?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The last hundred metres: analytics to action. A prediction surfacing in a standalone dashboard with no owner, no workflow integration, and no feedback capture generates no value regardless of accuracy. The runner-up is the context join — signal data that cannot be reliably linked to which product was being made produces models that validate well and fail in production."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should a factory choose as its first use case?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One where three conditions hold: the failure mode is already well understood by maintenance or process engineers, the indicating signal is available or cheap to add, and the informed decision has a clear owner. Predictive maintenance on a critical rotating asset with existing vibration monitoring is the canonical choice; vision inspection of a high-scrap operation is another."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do we need deep learning for predictive maintenance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually not to start. Labelled failure data is scarce and the cost of a wrong prediction is high, so physics-informed thresholds or anomaly detection on derived features typically outperform complex models in the early stages. Computer-vision inspection is the mature exception where supervised learning is clearly established. Choose the simplest approach that meets the accuracy requirement, because the real constraint is maintaining the model for years."
+      }
+    }
+  ]
+}
+            </script>
 
             <nav class="article-nav" aria-label="Article navigation">
-                <a href="https://www.beehivestrategy.com/blog" class="btn-back-to-blog">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-                    Back to All Articles
-                </a>
-            </nav>
-        </article>
-
-        <aside class="toc-sidebar" id="toc-sidebar" aria-label="Article sidebar">
-            <div class="sidebar-card">
-                <div class="sidebar-heading">Table of Contents</div>
-                <nav class="toc-links">
-                    <a href="#layer-1-data-collection-at-the-edge" class="toc-link">Layer 1: Data Collection at the Edge</a>
-                    <a href="#layer-2-streaming-ingestion" class="toc-link">Layer 2: Streaming Ingestion</a>
+                <a href="https://w<nav class="toc-links">
+                    <a href="#what-does-a-smart-factory-data-architecture-actually-do" class="toc-link">What does a smart factory data architecture actually do?</a>
+                    <a href="#why-do-most-factory-data-projects-stall" class="toc-link">Why do most factory data projects stall?</a>
+                    <a href="#what-does-the-edge-collection-layer-need-to-handle" class="toc-link">What does the edge collection layer need to handle?</a>
+                    <a href="#how-should-streaming-ingestion-be-designed" class="toc-link">How should streaming ingestion be designed?</a>
+                    <a href="#where-should-processing-and-storage-live" class="toc-link">Where should processing and storage live — edge, plant, or cloud?</a>
+                    <a href="#what-does-the-analytics-layer-require" class="toc-link">What does the analytics layer require?</a>
+                    <a href="#where-do-sensor-to-insight-pipelines-most-often-fail" class="toc-link">Where do sensor-to-insight pipelines most often fail?</a>
+                    <a href="#what-should-factories-do-first" class="toc-link">What should factories do first?</a>
+                    <a href="#key-takeaways" class="toc-link">What Are the Key Takeaways on Smart Factory Data Architecture?</a>
+                    <a href="#frequently-asked-questions" class="toc-link">Frequently Asked Questions</a>
+                    <a href="#1-what-are-the-four-layers-of-a-smart-factory-data-architecture" class="toc-link">1 What are the four layers of a smart factory data architecture?</a>
+                    <a href="#2-why-do-smart-factory-pilots-stall-at-scale-up" class="toc-link">2 Why do smart factory pilots stall at scale-up?</a>
+                    <a href="#3-should-factory-data-be-processed-at-the-edge-or-in-the-cloud" class="toc-link">3 Should factory data be processed at the edge or in the cloud?</a>
+                    <a href="#4-which-protocol-does-industrial-equipment-use" class="toc-link">4 Which protocol does industrial equipment use?</a>
+                    <a href="#5-how-much-data-should-be-sent-from-the-plant-to-the-cloud" class="toc-link">5 How much data should be sent from the plant to the cloud?</a>
+                    <a href="#6-what-is-the-most-common-point-of-failure-in-sensor-to-insight-pipelines" class="toc-link">6 What is the most common point of failure in sensor-to-insight pipelines?</a>
+                    <a href="#7-what-should-a-factory-choose-as-its-first-use-case" class="toc-link">7 What should a factory choose as its first use case?</a>
+                    <a href="#8-do-we-need-deep-learning-for-predictive-maintenance" class="toc-link">8 Do we need deep learning for predictive maintenance?</a>
+                </nav>>Layer 2: Streaming Ingestion</a>
                     <a href="#layer-3-processing-and-storage" class="toc-link">Layer 3: Processing and Storage</a>
                     <a href="#layer-4-ai-and-analytics" class="toc-link">Layer 4: AI and Analytics</a>
                     <a href="#what-should-factories-do-first" class="toc-link">What Should Factories Do First?</a>
@@ -265,15 +454,15 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Related Articles</div>
                 <div class="sidebar-related-list">
-                    <a href="blog/articles/smart-factory-data-architecture" class="sidebar-related-card">
+                    <a href="/blog/articles/smart-factory-data-architecture" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Smart Factory Data Architecture: From Sensors to Insights</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
-                    <a href="blog/articles/quality-control-computer-vision-manufacturing" class="sidebar-related-card">
+                    <a href="/blog/articles/quality-control-computer-vision-manufacturing" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Computer Vision Quality Control in Manufacturing</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
-                    <a href="blog/articles/supply-chain-demand-forecasting-ai" class="sidebar-related-card">
+                    <a href="/blog/articles/supply-chain-demand-forecasting-ai" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">AI Demand Forecasting for Smarter Supply Chains</h4>
                         <span class="sidebar-related-meta">8 min read</span>
                     </a>
@@ -290,7 +479,7 @@
             <a href="https://www.beehivestrategy.com/blog" class="recommended-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
         <div class="recommended-grid">
-            <a href="blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
+            <a href="/blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
                 <img src="/assets/blog/covers/en/women-in-data-building-inclusive-ai-teams.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -303,7 +492,7 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
+            <a href="/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
                 <img src="/assets/blog/covers/en/why-data-strategy-needs-ai-agent-layer-2026.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -316,7 +505,7 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
+            <a href="/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
                 <img src="/assets/blog/covers/en/vector-databases-enterprise-search-2026-practical-guide.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -342,8 +531,8 @@
                     <h2 class="article-cta-title" id="cta-heading">Ready to transform your data strategy?</h2>
                     <p class="article-cta-desc">See how Beehive Strategy's conversational analytics platform unlocks real-time insights across your operations, from upstream data to downstream decisions.</p>
                     <div class="article-cta-actions">
-                        <a href="contact" class="article-cta-btn">Book a Demo</a>
-                        <a href="solution" class="article-cta-secondary">Explore the Solution</a>
+                        <a href="/contact" class="article-cta-btn">Book a Demo</a>
+                        <a href="/solution" class="article-cta-secondary">Explore the Solution</a>
                     </div>
                 </div>
                 <div class="article-cta-stats">
@@ -418,5 +607,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "Smart Factory Data Architecture: From Sensors to Insights";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

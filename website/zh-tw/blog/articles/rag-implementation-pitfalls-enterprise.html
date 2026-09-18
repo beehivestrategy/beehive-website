@@ -18,7 +18,7 @@
     <meta property="og:title" content="RAG實施中的陷阱及規避方法">
     <meta property="og:description" content="檢索增強生成的常見失敗模式及修復方法。">
     <meta property="og:url" content="https://www.beehivestrategy.com/zh-tw/blog/articles/rag-implementation-pitfalls-enterprise">
-    <meta property="og:image" content="https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-tw/rag-implementation-pitfalls-enterprise.jpg">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-tw/rag-implementation-pitfalls-enterprise.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="zh_TW">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/rag-implementation-pitfalls-enterprise#article", "headline": "RAG實施中的陷阱及規避方法", "description": "檢索增強生成的常見失敗模式及修復方法。", "datePublished": "2026-07-28T13:00:00+08:00", "dateModified": "2026-07-28T13:00:00+08:00", "articleSection": "AI戰略", "keywords": "RAG, 檢索增強生成, 大語言模型, 知識管理", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/rag-implementation-pitfalls-enterprise"}, "image": "https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-tw/rag-implementation-pitfalls-enterprise.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog"}, {"@type": "ListItem", "position": 3, "name": "RAG實施中的陷阱及規避方法"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -91,7 +92,7 @@
         <a href="/zh-tw/case-studies" class="nav-link">客戶案例</a>
         <a href="/zh-tw/pricing" class="nav-link">定價</a>
         <a href="/zh-tw/about" class="nav-link">關於我們</a>
-        <a href="/zh-tw/blog" class="nav-link active">部落格</a>
+        <a href="/zh-tw/blog" class="nav-link active">文章</a>
       </nav>
       <div class="nav-cta">
         <div class="lang-switcher" id="lang-switcher">
@@ -146,7 +147,7 @@
   <a href="/zh-tw/case-studies">客戶案例</a>
   <a href="/zh-tw/pricing">定價</a>
   <a href="/zh-tw/about">關於我們</a>
-  <a href="/zh-tw/blog">部落格</a>
+  <a href="/zh-tw/blog">文章</a>
   <div class="mobile-lang-switcher">
     <a href="/blog/articles/rag-implementation-pitfalls-enterprise" data-lang="en">English</a>
     <a href="/zh-cn/blog/articles/rag-implementation-pitfalls-enterprise" data-lang="zh-cn">简体中文</a>
@@ -195,6 +196,11 @@
             </div>
 <p><strong>企業RAG項目的失敗很少源於模型能力不足，而更多源於可預見的實施陷阱：分塊策略、檢索設計、評估缺失與知識治理。</strong>Gartner曾預測，到2025年底將有30%的生成式AI項目在概念驗證後被放棄，主要原因包括數據質量不足、成本超預期與業務價值不清晰——這三者幾乎全部指向RAG項目的典型問題。麥肯錫2024年全球調查則顯示，65%的企業已在至少一個業務單元常規使用生成式AI，但其中相當比例的RAG應用仍停留在"演示很驚豔、生產不達標"的狀態。本文系統梳理企業RAG實施中最常見的陷阱，並給出可操作的規避方法。</p>
 <h2 id="爲什麼企業rag項目容易失敗-三個根因">爲什麼企業RAG項目容易失敗？三個根因</h2>
+        <figure class="article-figure" data-fig-slug="rag-implementation-pitfalls-enterprise">
+          <img src="/assets/blog/svg/rag-implementation-pitfalls-enterprise.svg" alt="RAG實施中的陷阱及規避方法 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>圖：<b>RAG實施中的陷阱及規避方法</b> 的核心脈絡一覽</figcaption>
+        </figure>
+
 <p>第一個根因是"重生成、輕檢索"：團隊把精力花在提示詞上，卻忽視了檢索質量決定答案質量的上限——檢索不到相關片段，再強的模型也只能編造。第二個根因是"重上線、輕評估"：沒有建立基於真實業務問題的評估集，上線後系統表現無法度量，優化失去方向。第三個根因是"重技術、輕治理"：權限、審計、知識更新機制缺位，導致系統在合規風險與知識過時的雙重壓力下不可持續。</p>
 <p>三個根因共同指向一個事實：RAG不是"模型項目"而是"知識工程項目"，它的成功取決於文檔、評估與治理的質量，而非大模型本身。理解這一點，是避開後續所有陷阱的前提。</p>
 <h2 id="最常見的六個rag實施陷阱">企業最常見的六個RAG實施陷阱是什麼？</h2>
@@ -218,6 +224,11 @@
 <p>衡量RAG成功需要分層指標體系，而非單一準確率。檢索層：召回率與NDCG排序質量；生成層：答案準確率、引用忠實度、正確拒絕率（模型在無依據時誠實說"不知道"的比例）；運營層：端到端延遲、單次查詢成本、知識更新時效；業務層：用戶採納率、問題解決率、知識複用帶來的實際效率提升。其中"正確拒絕率"最容易被忽視，卻最能體現系統成熟度——懂得承認不知道的系統，比強行作答的系統更可信。</p>
 <p>建議企業把這三層指標納入月度運營例會：檢索召回率連續兩週下滑，說明知識庫或索引出了問題；引用忠實度波動，說明提示詞或模型版本需要複覈；端到端延遲上升，說明索引或查詢鏈路需要優化。指標不是事後統計，而是運營的導航儀——它讓RAG項目從"上線即結束"變成"持續演進"，也讓團隊在優化方向上不再各執一詞。據行業實踐，建立了分層指標體系的企業，RAG項目在投產6個月後仍能保持持續優化節奏的比例，遠高於只盯單一準確率的團隊。</p>
 <h2 id="什麼場景不應該用rag-邊界要清晰">什麼場景不應該用RAG？邊界要清晰</h2>
+        <figure class="article-figure" data-fig-slug2="rag-implementation-pitfalls-enterprise">
+          <img src="/assets/blog/svg/rag-implementation-pitfalls-enterprise.svg" alt="RAG實施中的陷阱及規避方法 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>圖：<b>RAG實施中的陷阱及規避方法</b> 的核心脈絡一覽</figcaption>
+        </figure>
+
 <p>避免陷阱的另一面是避免"萬物皆RAG"。當知識高度結構化且需要精確計算時（如財務覈算），RAG並不合適；當需要固定風格的專業輸出時（如法律文書措辭），微調更高效；當回答需要實時最新數據時（如股票行情），應直接調用實時API而非檢索靜態文檔。明確"什麼不該用RAG"，與企業判斷"什麼該用RAG"同樣重要，它能避免在錯誤場景上的重複投入，讓RAG資源集中於真正發揮優勢的知識問答與內容生成場景。</p>
 <p>最後補充一點：RAG的邊界也在隨技術演進。2025年以來，GraphRAG（知識圖譜增強檢索）與Agentic RAG（智能體式檢索）開始把結構化關係與多步推理引入檢索鏈路，讓RAG從"查片段"升級爲"查關係、做推理"。企業不必追逐每一個新概念，但應保持架構的可替換性：檢索層與生成層解耦、索引與評估集沉澱爲資產，這樣當更優的檢索範式出現時，替換成本可控，之前的治理與知識積累也不會歸零。</p>
 
@@ -413,8 +424,8 @@
             <a href="/zh-tw/blog/articles/data-quality-automation-from-reactive-to-proactive-part-2" class="recommended-card">
                 <img src="/assets/blog/covers/zh-tw/data-quality-automation-from-reactive-to-proactive-part-2.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
-                    <h3 class="recommended-card-title">Data Quality Automation From Reactive To Proactive Part 2</h3>
+                    <span class="recommended-card-cat">技術</span>
+                    <h3 class="recommended-card-title">數據質量自動化：從被動響應到主動預防（第二部分）</h3>
                     <p class="recommended-card-excerpt"></p>
                     <div class="recommended-card-meta">
                         <span>1 分鐘閱讀</span>
@@ -473,7 +484,7 @@
             <li><a href="/zh-tw/fde">FDE服務</a></li>            <li><a href="/zh-tw/case-studies">客戶案例</a></li>
             <li><a href="/zh-tw/security">安全</a></li>
             <li><a href="/zh-tw/pricing">定價</a></li>
-            <li><a href="/zh-tw/blog">部落格</a></li>
+            <li><a href="/zh-tw/blog">文章</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -511,5 +522,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "RAG實施中的陷阱及規避方法";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

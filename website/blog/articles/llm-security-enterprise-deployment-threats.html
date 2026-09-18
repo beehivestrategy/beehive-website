@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-    <title>Securing LLMs in Enterprise Deployments: Threats &amp; | Beehive Strategy</title>
+    <title>Securing LLMs in Enterprise Deployments: Threats</title>
     <meta name="description" content="A comprehensive security analysis of LLM deployments covering prompt i Learn how Beehive Strategy&#x27;s AI-powered platform can transform your data workflow.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/llm-security-enterprise-deployment-threats">
@@ -70,6 +70,7 @@
   ]
 }
 </script>
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -222,9 +223,14 @@
                     <a href="#what-is-the-biggest-threat-to-enterprise-llms-today" class="toc-mobile-link">What Is the Biggest Threat to Enterprise LLMs Today?</a>
                 </div>
             </div>
-<p>The most important fact for any enterprise deploying large language models is that the model is not the security boundary — the controls around it are. In 2025 the threat landscape is dominated by prompt injection, which OWASP ranks as the number-one risk in its Top 10 for LLM applications, alongside data exfiltration through model context and the supply chain of models and tooling. This article gives an answer-first tour of the main threats, the controls that actually mitigate them, and the operational practices that keep LLM systems safe in production.</p>
+<p>The most important fact for any <a href="/en/blog/articles/mlops-for-enterprise-deploying-models-at-scale" class="inline-ref">enterprise deploying</a> large <a href="/en/blog/articles/small-language-models-enterprise-efficiency-cost" class="inline-ref">language models</a> is that the model is not the security boundary — the controls around it are. In 2025 the <a href="/en/blog/articles/enterprise-ai-security-threat-landscape-2026" class="inline-ref">threat landscape</a> is dominated by <a href="/en/blog/articles/ai-prompt-injection-defense" class="inline-ref">prompt injection</a>, which OWASP ranks as the number-one risk in its Top 10 for LLM applications, alongside data exfiltration through model context and the supply chain of models and tooling. This article gives an answer-first tour of the main threats, the controls that actually mitigate them, and the operational practices that keep LLM systems safe in production.</p>
 <p><strong>Key Insight:</strong> IBM's 2024 Cost of a Data Breach report puts the global average breach at $4.88 million and shows organizations that extensively use AI and automation save an average of $2.2 million versus those that do not — but only when those AI controls are themselves governed and tested.</p>
 <h2 id="the-technology-landscape-in-early-2025">The Technology Landscape in Early 2025</h2>
+        <figure class="article-figure" data-fig-slug="llm-security-enterprise-deployment-threats">
+          <img src="/assets/blog/svg/llm-security-enterprise-deployment-threats.svg" alt="Securing LLMs in Enterprise Deployments: Threats &amp; — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>securing llms in enterprise deployments: threats &amp;</b></figcaption>
+        </figure>
+
 <p>LLMs moved from experimentation to core infrastructure faster than almost any enterprise technology in recent memory. McKinsey's State of AI survey found that 65% of organizations regularly use generative AI, and Gartner predicts that by 2026 more than 80% of enterprises will have used GenAI APIs or deployed GenAI-enabled applications in production. With that shift, the security conversation changed: teams no longer ask "is the model accurate?" but "what can an attacker make this model do with our data?" The stakes are higher because LLM deployments sit between users and the most valuable data the enterprise owns.</p>
 <p>The threat taxonomy in 2025 has four main families. Direct prompt injection: a user crafts instructions that override the system prompt. Indirect prompt injection: attacker-controlled content — an email, a web page, a document — smuggles instructions into the model's context, and the model obediently follows them. Data exfiltration: the model is induced to reveal sensitive information it retrieved, memorized, or was told to hold. And supply-chain compromise: malicious models, poisoned fine-tuned checkpoints, or vulnerable dependencies enter the environment through an innocent-looking upgrade. The OWASP Top 10 for LLM applications now explicitly lists prompt injection first, followed by sensitive information disclosure and supply chain vulnerabilities — a useful reminder that these are recognized, catalogued, and increasingly regulated risks.</p>
 <p>The threat is not abstract. Analysts have documented real-world incidents in which public chatbots leaked internal information or performed unauthorized actions, and the pattern recurs because the failure mode is architectural, not accidental: models are given broad tool access and long-running context, and both are attractive to attackers. The asymmetry is uncomfortable — defenders must prevent every injection, while an attacker only needs one success — which is why the security design must assume the model will be manipulated and make manipulation unprofitable, rather than assuming it can be prevented.</p>
@@ -254,6 +260,11 @@
 <p>Enterprise LLM deployments face a distinct threat model that traditional application security does not fully cover. The most discussed is <strong>prompt injection</strong> — an attacker manipulates the model's instructions through seemingly innocuous input, hijacking its behaviour. Closely related are <strong>data exfiltration</strong> (the model leaking sensitive context or training data), <strong>supply-chain risk</strong> in third-party models and plugins, <strong>model poisoning</strong> in fine-tuning pipelines, and <strong>jailbreaks</strong> that bypass safety guardrails. Because LLMs sit between untrusted user input and privileged enterprise data, a single gap can turn a helpful assistant into an insider threat.</p>
 <p>The reason these threats are hard is that LLMs are probabilistic, not deterministic. A control that works on one input may fail on a paraphrased one, so security cannot rely on exact-match filtering alone. The OWASP Top 10 for LLM Applications has become the reference map for these risks, and enterprises should treat it as a checklist rather than a suggestion. The practical posture is defence in depth: constrain what the model can access, log what it does, and assume some attacks will succeed — so detection and containment matter as much as prevention.</p>
 <h2 id="how-do-prompt-injection-and-data-exfiltration-attacks-work">How Do Prompt Injection and Data Exfiltration Attacks Work?</h2>
+        <figure class="article-figure" data-fig-slug2="llm-security-enterprise-deployment-threats">
+          <img src="/assets/blog/svg/llm-security-enterprise-deployment-threats.svg" alt="Securing LLMs in Enterprise Deployments: Threats &amp; — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>securing llms in enterprise deployments: threats &amp;</b></figcaption>
+        </figure>
+
 <p>In a prompt injection, an attacker embeds instructions inside content the model will later read — for example, a malicious instruction hidden in a retrieved document or a web page the assistant is summarising. The model, unable to distinguish "system instruction" from "content," follows the injected command. In an enterprise RAG system, this is especially dangerous because the retrieved corpus may include untrusted external sources. A successful injection can instruct the model to ignore prior safety rules, reveal its system prompt, or forward data elsewhere.</p>
 <p>Data exfiltration often rides on top of injection. Once control is gained, the attacker steers the model to include confidential records in its output, or to call a tool that sends data to an external endpoint. The mitigation is architectural: <strong>least-privilege retrieval</strong> (the model only sees data the user is authorised to see), <strong>output filtering</strong> for secrets and PII, <strong>tool use restricted by policy</strong>, and <strong>human-in-the-loop</strong> for high-risk actions. Beehive Strategy's conversational BI enforces role-based access at retrieval time and never trains on customer data, which removes two of the most common exfiltration paths by design rather than by afterthought.</p>
 <h2 id="what-controls-should-enterprises-put-in-place-to-secure-llms">What Controls Should Enterprises Put in Place to Secure LLMs?</h2>
@@ -486,5 +497,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "Securing LLMs in Enterprise Deployments: Threats &";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-    <title>MCP Protocol Security Considerations for Enterprise Deployment | Beehive Strategy</title>
+    <title>MCP Protocol Security Considerations for Enterprise</title>
     <meta name="description" content="As we enter the second half of 2025, enterprises are reflecting on the Learn how Beehive Strategy&#x27;s MCP-powered platform can transform your data workflow.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/mcp-protocol-security-enterprise-deployment">
@@ -70,6 +70,7 @@
   ]
 }
 </script>
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -216,18 +217,27 @@
             <div class="toc-mobile" id="toc-mobile">
                 <button class="toc-mobile-toggle" aria-expanded="false">Table of Contents <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="toc-mobile-links">
-                    <a href="#the-current-state-of-enterprise-architecture" class="toc-mobile-link">The Current State of Enterprise Architecture</a>
+                    <a href="#the-current-state-of-enterprise-architecture" class="toc-mobile-link">Why Does MCP Redraw the Enterprise Security Perimeter?</a>
                     <a href="#what-are-the-biggest-security-risks-in-an-mcp-deployment" class="toc-mobile-link">What Are the Biggest Security Risks in an MCP Deployment?</a>
-                    <a href="#technical-implementation-patterns" class="toc-mobile-link">Technical Implementation Patterns</a>
-                    <a href="#performance-and-scalability-considerations" class="toc-mobile-link">Performance and Scalability Considerations</a>
-                    <a href="#security-and-compliance-integration" class="toc-mobile-link">Security and Compliance Integration</a>
-                    <a href="#how-a-managed-conversational-bi-service-fits-in" class="toc-mobile-link">How a Managed Conversational BI Service Fits In</a>
-                    <a href="#looking-ahead-what-to-expect" class="toc-mobile-link">Looking Ahead: What to Expect</a>
+                    <a href="#technical-implementation-patterns" class="toc-mobile-link">Which Implementation Patterns Keep an MCP Deployment Secure?</a>
+                    <a href="#performance-and-scalability-considerations" class="toc-mobile-link">How Do You Keep Security Controls From Breaking Performance?</a>
+                    <a href="#security-and-compliance-integration" class="toc-mobile-link">What Do Regulators Expect From an MCP Deployment?</a>
+                    <a href="#how-a-managed-conversational-bi-service-fits-in" class="toc-mobile-link">How Does a Managed Conversational BI Service Reduce This Risk?</a>
+                    <a href="#how-should-identity-and-least-privilege-be-scoped-for-mcp-tools" class="toc-mobile-link">How Should Identity and Least Privilege Be Scoped for MCP Tools?</a>
+                    <a href="#how-do-you-detect-and-contain-a-prompt-injection-incident" class="toc-mobile-link">How Do You Detect and Contain a Prompt-Injection Incident?</a>
+                    <a href="#what-should-an-mcp-security-review-cover-before-go-live" class="toc-mobile-link">What Should an MCP Security Review Cover Before Go-Live?</a>
+                    <a href="#how-is-mcp-security-different-from-api-gateway-security" class="toc-mobile-link">How Is MCP Security Different From API Gateway Security?</a>
+                    <a href="#looking-ahead-what-to-expect" class="toc-mobile-link">What Should Security Teams Expect Next From MCP?</a>
                 </div>
             </div>
-<p class="article-lead">Model Context Protocol has become the connective tissue of enterprise AI — Anthropic open-sourced it in November 2024, and within months OpenAI, Google, and Microsoft had added MCP support to their assistant platforms. But a protocol that connects AI assistants to every internal system is also a protocol that hands attackers a map of your data estate. The security question is no longer whether to adopt MCP; it is how to deploy it with identity, least-privilege scoping, and full auditability wrapped around every connector, tool call, and chat session.</p>
-<h2 id="the-current-state-of-enterprise-architecture">The Current State of Enterprise Architecture</h2>
-<p>MCP's appeal is straightforward: instead of building a bespoke integration for every data source, an enterprise exposes a standard interface that any MCP-aware client can consume. That is why Gartner expects 33% of enterprise software applications to include agentic AI by 2028, up from less than 1% in 2024 — agents are only useful if they can reach the data, and MCP is how they reach it. But the same openness that makes the protocol attractive makes it dangerous. Early MCP servers were frequently deployed with no authentication at all, relying on network location as a substitute for identity, and many teams have since discovered that a connector with no access controls is a read-write door into production systems.</p>
+<p class="article-lead"><a href="/en/blog/articles/what-is-mcp-model-context-protocol-explained" class="inline-ref">Model Context Protocol</a> has become the connective tissue of enterprise AI — Anthropic open-sourced it in November 2024, and within months OpenAI, Google, and Microsoft had added MCP support to their assistant platforms. But a protocol that connects AI assistants to every internal system is also a protocol that hands attackers a map of your <a href="/en/blog/articles/data-architecture-modernization-ai-readiness" class="inline-ref">data estate</a>. The security question is no longer whether to adopt MCP; it is how to deploy it with identity, least-privilege scoping, and full auditability wrapped around every connector, tool call, and chat session.</p>
+<h2 id="the-current-state-of-enterprise-architecture">Why Does MCP Redraw the Enterprise Security Perimeter?</h2>
+        <figure class="article-figure" data-fig-slug="mcp-protocol-security-enterprise-deployment">
+          <img src="/assets/blog/svg/mcp-protocol-security-enterprise-deployment.svg" alt="MCP Protocol Security Considerations for Enterprise Deployment — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>mcp protocol security considerations for enterprise deployment</b></figcaption>
+        </figure>
+
+<p>MCP's appeal is straightforward: instead of building a bespoke integration for <a href="/en/blog/articles/top-mcp-connectors-data-integration-2026" class="inline-ref">every data</a> source, an enterprise exposes a standard interface that any MCP-aware client can consume. That is why Gartner expects 33% of <a href="/en/blog/articles/enterprise-software-q4-2025-update-cycle" class="inline-ref">enterprise software</a> applications to include agentic AI by 2028, up from less than 1% in 2024 — agents are only useful if they can reach the data, and MCP is how they reach it. But the same openness that makes the protocol attractive makes it dangerous. Early MCP servers were frequently deployed with no authentication at all, relying on network location as a substitute for identity, and many teams have since discovered that a connector with no access controls is a read-write door into production systems.</p>
 <p>The stakes are quantifiable. IBM's Cost of a Data Breach Report 2024 pegs the global average breach cost at $4.88 million, and Verizon's 2024 Data Breach Investigations Report finds that 68% of breaches involve the human element. In an MCP deployment, that human element is often an employee typing a prompt into a chat interface that a tool then executes against a database. The protocol itself is neutral; the controls around it determine whether an MCP rollout is a competitive advantage or a compliance incident waiting to be discovered.</p>
 <h2 id="what-are-the-biggest-security-risks-in-an-mcp-deployment">What Are the Biggest Security Risks in an MCP Deployment?</h2>
 <p>MCP's risk profile differs from a conventional API in one crucial way: the client is a language model, which means the input to your connector can be manipulated by anything the model has seen — a malicious document, a poisoned website, or a prompt hidden inside a support ticket. Prompt injection is the defining attack class of the agentic era, because the model sits between the attacker and your tools. If an MCP server exposes a tool that can read or write a database, a well-crafted prompt can turn that tool into an exfiltration channel, and the model will execute it while sounding perfectly reasonable.</p>
@@ -240,16 +250,51 @@
 <li>No audit trail at all, making it impossible to reconstruct what the assistant did with sensitive data</li>
 </ul>
 <p>Each of these is fixable at design time and expensive to fix after a review — or after an incident.</p>
-<h2 id="technical-implementation-patterns">Technical Implementation Patterns</h2>
+<h2 id="technical-implementation-patterns">Which Implementation Patterns Keep an MCP Deployment Secure?</h2>
 <p>A secure MCP deployment rests on five principles. The first is identity before connectivity: no server should accept a connection it cannot authenticate, using OAuth 2.1 with PKCE or mutual TLS, and no anonymous access should exist. The second is least privilege per tool: an analyst who needs to query a sales table should not hold a credential that can also delete from it. The third is data classification at the connector boundary: the server should know whether the data it serves is public, internal, confidential, or regulated, and enforce rules before a model ever sees it. The fourth is isolation: MCP servers should be sandboxed from each other and from the client layer, so a compromise in one connector cannot cascade through the estate. The fifth is treating the model as untrusted: validate every tool input against a schema, and never let a model pass raw SQL or shell commands through to a backend.</p>
 <p>Rolling this out in production is best done in phases rather than as a big-bang project. Inventory and design first — map every data source and tool that could be exposed, classify the data, define the authentication model — typically over eight to twelve weeks. Then a bounded pilot: two or three servers with strictly scoped tools, run for ninety days, measuring both utility and security events. Only then scale the pattern across the organization through a shared gateway and a central registry of approved servers.</p>
-<h2 id="performance-and-scalability-considerations">Performance and Scalability Considerations</h2>
+<h2 id="performance-and-scalability-considerations">How Do You Keep Security Controls From Breaking Performance?</h2>
 <p>Security controls fail in production when they add unacceptable latency, so the deployment must be designed with performance budgets in mind. Authentication and authorization checks should happen at the gateway, cached where possible, so they add milliseconds rather than seconds to a tool call. Audit logging must be asynchronous and high-throughput — a gateway that blocks on a slow log write becomes the bottleneck of the whole system. Monitoring should track tool-call volume, failed authorization attempts, and unusual access patterns, because a sudden spike in calls to a sensitive tool is how a prompt-injection incident announces itself. The goal is a security layer that is invisible to the user and visible to the security team, in real time.</p>
-<h2 id="security-and-compliance-integration">Security and Compliance Integration</h2>
+<h2 id="security-and-compliance-integration">What Do Regulators Expect From an MCP Deployment?</h2>
 <p>Compliance expectations are tightening as fast as the technology spreads. Gartner warns that by 2027, 40% of AI-related privacy, security, and legal issues will be caused by improper handling of data and models by employees using AI — a prediction that reads like a description of the average ungoverned MCP rollout. IBM's data shows the payoff of getting automation security right: organizations using security AI and automation extensively averaged $3.60 million in breach costs versus $5.72 million for those that did not, a gap of more than $2 million per breach. Regulators increasingly ask directly whether the enterprise can reconstruct what its AI assistants did with sensitive data; an MCP deployment with full audit logging of who initiated each session and what data was returned is the difference between answering that question and having to explain why you cannot.</p>
-<h2 id="how-a-managed-conversational-bi-service-fits-in">How a Managed Conversational BI Service Fits In</h2>
+<h2 id="how-a-managed-conversational-bi-service-fits-in">How Does a Managed Conversational BI Service Reduce This Risk?</h2>
 <p>None of this security work has to be built from scratch in-house. Beehive Strategy's managed conversational BI connects to your existing data layer through chat and IM platforms such as Slack, Teams, WeChat Work, and DingTalk, delivering real-time answers to business questions without rebuilding the warehouse. Because the connectors, authentication, scoping, and audit logging are maintained as part of a managed service, the controls described here are operational from day one — and because a typical deployment is live in about two weeks, the organization is never running an unsecured pilot while engineering catches up. The protocol-level discipline still matters, but a managed layer collapses months of integration and hardening into a couple of weeks.</p>
-<h2 id="looking-ahead-what-to-expect">Looking Ahead: What to Expect</h2>
+<h2 id="how-should-identity-and-least-privilege-be-scoped-for-mcp-tools">How Should Identity and Least Privilege Be Scoped for MCP Tools?</h2>
+        <figure class="article-figure" data-fig-slug2="mcp-protocol-security-enterprise-deployment">
+          <img src="/assets/blog/svg/mcp-protocol-security-enterprise-deployment.svg" alt="MCP Protocol Security Considerations for Enterprise Deployment — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>mcp protocol security considerations for enterprise deployment</b></figcaption>
+        </figure>
+
+<p>Least privilege fails in MCP deployments for a structural reason: the credential usually belongs to the server, not to the person asking the question. When fifty analysts share one service account, every query runs with the widest permissions any of them might need, and no action can be attributed to an individual. The fix is to propagate the end-user identity through the whole chain — the assistant authenticates the human, the gateway exchanges that identity for a scoped token, and the MCP server authorises against the user's entitlements rather than its own.</p>
+<p>Practical scoping has four layers. First, <strong>per-tool scopes</strong>: a tool that answers revenue questions should hold read access to a curated view, not to the underlying tables. Second, <strong>row and column-level enforcement</strong> at the connector boundary, so a regional manager querying customer data can only ever see their own region, regardless of how the prompt is worded. Third, <strong>read-only by default</strong>: write tools should be separate, explicitly named, and rarer than read tools. Fourth, <strong>expiry</strong>: short-lived tokens and just-in-time elevation for the small number of tasks that genuinely need broader access.</p>
+<p>Tool allow-lists complete the picture. Rather than letting a server advertise everything it can technically do, the registry should declare which tools are approved for which roles, and the gateway should reject anything not on the list. That single control removes an entire class of accidental exposure, because a newly added capability is invisible until someone approves it.</p>
+
+<h2 id="how-do-you-detect-and-contain-a-prompt-injection-incident">How Do You Detect and Contain a Prompt-Injection Incident?</h2>
+<p>Assume injection will happen. The model is a probabilistic parser sitting between untrusted text and privileged tools, and no input filter catches every variant. What separates a contained incident from a breach is detection speed and blast radius, and both can be engineered.</p>
+<p>Detection relies on signals that are cheap to collect: tool-call volume per session, calls to tools a role has never used before, queries returning row counts wildly above the user's normal pattern, and sequences that read broadly then write or export narrowly. A spike in calls to a sensitive tool from a session that has been reading unrelated content is the classic signature, and it is visible in the gateway logs if those logs exist. Some teams go further and plant canary records — synthetic rows that should never appear in a result set — so that their appearance in an outbound response is an unambiguous alarm rather than a heuristic.</p>
+<p>Containment is about pre-placed brakes. Each server needs a kill switch that revokes its tools without redeploying the estate; each session needs a rate limit and a cumulative data-volume budget; and egress matters as much as ingress, because the exfiltration channel is usually the model's output being sent somewhere unexpected. After the fact, you need to reconstruct the session: which documents were in context, which tools were invoked with which arguments, and what data came back. Teams that log all four can close an incident in hours; teams that log only the tool name end up telling regulators they cannot know.</p>
+
+<h2 id="what-should-an-mcp-security-review-cover-before-go-live">What Should an MCP Security Review Cover Before Go-Live?</h2>
+<p>A short, repeatable review catches most of what later becomes an incident. Ten checks are enough for the majority of deployments:</p>
+<ol>
+<li>Every server requires authentication — no anonymous access, no reliance on network location.</li>
+<li>Each tool declares the minimum scopes it needs, and those scopes map to roles rather than to the server.</li>
+<li>Write and delete tools are separated from read tools and are justified in writing.</li>
+<li>Tool inputs are validated against a schema; raw SQL, shell commands, and file paths are never accepted from a model.</li>
+<li>Secrets live in a vault, are rotated, and never appear in configuration files or logs.</li>
+<li>Data classification is enforced at the connector boundary, including field-level masking for regulated data.</li>
+<li>Audit logs capture session, user, tool, arguments, result volume, and timing, and are shipped off-host.</li>
+<li>Rate limits and data-volume budgets exist per session and per server.</li>
+<li>A red-team pass attempts prompt injection through realistic content — a poisoned document, a support ticket, a web page — and the results are fixed, not just recorded.</li>
+<li>A kill switch and a rollback path have been tested, not merely designed.</li>
+</ol>
+<p>Run the review per server, not per programme, and re-run it whenever a tool's schema changes. The registry of approved servers then becomes the artefact you hand to an auditor: it shows what exists, who owns it, what it can reach, and when it was last reviewed.</p>
+
+<h2 id="how-is-mcp-security-different-from-api-gateway-security">How Is MCP Security Different From API Gateway Security?</h2>
+<p>Enterprises with mature API gateways often assume the same controls transfer directly. Some do — authentication, rate limiting, and logging are familiar work — but three differences matter. First, the caller is non-deterministic: an API client sends requests an engineer wrote, while an MCP client sends requests a model composed seconds earlier from untrusted context. Schema validation therefore moves from good practice to a hard requirement, because you cannot reason about the set of possible inputs.</p>
+<p>Second, intent is expressed in natural language, so the mapping from user request to tool call is probabilistic and can be steered by content the user never saw. An API gateway asks "is this token allowed to call this endpoint"; an MCP gateway must also ask "does this call make sense given what the user actually asked for, and is the result proportionate to it". Third, the blast radius is wider: one assistant session can chain a dozen tools across systems that were never designed to be reachable in sequence. Containment has to be designed per session, not per endpoint. Teams that treat MCP as just another upstream to publish usually discover these differences during an incident rather than during a review.</p>
+
+<h2 id="looking-ahead-what-to-expect">What Should Security Teams Expect Next From MCP?</h2>
 <p>MCP is not going away, and it should not — it is the most practical path to making enterprise data usable by AI assistants. What will change in 2026 is the baseline expectation: identity everywhere, least privilege by default, full observability, and security tooling that understands the protocol natively. The organizations that win with MCP are the ones that stop debating whether to adopt it and start engineering the controls around it, treating every connector as a privileged surface from day one. Done right, a secure MCP deployment is exactly what a modern conversational AI stack needs to deliver real-time answers without becoming the next breach headline.</p>
 
 
@@ -283,24 +328,24 @@ The market data from the first half of 2025 tells a compelling story. According 
                 </h2>
                 <div class="faq-list">
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">1</span><span>1 What are the main technical challenges in implementing MCP connectors at enterprise scale?</span></span>
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">1</span><span>What are the main technical challenges in implementing MCP connectors at enterprise scale?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
+                        </button></h3>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">The primary challenges include managing diverse data source connectivity, ensuring sub-100ms latency at scale, maintaining security through proper access controls, and handling schema evolution without service disruption. Our analysis shows that organizations using standardized MCP protocols reduce integration complexity by 55% compared to bespoke approaches.</div></div>
                     </div>
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">2</span><span>2 How does MCP compare to other integration protocols for AI systems?</span></span>
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">2</span><span>How does MCP compare to other integration protocols for AI systems?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
+                        </button></h3>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">MCP provides a purpose-built protocol for AI agent-to-data-source communication, offering advantages in semantic understanding, context management, and tool discovery. Unlike generic API protocols, MCP includes built-in support for schema introspection, permission scoping, and conversational context preservation, making it particularly well-suited for conversational BI and enterprise AI agent deployments.</div></div>
                     </div>
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">3</span><span>3 What performance benchmarks should enterprises target for production AI deployments?</span></span>
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">3</span><span>What performance benchmarks should enterprises target for production AI deployments?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
+                        </button></h3>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">For production enterprise AI, target sub-100ms P95 latency for query response, 99.9% availability, support for 10,000+ concurrent sessions, and query accuracy exceeding 90% for standard business questions. Organizations achieving these benchmarks report 67% higher user satisfaction scores compared to those with less stringent performance standards.</div></div>
                     </div>
                 </div>
@@ -318,13 +363,17 @@ The market data from the first half of 2025 tells a compelling story. According 
             <div class="sidebar-card">
                 <div class="sidebar-heading">Table of Contents</div>
                 <nav class="toc-links">
-                    <a href="#the-current-state-of-enterprise-architecture" class="toc-link">The Current State of Enterprise Architecture</a>
+                    <a href="#the-current-state-of-enterprise-architecture" class="toc-link">Why Does MCP Redraw the Enterprise Security Perimeter?</a>
                     <a href="#what-are-the-biggest-security-risks-in-an-mcp-deployment" class="toc-link">What Are the Biggest Security Risks in an MCP Deployment?</a>
-                    <a href="#technical-implementation-patterns" class="toc-link">Technical Implementation Patterns</a>
-                    <a href="#performance-and-scalability-considerations" class="toc-link">Performance and Scalability Considerations</a>
-                    <a href="#security-and-compliance-integration" class="toc-link">Security and Compliance Integration</a>
-                    <a href="#how-a-managed-conversational-bi-service-fits-in" class="toc-link">How a Managed Conversational BI Service Fits In</a>
-                    <a href="#looking-ahead-what-to-expect" class="toc-link">Looking Ahead: What to Expect</a>
+                    <a href="#technical-implementation-patterns" class="toc-link">Which Implementation Patterns Keep an MCP Deployment Secure?</a>
+                    <a href="#performance-and-scalability-considerations" class="toc-link">How Do You Keep Security Controls From Breaking Performance?</a>
+                    <a href="#security-and-compliance-integration" class="toc-link">What Do Regulators Expect From an MCP Deployment?</a>
+                    <a href="#how-a-managed-conversational-bi-service-fits-in" class="toc-link">How Does a Managed Conversational BI Service Reduce This Risk?</a>
+                    <a href="#how-should-identity-and-least-privilege-be-scoped-for-mcp-tools" class="toc-link">How Should Identity and Least Privilege Be Scoped for MCP Tools?</a>
+                    <a href="#how-do-you-detect-and-contain-a-prompt-injection-incident" class="toc-link">How Do You Detect and Contain a Prompt-Injection Incident?</a>
+                    <a href="#what-should-an-mcp-security-review-cover-before-go-live" class="toc-link">What Should an MCP Security Review Cover Before Go-Live?</a>
+                    <a href="#how-is-mcp-security-different-from-api-gateway-security" class="toc-link">How Is MCP Security Different From API Gateway Security?</a>
+                    <a href="#looking-ahead-what-to-expect" class="toc-link">What Should Security Teams Expect Next From MCP?</a>
                 </nav>
             </div>
             <div class="sidebar-card">
@@ -495,5 +544,6 @@ The market data from the first half of 2025 tells a compelling story. According 
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "MCP Protocol Security Considerations for Enterprise Deployment";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

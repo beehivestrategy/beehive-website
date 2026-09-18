@@ -18,7 +18,7 @@
     <meta property="og:title" content="如何部署RAG企业知识管理系统">
     <meta property="og:description" content="为企业知识管理部署检索增强生成系统的分步指南，从数据准备到生产监控。">
     <meta property="og:url" content="https://www.beehivestrategy.com/zh-cn/blog/articles/how-to-deploy-rag-knowledge-management-system">
-    <meta property="og:image" content="https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/how-to-deploy-rag-knowledge-management-system.jpg">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-cn/how-to-deploy-rag-knowledge-management-system.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="zh_CN">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/how-to-deploy-rag-knowledge-management-system#article", "headline": "如何部署RAG企业知识管理系统", "description": "为企业知识管理部署检索增强生成系统的分步指南，从数据准备到生产监控。", "datePublished": "2026-05-25T09:00:00+08:00", "dateModified": "2026-05-25T09:00:00+08:00", "articleSection": "技术", "keywords": "RAG部署, 企业知识管理, 检索增强生成, 向量数据库", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/how-to-deploy-rag-knowledge-management-system"}, "image": "https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/how-to-deploy-rag-knowledge-management-system.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首页", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog"}, {"@type": "ListItem", "position": 3, "name": "如何部署RAG企业知识管理系统"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -194,6 +195,11 @@
             </div>
 <p><strong>良好部署的RAG系统提供95%以上的检索准确率，并为企业知识问题提供有来源的、可审计的答案。</strong>RAG（检索增强生成）之所以成为企业知识管理的首选架构，是因为它把"事实的仓库"（企业文档库）与"语言的引擎"（大语言模型）分离：回答始终基于可追溯的检索片段生成，幻觉被显著抑制，知识更新也无需重新训练模型。IDC预测2026年全球AI支出将超过3,000亿美元，其中知识密集型应用占比快速上升——对大多数企业而言，RAG是把这份投入转化为可审计、可落地的内部知识服务的现实路径。本文给出从知识库盘点、文档分块、索引构建到生产监控的完整部署指南。</p>
 <h2 id="前置条件">前置条件</h2>
+        <figure class="article-figure" data-fig-slug="how-to-deploy-rag-knowledge-management-system">
+          <img src="/assets/blog/svg/how-to-deploy-rag-knowledge-management-system.svg" alt="如何部署RAG企业知识管理系统 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>如何部署RAG企业知识管理系统</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>在动手部署之前，先确认四项基础设施就绪，否则后续每一步都会返工。RAG的质量遵循"垃圾进、垃圾出"原则：检索的边界由知识库决定，答案的上限由文档质量决定。</p>
 <ul>
 <li><strong>知识库：</strong>包含1000份以上文档的权威知识源（制度、产品文档、FAQ、SOP、客服话术等），明确每份文档的所有者与更新周期</li>
@@ -237,6 +243,11 @@
 <p>第二是可控。有了 RAG，语料就是合约：你决定模型可读什么，给它版本，并能精确看到哪段话产生了答案。这种控制正是让 AI 系统安全到可用于内部政策、流程、以及无人想泄露或漂移的 tacit 知识的理由。</p>
 <p>第三是成本与新鲜度。你不必每次 wiki 变动就微调模型，只需刷新索引。昂贵又慢的模型保持不动，便宜又快的索引保持最新——这正是能在 wiki 天天变的真实企业里存活的架构。</p>
 <h2 id="cn-prereq">部署 RAG 前有哪些前提？</h2>
+        <figure class="article-figure" data-fig-slug2="how-to-deploy-rag-knowledge-management-system">
+          <img src="/assets/blog/svg/how-to-deploy-rag-knowledge-management-system.svg" alt="如何部署RAG企业知识管理系统 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>如何部署RAG企业知识管理系统</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>第一前提是受治理的语料。RAG 放大它所检索的质量，所以一堆重复、冲突、被取代的文档会产生答错问题的自信答案。先策展再连接；索引步骤应排除垃圾，而非吞下它。</p>
 <p>第二是权限模型。索引必须在检索路径里落实谁可见什么，否则系统变成提权工具。这是企业最常跳过、也最常在合规关卡拦住它们的前提。</p>
 <p>第三是评估集：几百个带已知答案与出处的真实问题。没有它，你无法判断改动是否有帮助，只会发布看不见的回归。黄金集不是可选项，是 RAG 离不开的测试台。</p>
@@ -397,8 +408,8 @@
             <a href="/zh-cn/blog/articles/data-quality-automation-from-reactive-to-proactive-part-2" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/data-quality-automation-from-reactive-to-proactive-part-2.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
-                    <h3 class="recommended-card-title">Data Quality Automation From Reactive To Proactive Part 2</h3>
+                    <span class="recommended-card-cat">技术</span>
+                    <h3 class="recommended-card-title">数据质量自动化：从被动响应到主动预防（第二部分）</h3>
                     <p class="recommended-card-excerpt"></p>
                     <div class="recommended-card-meta">
                         <span>1 分钟阅读</span>
@@ -410,8 +421,8 @@
             <a href="/zh-cn/blog/articles/cfo-guide-ai-budget-allocation" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/cfo-guide-ai-budget-allocation.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
-                    <h3 class="recommended-card-title">Cfo Guide Ai Budget Allocation</h3>
+                    <span class="recommended-card-cat">技术</span>
+                    <h3 class="recommended-card-title">CFO人工智能预算分配指南：2026年投资回报最大化策略</h3>
                     <p class="recommended-card-excerpt"></p>
                     <div class="recommended-card-meta">
                         <span>1 分钟阅读</span>
@@ -508,5 +519,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "如何部署RAG企业知识管理系统";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

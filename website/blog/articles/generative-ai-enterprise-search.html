@@ -70,6 +70,7 @@
   ]
 }
 </script>
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -225,64 +226,74 @@
                     <a href="#frequently-asked-questions" class="toc-mobile-link">Frequently asked questions</a>
                 </div>
             </div>
-<p class="article-lead">Generative AI for enterprise search is turning internal search from keyword matching into real answers. The potential is enormous — and so is the gap between a convincing demo and a deployment employees actually trust.</p>
-<h2 id="why-it-matters">Why it matters</h2>
+<p class="article-lead">Generative AI for <a href="/en/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="inline-ref">enterprise search</a> is turning internal search from keyword matching into real answers. The potential is enormous — and so is the gap between a convincing demo and a deployment employees actually trust.</p>
+<h2  id="why-it-matters">Why it matters</h2>
+        <figure class="article-figure" data-fig-slug="generative-ai-enterprise-search">
+          <img src="/assets/blog/svg/generative-ai-enterprise-search.svg" alt="Generative AI for Enterprise Search — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>generative ai for enterprise search</b></figcaption>
+        </figure>
+
 <p>Enterprise search matters because time spent searching is time stolen from the job. McKinsey's long-running research on knowledge work estimates that employees spend about 19% of their working time searching for and gathering information, and IDC has put the figure even higher, at up to 2.5 hours per day for knowledge workers. For a 5,000-employee enterprise, that is thousands of hours a week spent re-finding what the organization already knows.</p>
 <p>Generative AI changes the interface: instead of a ranked list of documents, the employee gets an answer, with citations. McKinsey's 2023 survey found that 65% of organizations were already using generative AI in at least one business function, and search is the natural first use case because it is universal, safe, and immediately measurable — time-to-answer is a number every team can record before and after.</p>
-<p>The strategic value is knowledge reuse. Most enterprises cannot answer their own questions: the pricing policy exists in a contract, the onboarding procedure in a wiki, the troubleshooting steps in a support ticket. When a model can synthesize those sources into a cited answer, the organization stops paying employees to rediscover what it already knows — and stops paying the hidden cost of answers that are confidently wrong. There is an equity argument for enterprise search that teams rarely make: search quality is a productivity tax that falls hardest on the newest and least-networked employees. Veterans know where the answer lives; new hires do not, and they pay for that gap in hours every week. A generative answer layer that works for everyone — not just the people who already know the filing system — is one of the fastest inclusion wins a technology team can deliver.</p>
-<h2 id="common-challenges">Common challenges</h2>
+<p>The strategic value is knowledge reuse. <a href="/en/blog/articles/self-service-bi-maturity-model-2025" class="inline-ref">Most enterprises</a> cannot answer their own questions: the pricing policy exists in a contract, the onboarding procedure in a wiki, the troubleshooting steps in a support ticket. When a model can synthesize those sources into a cited answer, the organization stops paying employees to rediscover what it already knows — and stops paying the <a href="/en/blog/articles/hidden-cost-dashboard-sprawl-enterprises" class="inline-ref">hidden cost</a> of answers that are confidently wrong. There is an equity argument for enterprise search that teams rarely make: search quality is a productivity tax that falls hardest on the newest and least-networked employees. Veterans know where the answer lives; new hires do not, and they pay for that gap in hours every week. A generative answer layer that works for everyone — not just the people who already know the filing system — is one of the fastest inclusion wins a technology team can deliver.</p>
+<h2  id="common-challenges">Common challenges</h2>
 <p>The first challenge is the source layer. Enterprise documents are inconsistent — outdated wikis, duplicated PDFs, conflicting policies — and a model will happily cite a document that was superseded three years ago. Retrieval quality, not generation quality, is the real bottleneck, and retrieval is only as good as the corpus governance behind it.</p>
 <p>The second is permissions. A search system that returns a document the user is not entitled to see is a compliance incident, which means permission filtering must happen inside the retrieval path. Most enterprises cannot currently enforce this on their file shares, let alone across their generative search.</p>
 <p>The third is trust and verification. Employees will stop using a system that answers confidently and wrongly, so the answer must carry citations, the citations must link to the actual documents, and there must be a visible way to see what the model used and what it ignored. The demo that impresses the executive is often the deployment that embarrasses the team — because the demo searched three clean documents, and production searches the chaos.</p>
-<h2 id="why-does-traditional-enterprise-search-keep-failing">Why Does Traditional Enterprise Search Keep Failing?</h2>
-<p>Answer-first: because keyword search requires the user to know the vocabulary of the document, while the enterprise problem is that users do not. The person looking for the "expense policy for international travel" has no reason to know that the source document is titled "T&amp;E Reimbursement Guidelines FY24." Keyword search returns the document only if the user guesses the words; vector search returns it because it understands the meaning.</p>
+<h2  id="why-does-traditional-enterprise-search-keep-failing">Why Does Traditional Enterprise Search Keep Failing?</h2>
+<p>Answer-first: because keyword search requires the user to know the vocabulary of the document, while the enterprise problem is that users do not. The person looking for the "expense policy for international travel" has no reason to know that the source document is titled "T&amp;E Reimbursement Guidelines FY24." Keyword search returns the document only if the user guesses the words; <a href="/en/blog/articles/vector-search-patterns-for-enterprise-knowledge-bases-a-2026-update" class="inline-ref">vector search</a> returns it because it understands the meaning.</p>
 <p>There is a second failure mode that no search quality fixes: fragmentation. Most enterprises run a dozen disconnected repositories — SharePoint, the wiki, the ticketing system, the CRM, the file share — and searching them one at a time means the right document is in the system the user did not check. Enterprise search only works when it is unified at the index level, with one permission model across all sources.</p>
-<h2 id="the-retrieval-layer-that-makes-answers-trustworthy">The Retrieval Layer That Makes Answers Trustworthy</h2>
+<h2  id="the-retrieval-layer-that-makes-answers-trustworthy">The Retrieval Layer That Makes Answers Trustworthy</h2>
 <p>The retrieval layer is where trust is engineered. A production-grade deployment combines vector search for semantic matching with structured filters for permissions and recency, so the model only ever synthesizes from sources the user is entitled to see. Chunking strategy, metadata, and version control determine whether the answer cites the current policy or the superseded one — and Gartner has predicted that by 2026, a third of large enterprises will have shifted from retrieval-based search to generative answer generation, which makes these retrieval decisions the new competitive difference. The evaluation discipline deserves equal weight. A golden question set — a few hundred real questions with known best answers and cited sources — is the only reliable way to know whether a change to the chunking, the embedding model, or the corpus actually improved answers. Teams that ship retrieval changes without a golden set are flying blind, and the regressions they introduce are the ones users remember.</p>
 <p>This is where the conversation around Beehive Strategy's approach belongs. Beehive Strategy builds retrieval pipelines for enterprise search and conversational analytics with the same governed semantic layer — unified permissions, curated sources, visible lineage — and deploys them in roughly two weeks as a managed service. The answers surface inside the tools employees already use, such as Microsoft Teams and Slack, so the search happens where the work happens, and the citations let every user verify the answer for themselves.</p>
-<h2 id="how-to-get-started">How to get started</h2>
+<h2  id="how-to-get-started">How to get started</h2>
 <p>Begin with a pilot use case that has a clear owner, measurable outcome, and limited data sources. Map the top five questions the business asks repeatedly — "what is the current travel policy?", "who owns this customer?", "how do I escalate a support issue?" — and make those the pilot's golden question set, with a baseline time-to-answer recorded before launch.</p>
 <p>Second, curate the source layer. Exclude or archive superseded documents, define the permission model across the sources the pilot touches, and agree on what "current" means for each document type, because the corpus governance is the accuracy.</p>
 <p>Third, measure the trust signal. Track weekly active users, the cross-check rate (users verifying answers against the original documents), and the citation-click rate. The pilot succeeds when users stop searching for the document and start trusting the answer — and that shift is measurable in weeks, not quarters. And set the expansion criteria before the pilot ends: a target time-to-answer reduction, a target share of golden-set questions answered correctly, and a permission-filter pass on the adversarial test. When the pilot hits those three numbers, the next repository gets onboarded with the same pattern; when it does not, the fix goes into the retrieval layer, not into the model. Expansion without criteria is how search programs wander.</p>
-<h2 id="production-architecture">What Does a Production-Grade Enterprise Search Architecture Actually Look Like?</h2>
+<h2  id="production-architecture">What Does a Production-Grade Enterprise Search Architecture Actually Look Like?</h2>
 <p>A trustworthy enterprise search system is built in four layers, and each layer has a distinct job. The ingestion layer connects to source systems — SharePoint, the wiki, the ticketing platform, the CRM, the file share — on a schedule and normalizes every document into a common model with consistent metadata. Without this layer, retrieval is only as good as the messiest repository in the estate. The index layer stores both vector embeddings and the original text side by side, so the system can match on meaning and still quote the exact sentence. The retrieval layer selects the smallest relevant set the user is actually entitled to see, and the generation layer writes the answer strictly from that set, attaching a citation to every claim.</p>
 <p>The retrieval layer is where most deployments succeed or fail. The common anti-pattern is to dump every document into a vector store and hope that cosine similarity finds the answer; in practice you need hybrid retrieval that combines vector search with keyword (BM25) matching, because proper nouns, product codes, and policy numbers are matched far more reliably by exact tokens than by semantics. Metadata filters then enforce permissions and recency so the model never sees a document the user cannot open. A re-ranking step reorders the candidates so the top-k passed to the model are the right ones, and chunking strategy is tuned so citations point at a precise passage rather than an entire 200-page PDF.</p>
 <p>The generation layer must be constrained by design. No answer leaves the system without a citation the user can open; no citation is shown that the model did not actually use; and there is always a visible "sources used" view so anyone can audit the reasoning. This is the layer where Beehive Strategy's managed service fits: a governed semantic layer with unified permissions, curated sources, and visible lineage, deployed inside Microsoft Teams and Slack so the answer appears where the work already happens rather than in yet another portal employees will not open.</p>
-<h2 id="measuring-success">How Do You Measure Whether Generative Search Is Actually Working?</h2>
+<h2  id="measuring-success">How Do You Measure Whether Generative Search Is Actually Working?</h2>
+        <figure class="article-figure" data-fig-slug2="generative-ai-enterprise-search">
+          <img src="/assets/blog/svg/generative-ai-enterprise-search.svg" alt="Generative AI for Enterprise Search — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>generative ai for enterprise search</b></figcaption>
+        </figure>
+
 <p>Measurement starts with three signals captured from day one. Time-to-answer is the most intuitive: record how long employees spend reaching a verified answer before launch, then again after, using the same recurring questions. Adoption is the share of the target population using the system weekly — a beautiful demo that nobody opens on Tuesday is not a deployment. The citation cross-check rate, the proportion of answers whose source link a user actually clicks, is the honesty signal: low cross-check rates mean users trust the answer on faith, while high rates mean the citations are doing their defensive job.</p>
 <p>Underneath usage sits the golden question set: a few hundred real questions with known best answers and accepted sources, scored for correctness, citation accuracy, and the discipline to abstain when the corpus lacks the answer. Track the abstain rate deliberately — a system that refuses a question it cannot support is safer than one that fabricates a confident reply. Organizations that ship retrieval changes without a golden set are flying blind, and the regressions they introduce are precisely the ones users remember and punish by churn.</p>
 <p>Finally, tie measurement to a business outcome rather than a model metric. For a support team the number is first-contact resolution; for sales it is proposal turnaround; for engineering it is time spent hunting the right runbook. Pick one outcome, baseline it before launch, and report it monthly. When the metric moves, the program earns its next repository; when it does not, the fix belongs in the retrieval layer, not in a bigger model.</p>
-<h2 id="which-teams-first">Which Teams Should Adopt Enterprise Search First, and How Do You Scale?</h2>
+<h2  id="which-teams-first">Which Teams Should Adopt Enterprise Search First, and How Do You Scale?</h2>
 <p>Start where the pain is loudest and the data is cleanest. Customer support, sales enablement, and IT or security runbooks are the usual first wins because their questions repeat, their value is obvious, and their source sets are relatively contained. Avoid beginning with the legal or HR corpus, where permission complexity is highest and a single wrong disclosure is a serious incident — earn the cheap win first, then point the harder repositories at a proven pattern.</p>
 <p>Scaling is a governance program, not a model upgrade. Every new repository adds three things: a permission model, a curation owner, and a slice of the golden question set. The repeatable unit is one repository, one owner, one success metric; once that trio is green, the next repository onboards with the same shape. Beehive Strategy's roughly two-week deployment model reinforces this discipline because it forces tight scoping before any build begins, which is exactly what prevents the program from drifting.</p>
 <p>The trap that ends most search programs is "boil the ocean" — connecting every system at once to impress a steering committee. The result is a low-quality index and a trust collapse that no model can recover. Expansion without criteria is how search programs wander; keep the golden set growing and the cross-check rate visible, and the value compounds instead.</p>
-<h2 id="common-mistakes">What Are the Most Common Mistakes Teams Make With Enterprise Search?</h2>
+<h2  id="common-mistakes">What Are the Most Common Mistakes Teams Make With Enterprise Search?</h2>
 <p>The first mistake is treating search as a model problem. Teams spend months benchmarking large language models while the real bottleneck — corpus governance, chunking, and permissions — sits untouched, so the deployed answer is still wrong, just faster. The second is launching without a golden set, which makes it impossible to tell improvement from regression. The third is deferring permissions until after launch, which turns the first compliance review into a stop-work order. The fourth is measuring demo wow-factor instead of time-to-answer, and the fifth is writing the answer layer before the retrieval layer is trustworthy.</p>
 <p>Each of these mistakes is avoidable with the same remedy: govern the sources, instrument the retrieval, and let the model do only the last hundred meters. The enterprises that get enterprise search right are not the ones with the largest models; they are the ones that treated search as a knowledge-management discipline with a language model attached, rather than the other way around.</p>
 
             <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
-                <h2 class="faq-section-title">
+                <h2 class="faq-section-title" id="frequently-asked-questions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     Frequently Asked Questions
                 </h2>
                 <div class="faq-list">
                     <div class="faq-item">
                         <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">1</span><h3 class="faq-q" style="margin:0;font-size:1rem;font-weight:600;display:inline">What is Generative AI for Enterprise Search?</h3></span>
+                            <span class="faq-question-text"><span class="faq-number">1</span><h3 class="faq-q" style="margin:0;font-size:1rem;font-weight:600;display:inline" id="what-is-generative-ai-for-enterprise-search">What is Generative AI for Enterprise Search?</h3></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">Generative AI for Enterprise Search is Turning internal search from keyword matching into real answers.</div></div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">2</span><h3 class="faq-q" style="margin:0;font-size:1rem;font-weight:600;display:inline">Why does Generative AI for Enterprise Search matter for Technology?</h3></span>
+                            <span class="faq-question-text"><span class="faq-number">2</span><h3 class="faq-q" style="margin:0;font-size:1rem;font-weight:600;display:inline" id="why-does-generative-ai-for-enterprise-search-matter-for-technology">Why does Generative AI for Enterprise Search matter for Technology?</h3></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">It reduces friction in how Technology teams access, interpret, and act on information, leading to measurable productivity gains.</div></div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-question" aria-expanded="false">
-                            <span class="faq-question-text"><span class="faq-number">3</span><h3 class="faq-q" style="margin:0;font-size:1rem;font-weight:600;display:inline">How should teams get started with Generative AI for Enterprise Search?</h3></span>
+                            <span class="faq-question-text"><span class="faq-number">3</span><h3 class="faq-q" style="margin:0;font-size:1rem;font-weight:600;display:inline" id="how-should-teams-get-started-with-generative-ai-for-enterprise-search">How should teams get started with Generative AI for Enterprise Search?</h3></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">Start with one high-value decision, connect the minimum data needed, and iterate with business users until the output is trusted.</div></div>
@@ -297,26 +308,29 @@
                 </a>
             </nav>
 
-<h2 id="key-takeaways">Key takeaways</h2>
+<h2  id="key-takeaways">Key takeaways</h2>
 <p>Generative enterprise search is a retrieval and governance problem with a language model on top. These are the principles that produce answers employees trust.</p>
 <ul>
 <li><strong>Start with a specific decision, not a platform purchase:</strong> the golden question set defines the sources, the permissions, and the success metric.</li>
 <li><strong>Retrieval beats generation:</strong> corpus curation, chunking, and version control determine whether answers cite the current policy or the superseded one.</li>
 <li><strong>Enforce permissions in the retrieval path:</strong> a system that returns documents the user cannot see is a compliance incident.</li>
 <li><strong>Governance and usability must be designed together:</strong> visible citations and lineage are what make answers verifiable.</li>
-<li><strong>Adoption depends on trust, and trust depends on transparent, explainable outputs:</strong> measure the cross-check rate; it is the honest signal.</li>
-</ul>
-</article>
-
-        <aside class="toc-sidebar" id="toc-sidebar" aria-label="Article sidebar">
-            <div class="sidebar-card">
-                <div class="sidebar-heading">Table of Contents</div>
-                <nav class="toc-links">
+<li><strong>Adoption depends on trust, and trust depends on transparent, explainable outputs:</strong> measure the cross-check rate; it is the honest<nav class="toc-links">
                     <a href="#why-it-matters" class="toc-link">Why it matters</a>
                     <a href="#common-challenges" class="toc-link">Common challenges</a>
                     <a href="#why-does-traditional-enterprise-search-keep-failing" class="toc-link">Why Does Traditional Enterprise Search Keep Failing?</a>
                     <a href="#the-retrieval-layer-that-makes-answers-trustworthy" class="toc-link">The Retrieval Layer That Makes Answers Trustworthy</a>
                     <a href="#how-to-get-started" class="toc-link">How to get started</a>
+                    <a href="#production-architecture" class="toc-link">What Does a Production-Grade Enterprise Search Architecture Actually Look Like?</a>
+                    <a href="#measuring-success" class="toc-link">How Do You Measure Whether Generative Search Is Actually Working?</a>
+                    <a href="#which-teams-first" class="toc-link">Which Teams Should Adopt Enterprise Search First, and How Do You Scale?</a>
+                    <a href="#common-mistakes" class="toc-link">What Are the Most Common Mistakes Teams Make With Enterprise Search?</a>
+                    <a href="#frequently-asked-questions" class="toc-link">Frequently Asked Questions</a>
+                    <a href="#what-is-generative-ai-for-enterprise-search" class="toc-link">What is Generative AI for Enterprise Search?</a>
+                    <a href="#why-does-generative-ai-for-enterprise-search-matter-for-technology" class="toc-link">Why does Generative AI for Enterprise Search matter for Technology?</a>
+                    <a href="#how-should-teams-get-started-with-generative-ai-for-enterprise-search" class="toc-link">How should teams get started with Generative AI for Enterprise Search?</a>
+                    <a href="#key-takeaways" class="toc-link">Key takeaways</a>
+                </nav>-link">How to get started</a>
                     <a href="#key-takeaways" class="toc-link">Key takeaways</a>
                     <a href="#frequently-asked-questions" class="toc-link">Frequently asked questions</a>
                 </nav>
@@ -336,15 +350,15 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Related Articles</div>
                 <div class="sidebar-related-list">
-                    <a href="blog/articles/women-in-data-building-inclusive-ai-teams" class="sidebar-related-card">
+                    <a href="/blog/articles/women-in-data-building-inclusive-ai-teams" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Women In Data Building Inclusive Ai Teams</h4>
                         <span class="sidebar-related-meta">11 min read</span>
                     </a>
-                    <a href="blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="sidebar-related-card">
+                    <a href="/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Why Data Strategy Needs Ai Agent Layer 2026</h4>
                         <span class="sidebar-related-meta">8 min read</span>
                     </a>
-                    <a href="blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="sidebar-related-card">
+                    <a href="/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Vector Databases Enterprise Search 2026 Practical Guide</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
@@ -361,7 +375,7 @@
             <a href="https://www.beehivestrategy.com/blog" class="recommended-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
         <div class="recommended-grid">
-            <a href="blog/articles/technical-architecture-enterprise-ai-agents" class="recommended-card">
+            <a href="/blog/articles/technical-architecture-enterprise-ai-agents" class="recommended-card">
                 <img src="/assets/blog/covers/en/technical-architecture-enterprise-ai-agents.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -374,7 +388,7 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/supply-chain-resilience-ai-scenario-planning" class="recommended-card">
+            <a href="/blog/articles/supply-chain-resilience-ai-scenario-planning" class="recommended-card">
                 <img src="/assets/blog/covers/en/supply-chain-resilience-ai-scenario-planning.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -387,7 +401,7 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/supply-chain-resilience-ai-demand-sensing" class="recommended-card">
+            <a href="/blog/articles/supply-chain-resilience-ai-demand-sensing" class="recommended-card">
                 <img src="/assets/blog/covers/en/supply-chain-resilience-ai-demand-sensing.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -413,8 +427,8 @@
                     <h2 class="article-cta-title" id="cta-heading">Ready to transform your data strategy?</h2>
                     <p class="article-cta-desc">See how Beehive Strategy's conversational analytics platform unlocks real-time insights across your operations, from upstream data to downstream decisions.</p>
                     <div class="article-cta-actions">
-                        <a href="contact" class="article-cta-btn">Book a Demo</a>
-                        <a href="solution" class="article-cta-secondary">Explore the Solution</a>
+                        <a href="/contact" class="article-cta-btn">Book a Demo</a>
+                        <a href="/solution" class="article-cta-secondary">Explore the Solution</a>
                     </div>
                 </div>
                 <div class="article-cta-stats">
@@ -489,5 +503,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "Generative AI for Enterprise Search";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

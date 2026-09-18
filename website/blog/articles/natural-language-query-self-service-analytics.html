@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-    <title>Natural Language Queries and the Future of Self-Service Analytics | Beehive Strategy</title>
+    <title>Natural Language Queries and the Future of Self-Service</title>
     <meta name="description" content="How natural language interfaces are democratising data access. Explore Beehive Strategy&#x27;s conversational BI solutions for enterprise teams.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/natural-language-query-self-service-analytics">
@@ -78,6 +78,7 @@
   ]
 }
 </script>
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -237,17 +238,22 @@
                     <a href="#how-do-you-evaluate-nlq-quality" class="toc-mobile-link">How Do You Evaluate NLQ Quality?</a>
                 </div>
             </div>
-<p><strong>Natural language query (NLQ) is the interface that finally lets non-technical users question their data directly.</strong> Instead of learning a BI tool or filing a ticket, a business user types a question and gets a chart or a number. This article explains why NLQ projects succeed or fail, what good NLQ architecture and semantic layers look like, how to roll NLQ out safely, what ROI it delivers, what good looks like in practice, how to keep it accurate over time, and what security considerations matter.</p>
+<p><strong><a href="/en/blog/articles/conversational-bi-executives-natural-language-queries" class="inline-ref">Natural language query</a> (NLQ) is the interface that finally lets non-technical users question their data directly.</strong> Instead of learning a BI tool or filing a ticket, a business user types a question and gets a chart or a number. This article explains why NLQ projects succeed or fail, what good NLQ architecture and semantic layers look like, how to roll NLQ out safely, what ROI it delivers, what good looks like in practice, how to keep it accurate over time, and what <a href="/en/blog/articles/mcp-protocol-security-enterprise-deployment" class="inline-ref">security considerations</a> matter.</p>
 
-<h2 id="what-is-natural-language-query">What Is Natural Language Query?</h2>
-<p>Natural language query is the capability that turns a typed or spoken question into a structured query against your data and returns an answer a human can read. Under the hood it combines a language model for interpretation, a semantic layer for meaning, and a query engine for execution. The user never sees SQL; they see the answer and, in a well-built system, the path that produced it.</p>
+<h2  id="what-is-natural-language-query">What Is Natural Language Query?</h2>
+        <figure class="article-figure" data-fig-slug="natural-language-query-self-service-analytics">
+          <img src="/assets/blog/svg/natural-language-query-self-service-analytics.svg" alt="Natural Language Queries and the Future of Self-Service Analytics — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>natural language queries and the future of self-service analytics</b></figcaption>
+        </figure>
+
+<p>Natural language query is the capability that turns a typed or spoken question into a structured query against your data and returns an answer a human can read. Under the hood it combines a language model for interpretation, a <a href="/en/blog/articles/semantic-layer-conversational-bi-self-service-analytics" class="inline-ref">semantic layer</a> for meaning, and a <a href="/en/blog/articles/natural-language-query-engine-conversational-bi" class="inline-ref">query engine</a> for execution. The user never sees SQL; they see the answer and, in a well-built system, the path that produced it.</p>
 <p>NLQ is the consumer-facing half of conversational analytics. Where conversational BI serves executives with reasoned narrative, NLQ serves any business user with a direct question-to-answer loop. The value is democratisation: the people closest to a decision can interrogate the data themselves, removing the analyst as a bottleneck and the delay that came with it.</p>
 
-<h2 id="why-do-natural-language-query-projects-succeed-or-fail">Why Do Natural Language Query Projects Succeed or Fail?</h2>
+<h2  id="why-do-natural-language-query-projects-succeed-or-fail">Why Do Natural Language Query Projects Succeed or Fail?</h2>
 <p>NLQ projects fail for one recurring reason: they skip the semantic layer and let the model guess at the schema. When "active customers" is interpreted against the wrong table, the answer is confident and wrong, and trust dies on first contact. Successful projects invert the order — they model the business meaning first, then let the model map questions onto that meaning.</p>
 <p>The second reason is scope. Projects that open NLQ to the entire warehouse on day one drown in ambiguous questions and dirty data; projects that start with one clean domain earn trust, then expand. The third is measurement — teams that count queries instead of answered questions celebrate a busy system nobody believes. Success is a function of a governed semantic layer, a constrained start, and a definition of "working" that means "the answer was acted on."</p>
 
-<h2 id="implementation-strategies-and-best-practices">What Are the Implementation Strategies and Best Practices for NLQ?</h2>
+<h2  id="implementation-strategies-and-best-practices">What Are the Implementation Strategies and Best Practices for NLQ?</h2>
 <p>Implement NLQ as thin vertical slices. Pick one domain whose data is clean and whose questions are common — say, sales performance — model its entities in the semantic layer, wire the NLQ engine, and put it in front of real users. Measure whether their questions get correct answers and whether they act on them.</p>
 <p>Best practices mirror those of conversational BI:</p>
 <ul>
@@ -257,120 +263,146 @@
 <li><strong>Measure trust, not volume.</strong> An answered question that changes a decision is the unit of success.</li>
 </ul>
 
-<h2 id="what-makes-a-good-nlq-semantic-layer">What Makes a Good Semantic Layer for NLQ?</h2>
+<h2  id="what-makes-a-good-nlq-semantic-layer">What Makes a Good Semantic Layer for NLQ?</h2>
 <p>A good semantic layer is the dictionary the model is allowed to use. It defines entities (customer, order, region), their attributes (revenue, margin, status), and the relationships between them (a customer places orders, an order has a region). With it, "revenue by region" resolves unambiguously to the right tables and joins; without it, the model improvises.</p>
 <p>The layer should be owned, versioned, and tested like code. When a business definition changes — "active customer" now means "purchased in 12 months" — the change is made once in the layer and every question inherits it. A semantic layer that is undocumented, unowned, or diverged from the warehouse is the root cause of most NLQ failures, because the model is then mapping words onto a moving target.</p>
 
-<h2 id="how-do-you-roll-out-nlq-safely">How Do You Roll Out Natural Language Query Safely?</h2>
+<h2  id="how-do-you-roll-out-nlq-safely">How Do You Roll Out Natural Language Query Safely?</h2>
 <p>Roll out NLQ behind entitlements from the first day. The engine may only return data the asking user may see, enforced at the semantic layer, not by hoping the model redacts. Start with read-only questions on a clean domain, log every query and answer for audit, and review the logs for surprising questions that reveal a gap in the layer.</p>
 <p>Safe rollout also means a human-in-the-loop expectation for consequential decisions. NLQ is for exploration and everyday questions; a number that triggers a large action should still be confirmed against the cited query. The rollout is safe when the system is constrained, logged, and entitled — so the first wrong answer is caught and traced, not shipped to a customer.</p>
 
-<h2 id="what-roi-does-nlq-deliver">What ROI Does Natural Language Query Actually Deliver?</h2>
+<h2  id="what-roi-does-nlq-deliver">What ROI Does Natural Language Query Actually Deliver?</h2>
 <p>The direct ROI is analyst time returned to analysis. Questions that took a ticket and days now take a sentence and seconds, and the saved time compounds across a team fielding hundreds of requests a week. For many teams that efficiency alone funds the NLQ rollout.</p>
 <p>The larger ROI is decisions made in time. A price question answered in the meeting, a region reviewed before the quarter closes, a cohort checked while the campaign is live — these are the strategic wins. The honest ROI story pairs the measured efficiency saving with the qualitative decision value and refuses false precision on the second. Enterprises fund NLQ on the efficiency; they keep funding it on the decisions.</p>
 
-<h2 id="what-does-good-nlq-look-like">What Does Good Natural Language Query Look Like in Practice?</h2>
+<h2  id="what-does-good-nlq-look-like">What Does Good Natural Language Query Look Like in Practice?</h2>
 <p>In practice, good NLQ looks like a business user who stopped waiting. They type "show me margin by product line this quarter," get the chart with the query visible, type "exclude the one-time item," and get the adjusted view — no ticket, no wait, no translation. The tool sits inside the workflow, and the answer arrives with its own audit trail.</p>
 <p>The signal that NLQ is working is invisible infrastructure: people use it without thinking, challenge it because they can see the path, and act on it because they trust it. When NLQ is a destination users open on purpose rather than a demo they forgot, it has earned its place — and that is the bar every rollout should target.</p>
 
-<h2 id="how-do-you-keep-nlq-accurate">How Do You Keep Natural Language Query Accurate Over Time?</h2>
+<h2  id="how-do-you-keep-nlq-accurate">How Do You Keep Natural Language Query Accurate Over Time?</h2>
 <p>Accuracy decays because data and definitions change while the layer stays still. Keep it accurate with three habits. First, version and review the semantic layer on a cadence, so definition changes propagate deliberately. Second, monitor query logs for questions the model answered with low confidence or that a human corrected, and close those gaps in the layer. Third, regression-test the model against a fixed set of canonical questions, so a model update cannot silently break a known answer.</p>
 <p>Accuracy is a process, not a launch state. The NLQ systems that stay trusted are the ones whose owners treat the semantic layer as a living asset with a changelog, and whose evaluation set grows with the questions users actually ask. The ones that ship and forget drift into confident wrongness, and once trust is gone it is expensive to rebuild.</p>
 
-<h2 id="what-are-nlq-security-considerations">What Security Considerations Matter for Natural Language Query?</h2>
+<h2  id="what-are-nlq-security-considerations">What Security Considerations Matter for Natural Language Query?</h2>
 <p>The central security problem in NLQ is entitlement: a single interface can answer questions that used to require several system permissions, so access must be enforced at the layer, not hoped for. A regional user asking for company-wide data gets only their region unless their role grants more. Entitlements are data, governed like any other asset.</p>
 <p>The second consideration is leakage through prompts and logs. Mitigations are constraint and logging: the model answers only within scoped entities, and every query and result is recorded for audit. The third is the model boundary — enterprise NLQ should not send governed data to a third-party model for training without explicit consent; prefer deployments that contractually exclude it. Secure NLQ is mostly disciplined entitlements plus a complete query log; the chat is easy to secure once those are right.</p>
 
-<h2 id="how-does-nlq-differ-from-a-bi-tool">How Does NLQ Differ From a Traditional BI Tool?</h2>
+<h2  id="how-does-nlq-differ-from-a-bi-tool">How Does NLQ Differ From a Traditional BI Tool?</h2>
 <p>A traditional BI tool asks the user to know the tool: build the visual, pick the fields, set the filters. NLQ asks the tool to know the business: the user states an intent and the system assembles the query. The cognitive load moves from the human to the semantic layer. This is not a cosmetic difference; it is what lets a non-analyst self-serve, because the skill they needed — operating the tool — is no longer required.</p>
 <p>The trade-off is control. A BI tool gives power users precise instruments; NLQ gives casual users fast answers with less precision in the asking. The enterprises that win run both: NLQ for the 80% of questions that are routine, and the full BI tool for the 20% that need fine control. NLQ is not the replacement for BI; it is the front door that lets more people in, and the deep tool remains for the analysts who live there.</p>
 
-<h2 id="what-are-common-nlq-pitfalls">What Are the Common Pitfalls in Natural Language Query?</h2>
+<h2  id="what-are-common-nlq-pitfalls">What Are the Common Pitfalls in Natural Language Query?</h2>
 <p>The pitfalls are predictable and avoidable. Shipping without a semantic layer, so the model guesses schema. Opening the whole warehouse at once, so ambiguous questions and dirty data poison trust early. Measuring queries instead of answered questions, and declaring victory on a busy system no one believes. Treating accuracy as a launch state rather than a process, so definitions drift and answers rot. Each is simply the absence of the disciplines above, which is why the implementation strategy and the accuracy habit are the whole game.</p>
 
-<h2 id="how-do-you-evaluate-nlq-quality">How Do You Evaluate NLQ Quality?</h2>
+<h2  id="how-do-you-evaluate-nlq-quality">How Do You Evaluate NLQ Quality?</h2>
 <p>Evaluate NLQ the way you would evaluate a junior analyst: on whether the answer is right and whether the user acted on it. Build a fixed set of canonical questions with known-correct answers and regression-test the model against them after every update, so a new version cannot silently break a question that used to work. Track, per question, whether the returned number matched the source and whether the user proceeded to a decision.</p>
 <p>Layer a confidence signal on top: when the model is unsure how to interpret a question, it should say so and ask for disambiguation rather than guess. A system that surfaces its own uncertainty is more trustworthy than one that always answers. Quality, measured this way, is a number the team can watch and improve — and the metric that actually predicts whether NLQ will be adopted or abandoned.</p>
 
-<h2 id="nlq-train-users">How Do You Train Users to Write Effective Queries?</h2>
+<h2  id="nlq-train-users">How Do You Train Users to Write Effective Queries?</h2>
 <p>Effective querying is a learnable skill: start with precise nouns, name the metric, the segment, and the time window, and avoid vague adjectives that the model must interpret. Short examples shown in the interface teach faster than a manual.</p>
 <p>Encourage users to read the cited definition behind an answer, which builds intuition for how the system resolves terms. Over time, good question patterns spread organically through teams that share queries.</p>
 <p>Measure and surface the most useful queries as templates so newcomers stand on the shoulders of early adopters. The goal is a library of trusted questions, not a blank box for every user to reinvent.</p>
-<h2 id="nlq-govern-abuse">What Governance Prevents Natural Language Query Abuse?</h2>
+<h2  id="nlq-govern-abuse">What Governance Prevents Natural Language Query Abuse?</h2>
+        <figure class="article-figure" data-fig-slug2="natural-language-query-self-service-analytics">
+          <img src="/assets/blog/svg/natural-language-query-self-service-analytics.svg" alt="Natural Language Queries and the Future of Self-Service Analytics — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>natural language queries and the future of self-service analytics</b></figcaption>
+        </figure>
+
 <p>Governance prevents abuse by constraining what can be asked and by whom, based on role and data sensitivity. Unbounded self-service invites both accidental exposure and deliberate probing of restricted dimensions.</p>
 <p>Log every query and review anomalies, such as repeated attempts to reach masked fields, so policy violations surface early. Transparency about what is monitored itself discourages misuse.</p>
 <p>Combined with clear acceptable-use guidance, this lets the organization grant broad freedom without losing control. The boundary is explicit, consistent, and enforced by the platform rather than by after-the-fact policing.</p>
-<h2 id="nlq-ambiguity">How Does Natural Language Query Handle Ambiguity?</h2>
+<h2  id="nlq-ambiguity">How Does Natural Language Query Handle Ambiguity?</h2>
 <p>Ambiguity is resolved by the semantic layer, which maps vague terms to certified definitions and asks for clarification when genuinely unclear. The aim is a confident answer or an honest question, never a silent guess.</p>
 <p>Good systems surface the interpretation they used, so a user can correct it and the correction improves future queries. Transparency about meaning is what separates trustworthy NLQ from a parlor trick.</p>
-<h2 id="nlq-future">What Is the Future of Self-Service Analytics?</h2>
+<h2  id="nlq-future">What Is the Future of Self-Service Analytics?</h2>
 <p>Self-service is converging with conversational and agentic interfaces, where the user states an intent and the system assembles the analysis, not just the query. Governance becomes the differentiator as capability democratizes.</p>
 <p>The winners will be organizations that pair broad access with strong semantic discipline, so anyone can ask anything yet always get a trustworthy answer. That combination is the real destination of self-service.</p>
-<h2 id="nlq-govern-tools">How Do You Integrate NLQ With Governance Tools?</h2>
+<h2  id="nlq-govern-tools">How Do You Integrate NLQ With Governance Tools?</h2>
 <p>Integration means NLQ inherits the same policies as every other access path: masking, row limits, and audit logging applied consistently. Governance tools should see NLQ as just another query surface to protect.</p>
 <p>When policy changes, they propagate to natural language answers automatically, eliminating a separate compliance track. Unified governance is what lets you grant wide freedom without losing control.</p>
-<h2 id="nlq-value">What Is the Business Value of Natural Language Querying?</h2>
+<h2  id="nlq-value">What Is the Business Value of Natural Language Querying?</h2>
 <p>The value is speed: decisions that waited days for a report can now be answered in seconds, and the accumulated time saved across a large organization is substantial. That velocity is itself a strategic advantage.</p>
 <p>Just as important is consistency, because every user draws on the same certified definitions instead of local spreadsheets. Self-service therefore reduces both latency and disagreement, which together remove a quiet tax on enterprise performance.</p>
-<h2 id="nlq-how">How Does Natural Language Querying Work Technically?</h2>
+<h2  id="nlq-how">How Does Natural Language Querying Work Technically?</h2>
 <p>Natural language querying translates a user's question into a structured query against a governed semantic layer. The model maps words like 'revenue' or 'last quarter' to certified definitions rather than guessing at raw table columns.</p>
 <p>A robust implementation validates the generated query before execution and returns a cited result. This prevents the classic failure where two users see different numbers because each interpreted an ambiguous term differently.</p>
-<h2 id="nlq-who-benefits">Who Benefits Most From Self-Service Analytics?</h2>
+<h2  id="nlq-who-benefits">Who Benefits Most From Self-Service Analytics?</h2>
 <p>Business users who previously waited days for a report gain the most, along with analysts who are freed from repetitive pulls to focus on higher-value work. Leadership also benefits from consistent answers across the organization.</p>
 <p>The biggest returns appear in functions with frequent, similar questions, such as finance, operations, and customer success. There, self-service turns a bottleneck into a self-resolving routine without expanding headcount.</p>
-<h2 id="nlq-misleading">How Do You Prevent Misleading Query Results?</h2>
+<h2  id="nlq-misleading">How Do You Prevent Misleading Query Results?</h2>
 <p>Misleading results usually come from ambiguous definitions or ungoverned data, so the fix is discipline at the semantic layer. Every metric should have one approved definition, and the system should reject or flag queries that fall outside certified scope.</p>
 <p>Pair the technology with literacy training so users understand confidence and context. When people know why a number is presented and what it excludes, they make better decisions and trust the platform more.</p>
-<h2 id="nlq-metrics">What Metrics Show Self-Service Adoption Success?</h2>
+<h2  id="nlq-metrics">What Metrics Show Self-Service Adoption Success?</h2>
 <p>Track the share of questions answered without analyst intervention, the time from question to answer, and the reuse rate of saved queries. Declining ad-hoc report requests is another strong signal of genuine self-sufficiency.</p>
 <p>Equally important is answer quality over time. Monitoring which questions fail or get corrected helps the team refine definitions and expand the governed layer where demand is highest.</p>
-<h2 id="nlq-limits">What Are the Limits of Natural Language Querying?</h2>
+<h2  id="nlq-limits">What Are the Limits of Natural Language Querying?</h2>
 <p>Natural language querying is powerful but not magic; it depends on the quality of the underlying semantic layer and the clarity of the question. Ambiguous or contradictory requests still need human judgment to resolve.</p>
 <p>It also struggles with genuinely novel analysis that no definition covers yet. The right mental model is copilot, not autopilot: the system handles routine interrogation so experts can spend their time on the questions that truly need them.</p>
 <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
-                <h2 class="faq-section-title">
+                <h2 class="faq-section-title" id="frequently-asked-questions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     Frequently Asked Questions
                 </h2>
                 <div class="faq-list">
                     <div class="faq-item">
-                        <h3 class="faq-question-heading" style="margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;"><button class="faq-question" aria-expanded="false">
+                        <h3 class="faq-question-heading" style="margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;" id="1-what-is-natural-language-query"><button class="faq-question" aria-expanded="false">
                             <span class="faq-question-text"><span class="faq-number">1</span><span>What is natural language query?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button></h3>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">NLQ turns a typed or spoken question into a structured query against your data and returns a readable answer. It combines a language model for interpretation, a semantic layer for meaning, and a query engine for execution, hiding the SQL from the user.</div></div>
                     </div>
                     <div class="faq-item">
-                        <h3 class="faq-question-heading" style="margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;"><button class="faq-question" aria-expanded="false">
+                        <h3 class="faq-question-heading" style="margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;" id="2-why-do-nlq-projects-fail-most-often"><button class="faq-question" aria-expanded="false">
                             <span class="faq-question-text"><span class="faq-number">2</span><span>Why do NLQ projects fail most often?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button></h3>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">They skip the semantic layer and let the model guess at schema, producing confident wrong answers that kill trust on first contact. Success comes from modelling business meaning first, starting in one clean domain, and measuring trust rather than query volume.</div></div>
                     </div>
                     <div class="faq-item">
-                        <h3 class="faq-question-heading" style="margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;"><button class="faq-question" aria-expanded="false">
+                        <h3 class="faq-question-heading" style="margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;" id="3-what-makes-a-good-semantic-layer-for-nlq"><button class="faq-question" aria-expanded="false">
                             <span class="faq-question-text"><span class="faq-number">3</span><span>What makes a good semantic layer for NLQ?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button></h3>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">A good layer defines entities, attributes, and relationships the model may use, is owned and versioned like code, and is tested so a definition change propagates to every question. An undocumented or diverged layer is the root cause of most NLQ failures.</div></div>
                     </div>
                     <div class="faq-item">
-                        <h3 class="faq-question-heading" style="margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;"><button class="faq-question" aria-expanded="false">
+                        <h3 class="faq-question-heading" style="margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;" id="4-how-do-you-keep-nlq-accurate-as-data-changes"><button class="faq-question" aria-expanded="false">
                             <span class="faq-question-text"><span class="faq-number">4</span><span>How do you keep NLQ accurate as data changes?</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button></h3>
                         <div class="faq-answer" role="region"><div class="faq-answer-inner">Treat the semantic layer as a living asset: review it on a cadence, monitor query logs for low-confidence or corrected answers and close those gaps, and regression-test the model against a fixed set of canonical questions so updates cannot silently break known answers.</div></div>
                     </div>
                 </div>
-            </section></article>
-
-        <aside class="toc-sidebar" id="toc-sidebar" aria-label="Article sidebar">
-            <div class="sidebar-card">
-                <div class="sidebar-heading">Table of Contents</div>
-                <nav class="toc-links">
-                    <a href="#the-rise-of-conversational-business-intelligence" class="toc-link">The Rise of Conversational Business Intelligence</a>
-                    <a href="#architecture-for-enterprise-conversational-bi" class="toc-link">Architecture for Enterprise Conversational BI</a>
+    <nav class="toc-links">
+                    <a href="#what-is-natural-language-query" class="toc-link">What Is Natural Language Query?</a>
                     <a href="#why-do-natural-language-query-projects-succeed-or-fail" class="toc-link">Why Do Natural Language Query Projects Succeed or Fail?</a>
+                    <a href="#implementation-strategies-and-best-practices" class="toc-link">What Are the Implementation Strategies and Best Practices for NLQ?</a>
+                    <a href="#what-makes-a-good-nlq-semantic-layer" class="toc-link">What Makes a Good Semantic Layer for NLQ?</a>
+                    <a href="#how-do-you-roll-out-nlq-safely" class="toc-link">How Do You Roll Out Natural Language Query Safely?</a>
+                    <a href="#what-roi-does-nlq-deliver" class="toc-link">What ROI Does Natural Language Query Actually Deliver?</a>
+                    <a href="#what-does-good-nlq-look-like" class="toc-link">What Does Good Natural Language Query Look Like in Practice?</a>
+                    <a href="#how-do-you-keep-nlq-accurate" class="toc-link">How Do You Keep Natural Language Query Accurate Over Time?</a>
+                    <a href="#what-are-nlq-security-considerations" class="toc-link">What Security Considerations Matter for Natural Language Query?</a>
+                    <a href="#how-does-nlq-differ-from-a-bi-tool" class="toc-link">How Does NLQ Differ From a Traditional BI Tool?</a>
+                    <a href="#what-are-common-nlq-pitfalls" class="toc-link">What Are the Common Pitfalls in Natural Language Query?</a>
+                    <a href="#how-do-you-evaluate-nlq-quality" class="toc-link">How Do You Evaluate NLQ Quality?</a>
+                    <a href="#nlq-train-users" class="toc-link">How Do You Train Users to Write Effective Queries?</a>
+                    <a href="#nlq-govern-abuse" class="toc-link">What Governance Prevents Natural Language Query Abuse?</a>
+                    <a href="#nlq-ambiguity" class="toc-link">How Does Natural Language Query Handle Ambiguity?</a>
+                    <a href="#nlq-future" class="toc-link">What Is the Future of Self-Service Analytics?</a>
+                    <a href="#nlq-govern-tools" class="toc-link">How Do You Integrate NLQ With Governance Tools?</a>
+                    <a href="#nlq-value" class="toc-link">What Is the Business Value of Natural Language Querying?</a>
+                    <a href="#nlq-how" class="toc-link">How Does Natural Language Querying Work Technically?</a>
+                    <a href="#nlq-who-benefits" class="toc-link">Who Benefits Most From Self-Service Analytics?</a>
+                    <a href="#nlq-misleading" class="toc-link">How Do You Prevent Misleading Query Results?</a>
+                    <a href="#nlq-metrics" class="toc-link">What Metrics Show Self-Service Adoption Success?</a>
+                    <a href="#nlq-limits" class="toc-link">What Are the Limits of Natural Language Querying?</a>
+                    <a href="#frequently-asked-questions" class="toc-link">Frequently Asked Questions</a>
+                    <a href="#1-what-is-natural-language-query" class="toc-link">1 What is natural language query?</a>
+                    <a href="#2-why-do-nlq-projects-fail-most-often" class="toc-link">2 Why do NLQ projects fail most often?</a>
+                    <a href="#3-what-makes-a-good-semantic-layer-for-nlq" class="toc-link">3 What makes a good semantic layer for NLQ?</a>
+                    <a href="#4-how-do-you-keep-nlq-accurate-as-data-changes" class="toc-link">4 How do you keep NLQ accurate as data changes?</a>
+                </nav>="toc-link">Why Do Natural Language Query Projects Succeed or Fail?</a>
                     <a href="#implementation-strategies-and-best-practices" class="toc-link">Implementation Strategies and Best Practices</a>
                 </nav>
             </div>
@@ -542,5 +574,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "Natural Language Queries and the Future of Self-Service Analytics";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

@@ -188,6 +188,33 @@ export async function onRequest(context) {
     /^\/product-category\//,
     /^\/portfolio\//,
     /^\/portfolio-category\//,
+    /^\/portfolio_page\//,  // underscore variant — Bridge theme demo pages
+    /^\/blockquotes\/?$/,    // Bridge theme demo shortcodes
+    /^\/cover-galleries\/?$/,
+    /^\/gallery-frame\/?$/,
+    /^\/highlights\/?$/,
+    /^\/social-icons\/?$/,
+    /^\/testimonials\/?$/,
+    /^\/transparent-menu\/?$/,
+    /^\/home-4\/?/,
+    /^\/home-5\/?/,
+    /^\/home-portfolio\/?/,
+    /^\/buttons\/?$/,
+    /^\/carousel\/?$/,
+    /^\/expandable\/?$/,
+    /^\/icons\/?$/,
+    /^\/latest-posts-boxes\/?/,
+    /^\/process-shortcode\/?/,
+    /^\/random-counters\/?$/,
+    /^\/responsive-image\/?$/,
+    /^\/semitransparent-header\/?$/,
+    /^\/service-tables\/?$/,
+    /^\/text-animation-header\/?$/,
+    /^\/vertical-progress-bars\/?$/,
+    /^\/video-header\/?$/,
+    /^\/zero-counters\/?$/,
+    /^\/blog\/feed\.xml$/,    // blog RSS feed
+    /^\/blog\/large-image-with-sidebar\/?/,
     /^\/shop\/?/,
     /^\/cart\/?/,
     /^\/checkout\/?/,
@@ -202,6 +229,7 @@ export async function onRequest(context) {
     /^\/date\//,
     /^\/feed\/?/,
     /^\/comments\/feed\/?/,
+    /\/feed\/?$/,  // any nested /feed/ path (e.g. /portfolio/.../feed/)
     /^\/\d{4}\/\d{2}\/?/,  // WordPress date-based archives (/2023/01/)
     /^\/\d{4}\/\d{2}\/[^/]+\/?$/,  // WordPress date-based post URLs (/2023/01/post-title/)
   ];

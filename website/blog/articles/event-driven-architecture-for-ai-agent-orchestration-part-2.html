@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-    <title>Event-Driven Architecture for AI Agent Orchestration: Part 2 | Beehive Strategy</title>
+    <title>Event-Driven Architecture for AI Agent Orchestration: Part 2</title>
     <meta name="description" content="In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2#article", "headline": "Event-Driven Architecture for AI Agent Orchestration: Part 2", "description": "In Part 2, we examine advanced patterns for production-grade event-driven systems that coordinate AI agents at scale — from saga workflows and schema governance to observability and conversational close loops.", "datePublished": "2026-07-24T13:00:00+08:00", "dateModified": "2026-07-24T13:00:00+08:00", "articleSection": "Engineering", "keywords": "event-driven-architecture, ai-agent-orchestration, enterprise-ai, saga-pattern, schema-governance, beehive-strategy", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/event-driven-architecture-for-ai-agent-orchestration-part-2.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Event-Driven Architecture for AI Agent Orchestration: Part 2"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -193,8 +194,13 @@
                     <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
                 </div>
             </div>
-<p class="article-lead">Six months after our initial exploration of event-driven architecture for AI agent orchestration, the enterprise landscape has matured considerably. Organisations have moved beyond proof-of-concept agent demonstrations to production systems coordinating dozens of specialised agents across finance, operations, supply chain, and customer service. This shift has exposed a new class of challenges that early architectural decisions rarely anticipated: handling partial failures across agent boundaries, governing event schemas as teams scale, and maintaining observability when deterministic business logic gives way to probabilistic agent behaviour. In this article, we share the architectural patterns, governance disciplines, and operational practices that separate successful production deployments from stalled pilots.</p>
+<p class="article-lead">Six months after our initial exploration of event-<a href="/en/blog/articles/event-driven-architecture-for-ai-agent-orchestration-a-2026-update" class="inline-ref">driven architecture</a> for AI <a href="/en/blog/articles/event-driven-architecture-for-ai-agent-orchestration-a-2026-update" class="inline-ref">agent orchestration</a>, the enterprise landscape has matured considerably. Organisations have moved beyond proof-of-concept agent demonstrations to <a href="/en/blog/articles/responsible-ai-operationalizing-ethics-in-production" class="inline-ref">production systems</a> coordinating dozens of specialised agents across finance, operations, <a href="/en/blog/articles/supply-chain-ai-demand-forecasting-accuracy" class="inline-ref">supply chain</a>, and customer service. This shift has exposed a new class of challenges that early architectural decisions rarely anticipated: handling partial failures across agent boundaries, governing event schemas as teams scale, and maintaining observability when deterministic business logic gives way to probabilistic agent behaviour. In this article, we share the architectural patterns, governance disciplines, and operational practices that separate successful production deployments from stalled pilots.</p>
 <h2 id="advanced-coordination-patterns-beyond-pub-sub">What Advanced Coordination Patterns Go Beyond Pub-Sub?</h2>
+        <figure class="article-figure" data-fig-slug="event-driven-architecture-for-ai-agent-orchestration-part-2">
+          <img src="/assets/blog/svg/event-driven-architecture-for-ai-agent-orchestration-part-2.svg" alt="Event-Driven Architecture for AI Agent Orchestration: Part 2 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>event-driven architecture for ai agent orchestration: part 2</b></figcaption>
+        </figure>
+
 <p>The foundational publish-subscribe pattern that served initial agent prototypes well begins to fracture when agents develop dependencies. In production, an order-processing workflow might involve a credit-risk agent, an inventory agent, a fraud-detection agent, and a fulfilment agent — each publishing events that downstream agents consume. When the fraud agent flags a transaction, the fulfilment agent must not proceed. When inventory is unavailable, the credit check becomes irrelevant. These are not theoretical concerns; they manifest daily in multi-agent systems that lack explicit coordination semantics.</p>
 <p>The saga pattern has emerged as the de facto standard for managing long-running, multi-agent business processes. Rather than relying on distributed transactions — which are brittle and scale poorly across autonomous agent services — a saga breaks a workflow into a sequence of local transactions, each followed by an event. If a step fails, compensating events undo preceding actions. In practice, this means defining explicit compensation handlers for every agent action: if a payment agent succeeds but a shipping agent fails, the payment agent receives a reversal event and issues a refund. Implementing sagas requires careful event design, but the resulting resilience is essential for production reliability.</p>
 <p>Circuit breakers provide another critical defence mechanism. Agent services, particularly those wrapping external APIs or large language models, exhibit failure modes that differ from traditional microservices. Rate limits, context-window exhaustion, and model drift can degrade performance unpredictably. A circuit breaker monitors call failure rates and temporarily blocks requests to a failing agent, allowing it to recover while the broader system continues operating with degraded but predictable behaviour. We recommend pairing circuit breakers with fallback agents — smaller, simpler models that handle routine queries when primary agents are unavailable.</p>
@@ -230,6 +236,11 @@
 
 
             <h2 id="what-does-a-reference-event-driven-reference-architecture-look-like">What Does a Reference Event-Driven Architecture Look Like?</h2>
+        <figure class="article-figure" data-fig-slug2="event-driven-architecture-for-ai-agent-orchestration-part-2">
+          <img src="/assets/blog/svg/event-driven-architecture-for-ai-agent-orchestration-part-2.svg" alt="Event-Driven Architecture for AI Agent Orchestration: Part 2 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>event-driven architecture for ai agent orchestration: part 2</b></figcaption>
+        </figure>
+
 <p>A production-grade event-driven agent platform shares a small set of components. An <em>event backbone</em> (log or broker) durably stores events and lets any agent subscribe. A <em>schema registry</em> holds the contracts and rejects malformed events before they reach consumers. An <em>agent runtime</em> consumes events, reasons, and emits new events, while a <em>dead-letter store</em> captures messages that repeatedly fail so failures are observable instead of silent.</p>
 <table class="comparison-table">
 <thead><tr><th>Component</th><th>Responsibility</th></tr></thead>
@@ -348,15 +359,15 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Related Articles</div>
                 <div class="sidebar-related-list">
-                    <a href="blog/articles/graph-databases-for-complex-business-relationship-analysis-part-2" class="sidebar-related-card">
+                    <a href="/blog/articles/graph-databases-for-complex-business-relationship-analysis-part-2" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Graph Databases for Complex Business Relationship Analysis: Part 2</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
-                    <a href="blog/articles/data-pipeline-observability-monitoring-beyond-failure-a-2026-update" class="sidebar-related-card">
+                    <a href="/blog/articles/data-pipeline-observability-monitoring-beyond-failure-a-2026-update" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Data Pipeline Observability: Monitoring Beyond Failure: A 2026 Update</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
-                    <a href="blog/articles/federated-learning-for-privacy-preserving-enterprise-ai-a-2026-update" class="sidebar-related-card">
+                    <a href="/blog/articles/federated-learning-for-privacy-preserving-enterprise-ai-a-2026-update" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Federated Learning for Privacy-Preserving Enterprise AI: A 2026 Update</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
@@ -373,7 +384,7 @@
             <a href="https://www.beehivestrategy.com/blog" class="recommended-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
         <div class="recommended-grid">
-            <a href="/blog/articles/blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
+            <a href="/blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
                 <img src="/assets/blog/covers/en/women-in-data-building-inclusive-ai-teams.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -388,7 +399,7 @@
                     </div>
                 </div>
             </a>
-            <a href="/blog/articles/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
+            <a href="/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
                 <img src="/assets/blog/covers/en/why-data-strategy-needs-ai-agent-layer-2026.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -403,7 +414,7 @@
                     </div>
                 </div>
             </a>
-            <a href="/blog/articles/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
+            <a href="/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
                 <img src="/assets/blog/covers/en/vector-databases-enterprise-search-2026-practical-guide.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -430,8 +441,8 @@
                     <h2 class="article-cta-title" id="cta-heading">Ready to transform your data strategy?</h2>
                     <p class="article-cta-desc">See how Beehive Strategy's conversational analytics platform unlocks real-time insights across your operations, from upstream data to downstream decisions.</p>
                     <div class="article-cta-actions">
-                        <a href="contact" class="article-cta-btn">Book a Demo</a>
-                        <a href="solution" class="article-cta-secondary">Explore the Solution</a>
+                        <a href="/contact" class="article-cta-btn">Book a Demo</a>
+                        <a href="/solution" class="article-cta-secondary">Explore the Solution</a>
                     </div>
                 </div>
                 <div class="article-cta-stats">
@@ -506,5 +517,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "Event-Driven Architecture for AI Agent Orchestration: Part 2";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,69 @@
+/* article-anim.css — Beehive Strategy "New Version" motion + UX layer
+   Loaded only on article pages. Pure CSS; the JS (article-anim.js) toggles
+   .is-visible and wires the progress bar / TOC / magnetic CTA.
+   Palette: teal #2B9E8B · gold #d4a843 · ink #0e2a3b · mist #e8eef0 */
+
+:root{
+  --bh-teal:#2B9E8B; --bh-gold:#d4a843; --bh-ink:#0e2a3b;
+  --bh-aqua:#6cc4b4; --bh-slate:#5b7083; --bh-mist:#e8eef0;
+  --bh-ease:cubic-bezier(.22,.61,.36,1);
+}
+
+/* reading progress */
+.reading-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:90;
+  background:transparent;pointer-events:none}
+.reading-progress-bar{height:100%;width:0;
+  background:linear-gradient(90deg,var(--bh-teal),var(--bh-gold));
+  transition:width .08s linear}
+
+/* scroll reveal — applied by JS to .article-content children */
+.reveal{opacity:0;transform:translateY(18px);
+  transition:opacity .7s var(--bh-ease),transform .7s var(--bh-ease);
+  will-change:opacity,transform}
+.reveal.is-visible{opacity:1;transform:none}
+
+/* figures + injected SVG */
+.article-figure{margin:2.4rem auto;max-width:760px;
+  border-radius:14px;overflow:hidden;
+  background:linear-gradient(135deg,#f7fafb,#eef4f5);
+  box-shadow:0 14px 38px -22px rgba(14,42,59,.45);
+  border:1px solid rgba(14,42,59,.06)}
+.article-figure .article-svg{display:block;width:100%;height:auto}
+.article-figure figcaption{padding:.85rem 1.1rem 1rem;
+  font-size:.82rem;line-height:1.5;color:var(--bh-slate);
+  border-top:1px solid rgba(14,42,59,.07);background:#fff}
+.article-figure figcaption b{color:var(--bh-ink);font-weight:600}
+
+/* SVG line-draw-on-scroll */
+.svg-draw{stroke-dasharray:1;stroke-dashoffset:1;
+  animation:svdraw 2.1s var(--bh-ease) forwards}
+@keyframes svdraw{to{stroke-dashoffset:0}}
+
+/* TOC active state polish */
+.toc-link{transition:color .25s var(--bh-ease),border-color .25s var(--bh-ease),padding-left .25s var(--bh-ease)}
+.toc-link.active{color:var(--bh-teal);border-left-color:var(--bh-teal);padding-left:14px;font-weight:600}
+
+/* hover micro-interactions */
+.recommended-card{transition:transform .3s var(--bh-ease),box-shadow .3s var(--bh-ease)}
+.recommended-card:hover{transform:translateY(-6px);box-shadow:0 22px 44px -26px rgba(14,42,59,.5)}
+.article-cta-btn{transition:transform .25s var(--bh-ease),box-shadow .25s var(--bh-ease),background .25s var(--bh-ease)}
+.article-cta-btn:hover{box-shadow:0 16px 34px -16px rgba(43,158,139,.7)}
+
+/* magnetic CTA (transform set by JS) */
+.article-cta-btn{will-change:transform}
+
+/* gentle hero lift on load */
+.article-hero-lift{animation:heroLift 1s var(--bh-ease) both}
+@keyframes heroLift{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* inline contextual link styling (auto internal links) */
+.article-content a.inline-ref{color:var(--bh-teal);text-decoration:none;
+  border-bottom:1px solid rgba(43,158,139,.35);transition:border-color .2s,color .2s}
+.article-content a.inline-ref:hover{border-bottom-color:var(--bh-teal);color:var(--bh-ink)}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .svg-draw{animation:none;stroke-dashoffset:0}
+  .article-hero-lift{animation:none}
+  .reading-progress{display:none}
+}

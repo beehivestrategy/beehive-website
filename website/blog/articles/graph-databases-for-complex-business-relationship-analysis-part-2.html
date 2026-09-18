@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-    <title>Graph Databases for Complex Business Relationship Analysis: Part 2 | Beehive Strategy</title>
+    <title>Graph Databases for Complex Business Relationship Analysis</title>
     <meta name="description" content="Graph Databases for Complex Business Relationship Analysis: Part 2. Practical insights from Beehive Strategy&#x27;s enterprise AI consulting practice. Learn how leading organisations implement AI-driven solutions.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/graph-databases-for-complex-business-relationship-analysis-part-2">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/graph-databases-for-complex-business-relationship-analysis-part-2#article", "headline": "Graph Databases for Complex Business Relationship Analysis: Part 2", "description": "Graph Databases for Complex Business Relationship Analysis: Part 2. Practical insights from Beehive Strategy's enterprise AI consulting practice. Learn how leading organisations implement AI-driven solutions.", "datePublished": "2026-05-18T18:00:00+08:00", "dateModified": "2026-05-18T18:00:00+08:00", "articleSection": "Engineering", "keywords": "engineering, enterprise-ai, data-strategy, ai-consulting, beehive-strategy", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/graph-databases-for-complex-business-relationship-analysis-part-2"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/graph-databases-for-complex-business-relationship-analysis-part-2.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Graph Databases for Complex Business Relationship Analysis: Part 2"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -185,32 +186,57 @@
             <div class="toc-mobile" id="toc-mobile">
                 <button class="toc-mobile-toggle" aria-expanded="false">Table of Contents <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
                 <div class="toc-mobile-links">
-                    <a href="#the-current-landscape" class="toc-mobile-link">The Current Landscape</a>
-                    <a href="#key-implementation-challenges" class="toc-mobile-link">Key Implementation Challenges</a>
+                    <a href="#the-current-landscape" class="toc-mobile-link">Why Is Relationship Data Under More Pressure Than Ever?</a>
+                    <a href="#key-implementation-challenges" class="toc-mobile-link">Which Implementation Challenges Decide Success?</a>
                     <a href="#how-do-you-keep-a-relationship-graph-honest" class="toc-mobile-link">How Do You Keep a Relationship Graph Honest?</a>
-                    <a href="#practical-approaches-that-work" class="toc-mobile-link">Practical Approaches That Work</a>
+                    <a href="#what-does-a-90-day-graph-pilot-look-like" class="toc-mobile-link">What Does a 90-Day Graph Pilot Look Like?</a>
+                    <a href="#practical-approaches-that-work" class="toc-mobile-link">What Approaches Actually Work in Production?</a>
                     <a href="#key-takeaways" class="toc-mobile-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-mobile-link">Conclusion</a>
+                    <a href="#faq" class="toc-mobile-link">Frequently Asked Questions</a>
                 </div>
             </div>
-<p class="article-lead">Part 1 of this series made the case for graph databases; Part 2 is about the part that actually decides success: keeping the graph true. The hard work in relationship analytics is not writing traversal queries — it is entity resolution, edge governance, and refresh discipline. A graph that confidently connects the wrong things is worse than no graph at all, and most graph failures are data failures, not technology failures.</p>
-<h2 id="the-current-landscape">The Current Landscape</h2>
-<p>The pressure to get relationship data right has intensified since Part 1. Regulatory scrutiny of beneficial ownership has increased — the EU's sixth Anti-Money Laundering Directive, applying from July 2025, tightens transparency requirements — and the compliance cost is enormous: LexisNexis Risk Solutions estimates financial crime compliance costs exceeded US$206 billion in the US and Canada in 2022 alone. Banks are expected to see through layered transactions, nominee structures, and multi-hop ownership, and that expectation is now encoded in examinations rather than left to individual institutions' discretion.</p>
-<p>The same pressure is spreading beyond financial crime. Supply chain teams need multi-tier visibility — a parts shortage three tiers down matters more than the health of the tier-one supplier, and customers and auditors now ask "who else depends on this supplier?" as a routine question. Sales organisations need account relationships across subsidiaries to cover and price accurately. Fraud teams need to link accounts, devices, and identities that deliberately do not share obvious identifiers. All of these are relationship problems, and all of them depend on the graph describing reality.</p>
+<p class="article-lead">Part 1 of this series made the case for <a href="/en/blog/articles/graph-databases-for-complex-business-relationship-analysis-a-2026-update" class="inline-ref">graph databases</a>; Part 2 is about the part that actually decides success: keeping the graph true. The hard work in relationship analytics is not writing traversal queries — it is entity resolution, edge governance, and refresh discipline. A graph that confidently connects the wrong things is worse than no graph at all, and most graph failures are data failures, not technology failures.</p>
+<h2 id="the-current-landscape">Why Is Relationship Data Under More Pressure Than Ever?</h2>
+        <figure class="article-figure" data-fig-slug="graph-databases-for-complex-business-relationship-analysis-part-2">
+          <img src="/assets/blog/svg/graph-databases-for-complex-business-relationship-analysis-part-2.svg" alt="Graph Databases for Complex Business Relationship Analysis: Part 2 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>graph databases for complex business relationship analysis: part 2</b></figcaption>
+        </figure>
+
+<p>The pressure to get relationship data right has intensified since Part 1. Regulatory scrutiny of beneficial ownership has increased — the EU's sixth Anti-<a href="/en/blog/articles/ai-anti-money-laundering-detection" class="inline-ref">Money Laundering</a> Directive, applying from <a href="/en/blog/articles/eu-ai-act-implementation-progress-july-2025" class="inline-ref">July 2025</a>, tightens transparency requirements — and the compliance cost is enormous: LexisNexis Risk Solutions estimates financial crime compliance costs exceeded US$206 billion in the US and Canada in 2022 alone. Banks are expected to see through layered transactions, nominee structures, and multi-hop ownership, and that expectation is now encoded in examinations rather than left to individual institutions' discretion.</p>
+<p>The same pressure is spreading beyond financial crime. <a href="/en/blog/articles/supply-chain-ai-demand-forecasting-accuracy" class="inline-ref">Supply chain</a> teams need multi-tier visibility — a parts shortage three tiers down matters more than the health of the tier-one supplier, and customers and auditors now ask "who else depends on this supplier?" as a routine question. Sales organisations need account relationships across subsidiaries to cover and price accurately. Fraud teams need to link accounts, devices, and identities that deliberately do not share obvious identifiers. All of these are relationship problems, and all of them depend on the graph describing reality.</p>
 <p>What has changed is expectation, not possibility. Gartner's projection that graph technologies would be used in 80% of data and analytics innovations by 2025 — up from 10% in 2021 — has largely materialised as a mainstream requirement. The consequence is that the questions are no longer "should we use a graph?" but "how do we keep it accurate, current, and explainable?" — and those are the questions this part addresses, because the answers determine whether the graph earns its place in production or becomes an abandoned experiment.</p>
-<h2 id="key-implementation-challenges">Key Implementation Challenges</h2>
+<p>The technology baseline has matured alongside the expectation. Property-graph engines such as Neo4j, Amazon Neptune, and TigerGraph are established in enterprise estates, graph workloads are routine on cloud data platforms, and the new ISO GQL standard is consolidating graph query language the way SQL once did. Vendors now ship entity-resolution integrations, lineage tooling, and vector indexes side by side — meaning the build-versus-buy conversation has shifted from "can we store a graph?" to "who owns the correctness of what goes into it?" The differentiator between competitors is no longer the engine; it is the operating discipline described in the rest of this article.</p>
+<h2 id="key-implementation-challenges">Which Implementation Challenges Decide Success?</h2>
 <p>Entity resolution is the first challenge, and it is the one that decides everything else. A customer appears in a CRM as one record, in the payments system under a slightly different name, in the corporate registry as a legal entity, and in a supplier system under an account code; connecting those records correctly is what makes the graph true. Matching rules and machine learning models can automate much of it, but the residual cases need human review — and the error rate, even small, compounds across millions of nodes, so a 99% match accuracy still produces tens of thousands of wrong connections at scale.</p>
 <p>Edge governance is the second. In a graph, the edges are assertions: "A controls B," "C is a supplier dependency of D," "E and F are the same person." Each assertion is a judgment with legal and commercial consequences, and each needs a definition, an owner, and a version — what counts as control, at what threshold, as of what date. In our assessments, teams that treat edge definitions as governance decisions rather than data details are the ones whose graphs survive audit; the rest discover the omission at the worst possible moment.</p>
 <p>Freshness is the third. Relationship data is not static: companies merge, suppliers restructure, people change employers, and every event rewires the network. A graph that was accurate at build time is describing a world that no longer exists within months unless refresh and re-matching are designed in. Stale relationships are a silent source of wrong conclusions — a supply chain exposure that was resolved last quarter, flagged as live today; a control relationship that ended, still asserted. Freshness is not a maintenance detail; it is the difference between the graph as truth and the graph as history.</p>
+<p>Modelling and performance pitfalls form a quieter fourth challenge. Teams either under-model — every relationship becomes a generic "linked to" edge, and multi-hop queries return noise — or over-model, encoding dozens of edge types nobody queries. Unbounded traversals are the classic performance trap: a "find all connections" query on a dense financial network can fan out exponentially, so depth limits, direction constraints, and pre-computed paths for hot questions belong in the design, not in the post-mortem. Both pitfalls are avoided the same way: model the edges that the business questions actually traverse, and nothing else — at least not until a question demands it.</p>
 <h2 id="how-do-you-keep-a-relationship-graph-honest">How Do You Keep a Relationship Graph Honest?</h2>
 <p>The answer is four disciplines applied together: matching with human review, typed and versioned edges, lineage for every assertion, and a refresh cadence with re-matching. Matching gets the nodes right; typed edges make the assertions explicit; lineage makes them auditable; and refresh keeps them current. Skip any one and the graph's credibility decays, usually silently, until the first wrong conclusion is discovered in a regulatory review or a failed investigation.</p>
 <p>The disciplines translate into practice. Entity resolution should combine deterministic rules for clear cases, machine learning for ambiguous ones, and a review queue for the residual — with the review outcomes fed back into the matcher so accuracy improves over time. Edges should carry type, weight, temporal validity, and provenance: who asserted this relationship, from what source, when. Every edge should be traceable to its source document or system, because "the graph says so" is not an answer an auditor accepts — and the auditor will ask.</p>
 <p>Refresh deserves particular attention. Re-matching is not the same as re-loading: entities that merged or split must be re-resolved, and edges re-asserted, because loading new data without re-matching simply adds new records to an increasingly wrong network. Beehive Strategy's experience with relationship-heavy clients is that the organisations that schedule re-matching and measure match accuracy as a metric — not a one-off project — are the ones whose graphs stay trusted long after the initial build is forgotten.</p>
-<h2 id="practical-approaches-that-work">Practical Approaches That Work</h2>
+<p>Graph health should also be measured, not assumed. Four metrics cover most of it: match precision (spot-checked by human review on a sample), edge freshness (share of assertions refreshed within their expected validity window), query trust (how often investigators accept a graph answer without manual re-verification), and lineage coverage (share of edges traceable to a source). Publishing these numbers quarterly does for the graph what data quality dashboards did for the warehouse — it makes decay visible while it is still cheap to fix.</p>
+<p>A worked example makes the interlock concrete. In a KYC investigation, an analyst asks "who ultimately controls this account?" The matcher has resolved the account's holder across the CRM, the registry, and a filing system into one node; typed control edges — each carrying its threshold, effective date, and source document — connect that node to two parent entities; lineage lets the analyst show the examiner exactly which filing supports each hop; and last night's refresh has already retired the control edge that lapsed when a parent was liquidated. Every discipline had a role: remove the matcher and the answer names the wrong person, remove the typing and "connected to" proves nothing, remove the lineage and the answer cannot be defended, remove the refresh and it is simply out of date. That is why the four are adopted together or not at all.</p>
+<h2 id="what-does-a-90-day-graph-pilot-look-like">What Does a 90-Day Graph Pilot Look Like?</h2>
+<p>A pilot that proves relationship analytics in one quarter looks like this:</p>
+<ol>
+<li><strong>Days 1–15 — Scope and sources.</strong> Choose one question ("which entities ultimately control this account?"), list the three or four systems that hold the answer, and name the business owner who will judge success.</li>
+<li><strong>Days 16–45 — Resolve and model.</strong> Load the sources, run entity resolution with a human review queue, and define node and edge types — with temporal validity — for exactly the relationships the scope question needs.</li>
+<li><strong>Days 46–75 — Query and measure.</strong> Run the target question against the graph and the current manual process side by side. Measure investigation time, exposures surfaced, and — critically — the false-link rate a reviewer would catch.</li>
+<li><strong>Days 76–90 — Decide and design the run.</strong> Present the before/after numbers with lineage attached, and design the refresh and re-matching schedule the production system will run on. A pilot that cannot show its own accuracy is not ready to scale.</li>
+</ol>
+<h2 id="practical-approaches-that-work">What Approaches Actually Work in Production?</h2>
+        <figure class="article-figure" data-fig-slug2="graph-databases-for-complex-business-relationship-analysis-part-2">
+          <img src="/assets/blog/svg/graph-databases-for-complex-business-relationship-analysis-part-2.svg" alt="Graph Databases for Complex Business Relationship Analysis: Part 2 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>graph databases for complex business relationship analysis: part 2</b></figcaption>
+        </figure>
+
 <p>Start with one bounded use case where relationships are provably the question and the value is measurable — KYC linkage analysis, supplier network mapping, or account hierarchy for sales coverage. Measure the before and after: investigation time, exposures surfaced, coverage gaps closed. A graph programme without a measured business case becomes an infrastructure project with no owner, and infrastructure projects without owners are exactly how graph estates die.</p>
 <p>Model the graph deliberately. Node types and edge types should be defined with business owners; identity should be resolvable across source systems; and the graph should connect to the warehouse rather than replace it — relationship analytics on the graph, volume analytics on the relational estate, and a governed pipeline between them. The tool selection should follow that classification, not the other way around.</p>
 <p>Put the graph in front of the people who ask the questions. The value of a graph is realised when investigators, procurement analysts, and sales managers can ask "show me the paths between these entities" in natural language. Beehive Strategy sees the largest returns when graph queries surface through conversational analytics inside the tools teams already use — case management, IM, and BI — with the reasoning trail attached, so a finding can be acted on and defended in the same step.</p>
 <p>Finally, plan for operations: incremental loading, re-matching schedules, and graph-specific monitoring of edge freshness and match accuracy. A relationship graph is a living asset, maintained the way every other critical dataset is maintained — on a schedule, with owners, and with quality measured — and the organisations that design for that from day one are the ones whose graphs remain decision-grade for years.</p>
+<p>Be honest about cost and skills as well. Entity-resolution and graph talent is scarce; the durable skills — data modelling, governance, investigation workflows — usually exist inside the organisation already, while the engine-specific skills can be hired or bought through managed services. Cloud-managed graph engines have collapsed the infrastructure burden that made early graph projects expensive, so the budget conversation should centre on the two costs that never disappear: the entity-resolution work that makes nodes trustworthy, and the refresh operations that keep edges true. Programmes that fund those two properly and rent the engine tend to outperform programmes that do the reverse.</p>
 <h2 id="key-takeaways">Key Takeaways</h2>
 <ul>
 <li>Entity resolution precedes graph value — matching rules, ML, and human review, with outcomes fed back into the matcher</li>
@@ -225,6 +251,20 @@
 <p>The competitive gap is widening because relationship intelligence compounds. Every exposure seen earlier, every investigation resolved faster, and every connection understood that a competitor cannot see becomes an input to better decisions. But the foundation of that advantage is credibility — and credibility is built with matching discipline, auditable edges, and honest refresh, quarter after quarter.</p>
 <p>Part 1 made the case for graphs; Part 2 has made the case for their care and feeding. The two together are what turn a database choice into a business capability — one that regulators, auditors, and customers increasingly expect as the baseline, not the exception.</p>
 
+<section class="faq-section" id="faq">
+<h2>Frequently Asked Questions</h2>
+<h3>How accurate does entity resolution need to be before a graph is useful?</h3>
+<p>There is no universal threshold, but the right way to frame it is by consequence: a 99% match accuracy on ten million nodes still leaves roughly a hundred thousand wrong connections, and in compliance or fraud contexts even a small number of false links can trigger wrong decisions. The practical standard is precision high enough that spot-checked reviews pass, a human review queue for the ambiguous residual, and published match-accuracy metrics — so consumers of the graph know exactly how much to trust each answer.</p>
+<h3>Is a graph database a replacement for our relational data warehouse?</h3>
+<p>No — and treating it as one is a common failure mode. Relational systems remain the right home for volume analytics, aggregations, and financial reporting; graphs earn their keep on the questions where relationships and multi-hop paths are the point. The winning pattern is to keep both and connect them with a governed pipeline: relationship analytics on the graph, volume analytics on the warehouse, and shared identity resolution so the two never disagree about who or what an entity is.</p>
+<h3>Do we need to adopt the ISO GQL standard, and which engines support it?</h3>
+<p>You do not need to migrate anything, but GQL matters for portability. The ISO GQL standard, finalised in 2024, consolidates property-graph querying the way SQL once consolidated relational access, and the major engines — Neo4j, Amazon Neptune, TigerGraph among them — are converging on it. Writing new queries against standard GQL rather than a vendor dialect reduces switching costs later. The engine choice is still worth making carefully, but the lock-in penalty for choosing "wrong" is shrinking.</p>
+<h3>How do we stop the graph from going stale after the initial build?</h3>
+<p>Design refresh and re-matching as scheduled operations, not projects. New data should be loaded incrementally and re-matched — not just appended — because entities merge, split, and change without changing their identifiers. Edges should carry temporal validity so expired assertions retire themselves, and edge freshness should be reported alongside match accuracy in the same quarterly health review. Teams that measure staleness keep their graphs trusted; teams that assume freshness discover decay from an auditor.</p>
+<h3>What does success look like for a 90-day graph pilot?</h3>
+<p>Three things: a measured before-and-after on one bounded question (for example, investigation time cut or additional exposures surfaced), a demonstrated false-link rate that a human reviewer validated, and a run-book for refresh and re-matching that shows how the accuracy will be sustained in production. If the pilot cannot show its own accuracy alongside its speed, it is not ready to scale — speed without credibility is just a faster way to reach the wrong conclusion.</p>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How accurate does entity resolution need to be before a graph is useful?", "acceptedAnswer": {"@type": "Answer", "text": "There is no universal threshold, but the right way to frame it is by consequence: a 99% match accuracy on ten million nodes still leaves roughly a hundred thousand wrong connections, and in compliance or fraud contexts even a small number of false links can trigger wrong decisions. The practical standard is precision high enough that spot-checked reviews pass, a human review queue for the ambiguous residual, and published match-accuracy metrics — so consumers of the graph know exactly how much to trust each answer."}}, {"@type": "Question", "name": "Is a graph database a replacement for our relational data warehouse?", "acceptedAnswer": {"@type": "Answer", "text": "No — and treating it as one is a common failure mode. Relational systems remain the right home for volume analytics, aggregations, and financial reporting; graphs earn their keep on the questions where relationships and multi-hop paths are the point. The winning pattern is to keep both and connect them with a governed pipeline: relationship analytics on the graph, volume analytics on the warehouse, and shared identity resolution so the two never disagree about who or what an entity is."}}, {"@type": "Question", "name": "Do we need to adopt the ISO GQL standard, and which engines support it?", "acceptedAnswer": {"@type": "Answer", "text": "You do not need to migrate anything, but GQL matters for portability. The ISO GQL standard, finalised in 2024, consolidates property-graph querying the way SQL once consolidated relational access, and the major engines — Neo4j, Amazon Neptune, TigerGraph among them — are converging on it. Writing new queries against standard GQL rather than a vendor dialect reduces switching costs later. The engine choice is still worth making carefully, but the lock-in penalty for choosing wrong is shrinking."}}, {"@type": "Question", "name": "How do we stop the graph from going stale after the initial build?", "acceptedAnswer": {"@type": "Answer", "text": "Design refresh and re-matching as scheduled operations, not projects. New data should be loaded incrementally and re-matched — not just appended — because entities merge, split, and change without changing their identifiers. Edges should carry temporal validity so expired assertions retire themselves, and edge freshness should be reported alongside match accuracy in the same quarterly health review. Teams that measure staleness keep their graphs trusted; teams that assume freshness discover decay from an auditor."}}, {"@type": "Question", "name": "What does success look like for a 90-day graph pilot?", "acceptedAnswer": {"@type": "Answer", "text": "Three things: a measured before-and-after on one bounded question (for example, investigation time cut or additional exposures surfaced), a demonstrated false-link rate that a human reviewer validated, and a run-book for refresh and re-matching that shows how the accuracy will be sustained in production. If the pilot cannot show its own accuracy alongside its speed, it is not ready to scale — speed without credibility is just a faster way to reach the wrong conclusion."}}]}</script>
 
             <nav class="article-nav" aria-label="Article navigation">
                 <a href="https://www.beehivestrategy.com/blog" class="btn-back-to-blog">
@@ -238,12 +278,14 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Table of Contents</div>
                 <nav class="toc-links">
-                    <a href="#the-current-landscape" class="toc-link">The Current Landscape</a>
-                    <a href="#key-implementation-challenges" class="toc-link">Key Implementation Challenges</a>
+                    <a href="#the-current-landscape" class="toc-link">Why Is Relationship Data Under More Pressure Than Ever?</a>
+                    <a href="#key-implementation-challenges" class="toc-link">Which Implementation Challenges Decide Success?</a>
                     <a href="#how-do-you-keep-a-relationship-graph-honest" class="toc-link">How Do You Keep a Relationship Graph Honest?</a>
-                    <a href="#practical-approaches-that-work" class="toc-link">Practical Approaches That Work</a>
+                    <a href="#what-does-a-90-day-graph-pilot-look-like" class="toc-link">What Does a 90-Day Graph Pilot Look Like?</a>
+                    <a href="#practical-approaches-that-work" class="toc-link">What Approaches Actually Work in Production?</a>
                     <a href="#key-takeaways" class="toc-link">Key Takeaways</a>
                     <a href="#conclusion" class="toc-link">Conclusion</a>
+                    <a href="#faq" class="toc-link">Frequently Asked Questions</a>
                 </nav>
             </div>
             <div class="sidebar-card">
@@ -261,15 +303,15 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Related Articles</div>
                 <div class="sidebar-related-list">
-                    <a href="blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" class="sidebar-related-card">
+                    <a href="/blog/articles/event-driven-architecture-for-ai-agent-orchestration-part-2" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Event-Driven Architecture for AI Agent Orchestration: Part 2</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
-                    <a href="blog/articles/data-pipeline-observability-monitoring-beyond-failure-a-2026-update" class="sidebar-related-card">
+                    <a href="/blog/articles/data-pipeline-observability-monitoring-beyond-failure-a-2026-update" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Data Pipeline Observability: Monitoring Beyond Failure: A 2026 Update</h4>
                         <span class="sidebar-related-meta">3 min read</span>
                     </a>
-                    <a href="blog/articles/federated-learning-for-privacy-preserving-enterprise-ai-a-2026-update" class="sidebar-related-card">
+                    <a href="/blog/articles/federated-learning-for-privacy-preserving-enterprise-ai-a-2026-update" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Federated Learning for Privacy-Preserving Enterprise AI: A 2026 Update</h4>
                         <span class="sidebar-related-meta">3 min read</span>
                     </a>
@@ -286,7 +328,7 @@
             <a href="https://www.beehivestrategy.com/blog" class="recommended-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
         <div class="recommended-grid">
-            <a href="blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
+            <a href="/blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
                 <img src="/assets/blog/covers/en/women-in-data-building-inclusive-ai-teams.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -299,7 +341,7 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
+            <a href="/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
                 <img src="/assets/blog/covers/en/why-data-strategy-needs-ai-agent-layer-2026.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -312,7 +354,7 @@
                     </div>
                 </div>
             </a>
-            <a href="blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
+            <a href="/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
                 <img src="/assets/blog/covers/en/vector-databases-enterprise-search-2026-practical-guide.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -338,8 +380,8 @@
                     <h2 class="article-cta-title" id="cta-heading">Ready to transform your data strategy?</h2>
                     <p class="article-cta-desc">See how Beehive Strategy's conversational analytics platform unlocks real-time insights across your operations, from upstream data to downstream decisions.</p>
                     <div class="article-cta-actions">
-                        <a href="contact" class="article-cta-btn">Book a Demo</a>
-                        <a href="solution" class="article-cta-secondary">Explore the Solution</a>
+                        <a href="/contact" class="article-cta-btn">Book a Demo</a>
+                        <a href="/solution" class="article-cta-secondary">Explore the Solution</a>
                     </div>
                 </div>
                 <div class="article-cta-stats">
@@ -414,5 +456,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "Graph Databases for Complex Business Relationship Analysis: Part 2";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

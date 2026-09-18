@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-    <title>What is Text-to-SQL? Natural Language Database Queries | Beehive Strategy</title>
+    <title>What is Text-to-SQL? Natural Language Database Queries</title>
     <meta name="description" content="Learn what Text-to-SQL is, how AI converts natural language into database queries, and why it accelerates enterprise analytics. Read the guide.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/what-is-text-to-sql">
@@ -78,6 +78,7 @@
   ]
 }
 </script>
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -239,9 +240,14 @@
                 </div>
             </div>
 
-<p class="article-lead">Text-to-SQL is the discipline of turning a question asked in plain language into a correct, executable SQL query. It is the bridge that lets a business user ask what were last quarter’s top products by region and receive the answer without writing a line of code. By removing the translation step between intent and data, it shortens the distance from curiosity to evidence. This article explains what text-to-SQL is, how modern systems work, where they still fail, and how to deploy them safely inside an enterprise.</p>
+<p class="article-lead">Text-to-SQL is the discipline of turning a question asked in plain language into a correct, executable SQL query. It is the bridge that lets a business user ask what were last quarter’s top products by region and receive the answer without writing a line of code. By removing the translation step between intent and data, it shortens the distance from curiosity to evidence. This article explains what text-to-SQL is, how <a href="/en/blog/articles/api-first-data-integration-connecting-legacy-and-modern-systems-a-2026-update" class="inline-ref">modern systems</a> work, where they still fail, and how to deploy them safely inside an enterprise.</p>
 <h2 id="what-exactly-is-text-to-sql">What Exactly Is Text-to-SQL?</h2>
-<p>Text-to-SQL is a class of natural-language interfaces that map a user’s question, posed in ordinary language, to a structured query against a relational database. The output is not a prose reply but a SQL statement that the database executes, returning the precise rows the question implied. In short, it converts intent into a query plan a machine can run. The discipline sits at the intersection of natural-language processing and data engineering, and its maturity has accelerated sharply with the arrival of capable large language models.</p>
+        <figure class="article-figure" data-fig-slug="what-is-text-to-sql">
+          <img src="/assets/blog/svg/what-is-text-to-sql.svg" alt="What is Text-to-SQL? Natural Language Database Queries — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>what is text-to-sql? natural language database queries</b></figcaption>
+        </figure>
+
+<p>Text-to-SQL is a class of natural-<a href="/en/blog/articles/designing-natural-language-interfaces-for-enterprise-data" class="inline-ref">language interfaces</a> that map a user’s question, posed in ordinary language, to a structured query against a relational database. The output is not a prose reply but a SQL statement that the database executes, returning the precise rows the question implied. In short, it converts intent into a query plan a machine can run. The discipline sits at the intersection of natural-language processing and <a href="/en/blog/articles/data-engineering-best-practices-ai-ready-data" class="inline-ref">data engineering</a>, and its maturity has accelerated sharply with the arrival of capable large <a href="/en/blog/articles/small-language-models-enterprise-efficiency-cost" class="inline-ref">language models</a>.</p>
 <p>The value is access. Most enterprise data lives in tables that only engineers and analysts can query, so every question becomes a ticket and a wait. Text-to-SQL removes that bottleneck by letting anyone who can phrase a question retrieve the data themselves, provided the system is wired to the right schema and governed by the right permissions.</p>
 <p>It is worth separating text-to-SQL from a chatbot that merely summarizes. A true text-to-SQL system is accountable: it produces a query you can inspect, run again, and audit. That query is the contract between the question and the answer, and it is what makes the technology trustworthy enough for real operational use.</p>
 <h2 id="how-does-text-to-sql-work">How Does Text-to-SQL Work?</h2>
@@ -267,6 +273,11 @@
 <p>Pair that with a smaller human review of tricky questions, especially those involving multiple joins, date logic, or negation. Automated metrics catch the bulk of errors, but only a person can judge whether the answered question was the one intended. A combined score gives a realistic picture of production readiness.</p>
 <p>Track accuracy by question type and by table, not just as a single average. If joins involving the customer table fail often, that points to a schema-context gap, not a model weakness. Segmented measurement turns a vague accuracy is 80 percent into an actionable plan for where to add context or examples.</p>
 <h2 id="how-should-you-deploy-it-safely">How Should You Deploy It Safely?</h2>
+        <figure class="article-figure" data-fig-slug2="what-is-text-to-sql">
+          <img src="/assets/blog/svg/what-is-text-to-sql.svg" alt="What is Text-to-SQL? Natural Language Database Queries — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>what is text-to-sql? natural language database queries</b></figcaption>
+        </figure>
+
 <p>Start in a read-only sandbox against a replica, never the production write path. Limit the tables the system can touch, enforce row-level security in the execution layer, and require that every query be shown to the user before it runs. Safe deployment is mostly about boundaries, not about the model’s cleverness.</p>
 <p>Add a human-in-the-loop for anything consequential. A query that merely lists last week’s orders can run freely; one that joins customer PII to external data should prompt for approval and be logged. The escalation policy is a governance decision, not a technical afterthought, and it should be explicit before launch.</p>
 <p>Instrument everything. Log the question, the generated SQL, the user, the rows returned, and any correction. That log is both your audit trail and your improvement dataset: the corrections become examples that raise accuracy for the next user who asks something similar. Deployment without logging is deployment without a memory.</p>
@@ -435,8 +446,8 @@
                     <h2 class="article-cta-title" id="cta-heading">Ready to transform your data strategy?</h2>
                     <p class="article-cta-desc">See how Beehive Strategy's conversational analytics platform unlocks real-time insights across your operations, from upstream data to downstream decisions.</p>
                     <div class="article-cta-actions">
-                        <a href="contact" class="article-cta-btn">Book a Demo</a>
-                        <a href="solution" class="article-cta-secondary">Explore the Solution</a>
+                        <a href="/contact" class="article-cta-btn">Book a Demo</a>
+                        <a href="/solution" class="article-cta-secondary">Explore the Solution</a>
                     </div>
                 </div>
                 <div class="article-cta-stats">
@@ -511,5 +522,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "What is Text-to-SQL? Natural Language Database Queries";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

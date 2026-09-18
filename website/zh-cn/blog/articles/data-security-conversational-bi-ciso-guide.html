@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/data-security-conversational-bi-ciso-guide#article", "headline": "对话式BI中的数据安全：CISO需要了解的内容", "description": "对话式BI把数据能力带到人们工作的地方，也带来了新的安全风险。我们拆解CISO最该关注的安全边界、四项核心原则，以及选型与治理时必须追问的问题，帮助你用MCP架构把“人人可问数据”变成可控、可审计、可问责的能力。", "datePublished": "2026-06-11T13:00:00+08:00", "dateModified": "2026-06-11T13:00:00+08:00", "articleSection": "Security", "keywords": "conversational BI security, CISO, MCP security, data governance, PIPL compliance, GDPR AI, audit trail", "inLanguage": "zh-cn", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/data-security-conversational-bi-ciso-guide"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/zh-cn/data-security-conversational-bi-ciso-guide.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "对话式BI中的数据安全：CISO需要了解的内容"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -189,70 +190,80 @@
             <p>对话式BI把数据能力带到人们工作的地方，也把新的安全风险带到了CISO面前。它让一线业务人员用一句自然语言就能调取原本深锁在数据仓库里的指标，效率飞跃的同时，攻击面也从“少数报表开发者”扩散到“每一位提问者”。</p>
             <p>本文拆解CISO最该关注的安全边界、四项核心原则，以及选型与治理时必须追问的问题，帮助你用MCP架构把“人人可问数据”变成“可控、可审计、可问责”的能力，而非把合规暴露在每一次聊天框之后。</p>
             <p>需要提前说明的是：对话式BI并不是要推翻既有的数据安全体系，而是把它延伸到“提问”这一全新的交互界面。下文所有原则，最终都指向同一个目标——让数据流动得更自由，也让每一次流动都看得见、管得住。</p>
-            <h2 id="h2-对话式BI的新安全边界是什么-">对话式BI的新安全边界是什么？</h2>
+            <h2  id="h2-对话式BI的新安全边界是什么-">对话式BI的新安全边界是什么？</h2>
+        <figure class="article-figure" data-fig-slug="data-security-conversational-bi-ciso-guide">
+          <img src="/assets/blog/svg/data-security-conversational-bi-ciso-guide.svg" alt="对话式BI中的数据安全：CISO需要了解的内容 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>对话式BI中的数据安全：CISO需要了解的内容</b> 的核心脉络一览</figcaption>
+        </figure>
+
             <p>当业务用户用自然语言直接提问“上季度华东区毛利率最高的品类是什么”，系统背后要完成取数、建模、计算与解释。这条自然语言链路把原本锁在仪表盘背后的数据能力，直接交到了每个人手中，也把数据暴露面从“少数报表开发者”扩大到“全体提问者”。</p>
             <p>因此，安全边界必须从“谁能进数据仓库”转变为“每一次提问能在什么范围内看到什么”。对话式BI的防护对象不再是静态的表，而是动态的、由意图驱动的数据访问。只有把授权、脱敏与审计前置到查询执行那一刻，安全才真正生效。</p>
             <p>这也意味着安全团队需要重新审视“默认开放”的惯性。过去我们习惯给分析师一个宽口径的只读账号，相信他们不会乱用；而对话式BI让提问变成零门槛动作，任何员工都可能因一句无心之问触达敏感数据。边界重建的第一步，是承认“对话即访问”。</p>
             <p>更进一步，新的安全边界还要求我们把“语义”本身当作受保护资产。指标口径、维度定义、同义词映射，这些看似不起眼的元数据，恰恰是模型理解业务提问的钥匙；一旦被篡改或越权读取，回答就会失准甚至误导决策。把语义层纳入边界，安全才真正覆盖到“理解”这一环。</p>
-            <h2 id="h2-为什么权限应在查询时强制执行-">为什么权限应在查询时强制执行？</h2>
+            <h2  id="h2-为什么权限应在查询时强制执行-">为什么权限应在查询时强制执行？</h2>
             <p>展示层过滤只是在界面上隐藏结果，数据在后端其实已经被取出，风险只是被遮掩而非消除。一旦有人绕过前端、调用底层接口，被隐藏的数据就会暴露。</p>
             <p>查询时强制执行（enforcement at query time）意味着权限判断发生在数据真正被读取的瞬间：用户无权访问的字段与行在引擎层面就被剥离，模型从头到尾都看不到明文。这是对话式BI安全与“传统BI加个聊天框”最根本的区别。</p>
             <p>更进一步，强制执行的粒度应从“表级”细化到“行级与列级”。同一张订单表，店长看到本店、区域总看到本区、财务看到全量金额——这些差异不应依赖前端判断，而应由统一的数据策略在查询层统一裁决。蜂启咨询建议在语义层与查询引擎之间嵌入策略执行点（PEP），让每一次回答都经过同一把“安全锁”。</p>
             <p>当策略在查询层集中裁决，权限变更也能做到秒级生效。员工调岗、离职或临时授权到期，不必再逐个报表去改配置，策略中枢一次更新即可统一收口。这种“一处定义、处处生效”的模型，正是规模化落地对话式BI的安全前提。</p>
-            <h2 id="h2-为什么完整的审计轨迹不可或缺-">为什么完整的审计轨迹不可或缺？</h2>
+            <h2  id="h2-为什么完整的审计轨迹不可或缺-">为什么完整的审计轨迹不可或缺？</h2>
             <p>当“谁问了什么、系统回答了什么、背后读取了哪些数据”都能被完整记录，安全团队才能在异常发生时快速溯源，也才能在监管审查中证明合规。</p>
             <p>审计轨迹不应只是访问日志，而要覆盖意图、查询、返回结果与所涉数据资产的全链路。蜂启咨询的实践表明，可被审计的AI才可被信任；无法解释每一次回答来源的系统，最终会被安全团队叫停。</p>
             <p>在监管日益强调“可解释AI”的当下，审计轨迹还是问责的依据。当一份自动生成的周报引用了某条受控数据，企业必须能回答“它从哪来、谁被授权、是否脱敏”。没有全链路留痕，再聪明的模型也只是合规盲区。</p>
             <p>审计轨迹还能反哺安全运营。把高频提问、越权尝试、敏感词触达等行为聚合起来，安全团队可以识别出真正的高风险场景，据此动态调整脱敏规则与审批阈值，让防护从“一刀切”走向“因场景而异”。</p>
-            <h2 id="h2-为什么AI模型不应保留任何用户数据-">为什么AI模型不应保留任何用户数据？</h2>
+            <h2  id="h2-为什么AI模型不应保留任何用户数据-">为什么AI模型不应保留任何用户数据？</h2>
             <p>如果用户的提问、上下文或用于回答的数据被写回模型权重或训练集，就形成了难以删除、难以管控的“影子数据”，既违反最小化原则，也放大了泄露面。</p>
             <p>正确做法是让模型保持无状态：每次对话基于受控的临时上下文，回答完成后不留痕。这样即使模型服务本身被攻破，攻击者也无法从中复原任何企业数据。</p>
             <p>这要求架构上把“推理”与“记忆”解耦：模型只负责理解问题与生成表达，真正的数据与语义存放在受控的语义层与向量库中，并按需临时挂载。蜂启咨询强调，任何“为了体验而缓存用户数据”的捷径，都会把短期便利变成长期负债。</p>
             <p>无状态还有一层合规价值：当数据不进入模型、不留存在推理侧，企业的数据驻留与跨境传输义务会大幅简化。对于受行业监管、对数据出境敏感的机构而言，这一点往往直接决定项目能否上线。</p>
-            <h2 id="h2-为什么IM原生身份验证至关重要-">为什么IM原生身份验证至关重要？</h2>
+            <h2  id="h2-为什么IM原生身份验证至关重要-">为什么IM原生身份验证至关重要？</h2>
+        <figure class="article-figure" data-fig-slug2="data-security-conversational-bi-ciso-guide">
+          <img src="/assets/blog/svg/data-security-conversational-bi-ciso-guide.svg" alt="对话式BI中的数据安全：CISO需要了解的内容 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>对话式BI中的数据安全：CISO需要了解的内容</b> 的核心脉络一览</figcaption>
+        </figure>
+
             <p>对话式BI常常嵌入企业微信、飞书、Slack、Teams 等协作入口。若另建一套账号体系，不仅体验割裂，更会在身份与权限上出现“两张皮”。</p>
             <p>IM原生（IM-native）身份验证让访问继承企业既有的身份、角色与多因素认证，权限变更实时生效。安全策略因此从“配置在BI里”升级为“跟随企业身份中枢”，大幅降低配置漂移带来的风险。</p>
             <p>更重要的是，IM原生让“对话发生在哪个上下文”成为授权信号的一部分。一条来自公开群聊的提问，与一条来自机密项目私聊的提问，理应触发不同的数据边界。把身份、场景与权限打通，安全才从静态清单变成动态能力。</p>
             <p>在零信任架构下，身份就是新的边界。当每一次提问都带着可验证的企业身份、设备状态与上下文，CISO才真正拥有“持续验证、动态授权”的抓手，而不是把安全寄托于一道容易被绕过的网络围栏。</p>
-            <h2 id="h2-CISO应向对话式BI供应商询问哪些问题-">CISO应向对话式BI供应商询问哪些问题？</h2>
+            <h2  id="h2-CISO应向对话式BI供应商询问哪些问题-">CISO应向对话式BI供应商询问哪些问题？</h2>
             <p>选型阶段的问题决定了后续能否通过审查。要问清：模型是否保留我的提问与答案？权限是查询时强制还是仅展示过滤？审计覆盖哪些事件？身份如何与IM/SSO集成？是否支持机密计算与字段级加密？</p>
             <p>还应追问数据驻留位置、子处理器清单与事件响应SLA。把这些答案写进合同与验收标准，对话式BI才从“炫酷demo”变成“可问责的生产系统”。</p>
             <p>别忘了问“退出成本”：当关系终止，我的数据与审计记录能否完整导出、彻底删除？供应商的加密密钥是否由我方掌控（BYOK）？这些看似边缘的问题，往往在真正发生事故时才显出分量。</p>
             <p>最后，请供应商用你自己的脱敏数据集做一次红队演练：让外部安全团队尝试越权提问，看系统是否会泄露、是否会拒绝、拒绝是否留下可审计的痕迹。演练结果比任何销售说辞都更可信，也更接近真实风险。</p>
-            <h2 id="h2-CISO应如何治理对话式BI的部署-">CISO应如何治理对话式BI的部署？</h2>
+            <h2  id="h2-CISO应如何治理对话式BI的部署-">CISO应如何治理对话式BI的部署？</h2>
             <p>治理宜小步快跑：先选一个风险可控、价值清晰的场景做试点，在真实使用中沉淀权限矩阵、敏感词与脱敏规则，再逐步推广。</p>
             <p>关键是建立跨职能的监督机制——CISO牵头，联合数据、法务与业务负责人，明确分类分级、审批流与应急流程，并把对话式BI纳入现有安全与合规评审。蜂启咨询建议以季度为周期复盘，让治理能力随业务一起成长。</p>
             <p>治理的终点是“能力内化”：当业务团队习惯在提问前先想“这个问题是否越界”，当工程师习惯在发布前先跑一遍策略校验，安全就不再是一堵墙，而成了组织肌肉记忆的一部分。这正是对话式BI能长期、规模化创造价值的前提。</p>
             <p>在技术之外，治理还意味着对外沟通。当发生舆情或监管问询时，CISO应能清晰说明“我们让谁、在什么范围内、基于什么证据、用何种控制来使用对话式BI”。把治理成果沉淀成可对外讲述的叙事，本身就是一种安全资产。</p>
             <section class="faq-section" id="faq" aria-label="常见问题">
-                <h2 class="faq-section-title">
+                <h2 class="faq-section-title" id="常见问题">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     常见问题
                 </h2>
                 <div class="faq-list">
                     <div class="faq-item">
-                        <h3 class="faq-question" aria-expanded="false">
+                        <h3 class="faq-question" aria-expanded="false" id="1-对话式bi的新安全边界是什么">
                             <span class="faq-question-text"><span class="faq-number">1</span><span>对话式BI的新安全边界是什么？</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </h3>
                 <div class="faq-answer" role="region"><div class="faq-answer-inner">对话式BI把查询界面从受控的仪表盘转移到贴近业务用户的自然语言接口，每一次提问本质上都是一次潜在的数据访问请求。新的安全边界不再是数据仓库的围墙，而是“对话”本身——每一条问题都必须在实时层面完成授权、范围限定与审计。安全不能再只停留在数仓层，而必须随问题一同流动。</div></div>
                     </div>
                     <div class="faq-item">
-                        <h3 class="faq-question" aria-expanded="false">
+                        <h3 class="faq-question" aria-expanded="false" id="2-ciso应为对话式bi强制执行哪些安全原则">
                             <span class="faq-question-text"><span class="faq-number">2</span><span>CISO应为对话式BI强制执行哪些安全原则？</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </h3>
                 <div class="faq-answer" role="region"><div class="faq-answer-inner">安全的部署依赖四项原则。其一，在查询时强制执行权限，使模型永远看不到用户无权访问的数据；其二，保留每一次提问、回答与所涉数据的完整审计轨迹；其三，确保任何用户数据都不被保留在模型或其训练集中；其四，采用IM原生身份验证，使访问继承企业既有的身份与权限控制。</div></div>
                     </div>
                     <div class="faq-item">
-                        <h3 class="faq-question" aria-expanded="false">
+                        <h3 class="faq-question" aria-expanded="false" id="3-ciso应向对话式bi供应商询问哪些问题">
                             <span class="faq-question-text"><span class="faq-number">3</span><span>CISO应向对话式BI供应商询问哪些问题？</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </h3>
                 <div class="faq-answer" role="region"><div class="faq-answer-inner">关键问题包括：模型是否会保留我的提问或答案？权限是在查询时强制执行还是仅做展示层过滤？审计轨迹覆盖哪些事件？身份如何与企业IM及SSO集成？是否支持机密计算与字段级加密？这些问题决定了供应商能否通过严格的安全审查。</div></div>
                     </div>
                     <div class="faq-item">
-                        <h3 class="faq-question" aria-expanded="false">
+                        <h3 class="faq-question" aria-expanded="false" id="4-ciso应如何治理对话式bi的部署">
                             <span class="faq-question-text"><span class="faq-number">4</span><span>CISO应如何治理对话式BI的部署？</span></span>
                             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </h3>
@@ -266,7 +277,7 @@
             <div class="article-cta-inner">
                 <div class="article-cta-content">
                     <div class="article-cta-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 预约个性化演示</div>
-                    <h2 class="article-cta-title" id="cta-heading">准备好守护您的对话式BI数据安全了吗？</h2>
+                    <h2 class="article-cta-title"  id="cta-heading">准备好守护您的对话式BI数据安全了吗？</h2>
                     <p class="article-cta-desc">了解蜂启咨询如何以 MCP 架构为对话式BI构建查询时强制、全程审计、零数据保留的安全底座。</p>
                     <div class="article-cta-actions">
                         <a href="/zh-cn/contact" class="article-cta-btn">预约演示</a>
@@ -320,16 +331,21 @@
         </article>
 
         <aside class="toc-sidebar" id="toc-sidebar" aria-label="Article sidebar">
-            <div class="sidebar-card">
-                <div class="sidebar-heading">Table of Contents</div>
-                <nav class="toc-links">
-                    <a href="#the-new-security-perimeter" class="toc-link">The New Security Perimeter</a>
-                    <a href="#security-principle-1-query-time-enforcement" class="toc-link">Security Principle 1: Query-Time Enforcement</a>
-                    <a href="#security-principle-2-complete-audit-trails" class="toc-link">Security Principle 2: Complete Audit Trails</a>
-                    <a href="#security-principle-3-no-data-retention-in-the-ai-model" class="toc-link">Security Principle 3: No Data Retention in the AI Model</a>
-                    <a href="#security-principle-4-im-native-authentication" class="toc-link">Security Principle 4: IM-Native Authentication</a>
-                    <a href="#what-cisos-should-ask-their-conversational-bi-vendor" class="toc-link">What CISOs Should Ask Their Conversational BI Vendor</a>
-                    <a href="#how-should-cisos-approach-conversational-bi-governance" class="toc-link">How Should CISOs Approach Conversational BI Governance?</a>
+  <nav class="toc-links">
+                    <a href="#h2-对话式BI的新安全边界是什么-" class="toc-link">对话式BI的新安全边界是什么？</a>
+                    <a href="#h2-为什么权限应在查询时强制执行-" class="toc-link">为什么权限应在查询时强制执行？</a>
+                    <a href="#h2-为什么完整的审计轨迹不可或缺-" class="toc-link">为什么完整的审计轨迹不可或缺？</a>
+                    <a href="#h2-为什么AI模型不应保留任何用户数据-" class="toc-link">为什么AI模型不应保留任何用户数据？</a>
+                    <a href="#h2-为什么IM原生身份验证至关重要-" class="toc-link">为什么IM原生身份验证至关重要？</a>
+                    <a href="#h2-CISO应向对话式BI供应商询问哪些问题-" class="toc-link">CISO应向对话式BI供应商询问哪些问题？</a>
+                    <a href="#h2-CISO应如何治理对话式BI的部署-" class="toc-link">CISO应如何治理对话式BI的部署？</a>
+                    <a href="#常见问题" class="toc-link">常见问题</a>
+                    <a href="#1-对话式bi的新安全边界是什么" class="toc-link">1 对话式BI的新安全边界是什么？</a>
+                    <a href="#2-ciso应为对话式bi强制执行哪些安全原则" class="toc-link">2 CISO应为对话式BI强制执行哪些安全原则？</a>
+                    <a href="#3-ciso应向对话式bi供应商询问哪些问题" class="toc-link">3 CISO应向对话式BI供应商询问哪些问题？</a>
+                    <a href="#4-ciso应如何治理对话式bi的部署" class="toc-link">4 CISO应如何治理对话式BI的部署？</a>
+                    <a href="#cta-heading" class="toc-link">准备好守护您的对话式BI数据安全了吗？</a>
+                </nav>ational-bi-governance" class="toc-link">How Should CISOs Approach Conversational BI Governance?</a>
                 </nav>
             </div>
             <div class="sidebar-card">
@@ -347,15 +363,15 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Related Articles</div>
                 <div class="sidebar-related-list">
-                    <a href="/blog/blog/articles/conversational-bi-security-ciso-guide" class="sidebar-related-card">
+                    <a href="/zh-cn/blog/articles/conversational-bi-security-ciso-guide" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Conversational BI Security: A CISO&#x27;s Guide</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
-                    <a href="/blog/blog/articles/secure-mcp-deployment" class="sidebar-related-card">
+                    <a href="/zh-cn/blog/articles/secure-mcp-deployment" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Secure MCP Deployment: Best Practices for Enterprise</h4>
                         <span class="sidebar-related-meta">10 min read</span>
                     </a>
-                    <a href="/blog/blog/articles/ai-red-teaming-enterprise" class="sidebar-related-card">
+                    <a href="/zh-cn/blog/articles/ai-red-teaming-enterprise" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">AI Red Teaming for Enterprise: Stress-Testing AI Security</h4>
                         <span class="sidebar-related-meta">10 min read</span>
                     </a>
@@ -372,7 +388,7 @@
             <a href="https://www.beehivestrategy.com/blog" class="recommended-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
         <div class="recommended-grid">
-            <a href="/blog/blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
+            <a href="/zh-cn/blog/articles/women-in-data-building-inclusive-ai-teams" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/women-in-data-building-inclusive-ai-teams.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -385,7 +401,7 @@
                     </div>
                 </div>
             </a>
-            <a href="/blog/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
+            <a href="/zh-cn/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/why-data-strategy-needs-ai-agent-layer-2026.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -398,7 +414,7 @@
                     </div>
                 </div>
             </a>
-            <a href="/blog/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
+            <a href="/zh-cn/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/vector-databases-enterprise-search-2026-practical-guide.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
                     <span class="recommended-card-cat">Technology</span>
@@ -420,19 +436,19 @@
         <div class="article-cta-card">
             <div class="article-cta-inner">
                 <div class="article-cta-content">
-                    <div class="article-cta-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Book a personalised demo</div>
-                    <h2 class="article-cta-title" id="cta-heading">Ready to transform your data strategy?</h2>
-                    <p class="article-cta-desc">See how Beehive Strategy's conversational analytics platform unlocks real-time insights across your operations, from upstream data to downstream decisions.</p>
+                    <div class="article-cta-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 预约个性化演示</div>
+                    <h2 class="article-cta-title" id="cta-heading-2">准备好改变您的数据策略了吗？</h2>
+                    <p class="article-cta-desc">了解蜂启咨询的对话式分析平台如何在整个运营中解锁实时洞察——从上游数据到下游决策。</p>
                     <div class="article-cta-actions">
                         <a href="/zh-cn/contact" class="article-cta-btn">Book a Demo</a>
                         <a href="/zh-cn/solution" class="article-cta-secondary">Explore the Solution</a>
                     </div>
                 </div>
                 <div class="article-cta-stats">
-                    <div class="article-cta-stat"><div class="article-cta-stat-value">3x</div><div class="article-cta-stat-label">Typical first-year ROI</div></div>
-                    <div class="article-cta-stat"><div class="article-cta-stat-value">78%</div><div class="article-cta-stat-label">Faster query resolution</div></div>
-                    <div class="article-cta-stat"><div class="article-cta-stat-value">92%</div><div class="article-cta-stat-label">Adoption in 6 months</div></div>
-                    <div class="article-cta-stat"><div class="article-cta-stat-value">50+</div><div class="article-cta-stat-label">Data connectors</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">3x</div><div class="article-cta-stat-label">典型首年 ROI</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">78%</div><div class="article-cta-stat-label">更快解决查询</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">92%</div><div class="article-cta-stat-label">6 个月内采用率</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">50+</div><div class="article-cta-stat-label">数据连接器</div></div>
                 </div>
             </div>
         </div>
@@ -499,5 +515,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "对话式BI中的数据安全：CISO需要了解的内容";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

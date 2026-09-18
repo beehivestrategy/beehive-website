@@ -18,7 +18,7 @@
     <meta property="og:title" content="保护AI智能体安全：访问控制与审计追踪">
     <meta property="og:description" content="How to secure AI agents that access enterprise data. RBAC, attribute-based access control, conversation logging, and compliance-ready audit trails.">
     <meta property="og:url" content="https://www.beehivestrategy.com/zh-cn/blog/articles/securing-ai-agents-access-control-and-audit-trails">
-    <meta property="og:image" content="https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/securing-ai-agents-access-control-and-audit-trails.jpg">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-cn/securing-ai-agents-access-control-and-audit-trails.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="zh_CN">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/securing-ai-agents-access-control-and-audit-trails#article", "headline": "保护AI智能体安全：访问控制与审计追踪", "description": "How to secure AI agents that access enterprise data. RBAC, attribute-based access control, conversation logging, and compliance-ready audit trails.", "datePublished": "2026-03-12T09:00:00+08:00", "dateModified": "2026-03-12T09:00:00+08:00", "articleSection": "安全保障", "keywords": "AI agent security, access control, RBAC, audit trail, AI governance, agent permissions", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/securing-ai-agents-access-control-and-audit-trails"}, "image": "https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/securing-ai-agents-access-control-and-audit-trails.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首页", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog"}, {"@type": "ListItem", "position": 3, "name": "保护AI智能体安全：访问控制与审计追踪"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -195,6 +196,11 @@
             </div>
 <p class="article-lead"><strong>能够查询CRM、财务数据库与HR系统的AI代理功能强大，但风险同样显著：缺乏恰当的访问控制时，被攻破的代理或恶意用户可以通过几句自然语言提取敏感数据。</strong>确保AI代理安全需要分层防御——身份、权限、审计与监控缺一不可，四层防线环环相扣：身份认证前置、权限最小化、审计全程留痕、监控实时响应。本文以"谁在问、能看到什么、做了什么、有没有问题"四个问题为主线，给出可落地的安全框架。</p>
 <h2 id="身份-谁在问">身份：谁在问？</h2>
+        <figure class="article-figure" data-fig-slug="securing-ai-agents-access-control-and-audit-trails">
+          <img src="/assets/blog/svg/securing-ai-agents-access-control-and-audit-trails.svg" alt="保护AI智能体安全：访问控制与审计追踪 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>保护AI智能体安全：访问控制与审计追踪</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>每一次AI代理查询都携带两个身份：代理身份（哪个模型、什么配置）与用户身份（谁触发了这次查询）。两者都必须经过认证并记录在案。MCP网关通过SSO验证用户身份，检查其角色与权限，并据此收缩代理的数据访问范围——用户没有权限看的数据，代理也无权代取。</p>
 <p>身份层最容易犯的错误是把代理当作"可信内部工具"而跳过认证。据Forrester研究，2025年有超过30%的企业AI项目在身份与访问管理上存在缺口，其中共享凭据与弱认证是最常见问题。正确的做法是：代理凭据与用户会话绑定、短时有效、可撤销，并纳入统一的身份治理平台管理。</p>
 <p>身份治理还要覆盖"人的身份到代理身份的委托"：用户授权代理执行任务时，委托应有时限与范围（例如"本周内可访问华东区销售数据"），到期自动失效。同时记录委托链——代理执行的动作最终可追溯到发起人，避免出现"代理行为无人负责"的灰色地带。据我们观察，委托链清晰的审计记录，能把安全事件的定责时间缩短一半以上。</p>
@@ -216,6 +222,11 @@
 <p>网关是智能体安全变得可强制执行的唯一架构节点，其设计应当比照API网关的严谨程度。四个功能属于这里。认证与会话绑定：对人类的SSO验证、对智能体配置的证明、以及在交互生命周期内把两者密码学绑定在一起的会话——被窃取的智能体令牌若没有有效用户会话就一文不值。策略求值：身份、角色、用途范围与数据分级在此交汇的决策点；网关在查询被翻译之前完成求值，被策略拒绝的查询连它所保护数据的形状都不会泄露。速率与成本限制：按用户和按智能体的查询量与算力上限，因为失控的智能体循环就是你对自己仓库的一次拒绝服务。审计发射点：网关写入交互记录——审计轨迹与监控层共同消费的对象——成为单一、一致、防篡改的流。</p>
 <p>两条设计规则保持网关的有效性。第一，不允许旁路：如果任何智能体可以不经网关触达数据源——一条被遗忘的连接串、一个原型里内嵌的凭证——策略层就只是装饰。网络、凭证和代码评审都必须把网关强制为唯一通道。第二，策略版本化：智能体六个月前在什么权限集下运行必须可重建，因为事件调查与审计永远面向过去。策略保存在版本控制中，部署引用策略版本，审计记录存储哪条版本作用于哪条查询。做对这两条的企业能回答安全官能问出的最糟问题——"这个智能体在那天、那个配置下到底可能触达了什么？"——以分钟计而不是以周计。</p>
 <h2 id="purpose-scoping-in-practice">基于用途的范围限定在实践中如何运作？</h2>
+        <figure class="article-figure" data-fig-slug2="securing-ai-agents-access-control-and-audit-trails">
+          <img src="/assets/blog/svg/securing-ai-agents-access-control-and-audit-trails.svg" alt="保护AI智能体安全：访问控制与审计追踪 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>保护AI智能体安全：访问控制与审计追踪</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>基于用途的范围限定听起来抽象，直到它被写成一个矩阵。行是智能体的工具与数据源，列是它被注册要服务的用途，单元格是允许、带限制允许或拒绝。例如一个季度复盘摘要智能体：允许读取聚合的客户指标、对范围内的单个账户记录允许但带行数上限、完全禁止导出功能——即便调用它的人类自己可以导出同样的数据。智能体的权限是用户权限与智能体用途章程的交集，绝不是并集。</p>
 <p>落地是元数据与执行点的问题。每个智能体注册时携带用途章程——工具、数据类别、操作与上限——以网关可求值的机器可读清单形式存在；每个数据源暴露章程所需的粒度（聚合端点、限行视图、脱敏列）。章程在智能体变更时评审，而不是在事故发生时。需要坦率规划的局限是：用途限定只与工具清单一样可靠。一个能调用通用导出工具的智能体可以把被拒绝的查询洗成被允许的，所以工具集本身是范围的一部分——批量导出、文件写入、对外发送这类强能力应当是独立的、可单独限定范围的能力，而不是每个智能体天然继承的自由函数。</p>
 <p>这份严谨的回报是双向的。安全侧得到对"这个智能体为什么存在、它能触达什么？"的可辩护回答——每个智能体一份章程，而不是耸肩。用户侧得到可预期性：一个章程公开写明自己能做什么的智能体，比行为成谜的智能体更快赢得信任，因为可预期的拒绝读起来是安全，不可预期的拒绝读起来是软件坏了。</p>
@@ -376,8 +387,8 @@
             <a href="/zh-cn/blog/articles/cfo-guide-ai-budget-allocation" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/cfo-guide-ai-budget-allocation.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
-                    <h3 class="recommended-card-title">Cfo Guide Ai Budget Allocation</h3>
+                    <span class="recommended-card-cat">技术</span>
+                    <h3 class="recommended-card-title">CFO人工智能预算分配指南：2026年投资回报最大化策略</h3>
                     <p class="recommended-card-excerpt"></p>
                     <div class="recommended-card-meta">
                         <span>1 分钟阅读</span>
@@ -500,5 +511,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "保护AI智能体安全：访问控制与审计追踪";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
-    <title>What Is Prompt Engineering? Optimising LLM Outputs | Beehive Strategy</title>
+    <title>What Is Prompt Engineering? Optimising LLM Outputs</title>
     <meta name="description" content="Prompt engineering is the practice of designing and optimising inputs to LLMs to produce accurate, relevant, and useful outputs.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/what-is-prompt-engineering-llm-optimisation">
@@ -38,6 +38,7 @@
     <link href="/css/article.css?v=20260901" rel="stylesheet">
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/what-is-prompt-engineering-llm-optimisation#article", "headline": "What Is Prompt Engineering? Optimising LLM Outputs", "description": "Prompt engineering is the practice of designing and optimising inputs to LLMs to produce accurate, relevant, and useful outputs.", "datePublished": "2026-06-19T18:00:00+08:00", "dateModified": "2026-06-19T18:00:00+08:00", "articleSection": "Technology", "keywords": "prompt engineering, what is prompt engineering, prompt design, LLM optimisation, ChatGPT prompts", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/what-is-prompt-engineering-llm-optimisation"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/what-is-prompt-engineering-llm-optimisation.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "What Is Prompt Engineering? Optimising LLM Outputs"}]}</script>
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -196,10 +197,15 @@
                     <a href="#how-should-teams-operationalise-prompt-engineering" class="toc-mobile-link">How Should Teams Operationalise Prompt Engineering?</a>
                 </div>
             </div>
-<p><strong>Prompt engineering is the discipline of designing inputs — instructions, context, examples, and output contracts — so that a language model produces a result you can rely on, repeatably and at scale.</strong> It is often described as "talking to the model nicely," which undersells it and, worse, makes it sound unmeasurable. Done properly it is closer to interface design for a probabilistic system: you specify the task, constrain the output space, supply the evidence, and then test the specification against a set of cases until it behaves predictably.</p>
-<p>It matters commercially because the same model can produce materially different quality depending on how it is asked. That variance is the difference between a pilot that impresses in a demo and a system that survives contact with real users. This article covers what prompt engineering is, which techniques measurably help, how to evaluate prompts rather than guess at them, and — importantly — where prompting stops being the right tool and function calling takes over.</p>
+<p><strong><a href="/en/blog/articles/what-is-prompt-engineering" class="inline-ref">Prompt engineering</a> is the discipline of designing inputs — instructions, context, examples, and output contracts — so that a language model produces a result you can rely on, repeatably and at scale.</strong> It is often described as "talking to the model nicely," which undersells it and, worse, makes it sound unmeasurable. Done properly it is closer to interface design for a probabilistic system: you specify the task, constrain the output space, supply the evidence, and then test the specification against a set of cases until it behaves predictably.</p>
+<p>It matters commercially because the same model can produce materially different quality depending on how it is asked. That variance is the difference between a pilot that impresses in a demo and a system that survives contact with real users. This article covers what prompt engineering is, which techniques measurably help, how to evaluate prompts rather than guess at them, and — importantly — where prompting stops being the right tool and <a href="/en/blog/articles/why-function-calling-replaces-prompt-engineering" class="inline-ref">function calling</a> takes over.</p>
 
 <h2 id="what-is-prompt-engineering-exactly">What Is Prompt Engineering, Exactly?</h2>
+        <figure class="article-figure" data-fig-slug="what-is-prompt-engineering-llm-optimisation">
+          <img src="/assets/blog/svg/what-is-prompt-engineering-llm-optimisation.svg" alt="What Is Prompt Engineering? Optimising LLM Outputs — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>what is prompt engineering? optimising llm outputs</b></figcaption>
+        </figure>
+
 <p>A prompt is the entire input a model receives: the system instruction that sets role and constraints, the user's request, any retrieved context, any examples, and the accumulated conversation. Prompt engineering is the practice of deliberately composing all five.</p>
 <ul>
 <li><strong>System instruction.</strong> The standing brief: who the model is, what it must always do, and what it must never do. This layer is stable across requests and is where policy lives.</li>
@@ -214,12 +220,12 @@
 <p>Because a language model is not retrieving an answer; it is continuing a pattern conditioned on the text in front of it. Three consequences follow, and each maps to a technique.</p>
 <p><strong>Ordering matters.</strong> Models weight the beginning and end of a context window more strongly than the middle. Put the instruction and the output contract first, the evidence in the middle, and the specific question at the end — and repeat the critical constraint at the boundary where the model starts generating.</p>
 <p><strong>Demonstration beats description.</strong> Showing three correct examples communicates a format more reliably than three paragraphs describing it. Examples convert a description into a pattern the model can continue, which is why few-shot prompting produces step changes on formatting tasks and only marginal changes on reasoning tasks.</p>
-<p><strong>Reasoning benefits from being externalised.</strong> Asking a model to work step by step before answering improves accuracy on multi-step problems, because intermediate steps become part of the context that conditions the final tokens. The gain is real but bounded: it helps most on arithmetic, logic, and multi-hop questions, and least on simple retrieval or classification where it adds cost without accuracy.</p>
+<p><strong>Reasoning benefits from being externalised.</strong> Asking a model to work step by step before answering improves accuracy on multi-step problems, because intermediate steps become part of the context that conditions the final tokens. The gain is real but bounded: it helps most on arithmetic, logic, and multi-hop questions, and least on <a href="/en/blog/articles/rag-retrieval-augmented-generation-knowledge-management" class="inline-ref">simple retrieval</a> or classification where it adds cost without accuracy.</p>
 <p>There is a fourth, less discussed consequence: instruction following degrades as the number of simultaneous constraints grows. Ten rules in one prompt are not enforced ten times as well as one rule — they are each enforced less well. When a prompt exceeds roughly a dozen hard constraints, decompose the task into stages instead.</p>
 
 <h2 id="which-core-techniques-actually-move-the-needle">Which Core Techniques Actually Move the Needle?</h2>
 <p>Ranked by measured effect on typical enterprise tasks, with the honest caveats.</p>
-<p><strong>Retrieval-augmented generation (RAG).</strong> Supplying relevant source text in the context is the single largest accuracy lever for any question that depends on facts the model was not trained on or that change over time. It also makes answers auditable, because you can cite the passages used. The failure mode is retrieval quality: poor chunking or a weak embedding match puts the wrong evidence in context and the model will faithfully use it.</p>
+<p><strong>Retrieval-<a href="/en/blog/articles/rag-retrieval-augmented-generation-enterprise-knowledge" class="inline-ref">augmented generation</a> (RAG).</strong> Supplying relevant source text in the context is the single largest accuracy lever for any question that depends on facts the model was not trained on or that change over time. It also makes answers auditable, because you can cite the passages used. The failure mode is retrieval quality: poor chunking or a weak embedding match puts the wrong evidence in context and the model will faithfully use it.</p>
 <p><strong>Few-shot exemplars.</strong> Two to five worked examples, chosen to span the variation in your data, dramatically improve format adherence and tone consistency. Curate them; randomly sampled examples teach noise.</p>
 <p><strong>Explicit output contracts.</strong> Demand a schema, and provide the schema. Structured output with validation and repair loops turns a prose generator into a component other systems can consume. This is where most of the engineering value sits.</p>
 <p><strong>Chain-of-thought and decomposition.</strong> Ask for reasoning before the answer, or decompose a complex task into explicit sub-steps. Use it selectively: measure whether it improves your task before paying the latency and token cost across the board.</p>
@@ -249,6 +255,11 @@
 <p>The pragmatic rule: start zero-shot with a strict output contract and measure. Add examples only for the specific failure modes you observe, and re-measure after each addition. Prompt changes without measurement are superstition.</p>
 
 <h2 id="how-do-you-evaluate-prompts-without-guessing">How Do You Evaluate Prompts Without Guessing?</h2>
+        <figure class="article-figure" data-fig-slug2="what-is-prompt-engineering-llm-optimisation">
+          <img src="/assets/blog/svg/what-is-prompt-engineering-llm-optimisation.svg" alt="What Is Prompt Engineering? Optimising LLM Outputs — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>what is prompt engineering? optimising llm outputs</b></figcaption>
+        </figure>
+
 <p>This is where most teams fail, and it is the highest-return capability to build. Four components:</p>
 <p><strong>A held-out test set.</strong> Fifty to a few hundred real inputs with expected outputs or, where that is impossible, an explicit rubric. It must be held out: a prompt tuned against the cases you look at every day will overfit to them.</p>
 <p><strong>Task-appropriate metrics.</strong> Exact match for extraction; F1 or per-class precision and recall for classification; schema-valid rate and field-level accuracy for structured output; groundedness and citation accuracy for RAG; and human or model-graded rubric scores for prose. Pick one primary metric and two guardrail metrics, and write them down before you start tuning.</p>
@@ -458,15 +469,15 @@
             <div class="sidebar-card">
                 <div class="sidebar-heading">Related Articles</div>
                 <div class="sidebar-related-list">
-                    <a href="blog/articles/women-in-data-building-inclusive-ai-teams" class="sidebar-related-card">
+                    <a href="/blog/articles/women-in-data-building-inclusive-ai-teams" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Women In Data Building Inclusive Ai Teams</h4>
                         <span class="sidebar-related-meta">11 min read</span>
                     </a>
-                    <a href="blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="sidebar-related-card">
+                    <a href="/blog/articles/why-data-strategy-needs-ai-agent-layer-2026" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Why Data Strategy Needs Ai Agent Layer 2026</h4>
                         <span class="sidebar-related-meta">8 min read</span>
                     </a>
-                    <a href="blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="sidebar-related-card">
+                    <a href="/blog/articles/vector-databases-enterprise-search-2026-practical-guide" class="sidebar-related-card">
                         <h4 class="sidebar-related-title">Vector Databases Enterprise Search 2026 Practical Guide</h4>
                         <span class="sidebar-related-meta">7 min read</span>
                     </a>
@@ -535,8 +546,8 @@
                     <h2 class="article-cta-title" id="cta-heading">Ready to transform your data strategy?</h2>
                     <p class="article-cta-desc">See how Beehive Strategy's conversational analytics platform unlocks real-time insights across your operations, from upstream data to downstream decisions.</p>
                     <div class="article-cta-actions">
-                        <a href="contact" class="article-cta-btn">Book a Demo</a>
-                        <a href="solution" class="article-cta-secondary">Explore the Solution</a>
+                        <a href="/contact" class="article-cta-btn">Book a Demo</a>
+                        <a href="/solution" class="article-cta-secondary">Explore the Solution</a>
                     </div>
                 </div>
                 <div class="article-cta-stats">
@@ -611,5 +622,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "What Is Prompt Engineering? Optimising LLM Outputs";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

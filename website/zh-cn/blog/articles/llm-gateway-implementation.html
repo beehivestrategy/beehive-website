@@ -18,7 +18,7 @@
     <meta property="og:title" content="构建LLM网关：路由、缓存与故障转移">
     <meta property="og:description" content="Enterprise p在terns 为 mg在g multiple LLM providers. Lern how 到 自建 LLM g在ewys 与 在telligent 路由, resp关于se 缓存, 与 回退 str在egies.">
     <meta property="og:url" content="https://www.beehivestrategy.com/zh-cn/blog/articles/llm-gateway-implementation">
-    <meta property="og:image" content="https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/llm-gateway-implementation.jpg">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-cn/llm-gateway-implementation.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="zh_CN">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/llm-gateway-implementation#article", "headline": "构建LLM网关：路由、缓存与故障转移", "description": "Enterprise p在terns 为 mg在g multiple LLM providers. Lern how 到 自建 LLM g在ewys 与 在telligent 路由, resp关于se 缓存, 与 回退 str在egies.", "datePublished": "2026-04-04T13:00:00+08:00", "dateModified": "2026-04-04T13:00:00+08:00", "articleSection": "技术", "keywords": "llm-gateway, llm-routing, enterprise-ai, ai-infrastructure, beehive-strategy", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/llm-gateway-implementation"}, "image": "https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/llm-gateway-implementation.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首页", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog"}, {"@type": "ListItem", "position": 3, "name": "构建LLM网关：路由、缓存与故障转移"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -202,6 +203,11 @@
             </div>
 <p class="article-lead">直接回答：大模型网关是把一堆模型 API 收编成统一受治理、可观测、成本可控的服务的控制平面——到 2026 年，任何运行不止一个生成式 AI 工作负载的企业，它都是最低可行架构。Gartner 预测到 2026 年将有超过 80% 的企业部署生成式 AI 应用；Menlo Ventures 的企业调研则显示，企业在这上面的支出已从 2023 年的 23 亿美元攀升至 2024 年的 138 亿美元。本文会讲清网关做什么、如何设计路由与回退、缓存和安全落在哪里、一份分步参考实现、自建还是采购的取舍、行业差异，以及证明这笔投资值得的指标。</p>
 <h2 id="what-is-llm-gateway">大模型网关是什么，它解决什么问题？</h2>
+        <figure class="article-figure" data-fig-slug="llm-gateway-implementation">
+          <img src="/assets/blog/svg/llm-gateway-implementation.svg" alt="构建LLM网关：路由、缓存与故障转移 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>构建LLM网关：路由、缓存与故障转移</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>大模型网关是位于你的应用与每一个模型供应商之间的唯一一层。它在一条接缝上统一了路由、认证、限流、缓存、护栏与可观测性，因此没有任何应用需要直接调用供应商的 SDK。没有它，每个团队各自集成供应商、各自管理密钥与重试，并在每一个服务里重复实现同一套脆弱的调用逻辑。</p>
 <p>核心价值是把三个问题——用哪个模型、花了多少、遵循什么策略——从散落的业务代码里抽离出来，变成平台能力。当供应商调价、变慢或能力变化时，你只需在网关调整路由，而不必改动每一个下游应用。对任何使用不止一个模型的企业，网关近乎是必选项：它让团队在专有模型与开源模型之间按需切换，在不放弃治理的前提下获得成本与弹性。</p>
 <p>McKinsey 2024 年《AI 现状》调研发现，65% 的组织已在至少一个职能中常态化使用生成式 AI，几乎是前一年的两倍——而其中几乎没有一个只锁定单一供应商。网关正是应对这种组合、控制支出并同时守住边界的标准答案。OWASP 的 LLM 应用 Top 10 把提示注入与供应链风险列在前列，而这些控制放在网关这一处统一实施，远比在每个应用里各自修补更现实。</p>
@@ -230,6 +236,11 @@
 <p>第二阶段（第 3–6 周）：一个工作负载一个工作负载地扩展，每接入一个新应用就加上护栏与权限执行，并在支出数据真实后建立按团队预算。从第一天起就让供应商层可替换——锁定版本、抽象供应商特定参数、显式测试回退，而不是指望它碰巧可用。把提示与模型版本当作有自己评审流程的版本化资产：没有提示治理的网关，只是更快地把坏提示传播到各处。</p>
 <p>第三阶段（第 7–12 周）：广泛开启语义缓存，向财务与安全发布成本—质量仪表盘，并把路由策略固化为代码、按季度评审。到这一步，网关已是控制平面而非代理：供应商可以被重新议价或替换而无需改动应用代码，每个请求都携带身份、成本与审计轨迹。</p>
 <h2 id="build-buy-manage">自建、采购还是用托管网关？</h2>
+        <figure class="article-figure" data-fig-slug2="llm-gateway-implementation">
+          <img src="/assets/blog/svg/llm-gateway-implementation.svg" alt="构建LLM网关：路由、缓存与故障转移 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>构建LLM网关：路由、缓存与故障转移</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>这个决定取决于三个因素：你有多少不同的工作负载、数据受监管程度如何、平台工程是否是你愿意投入的核心能力。当你有特殊的路由需求、没有供应商能满足的严格数据驻留要求，或有一个会把网关当产品来养的团队时，自建。当你想要这些控制——路由、缓存、护栏、血缘——作为功能而非项目，且你更愿意把工程精力花在应用而非基础设施上时，采购或用托管层。</p>
 <p>自建的隐性成本在于长尾：身份集成、审计日志、评估流水线、供应商 SDK 的版本动荡，以及按季度调优的节奏，全都要永久有人维护。托管层把这些长尾外部化了。对于对话式 BI 部署，一个托管网关加一个受治理的语义层大约两周就能上线；自建的等效物在回答第一个业务问题之前，通常要先做一季度的平台工程。</p>
 <p>一个常见的折中是：托管网关、自有策略。你采用供应商的控制平面，但把路由、缓存与护栏策略作为代码保留在自己仓库里，这样就不会被锁定在某一家的行为上。它保住了可移植性，又避开了基础设施税。</p>
@@ -415,8 +426,8 @@
             <a href="/zh-cn/blog/articles/data-quality-automation-from-reactive-to-proactive-part-2" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/data-quality-automation-from-reactive-to-proactive-part-2.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
-                    <h3 class="recommended-card-title">Data Quality Automation From Reactive To Proactive Part 2</h3>
+                    <span class="recommended-card-cat">技术</span>
+                    <h3 class="recommended-card-title">数据质量自动化：从被动响应到主动预防（第二部分）</h3>
                     <p class="recommended-card-excerpt">探讨构建LLM网关：路由、缓存与故障转移如何推动企业数字化转型，包含实践路径和成功要素分析。</p>
                     <div class="recommended-card-meta">
                         <span>1 分钟阅读</span>
@@ -428,8 +439,8 @@
             <a href="/zh-cn/blog/articles/cfo-guide-ai-budget-allocation" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/cfo-guide-ai-budget-allocation.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
-                    <h3 class="recommended-card-title">Cfo Guide Ai Budget Allocation</h3>
+                    <span class="recommended-card-cat">技术</span>
+                    <h3 class="recommended-card-title">CFO人工智能预算分配指南：2026年投资回报最大化策略</h3>
                     <p class="recommended-card-excerpt">探讨构建LLM网关：路由、缓存与故障转移如何推动企业数字化转型，包含实践路径和成功要素分析。</p>
                     <div class="recommended-card-meta">
                         <span>1 分钟阅读</span>
@@ -526,5 +537,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "构建LLM网关：路由、缓存与故障转移";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>

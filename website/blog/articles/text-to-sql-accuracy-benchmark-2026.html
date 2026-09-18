@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
+    <title>Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide</title>
+    <meta name="description" content="What Spider, BIRD and public Text-to-SQL benchmarks hide in 2026 — schema messiness, jargon, permissions — and why semantic layers and eval sets beat raw LLM SQL.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/text-to-sql-accuracy-benchmark-2026">
+    <link href="https://www.beehivestrategy.com/blog/articles/text-to-sql-accuracy-benchmark-2026" hreflang="en" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/zh-cn/blog/articles/text-to-sql-accuracy-benchmark-2026" hreflang="zh-CN" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/zh-tw/blog/articles/text-to-sql-accuracy-benchmark-2026" hreflang="zh-TW" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/blog/articles/text-to-sql-accuracy-benchmark-2026" hreflang="x-default" rel="alternate"/>
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Beehive Strategy">
+    <meta property="og:title" content="Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide">
+    <meta property="og:description" content="What Spider, BIRD and public Text-to-SQL benchmarks hide in 2026 — schema messiness, jargon, permissions — and why semantic layers and eval sets beat raw LLM SQL.">
+    <meta property="og:url" content="https://www.beehivestrategy.com/blog/articles/text-to-sql-accuracy-benchmark-2026">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/en/text-to-sql-accuracy-benchmark-2026.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:published_time" content="2026-08-27T09:00:00+08:00">
+    <meta property="article:modified_time" content="2026-08-27T09:00:00+08:00">
+    <meta property="article:author" content="Beehive Strategy">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="data-governance"><meta property="article:tag" content="data-catalog"><meta property="article:tag" content="data-lineage"><meta property="article:tag" content="compliance"><meta property="article:tag" content="ai-risk">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide">
+    <meta name="twitter:description" content="What Spider, BIRD and public Text-to-SQL benchmarks hide in 2026 — schema messiness, jargon, permissions — and why semantic layers and eval sets beat raw LLM SQL.">
+    <meta name="twitter:image" content="https://www.beehivestrategy.com/assets/blog/covers/en/text-to-sql-accuracy-benchmark-2026.jpg">
+    <link href="/assets/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/css/article.css?v=20260901" rel="stylesheet">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/text-to-sql-accuracy-benchmark-2026#article", "headline": "Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide", "description": "What Spider, BIRD and public Text-to-SQL benchmarks hide in 2026 — schema messiness, jargon, permissions — and why semantic layers and eval sets beat raw LLM SQL.", "datePublished": "2026-08-27T09:00:00+08:00", "dateModified": "2026-08-27T09:00:00+08:00", "articleSection": "Technology", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/text-to-sql-accuracy-benchmark-2026"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/text-to-sql-accuracy-benchmark-2026.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide"}]}</script>
+
+    <link rel="stylesheet" href="/css/article-anim.css">
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+<header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="Beehive Strategy Home">
+        <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
+        <a href="/solution" class="nav-link">Solution</a>
+                <div class="nav-item-dropdown">
+          <a href="/services" class="nav-link" aria-haspopup="true" aria-expanded="false">Services <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-grid">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Build</div>
+                <a href="/services" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>All Services</span>
+                  <span class="dropdown-subtitle">Four service pathways to AI maturity</span>
+                </a>
+                <a href="/fde" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>Forward Deployed Engineering</span>
+                  <span class="dropdown-subtitle">IM-native AI deployment, embedded</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Run</div>
+                <a href="/token-hub" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>Token Hub <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Managed AI token supply & routing</span>
+                </a>
+                <a href="/agentic-tools" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>Agentic Tools <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Deploy & govern agentic AI</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Enable</div>
+                <a href="/training" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>AI Deployment Training <span class="nav-badge-new">New</span></span>
+                  <span class="dropdown-subtitle">Teach your team to ship AI</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="/industries" class="nav-link">Industries</a>
+        <a href="/case-studies" class="nav-link">Case Studies</a>
+        <a href="/pricing" class="nav-link">Pricing</a>
+        <a href="/about" class="nav-link">About</a>
+        <a href="/blog" class="nav-link active">Blog</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">EN</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/text-to-sql-accuracy-benchmark-2026" role="menuitem" class="active" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/text-to-sql-accuracy-benchmark-2026" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-tw/blog/articles/text-to-sql-accuracy-benchmark-2026" role="menuitem" data-lang="zh-tw"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="/solution">Solution</a>
+    <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">Services <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Build</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/services">All Services <span class="dropdown-subtitle">Four service pathways to AI maturity</span></a>
+          <a href="/fde">Forward Deployed Engineering <span class="dropdown-subtitle">IM-native AI deployment, embedded</span></a>
+        </div>
+      </div>
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Run</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/token-hub">Token Hub <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Managed AI token supply & routing</span></a>
+          <a href="/agentic-tools">Agentic Tools <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Deploy & govern agentic AI</span></a>
+        </div>
+      </div>
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Enable</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/training">AI Deployment Training <span class="nav-badge-new">New</span><span class="dropdown-subtitle">Teach your team to ship AI</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="/industries">Industries</a>
+  <a href="/case-studies">Case Studies</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/about">About</a>
+  <a href="/blog">Blog</a>
+  <div class="mobile-lang-switcher">
+    <a href="/blog/articles/text-to-sql-accuracy-benchmark-2026" data-lang="en" class="active">English</a>
+    <a href="/zh-cn/blog/articles/text-to-sql-accuracy-benchmark-2026" data-lang="zh-cn">简体中文</a>
+    <a href="/zh-tw/blog/articles/text-to-sql-accuracy-benchmark-2026" data-lang="zh-tw">繁體中文</a>
+  </div>
+  <a href="/contact" class="btn btn-primary btn-lg">Book a Demo</a>
+  </div>
+
+<main>
+<nav class="breadcrumb" aria-label="Breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb-list">
+            <li><a href="https://www.beehivestrategy.com/">Home</a></li>
+            <li><a href="https://www.beehivestrategy.com/blog">Blog</a></li>
+            <li class="current">Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide</li>
+        </ol>
+    </div>
+</nav>
+
+<div class="container">
+    <section class="article-header">
+        <span class="article-cat-pill">Data Governance</span>
+        <h1 class="article-h1">Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide</h1>
+        <div class="article-meta-row">
+            <div class="article-avatar" aria-hidden="true">BK</div>
+            <div class="article-meta-text">
+                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> August 27, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 12 min read
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <div class="article-layout">
+        <article class="article-content" id="article-content">
+            <div class="toc-mobile" id="toc-mobile">
+                <button class="toc-mobile-toggle" aria-expanded="false">Table of Contents <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="toc-mobile-links">
+                    <a href="#what-the-public-benchmarks-actually-measure" class="toc-mobile-link">What the public benchmarks actually measure</a>
+                    <a href="#five-things-the-benchmarks-hide" class="toc-mobile-link">Five things the benchmarks hide</a>
+                    <a href="#why-raw-llm-sql-is-the-wrong-architecture" class="toc-mobile-link">Why raw LLM SQL is the wrong architecture</a>
+                    <a href="#the-accuracy-numbers-to-demand-from-vendors" class="toc-mobile-link">The accuracy numbers to demand from vendors</a>
+                    <a href="#what-actually-determines-deployed-accuracy" class="toc-mobile-link">What actually determines deployed accuracy</a>
+                    <a href="#implications-for-conversational-bi-in-the-im-era" class="toc-mobile-link">Implications for conversational BI in the IM era</a>
+                    <a href="#a-practical-evaluation-checklist" class="toc-mobile-link">A practical evaluation checklist</a>
+                </div>
+            </div>
+<p class="article-lead">A vendor tells you their Text-to-SQL system is "95% accurate." The benchmark paper behind that number says the same. Then the system ships, a finance manager asks about "net sales excluding intercompany," and the SQL is confidently wrong. Both the vendor and the paper were telling the truth; the truth was about a dataset that looks nothing like your warehouse.</p>
+<div class="article-tldr"><strong>Key Statistics:</strong> The BIRD benchmark (2023) showed that even top LLMs initially scored in the 50–60% execution-accuracy range on realistic schemas, far below the 90%+ figures long reported on the older Spider benchmark (2018); leaderboard-topping systems have continued to climb on both through 2025–2026; Stanford's AI Index (2025) documents broad gains in model reasoning that lift all NL-to-SQL systems; meanwhile practitioner surveys and analyst commentary (Gartner, 2024–2025) consistently report that natural-language analytics deployments fail on governance and trust far more often than on raw generation quality. The gap between benchmark accuracy and deployed accuracy is not noise — it is structural, and it has a name: distribution shift.</div>
+
+<h2  id="what-the-public-benchmarks-actually-measure">What the public benchmarks actually measure</h2>
+        <figure class="article-figure" data-fig-slug="text-to-sql-accuracy-benchmark-2026">
+          <img src="/assets/blog/svg/text-to-sql-accuracy-benchmark-2026.svg" alt="Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>text-to-sql accuracy in 2026: benchmarks and what they hide</b></figcaption>
+        </figure>
+
+<p>Two benchmarks dominate every vendor deck. Understanding what they measure — and what they don't — is the fastest way to read Text-to-SQL claims correctly.</p>
+<p><strong>Spider (2018, Yale)</strong> is the most-cited. Roughly 10,000 questions over 200 database tables across 138 domains, with queries written to be answerable from the schema. Its successor, Spider 2.0 (2024), was explicitly built because the original had been "solved": models exceed 90% on Spider 1.0, while Spider 2.0 — featuring real enterprise dialects, long contexts, and multi-step analytics — initially scored below 25% for the best systems. That collapse between versions is the single most instructive data point in the field.</p>
+<p><strong>BIRD (2023)</strong> was constructed precisely to close the gap between academic queries and messy reality: larger databases, <a href="/en/blog/articles/what-is-synthetic-data" class="inline-ref">real data</a> values, and questions requiring external knowledge or domain reasoning, built by an academic team in <a href="/en/blog/articles/openai-china-research-lab-hong-kong-2026" class="inline-ref">Hong Kong</a>. It reset the leaderboard to the 50–60% range in 2023, and top systems have since pushed execution accuracy into the 70–80%+ range through 2025–2026, with prompt-engineering pipelines and fine-tuned open-<a href="/en/blog/articles/white-house-ai-guidelines-open-weight-models-exempt-2026" class="inline-ref">weight models</a> competing alongside frontier APIs.</p>
+<p>Both are legitimate, carefully built datasets. The honest summary of what they establish:</p>
+<table class="article-table">
+<thead><tr><th>Dimension</th><th>Spider 1.0 (2018)</th><th>Spider 2.0 (2024)</th><th>BIRD (2023)</th><th>Typical enterprise warehouse</th></tr></thead>
+<tbody>
+<tr><td>Schema size</td><td>5–40 tables</td><td>100s of tables</td><td>Dozens–100s</td><td>300–1,000+ tables</td></tr>
+<tr><td>Schema hygiene</td><td>Clean, documented, one domain</td><td>Real dialects, long context</td><td>Real values, some noise</td><td>10 years of accreted naming, 3 competing currencies</td></tr>
+<tr><td>Question style</td><td>Self-contained, unambiguous</td><td>Multi-step, requires exploration</td><td>Requires domain knowledge</td><td>Requires internal jargon decoding</td></tr>
+<tr><td>Ownership of data</td><td>Public, static</td><td>Public, static</td><td>Public, static</td><td>Private, moving, permissioned</td></tr>
+<tr><td>Best-model accuracy (2025–2026, approx.)</td><td>90%+</td><td>~40–60% and climbing</td><td>70–80%+</td><td>Nobody publishes; practitioners report 60–90% depending on governance</td></tr>
+</tbody></table>
+<p>The table's last row is the point. There is no public benchmark for your warehouse, and the transferability of public scores decays with every step toward enterprise reality.</p>
+<p>Two additional caveats when reading leaderboard movement. First, contamination: frontier models are trained on web-scale data, and public benchmarks and their solutions circulate widely, so some share of any reported gain may reflect memorization rather than generalizable skill — a concern the benchmark maintainers themselves acknowledge and mitigate with held-out variants. Second, recipe specialization: much of the recent climb comes from pipelines engineered around each benchmark's known structure — schema linking tricks, candidate-selection ensembles, execution-feedback loops — which is legitimate engineering but transfers imperfectly to a warehouse whose structure the pipeline has never seen. Read the trajectory, not the point estimate: the honest takeaway from 2023–2026 is that the direction of travel is excellent, while any single number is fragile.</p>
+<h2  id="five-things-the-benchmarks-hide">Five things the benchmarks hide</h2>
+<h3 id="1-schema-messiness">1. Schema messiness</h3>
+<p>Benchmarks ship tidy schemas with helpful names. Your warehouse has <code>tbl_sal_sum_v3_final</code> and a column named <code>amt</code> whose meaning changed in 2021. It has the same customer existing under four keys because of a CRM migration, revenue booked in three currencies without a consistent conversion date, and slowly changing dimensions that make "as of last March" a genuinely hard question. Real-world Text-to-<a href="/en/blog/articles/text-to-sql-accuracy-enterprise-trust" class="inline-ref">SQL accuracy</a> is not a function of the model's SQL skill; it is a function of how much of this mess the system can be *insulated from*. Every serious deployment invests more in the layers around the model — documented and curated table sets, tested metric definitions — than in the model itself.</p>
+<h3 id="2-business-jargon">2. Business jargon</h3>
+<p>Benchmark questions are written by people who can see the schema. Your business users ask about "GMV excluding cancelled-but-unshipped orders," "the South China region" (which, in your org tree, is a different set of stores every year since the 2023 reorganization), or "active dealers" — a term with three competing definitions that were never reconciled. The model cannot map this vocabulary to columns from schema documentation, because the mapping does not exist in the schema. It exists in institutional knowledge — usually in the heads of three analysts. An NL-to-SQL system that has not been taught your jargon is not slightly degraded; it is answering a different question than the one was asked.</p>
+<h3 id="3-permissions-and-visibility">3. Permissions and visibility</h3>
+<p>Benchmarks have one implicit user who can see everything. Enterprises have a shop manager who must not see other stores, a finance analyst cleared for the GL but not for HR tables, and a regional director whose scope changed last quarter. Query generation in production is not "write SQL against the warehouse"; it is "write SQL against the slice of the warehouse this identity may see, at this moment." That is a fundamentally different problem — part SQL generation, part access-control enforcement at execution time — and public benchmarks do not test it at all. A system that scores 85% while ignoring permissions is not 85% accurate in an enterprise; it is a data-leak vector with good marketing.</p>
+<h3 id="4-the-cost-asymmetry-of-errors">4. The cost asymmetry of errors</h3>
+<p>On a benchmark, a wrong query costs one leaderboard point. In a board meeting, a wrong number costs credibility — and, per the way executives actually behave, the whole analytics initiative. Errors also aren't uniform: a hallucinated JOIN across fact tables that silently double-counts revenue is worse than a graceful "I can't answer that," but execution-accuracy scoring treats both as the same failure. Deployed systems therefore need calibrated confidence, abstention behavior, and citation trails back to source rows — none of which appear in benchmark scoring.</p>
+<h3 id="5-semantic-drift">5. Semantic drift</h3>
+<p>The warehouse changes under the system: tables are renamed, a metric definition is revised, a source system migrates. A benchmark is frozen; your schema is not. Systems need regression evaluation that runs continuously — not a one-time certification. This is the least discussed and most operationally important gap: accuracy is not a property of a system, it is a property of a system *at a point in time under a specific schema*.</p>
+<h2  id="why-raw-llm-sql-is-the-wrong-architecture">Why raw LLM SQL is the wrong architecture</h2>
+<p>The failure pattern above explains why the "just point a frontier model at the schema" approach, which demoed brilliantly in 2023, stopped being the recommended architecture by 2025. Raw LLM SQL asks the model to do four jobs at once — interpret business language, explore schema, remember metric definitions, and write dialect-correct SQL — and it does all four with out-of-proportion confidence.</p>
+<p>The architecture that production systems converged on instead splits the problem:</p>
+<ul>
+<li><strong>Semantic layer.</strong> A governed mapping between business terms and physical schema — metric definitions, dimension conventions, jargon aliases — narrows the model's task from "discover the schema" to "compose governed queries against known definitions." In our deployments, this is the single largest accuracy lever, typically worth 15–25 percentage points of usable-answer rate on enterprise schemas (our own measurements, consistent with directional practitioner reports).</li>
+<li><strong>Retrieval of relevant schema context.</strong> Rather than pasting 400 tables into context, systems retrieve the 10–20 relevant tables and their documentation per question. Smaller context, fewer hallucinated joins.</li>
+<li><strong>Query governance.</strong> Identity-bound row and column security enforced at execution, query logging, cost controls, and read-only enforcement. This layer doesn't improve accuracy; it makes accuracy *safe to use*.</li>
+<li><strong>Evaluation harness.</strong> A private eval set — 100–300 real business questions with verified answers, spanning your jargon and your schema quirks — run on every model change, prompt change, and schema change. This is the benchmark that actually matters, and nobody can build it for you.</li>
+</ul>
+<p>The economic argument is as strong as the accuracy argument. Frontier-model token costs have fallen steeply (Stanford AI Index, 2025), and open-weight models have reached parity for most SQL-generation workloads — so the marginal cost of a query keeps dropping. What does *not* drop is the cost of a wrong number trusted by a decision-maker. Architecture should therefore spend its complexity budget on the layers that catch and prevent errors, not on squeezing the last few points out of the model.</p>
+<h2  id="the-accuracy-numbers-to-demand-from-vendors">The accuracy numbers to demand from vendors</h2>
+<p>When a vendor quotes a number, the correct response is not to argue about the number but to ask five questions that convert it into information:</p>
+<ol>
+<li><strong>On what dataset?</strong> Spider 1.0 numbers are effectively meaningless in 2026 — a 90%+ score there is table stakes, not differentiation. BIRD or Spider 2.0 scores say more; ask for the version and date.</li>
+<li><strong>Execution accuracy or exact match, and against what ground truth?</strong> Execution accuracy can pass with wrong-but-coincidentally-matching results; exact match fails correct queries with different formatting. Ask how ground truth was validated.</li>
+<li><strong>What does "accurate" mean for an ambiguous question?</strong> If the model resolves "销售额" to GMV and your analyst meant net revenue, is that a failure? Mature vendors count abstentions and clarifications separately from errors, and report all three.</li>
+<li><strong>How are permissions enforced — and tested?</strong> Ask whether row-level security is enforced at execution for every query, and whether their evaluation includes permission-violation tests. If evaluation only measures SQL correctness, you are buying an unaudited access path to your warehouse.</li>
+<li><strong>Will you score on our data?</strong> The only benchmark that predicts your deployment is an eval set built from your questions and your schema. Vendors confident in their semantic-layer approach will agree to a structured pilot with a fixed question set and published scores — this is exactly what a paid pilot (ours: two weeks, HKD 25k / RMB 20k) is for. Vendors who resist scoring on your data are telling you something.</li>
+</ol>
+<p>One further negotiation point that separates serious vendors from demo vendors: accuracy commitments over time, not just at signing. Ask what happens to measured accuracy when a model version is retired, when a table is migrated, or when a metric definition changes — and whether re-scoring on your eval set is included in the contract. A vendor who treats your evaluation set as the ongoing contract instrument, with agreed thresholds and re-run cadence, is offering an accountability structure. A vendor who treats evaluation as a one-time sales exercise is offering a screenshot.</p>
+<p>A realistic accuracy expectation for a well-governed deployment on a messy enterprise schema, based on our deployments and corroborating practitioner reports: <strong>85–95% usable answers</strong> on questions within the curated semantic scope, with abstention on out-of-scope questions rather than hallucination — and that abstention behavior, counterintuitively, is the mark of a mature system. Anyone promising 99% on an unconstrained warehouse is promising you a demo.</p>
+<h2  id="what-actually-determines-deployed-accuracy">What actually determines deployed accuracy</h2>
+<p>Aggregating what we and others have seen across deployments, the ranking of accuracy levers is stable and, to outsiders, almost boring:</p>
+<table class="article-table">
+<thead><tr><th>Rank</th><th>Lever</th><th>Typical impact (estimates, our deployments)</th><th>Effort</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Semantic layer over the business-critical tables</td><td>+15–25 pts usable-answer rate</td><td>Weeks; needs a metric owner</td></tr>
+<tr><td>2</td><td>Private eval set with real jargon questions</td><td>Doesn't add accuracy — reveals it; enables every other lever</td><td>1–2 weeks, ongoing</td></tr>
+<tr><td>3</td><td>Jargon/alias dictionary, maintained from query logs</td><td>+5–15 pts over time</td><td>Continuous, low cost</td></tr>
+<tr><td>4</td><td>Schema curation (views, documentation, retired-table hygiene)</td><td>+5–10 pts, compounding</td><td>Continuous, shared with BI team</td></tr>
+<tr><td>5</td><td>Model choice (frontier vs open-weight, tuned prompts)</td><td>±5 pts</td><td>Quarterly re-evaluation</td></tr>
+</tbody></table>
+<p>Note what ranks below the top four: everything having to do with the model. This is the consistent finding across 2025–2026 deployments and it matches the benchmark literature's own diagnosis — Spider 2.0's authors attribute low scores less to SQL inability than to the *exploration and reasoning over unfamiliar, realistic environments*. The model is no longer the bottleneck; the context and the governance are.</p>
+<p>Two organizational observations complete the picture. First, every lever above needs a named owner: a metric owner for the semantic layer, an analyst who curates the jargon dictionary from query logs, a BI engineer who maintains schema documentation. Text-to-SQL accuracy decays not because systems break but because nobody owns the definitions they encode. Second, the eval set changes the internal politics of analytics for the better: when accuracy is scored weekly on real questions, arguments about "can we trust the AI answers" become arguments about specific failed questions with specific fixes — which is a healthy engineering conversation rather than a vague anxiety. Enterprises that publish the score get trust; enterprises that hide it get whisper networks.</p>
+<h2  id="implications-for-conversational-bi-in-the-im-era">Implications for conversational BI in the IM era</h2>
+        <figure class="article-figure" data-fig-slug2="text-to-sql-accuracy-benchmark-2026">
+          <img src="/assets/blog/svg/text-to-sql-accuracy-benchmark-2026.svg" alt="Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>Figure — the shape of <b>text-to-sql accuracy in 2026: benchmarks and what they hide</b></figcaption>
+        </figure>
+
+<p>The last piece of context: Text-to-SQL accuracy matters more now, not less, because the delivery surface has changed. When analytics lives inside 企业微信, DingTalk, Feishu, WhatsApp, or Teams, a wrong answer is not seen by one analyst who can sanity-check it — it is seen by an entire group chat, instantly, with your company's name on it. IM-native delivery raises the required accuracy bar and the required failure behavior (abstain, cite, escalate to a human) simultaneously.</p>
+<p>This is why conversational BI vendors who treat accuracy as a model problem will keep disappointing, and why the ones who treat it as a governance problem — semantic layer, permissions, evaluation, citations — are the ones whose systems survive contact with an enterprise. When you evaluate an IM-native analytics platform, the Text-to-SQL accuracy question is real, but the correct form of the question is: "What is your measured accuracy on data like ours, with our permissions enforced, and what does the system do with the questions it cannot answer?"</p>
+<p>The IM channel also changes what "accuracy" means at the margin. In a portal, a confusing answer costs a second attempt; in a group chat, a wrong answer travels with the context it appeared in, gets screenshotted, and acquires a life of its own. The practical consequence is that IM-native systems need stricter abstention thresholds than web-app systems — answering 92% of questions with 2% embarrassing errors is worse in a chat surface than answering 85% with abstention on the hardest 15%. We tune conversational deployments toward fewer, more reliable answers, and let the semantic layer expand until the abstention rate falls naturally. Accuracy strategy in the IM era is scope strategy.</p>
+<p>The healthy answers to that question are measurable, boring, and architecture-backed. The unhealthy answer is a leaderboard screenshot.</p>
+<h2  id="a-practical-evaluation-checklist">A practical evaluation checklist</h2>
+<p>For a CIO or Head of Data evaluating Text-to-SQL claims in 2026, condensed to one working checklist:</p>
+<ul>
+<li><strong>Discount Spider 1.0 scores entirely.</strong> Ask for BIRD or Spider 2.0 results with dates, or scores on a schema like yours.</li>
+<li><strong>Require abstention behavior.</strong> The system must say "I can't answer that from governed data" on out-of-scope questions — test this explicitly with trick questions.</li>
+<li><strong>Test permissions adversarially.</strong> Have a low-privilege user try to ask their way into restricted data during the pilot. Treat any success as disqualifying.</li>
+<li><strong>Inspect the citation trail.</strong> Every number should link back to source rows you can verify against the warehouse.</li>
+<li><strong>Build the eval set before the pilot, not after.</strong> 100–200 real questions with verified answers, weighted toward your jargon. Score weekly, publish internally.</li>
+<li><strong>Check schema-change handling.</strong> Rename a table mid-pilot. Watch what happens — the answer tells you whether the system has a governance layer or just a prompt.</li>
+<li><strong>Budget for the boring layers.</strong> If the proposal's line items are all model-related and none are semantic-layer-and-evaluation-related, the 90-day accuracy trajectory will disappoint.</li>
+</ul>
+<p>The mature position in 2026 is neither skepticism nor hype about Text-to-SQL. The capability is real and improving — the benchmark literature documents genuine, rapid progress. But deployed accuracy is manufactured, not bought: it comes from a semantic layer that encodes what your terms mean, permissions that decide what each identity may see, an eval set that tells you the truth weekly, and a delivery surface where abstention is engineered, not embarrassing. Vendors who can show you those four things deserve your pilot. The ones showing leaderboard screenshots deserve your skepticism.</p>
+
+        <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
+                <h2 class="faq-section-title" id="frequently-asked-questions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Frequently Asked Questions
+                </h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3 class="faq-question-text" id="1-what-is-the-real-world-accuracy-of-text-to-sql-systems-in-2026"><span class="faq-number">1</span><span>What is the real-world accuracy of Text-to-SQL systems in 2026?</span></h3>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">On curated, well-governed scopes — a semantic layer over business-critical tables with enforced permissions — 85–95% usable answers is a realistic expectation based on our deployments and practitioner reports. On raw, unconstrained enterprise schemas, accuracy can fall to 60–70% or worse because of jargon, schema messiness, and ambiguity. The score depends far more on the governance layers around the model than on which model is used.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3 class="faq-question-text" id="2-are-spider-and-bird-benchmark-scores-a-good-predictor-of-enterprise-performanc"><span class="faq-number">2</span><span>Are Spider and BIRD benchmark scores a good predictor of enterprise performance?</span></h3>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Only directionally. Spider 1.0 is effectively saturated (90%+) and predicts little; Spider 2.0 (2024) and BIRD (2023) are harder and more informative, but none test your jargon, your permissions, or your schema's quirks. The only benchmark that predicts your deployment is an evaluation set built from your own questions and validated answers — which is why serious vendors agree to score on your data during a structured pilot.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3 class="faq-question-text" id="3-why-does-a-semantic-layer-improve-text-to-sql-accuracy-so-much"><span class="faq-number">3</span><span>Why does a semantic layer improve Text-to-SQL accuracy so much?</span></h3>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Because it changes the model's task. Instead of discovering a 400-table schema and guessing what "net sales" means, the model composes queries against governed, tested metric definitions with jargon already mapped to columns. In our deployments this single layer is typically worth 15–25 percentage points of usable-answer rate, and it also enables permission enforcement and consistent answers across users — which raw SQL generation cannot provide.</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <h3 class="faq-question-text" id="4-what-should-we-measure-during-a-text-to-sql-pilot-to-decide-whether-to-scale"><span class="faq-number">4</span><span>What should we measure during a Text-to-SQL pilot to decide whether to scale?</span></h3>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">Three numbers: usability (share of pilot users' questions answered correctly and accepted, measured weekly on a fixed eval set), abstention quality (does the system decline out-of-scope questions rather than hallucinate), and permission integrity (zero successful adversarial access attempts by low-privilege users). A structured two-week paid pilot — Beehive Strategy offers this at HKD 25k / RMB 20k — is designed to produce exactly these numbers on your own data before you commit to a rollout.</div></div>
+                    </div>
+                </div>
+            </section>
+            <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the real-world accuracy of Text-to-SQL systems in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On curated, well-governed scopes — a semantic layer over business-critical tables with enforced permissions — 85–95% usable answers is a realistic expectation based on our deployments and practitioner reports. On raw, unconstrained enterprise schemas, accuracy can fall to 60–70% or worse because of jargon, schema messiness, and ambiguity. The score depends far more on the governance layers around the model than on which model is used."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are Spider and BIRD benchmark scores a good predictor of enterprise performance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only directionally. Spider 1.0 is effectively saturated (90%+) and predicts little; Spider 2.0 (2024) and BIRD (2023) are harder and more informative, but none test your jargon, your permissions, or your schema's quirks. The only benchmark that predicts your deployment is an evaluation set built from your own questions and validated answers — which is why serious vendors agree to score on your data during a structured pilot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does a semantic layer improve Text-to-SQL accuracy so much?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because it changes the model's task. Instead of discovering a 400-table schema and guessing what \"net sales\" means, the model composes queries against governed, tested metric definitions with jargon already mapped to columns. In our deployments this single layer is typically worth 15–25 percentage points of usable-answer rate, and it also enables permission enforcement and consistent answers across users — which raw SQL generation cannot provide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should we measure during a Text-to-SQL pilot to decide whether to scale?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three numbers: usability (share of pilot users' questions answered correctly and accepted, measured weekly on a fixed eval set), abstention quality (does the system decline out-of-scope questions rather than hallucinate), and permission integrity (zero successful adversarial access attempts by low-privilege users). A structured two-week paid pilot — Beehive Strategy offers this at HKD 25k / RMB 20k — is designed to produce exactly these numbe<nav class="toc-links">
+                    <a href="#what-the-public-benchmarks-actually-measure" class="toc-link">What the public benchmarks actually measure</a>
+                    <a href="#five-things-the-benchmarks-hide" class="toc-link">Five things the benchmarks hide</a>
+                    <a href="#1-schema-messiness" class="toc-link">1. Schema messiness</a>
+                    <a href="#2-business-jargon" class="toc-link">2. Business jargon</a>
+                    <a href="#3-permissions-and-visibility" class="toc-link">3. Permissions and visibility</a>
+                    <a href="#4-the-cost-asymmetry-of-errors" class="toc-link">4. The cost asymmetry of errors</a>
+                    <a href="#5-semantic-drift" class="toc-link">5. Semantic drift</a>
+                    <a href="#why-raw-llm-sql-is-the-wrong-architecture" class="toc-link">Why raw LLM SQL is the wrong architecture</a>
+                    <a href="#the-accuracy-numbers-to-demand-from-vendors" class="toc-link">The accuracy numbers to demand from vendors</a>
+                    <a href="#what-actually-determines-deployed-accuracy" class="toc-link">What actually determines deployed accuracy</a>
+                    <a href="#implications-for-conversational-bi-in-the-im-era" class="toc-link">Implications for conversational BI in the IM era</a>
+                    <a href="#a-practical-evaluation-checklist" class="toc-link">A practical evaluation checklist</a>
+                    <a href="#frequently-asked-questions" class="toc-link">Frequently Asked Questions</a>
+                    <a href="#1-what-is-the-real-world-accuracy-of-text-to-sql-systems-in-2026" class="toc-link">1 What is the real-world accuracy of Text-to-SQL systems in 2026?</a>
+                    <a href="#2-are-spider-and-bird-benchmark-scores-a-good-predictor-of-enterprise-performanc" class="toc-link">2 Are Spider and BIRD benchmark scores a good predictor of enterprise performance?</a>
+                    <a href="#3-why-does-a-semantic-layer-improve-text-to-sql-accuracy-so-much" class="toc-link">3 Why does a semantic layer improve Text-to-SQL accuracy so much?</a>
+                    <a href="#4-what-should-we-measure-during-a-text-to-sql-pilot-to-decide-whether-to-scale" class="toc-link">4 What should we measure during a Text-to-SQL pilot to decide whether to scale?</a>
+                </nav>pliance-outcomes" class="toc-link">Turning Insights into Compliance Outcomes</a>
+                    <a href="#catalogue-bridging-technical-business" class="toc-link">How Does a Data Catalogue Bridge Technical and Business Teams?</a>
+                    <a href="#common-pitfalls-catalogue-adoption" class="toc-link">What Common Pitfalls Undermine Adoption?</a>
+                    <a href="#lineage-cloud-migration" class="toc-link">How Does Lineage Support Cloud Migration?</a>
+                    <a href="#automated-metadata-scaling-governance" class="toc-link">What Role Does Automated Metadata Play?</a>
+                    <a href="#conclusion-data-visibility-compliance" class="toc-link">Conclusion</a>
+                </nav>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">Topics</div>
+                <div class="sidebar-tags"><span class="article-tag-pill">data-governance</span><span class="article-tag-pill">data-catalog</span><span class="article-tag-pill">data-lineage</span><span class="article-tag-pill">compliance</span><span class="article-tag-pill">ai-risk</span></div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">Share this article</div>
+                <div class="sidebar-share">
+                    <button class="article-share-btn" id="share-linkedin" aria-label="Share on LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+                    <button class="article-share-btn" id="share-x" aria-label="Share on X"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.232 10.768L20 4"/></svg></button>
+                    <button class="article-share-btn" id="share-copy" aria-label="Copy link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">Related Articles</div>
+                <div class="sidebar-related-list">
+                    <a href="/blog/articles/data-catalog-implementation-strategy" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">Data Catalog Implementation Strategy</h4>
+                        <span class="sidebar-related-meta">7 min read</span>
+                    </a>
+                    <a href="/blog/articles/master-data-management-ai-era-strategy" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">Master Data Management in the AI Era</h4>
+                        <span class="sidebar-related-meta">8 min read</span>
+                    </a>
+                    <a href="/blog/articles/what-is-vector-database-ai-search" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">What Is a Vector Database for AI Search</h4>
+                        <span class="sidebar-related-meta">6 min read</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<div class="container">
+    <section class="recommended-section" aria-labelledby="recommended-heading">
+        <div class="recommended-header">
+            <h2 class="recommended-title" id="recommended-heading">Recommended Articles</h2>
+            <a href="https://www.beehivestrategy.com/blog" class="recommended-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+        </div>
+        <div class="recommended-grid">
+            <a href="/blog/articles/data-catalog-implementation-strategy" class="recommended-card">
+                <img src="/assets/blog/covers/en/data-catalog-implementation-strategy.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">Data Governance</span>
+                    <h3 class="recommended-card-title">Data Catalog Implementation Strategy</h3>
+                    <p class="recommended-card-excerpt">A practical roadmap for standing up a data catalogue that business and technical teams actually adopt.</p>
+                    <div class="recommended-card-meta">
+                        <span>7 min read</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>January 14, 2026</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/blog/articles/master-data-management-ai-era-strategy" class="recommended-card">
+                <img src="/assets/blog/covers/en/master-data-management-ai-era-strategy.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">Data Governance</span>
+                    <h3 class="recommended-card-title">Master Data Management in the AI Era</h3>
+                    <p class="recommended-card-excerpt">Why AI exposes weak master data, and how to unify the entities your models depend on most.</p>
+                    <div class="recommended-card-meta">
+                        <span>8 min read</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>February 2, 2026</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/blog/articles/what-is-vector-database-ai-search" class="recommended-card">
+                <img src="/assets/blog/covers/en/what-is-vector-database-ai-search.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">Technology</span>
+                    <h3 class="recommended-card-title">What Is a Vector Database for AI Search</h3>
+                    <p class="recommended-card-excerpt">How vector databases power semantic search and retrieval-augmented generation for enterprise AI.</p>
+                    <div class="recommended-card-meta">
+                        <span>6 min read</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>January 28, 2026</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <section class="article-cta" aria-labelledby="cta-heading">
+        <div class="article-cta-card">
+            <div class="article-cta-inner">
+                <div class="article-cta-content">
+                    <div class="article-cta-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Book a personalised demo</div>
+                    <h2 class="article-cta-title" id="cta-heading">Ready to make your data auditable?</h2>
+                    <p class="article-cta-desc">See how Beehive Strategy's conversational governance platform turns catalogues and lineage into answers your teams can query in plain language.</p>
+                    <div class="article-cta-actions">
+                        <a href="/contact" class="article-cta-btn">Book a Demo</a>
+                        <a href="/solution" class="article-cta-secondary">Explore the Solution</a>
+                    </div>
+                </div>
+                <div class="article-cta-stats">
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">30%</div><div class="article-cta-stat-label">Faster audit readiness</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">25%</div><div class="article-cta-stat-label">Lower incident costs</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">40%</div><div class="article-cta-stat-label">Less remediation time</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">2 wks</div><div class="article-cta-stat-label">To a live catalogue</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+
+<footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo" aria-label="Beehive Strategy Home">
+            <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="lazy">
+          </a>
+          <p>Enterprise AI &amp; data analytics consulting. We deliver AI-powered conversational intelligence that transforms how businesses interact with their data.</p>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="/cdn-cgi/l/email-protection#432220202c362d37032126262b2a3526303731223726243a6d202c2e" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="/solution">Platform</a></li>
+            <li><a href="/solution">AI Agents</a></li>
+            <li><a href="/fde">FDE Services</a></li>
+            <li><a href="/case-studies">Case Studies</a></li>
+            <li><a href="/security">Security</a></li>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/blog">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Industries</h4>
+          <ul>
+            <li><a href="/industries">Retail &amp; E-Commerce</a></li>
+            <li><a href="/industries">Financial Services</a></li>
+            <li><a href="/industries">Manufacturing</a></li>
+            <li><a href="/industries">Professional Services</a></li>
+            <li><a href="/industries">Real Estate</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/pricing">FAQ</a></li>
+            <li><a href="/cdn-cgi/l/email-protection#d1b0b2b2bea4bfa591b3b4b4b9b8a7b4a2a5a3b0a5b4b6a8ffb2bebc">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Beehive Strategy Limited All rights reserved.</p>
+        <div class="legal">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/cookies">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div class="toast" id="toast"></div>
+<script>window.__ARTICLE_TITLE__ = "Text-to-SQL Accuracy in 2026: Benchmarks and What They Hide";</script>
+<script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
+</body>
+</html>

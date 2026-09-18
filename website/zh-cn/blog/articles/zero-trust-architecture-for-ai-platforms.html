@@ -18,7 +18,7 @@
     <meta property="og:title" content="面向AI平台的零信任架构：安全蓝图">
     <meta property="og:description" content="How to apply zero trust principles to enterprise AI platforms. Identity verification, least privilege access, micro-segmentation, and continuous monitoring for AI workloads.">
     <meta property="og:url" content="https://www.beehivestrategy.com/zh-cn/blog/articles/zero-trust-architecture-for-ai-platforms">
-    <meta property="og:image" content="https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/zero-trust-architecture-for-ai-platforms.jpg">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-cn/zero-trust-architecture-for-ai-platforms.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="zh_CN">
@@ -39,6 +39,7 @@
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/zero-trust-architecture-for-ai-platforms#article", "headline": "面向AI平台的零信任架构：安全蓝图", "description": "How to apply zero trust principles to enterprise AI platforms. Identity verification, least privilege access, micro-segmentation, and continuous monitoring for AI workloads.", "datePublished": "2026-04-20T18:00:00+08:00", "dateModified": "2026-04-20T18:00:00+08:00", "articleSection": "安全保障", "keywords": "zero trust, AI security, platform security, network security, identity verification", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/zero-trust-architecture-for-ai-platforms"}, "image": "https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-cn/zero-trust-architecture-for-ai-platforms.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首页", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog"}, {"@type": "ListItem", "position": 3, "name": "面向AI平台的零信任架构：安全蓝图"}]}</script>
     
+    <link rel="stylesheet" href="/css/article-anim.css">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -200,6 +201,11 @@
  </div>
 <p class="article-lead"><strong>AI平台之所以强大，是因为它能访问并推理海量企业数据；同样的能力使它成为安全风险——一旦被攻破，拥有广泛数据权限的AI代理将成为攻击者的梦想入口。</strong>零信任架构（"从不信任，总是验证"）是应对这一风险的安全模型。本文解释零信任在AI场景下的落地原则、代理身份模型、MCP网关的控制机制与异常响应流程，并给出企业可以立即着手的第一步。</p>
 <h2 id="为什么传统边界安全挡不住ai风险">为什么传统边界安全挡不住AI风险？</h2>
+        <figure class="article-figure" data-fig-slug="zero-trust-architecture-for-ai-platforms">
+          <img src="/assets/blog/svg/zero-trust-architecture-for-ai-platforms.svg" alt="面向AI平台的零信任架构：安全蓝图 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>面向AI平台的零信任架构：安全蓝图</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>传统安全模型假设"内网可信"，只要通过防火墙与VPN，内部系统就默认安全。AI平台打破了这一假设：AI代理是动态的、自主的代码执行者，其行为无法用"人+设备"的传统身份模型描述；一次提示注入攻击就可能让代理执行非预期操作；而代理一旦获得宽泛的数据权限，泄露面会指数级扩大。</p>
 <p>更现实的问题是身份模糊：过去是"某用户访问某系统"，现在是"某代理代表某用户访问数十个系统"。据Verizon《2024年数据泄露调查报告》，约68%的数据泄露涉及非恶意的人为因素；而在AI时代，攻击面从"人"扩展到"人+代理+模型"，边界安全的失效速度只会更快。这正是零信任从"可选项"变成"必选项"的原因。</p>
 <p>AI还引入了独有的攻击面：提示注入可以让代理把"查询销售额"误解为"导出全部客户数据并发送到外部"；模型供应链攻击可能在权重或工具链中埋入后门；影子AI（员工私自接入未审批的AI工具）则绕过所有企业控制。这些风险没有一个能被防火墙解决，必须下沉到数据访问层逐一拦截。</p>
@@ -224,6 +230,11 @@
 <p>防御分为三层。第一，在协议层把指令与数据分开：检索到的内容以"数据"的身份带着来源声明进入，绝不进入系统提示词。第二，在MCP网关强制执行能力白名单，这样即使模型被成功操控，也无法调用批准清单之外的工具，或访问超出调用方授权范围的数据。第三，对写操作、导出、付款、权限变更等改变状态的动作强制二次确认，无论智能体自称有多高的置信度。</p>
 <p>有两个测试可以区分真实的防御与幻灯片上的防御。第一个是通过内容进行权限提升：在智能体将要检索的文档里植入一条看起来合理的指令，然后确认什么都没有发生。第二个是越权访问：让一名低权限用户请求智能体技术上能够触达的数据，确认网关拒绝。任一测试通过，都说明白名单写在提示词里，而不是写在基础设施里。</p>
 <h2 id="what-governance-controls-do-auditors-expect-for-ai-platforms">审计方对AI平台期待哪些治理控制？</h2>
+        <figure class="article-figure" data-fig-slug2="zero-trust-architecture-for-ai-platforms">
+          <img src="/assets/blog/svg/zero-trust-architecture-for-ai-platforms.svg" alt="面向AI平台的零信任架构：安全蓝图 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>图：<b>面向AI平台的零信任架构：安全蓝图</b> 的核心脉络一览</figcaption>
+        </figure>
+
 <p>审计方不会问你的智能体是否安全，他们会要求你证明四件事，而且答案必须可复现，而不是口头承诺。</p>
 <ul>
 <li><strong>完整的智能体清单。</strong>每个智能体的用途、负责人、可触达的系统，以及最近一次评审的日期。拿不出这份清单的组织会在第一个问题上失败，而这正是其余一切的基础。</li>
@@ -403,8 +414,8 @@
             <a href="/zh-cn/blog/articles/cfo-guide-ai-budget-allocation" class="recommended-card">
                 <img src="/assets/blog/covers/zh-cn/cfo-guide-ai-budget-allocation.jpg" alt="" class="recommended-card-image" loading="lazy">
                 <div class="recommended-card-body">
-                    <span class="recommended-card-cat">Technology</span>
-                    <h3 class="recommended-card-title">Cfo Guide Ai Budget Allocation</h3>
+                    <span class="recommended-card-cat">技术</span>
+                    <h3 class="recommended-card-title">CFO人工智能预算分配指南：2026年投资回报最大化策略</h3>
                     <p class="recommended-card-excerpt">人工智能已从实验性预算项目发展为核心战略投资。对于CFO而言，挑战已不再是是否为AI提供资金，而是如何在相互竞争的优先事项之间分配资本，展示可衡量的回报，并避免导致投资浪费和成果令人失望的常见陷阱。</p>
                     <div class="recommended-card-meta">
                         <span>1 分钟阅读</span>
@@ -527,5 +538,6 @@
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "面向AI平台的零信任架构：安全蓝图";</script>
 <script src="/js/article.js?v=20260901"></script>
+    <script src="/js/article-anim.js" defer></script>
 </body>
 </html>
