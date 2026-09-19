@@ -36,7 +36,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="/css/article.css?v=20260901" rel="stylesheet">
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/pilot-to-production-2026-benchmarks#article", "headline": "Pilot to Production 2026: Benchmarks That Actually Predict Success", "description": "The patterns that separate AI pilots that reach production from the 80 percent that die — drawn from 2026 rollouts, with the leading indicators worth tracking before you commit budget.", "datePublished": "2026-09-13T09:00:00+08:00", "dateModified": "2026-09-13T09:00:00+08:00", "articleSection": "AI Strategy", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/pilot-to-production-2026-benchmarks"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/pilot-to-production-2026-benchmarks.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/pilot-to-production-2026-benchmarks#article", "headline": "Pilot to Production 2026: Benchmarks That Actually Predict Success", "description": "The patterns that separate AI pilots that reach production from the 80 percent that die — drawn from 2026 rollouts, with the leading indicators worth tracking before you commit budget.", "datePublished": "2026-09-13T09:00:00+08:00", "dateModified": "2026-09-19T02:26:59+08:00", "articleSection": "AI Strategy", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/pilot-to-production-2026-benchmarks"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/pilot-to-production-2026-benchmarks.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Pilot to Production 2026: Benchmarks That Actually Predict Success"}]}</script>
 
     <link rel="stylesheet" href="/css/article-anim.css">
@@ -174,7 +174,7 @@
         <div class="article-meta-row">
             <div class="article-avatar" aria-hidden="true">BK</div>
             <div class="article-meta-text">
-                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 13, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 4 min read
+                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 13, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 20 min read
             </div>
         </div>
     </section>
@@ -232,7 +232,265 @@
 <p>Benchmarks separate shippers from demoers. The pilots that reached production shared one trait: they measured a real task with evidence the team trusted, then refused to ship until the scorecard said go. Vanity metrics never earned that sign-off, because vanity does not survive contact with a live user.</p>
 <p>A scorecard turns a promising demo into a defensible decision, and that is the only thing that survives contact with production.</p>
 
-        <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
+        
+
+<h2>Building a Production‑Ready Evaluation Harness</h2>
+<p>An evaluation harness is the nervous system of any AI‑driven service. It transforms vague notions of “accuracy” into repeatable, auditable evidence that the model behaves as expected when data drift, feature changes, or business rule updates occur. The most reliable pilots in 2026 all shared a harness that was <em>live from day one</em>, not a retro‑fit added after a demo impressed stakeholders.</p>
+<h3>Mini case study: Global wholesale bank fraud‑detection model</h3>
+<p>The bank’s data science team began a pilot to flag suspicious wire transfers in real time. Instead of treating the model as a black box, they constructed a harness comprising three layers:</p>
+<ul>
+<li><strong>Static sanity suite</strong> – 150 hand‑crafted scenarios covering known fraud typologies, edge‑case amounts, and regulatory thresholds. Each scenario had a deterministic expected output (flag/no‑flag) and was version‑controlled alongside the model code.</li>
+<li><strong>Dynamic data‑drift monitor** – weekly sampling of production traffic (≈2 M transactions) to compute feature distribution KL‑divergence against the training baseline. Alerts fired when any feature exceeded a 0.15 threshold, triggering a harness re‑run.</li>
+<li><strong>Business‑impact sandbox** – a simulated replay of the last 30 days of transactions, measuring false‑positive cost (investigator hours) and false‑negative loss (estimated fraud value). The sandbox produced a single KPI: net expected loss reduction.</li>
+</ul>
+<p>Because the harness ran on every CI pipeline push, the team detected a subtle shift in the merchant‑category‑code encoding three weeks before the model’s precision dropped from 0.92 to 0.78. The owner (see later section) rolled back the feature update, retrained on the corrected encoding, and the harness returned to green within 48 hours. The pilot moved to production with a documented 0.89 precision after three months, while a comparable team that relied only on monthly demo accuracy suffered a silent decay and was decommissioned after six months.</p>
+<h3>Practical implementation checklist</h3>
+<ol>
+<li>Define the <strong>decision boundary</strong> – list every action the model triggers (e.g., flag, approve, route) and the corresponding business outcome.</li>
+<li>Create a <strong>static scenario bank</strong> – minimum 5 × number of distinct actions; include positive, negative, and borderline cases. Store as JSON/YAML with expected outputs.</li>
+<li>Automate the <strong>suite execution</strong> – integrate into the CI/CD pipeline (GitHub Actions, GitLab CI, or Azure DevOps) so each commit triggers a run and fails the build on any mismatch.</li>
+<li>Instrument a <strong>data‑drift detector** – choose a statistical test (Population Stability Index, KL‑divergence, or Wasserstein distance) and schedule it (daily/weekly) against a rolling window of production logs.</li>
+<li>Build a <strong>business‑impact sandbox** – replay a representative window of production events, compute cost/benefit metrics, and store the trend in a time‑series dashboard.</li>
+<li>li>
+<li>Assign an <strong>evaluation owner** – a single individual accountable for suite health, drift thresholds, and sandbox KPI targets (see the “A named owner” section for why this matters).</li>
+<li>Document <strong>acceptance criteria** – e.g., “static suite ≥ 98 % pass, drift alert ≤ 2 % per week, net loss reduction ≥ 10 % vs baseline”.</li>
+<li>Review and <strong>refine** the harness quarterly – retire obsolete scenarios, add new fraud typologies, and recalibrate drift thresholds based on observed model behaviour.</li>
+</ol>
+<h3>Comparison table: Open‑source vs commercial evaluation frameworks</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Open‑source (e.g., MLflow, WhyLabs‑open, Deepchecks)</th>
+<th>Commercial (e.g., Fiddler AI, Arize, Seldon Deploy)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial setup cost</td>
+<td>Low (mostly engineer time)</td>
+<td>Medium‑high (license + implementation services)</td>
+</tr>
+<tr>
+<td>Built‑in drift detection</td>
+<td>Partial (requires custom scripts)</td>
+<td>Comprehensive (out‑of‑the‑box PSI, KS, etc.)</td>
+</tr>
+<tr>
+<td>Business‑impact sandboxing</td>
+<td>Limited (needs custom replay engine)</td>
+<td>Often includes simulation & cost‑modelling modules</td>
+</tr>
+<tr>
+<td>Integration with CI/CD</td>
+<td>Strong (plugins for GitHub, GitLab, Jenkins)</td>
+<td>Strong (pre‑built agents, but may need vendor‑specific agents)</td>
+</tr>
+<tr>
+<td>Support & SLA</td>
+<td>Community‑driven, variable</td>
+<td>Vendor SLA, dedicated CSM</td>
+</tr>
+<tr>
+<td>Data‑privacy & on‑prem</td>
+<td>Fully on‑prem possible</td>
+<td>Hybrid/SaaS options; some offer private‑cloud</td>
+</tr>
+<tr>
+<td>Total cost of ownership (12 mo)</td>
+<td>£15‑30k (staff)</td>
+<td>£80‑150k (license + services)</td>
+</tr>
+</tbody>
+</table>
+<p>For most enterprises, a hybrid approach works best: start with an open‑source static suite and drift monitor, then layer a commercial business‑impact sandbox when the model moves beyond proof‑of‑concept and the cost of false decisions becomes material.</p>
+<blockquote>
+<p>“An evaluation harness that never sees production data is a ornament; one that runs on every commit is a contract with the business.” – Senior AI Architect, Global Bank</p>
+</blockquote>
+
+<h2>Designing the Human Gate: Checklists for Irreversible Actions</h2>
+<p>The “human at the irreversible step” is not a bureaucratic bottleneck; it is a safeguard that converts model opacity into accountable decision‑making. When the action cannot be undone — sending a payment, approving a claim, triggering a shutdown — the presence of a clearly defined human checkpoint correlates with a 3.2× higher chance of pilot survival in 2026 data.</p>
+<h3>Mini case study: National health‑service claims adjudication AI</h3>
+<p>A regional health authority piloted an AI model to auto‑approve low‑risk outpatient claims. The model’s output was a recommendation: “auto‑approve”, “flag for review”, or “reject”. The irreversible step was the actual payment transfer to the provider’s bank account.</p>
+<p>The pilot team instituted a three‑tier human gate:</p>
+<ol>
+<li><strong>Pre‑payment validation</strong> – a claims officer reviewed any case flagged “flag for review” (≈12 % of volume) and could override the AI recommendation.</li>
+<li><strong>Post‑payment audit** – daily, a random 1 % sample of auto‑approved claims was pulled for manual verification; discrepancies triggered a model‑retraining ticket.</li>
+<li><strong>Exception escalation** – if the flag‑for‑review rate exceeded 15 % for two consecutive days, the case was automatically routed to a senior clinician for a root‑cause analysis.</li>
+</ol>
+<p>Because the gate was explicit, the authority could demonstrate to auditors that every payment had a human‑reviewable trail. When the model began to over‑approve claims due to a new billing code, the audit sample caught a 0.4 % error rate within 48 hours, prompting a swift retraining. The pilot achieved a 22 % reduction in processing time and zero financial over‑payments in its first six months, whereas a comparable pilot that relied solely on model confidence thresholds suffered a £1.3 m over‑payment before the issue was spotted.</p>
+<h3>Step‑by‑step playbook for implementing a human gate</h3>
+<ol>
+<li>Identify the <strong>irreversible action</strong> – map the end‑to‑end process and pinpoint the step where reversal is impossible or prohibitively costly (e.g., fund transfer, medication dispensing, safety shutdown).</li>
+<li>Define the <strong>human role</strong> – specify the job title, decision authority, and required training (e.g., “Claims Officer – Band 4, completed AI‑overview module”).</li>
+<li>Create a <strong>decision matrix</strong> – list model outputs (approve, flag, reject) and the corresponding human action (no action, review, escalate). Include time‑SLAs (e.g., review within 4 hours).</li>
+<li>Build the <strong>user‑interface touchpoint</strong> – embed the review UI inside the existing work system (case management portal, ERP screen) so the human does not need to switch contexts.</li>
+<li>Instrument <strong>audit logging</strong> – capture model input, output, human decision, timestamp, and user ID in an immutable log (write‑once storage or blockchain‑style ledger).</li>
+<li>Set up <strong>monitoring alerts** – track the proportion of cases requiring human review, average review latency, and override rate; trigger alerts when metrics drift beyond preset thresholds.</li>
+<li>Run a <strong>dry‑run simulation** – process historical data through the gate, measure false‑positive/negative rates, and adjust the decision matrix before go‑live.</li>
+<li>Train and <strong>certify** the human operators – conduct workshops, provide quick‑reference guides, and require sign‑off on the gate SOP.</li>
+<li>Go live with a <strong>shadow mode** – run the gate in parallel with the legacy process for 2‑4 weeks, compare outcomes, and obtain sign‑off from risk and compliance.</li>
+<li>Review and <strong>iterate** – monthly gate performance review, incorporate feedback from operators, and update the decision matrix as the model evolves.</li>
+</ol>
+<h3>Common pitfalls and how to avoid them</h3>
+<ul>
+<li><strong>Gate becomes a rubber stamp</strong> – operators simply click “approve” without reading the flag. <em>Mitigation:</em> introduce randomised audits, require a brief justification field, and tie review quality to performance objectives.</li>
+<li><strong>Over‑automation of the gate</strong> – attempting to replace the human with a rule‑based engine re‑creates the same opacity problem. <em>Mitigation:</em> keep the gate strictly human‑in‑the‑loop; any automation must be advisory only.</li>
+<li><strong>Invisible gate** – the review step lives in a separate tool that staff forget to open. <em>Mitigation:</em> embed the gate in the primary workflow UI and use contextual notifications (e.g., a banner in the case screen).</li>
+<li><strong>Missing escalation path** – when the model’s uncertainty is high, reviewers have nowhere to go. <em>Mitigation:</em> define a clear escalation matrix (team lead → specialist → governance board) and automate routing based on confidence scores.</li>
+</ul>
+
+<h2>From Pilot to Production: A 90‑Day Playbook</h2>
+<p>Turning a promising AI experiment into a reliable production service requires disciplined pacing, explicit milestones, and measurable gate‑criteria. The following 90‑day programme distils the habits of the 2026 survivors into a concrete timeline that any organisation can adopt, regardless of industry or tech stack.</p>
+<h3>Phase 0 – Preparation (Days 0‑7)</h3>
+<ul>
+<li>Secure a <strong>named owner** for the model’s truth (semantic layer, evaluation suite, audit trail).</li>
+<li>Define the <strong>irreversible human gate** and document the decision matrix.</li>
+<li>Sketch the <strong>integration touchpoints** – where the AI output will appear in the existing user workflow (chat, ticket, ERP screen).</li>
+<li>Agree on <strong>success metrics** – questions asked per user per week, time saved, error rate reduction, and a business‑impact KPI (e.g., net loss reduction).</li>
+</ul>
+<h3>Phase 1 – Foundations (Days 8‑30)</h3>
+<ol>
+<li>Build the <strong>static evaluation suite** (minimum 5 × number of distinct actions) and store it in version control.</li>
+<li>Implement the <strong>CI pipeline** that runs the suite on every commit; fail the build on any mismatch.</li>
+<li>Instrument a <strong>baseline data‑drift monitor** (PSI on top‑5 features) and set alert thresholds.</li>
+<li>Develop a <strong>minimal viable integration** – a proof‑of‑concept endpoint that returns the AI result inside the existing UI (e.g., a chatbot slash command).</li>
+<li>Run the first <strong>end‑to‑end test** with a small pilot user group (5‑10 power users) and capture qualitative feedback.</li>
+</ol>
+<h3>Phase 2 – Expansion & Validation (Days 31‑60)</h3>
+<ol>
+<li>Increase the pilot cohort to 10‑15 % of the target user base.</li>
+<li>Launch the <strong>business‑impact sandbox** – replay a 4‑week window of production events, compute net benefit, and compare against the baseline.</li>
+<li>Begin <strong>weekly human‑gate reviews** – pull a random sample of irreversible actions, verify that the human decision aligns with policy, and log any overrides.</li>
+<li>Track <strong>adoption metrics** – questions per user per week, repeat usage rate, and average latency.</li>
+<li>Conduct a <strong>mid‑point gate review** (end of day 45): evaluation suite green for two consecutive weeks, drift alerts < 2 %/week, human‑gate override rate < 5 %, and net‑benefit KPI trending positively.</li>
+<li>If any gate criterion fails, initiate a <strong>remediation sprint** (max 5 days) to address the specific issue (e.g., add missing scenarios, adjust drift threshold, retrain on new data).</li>
+</ol>
+<h3>Phase 3 – Pre‑Production Hardening (Days 61‑90)</h3>
+<ol>
+<li>Expand to 100 % of the target user segment, but keep the <strong>human gate in shadow mode** for the first two weeks (AI recommendation logged, human makes final call).</li>
+<li>Validate the <strong>audit trail** – ensure every model input, output, and human decision is immutable and queryable for compliance.</li>
+<li>Run a <strong>load‑test** simulating peak transaction volume; confirm latency stays under the SLA (e.g., 200 ms 95th‑percentile).</li>
+<li>Perform a <strong>security review** – check for model inversion risks, data leakage, and ensure the evaluation suite does not expose sensitive test data.</li>
+<li>Conduct the <strong>final go/no‑go scorecard** (see existing section): evaluation suite green, named owner accountable, human gate defined, integration live, baseline improvement proven.</li>
+<li>If the scorecard yields “go”, cut over to full production; retain the human gate as a live oversight mechanism for the first month post‑launch.</li>
+</ol>
+<h3>RACI snapshot</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+<thead>
+<tr>
+<th>Activity</th>
+<th>Responsible</th>
+<th>Accountable</th>
+<th>Consulted</th>
+<th>Informed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Evaluation suite creation</td>
+<td>Data Science Lead</td>
+<td>Named Owner (Truth)</td>
+<td>ML Engineer, QA</td>
+<td>Product Owner, Risk</td>
+</tr>
+<tr>
+<td>Human gate design</td>
+<td>Process Owner</td>
+<td>Named Owner (Governance)</td>
+<td>Frontline Supervisor, Compliance</td>
+<td>All Users</td>
+</tr>
+<tr>
+<td>Integration build</td>
+<td>Software Engineer</td>
+<td>Named Owner (Delivery)</td>
+<td>UX Designer, Platform Team</td>
+<td>Stakeholders</td>
+</tr>
+<tr>
+<td>Monitoring & alerting</td>
+<td>MLOps Engineer</td>
+<td>Named Owner (Operations)</td>
+<td>Data Engineer, Security</td>
+<td>Executive Sponsor</td>
+</tr>
+<tr>
+<td>Go/No‑go decision</td>
+<td>Named Owner (Truth)</td>
+<td>Named Owner (Governance)</td>
+<td>Risk, Finance, Audit</td>
+<td>Board / AI Steering Committee</td>
+</tr>
+</tbody>
+</table>
+<p>By adhering to this 90‑day rhythm, organisations transform the vague promise of “AI will improve things” into a series of testable, observable outcomes that either justify continued investment or trigger an early, low‑cost pivot.</p>
+
+<h2>What to Watch in the Next 12–18 Months: Emerging Benchmarks and Regulations</h2>
+<p>The AI landscape is shifting from isolated experimentation to governed, measurable adoption. Several concrete developments — technical standards, regulatory frameworks, and market‑driven benchmarks — will shape how organisations evaluate pilot‑to‑production readiness in the near future.</p>
+<h3>Technical standards on the horizon</h3>
+<ul>
+<li><strong>ISO/IEC 42001 – AI Management System** (expected ratification Q3 2025). This standard will require organisations to document an <em>AI risk‑assessment process</em>, an <em>evaluation programme</em>, and a <em>human‑oversight policy</em> for high‑impact AI systems. Early adopters can use the standard’s control‑objectives as a ready‑made checklist for the evaluation suite and human gate.</li>
+<li><strong>IEEE 7010™‑2024 – Ethical Design for Autonomous Systems** introduces a measurable “transparency score” based on the availability of model‑input provenance, evaluation‑suite versioning, and human‑decision logs. Vendors are beginning to embed this score in their model‑cards.</li>
+<li><strong>Open Model Evaluation Framework (OMEF)** – a community‑driven specification (draft Q1 2025) that defines a portable JSON schema for evaluation suites, drift metrics, and business‑impact sandbox results. Expect tooling (GitHub Actions, GitLab CI) to ship OMEF validators by mid‑2025.</li>
+</ul>
+<h3>Regulatory triggers that will raise the bar</h3>
+<ul>
+<li><strong>EU AI Act – High‑Risk AI provisions** (enforced 2026). Annex II lists AI used in credit scoring, insurance underwriting, and medical device decision support as high‑risk. The act mandates <em>post‑market monitoring</em>, <em>human oversight</em>, and <em>conformity‑assessment documentation</em> — directly aligning with the evaluation suite, named owner, and human gate concepts.</li>
+<li><strong>UK Algorithmic Impact Assessment (AIA) guidance** (updated 2025). Public sector organisations must publish an AIA that includes <em>performance metrics</em>, <b>bias‑testing results</b>, and <em>human‑review procedures</em>. Failure to produce a credible AIA can block funding releases.</li>
+<li><strong>US Executive Order 14091 – Safe, Secure, and Trustworthy AI** (2025). Requires federal contractors to submit an <em>AI System Safety Case** that contains a <em>test‑and‑evaluation plan</em>, <em>human‑in‑the‑loop description</em>, and <em>metrics for ongoing performance</em>. The safety case will become a de‑facto procurement gate.</li>
+</ul>
+<h3>Market‑driven benchmarks gaining traction</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>What it measures</th>
+<th>Why it matters for pilot‑to‑production</th>
+<th>Expected adoption timeline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model‑Cards‑Plus (MCP‑v2)</td>
+<td>Standardised disclosure of performance, fairness, evaluation‑suite version, and drift‑monitoring status.</td>
+<td>Enables procurement teams to compare models on a common factual basis, reducing reliance on demo wow.</td>
+<td>Late 2025 – early 2026 (major cloud providers announcing support).</td>
+</tr>
+<tr>
+<td>AI‑ROI Index</td>
+<td>Ratio of quantified business benefit (cost saving, revenue uplift) to total AI‑related spend (licences, cloud, staff).</td>
+<td>Directly counters vanity metrics; a threshold of ≥ 1.5 is emerging as a healthy early‑stage signal.</td>
+<td>Pilots in finance and health already publishing Q4 2024; wider rollout 2026.</td>
+</tr>
+<tr>
+<td>Human‑Gate Latency (HGL)</td>
+<td>Average time from model flag to human decision in the irreversible step.</td>
+<td>Long HLG indicates workflow friction; best‑in‑class < 30 minutes for high‑frequency actions.</td>
+<td>Being incorporated into SLA definitions by BPO vendors 2025.</td>
+</tr>
+<tr>
+<td>Evaluation‑Suite Stability Score (ESSS)</td>
+<td>Percentage of evaluation‑suite tests that remain green over a rolling 4‑week window.</td>
+<td>Captures both model drift and suite health; a drop below 95 % triggers automatic retraining.</td>
+<td>Expected to be a required field in AI model registries by mid‑2026.</td>
+</tr>
+</tbody>
+</table>
+<h3>Practical steps to stay ahead</h3>
+<ol>
+<li>Subscribe to the <strong>ISO/IEC 42001</strong> draft and map its control objectives to your existing evaluation suite and human‑gate SOP.</li>
+<li>Adopt the <strong>OMEF</strong> schema for your evaluation artefacts; store them alongside model artefacts in your model registry.</li>
+<li>Begin publishing a <strong>Model‑Card‑Plus** for every model that crosses the pilot threshold; make it accessible to procurement and risk teams.</li>
+<li>Calculate the <strong>AI‑ROI Index** on a monthly basis and set a organisational floor (e.g., 1.2) before approving scale‑up funding.</li>
+<li>Instrument <strong>Human‑Gate Latency** in your workflow automation platform (ServiceNow, Pega, or custom) and alert when the 90‑th percentile exceeds your SLA.</li>
+<li>Run a quarterly <strong>Evaluation‑Suite Stability Score** review; treat any dip as a trigger for a model‑health sprint.</li>
+</ol>
+<blockquote>
+<p>“The next wave of AI governance will not be measured in flashy demos but in the durability of the evaluation artefacts that survive the first model‑retrain cycle.” – Head of AI Regulation, European Digital Authority</p>
+</blockquote>
+
+<section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     Frequently Asked Questions
