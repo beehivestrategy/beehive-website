@@ -35,18 +35,37 @@
       el.classList.add('reveal');
       el.style.transitionDelay = Math.min(i * 35, 350) + 'ms';
     }
+    // Reveal with BOTH class names: article-anim.css uses .is-visible, while the
+    // global styles.css (loaded after article-anim.css on article pages) only
+    // styles .reveal.visible. Adding both guarantees the content becomes visible
+    // regardless of which stylesheet wins the cascade.
+    function revealBlock(el) {
+      el.classList.add('is-visible');
+      el.classList.add('visible');
+    }
+
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (e.isIntersecting) {
-            e.target.classList.add('is-visible');
+            revealBlock(e.target);
             io.unobserve(e.target);
           }
         });
       }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
       for (var j = 0; j < blocks.length; j++) io.observe(blocks[j]);
+      // Safety net: if the observer somehow never fires for blocks already in the
+      // viewport (layout/timing quirk), reveal them on load so article content is
+      // never left permanently hidden at opacity:0.
+      window.addEventListener('load', function () {
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        for (var n = 0; n < blocks.length; n++) {
+          var r = blocks[n].getBoundingClientRect();
+          if (r.top < vh && r.bottom > 0) revealBlock(blocks[n]);
+        }
+      });
     } else {
-      for (var k = 0; k < blocks.length; k++) blocks[k].classList.add('is-visible');
+      for (var k = 0; k < blocks.length; k++) revealBlock(blocks[k]);
     }
   }
 

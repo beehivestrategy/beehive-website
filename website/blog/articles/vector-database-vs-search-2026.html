@@ -36,10 +36,10 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="/css/article.css?v=20260901" rel="stylesheet">
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/vector-database-vs-search-2026#article", "headline": "Vector Database vs Search in 2026: Knowing the Difference", "description": "A clear-eyed comparison of vector databases and traditional search for AI applications — when semantic retrieval beats keyword search, where each excels, and how they combine in a retrieval stack.", "datePublished": "2026-09-16T09:00:00+08:00", "dateModified": "2026-09-19T02:27:56+08:00", "articleSection": "Technology", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/vector-database-vs-search-2026"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/vector-database-vs-search-2026.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/vector-database-vs-search-2026#article", "headline": "Vector Database vs Search in 2026: Knowing the Difference", "description": "A clear-eyed comparison of vector databases and traditional search for AI applications — when semantic retrieval beats keyword search, where each excels, and how they combine in a retrieval stack.", "datePublished": "2026-09-16T09:00:00+08:00", "dateModified": "2026-09-20T02:12:29+08:00", "articleSection": "Technology", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/vector-database-vs-search-2026"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/vector-database-vs-search-2026.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Vector Database vs Search in 2026: Knowing the Difference"}]}</script>
 
-    <link rel="stylesheet" href="/css/article-anim.css">
+    <link rel="stylesheet" href="/css/article-anim.css?v=20260920">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -174,7 +174,7 @@
         <div class="article-meta-row">
             <div class="article-avatar" aria-hidden="true">BK</div>
             <div class="article-meta-text">
-                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 16, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 19 min read
+                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 16, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 22 min read
             </div>
         </div>
     </section>
@@ -481,6 +481,75 @@
 Apply the appropriate pipeline dynamically based on the detected domain or content type.</p>
 <p>By proactively addressing these pitfalls, organisations can sustain the reliability, efficiency, and trustworthiness of their hybrid retrieval investments well into the next generation of AI‑augmented enterprise applications.</p>
 
+
+
+<h2>Designing an Effective Reranker for Hybrid Retrieval</h2>
+<p>In a hybrid pipeline the reranker is the arbiter that fuses keyword and vector signals into a single relevance ordering. A lightweight cross‑encoder (e.g., a distilled BERT‑based model) often provides the best trade‑off between latency and discrimination, especially when deployed behind a GPU‑enabled inference service. The reranker should be trained on domain‑specific query‑click or relevance‑judgement data so that it learns the nuances of your enterprise language—acronyms, internal product names, and policy phrasing that generic models miss.</p>
+<blockquote>
+    “A reranker that is merely a similarity scorer adds little value; it must re‑score the combined candidate set using features that both engines cannot capture alone.”
+</p>
+<ul>
+    <li>Select a model architecture that supports batch inference to keep 95th‑percentile latency under 50 ms.</li>
+    <li>Collect a minimal labelled set (≈500 query‑document pairs) and fine‑tune for two epochs; monitor MRR@10 to avoid over‑fitting.</li>
+    <li>Expose the reranker score alongside the original keyword and vector scores for explainability and audit trails.</li>
+    <li>Implement a fallback rule: if the reranker confidence drops below a threshold, return the top‑k keyword results as a safety net.</li>
+</ul>
+
+<h2>Operationalising Embedding Refresh and Drift Monitoring</h2>
+<p>Embedding drift occurs when the semantic space shifts because source documents evolve, new terminology appears, or the underlying model is updated. Left unchecked, drift silently degrades recall and can surface outdated or misleading passages. A robust refresh pipeline couples scheduled re‑embedding with statistical drift detectors that compare the distribution of recent embeddings to a baseline.</p>
+<ul>
+    <li>Version control your embedding model (e.g., using MLflow) and tag each refresh job with the model hash.</li>
+    <li>Run a nightly incremental job that re‑encodes only documents modified since the last run; use a change‑data‑capture (CDC) feed from your document store.</li>
+    <li>Apply a two‑sample Kolmogorov‑Smirnov test on the L2‑norm of embeddings; trigger an alert if p‑value < 0.01.</li>
+    <li>When drift is detected, automatically schedule a full re‑embedding of the affected collection and roll back to the previous index if latency spikes.</li>
+    <li>Log the embedding version, document count, and drift metric to a central observability dashboard for governance review.</li>
+</ul>
+
+<h2>Measuring Retrieval Quality: Metrics that Matter in 2026</h2>
+<p>Beyond classic precision and recall, production teams now monitor a suite of metrics that reflect both relevance and user trust. The table below outlines the most informative indicators for hybrid retrieval, their typical targets, and the data required to compute them.</p>
+<table>
+    <thead>
+        <tr>
+            <th>Metric</th>
+            <th>What it Measures</th>
+            <th>Target (Enterprise)</th>
+            <th>Data Needed</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Recall@10</td>
+            <td>Proportion of relevant documents found in the top‑10 results</td>
+            <td>≥ 0.85</td>
+            <td>Relevance judgments (clicks, expert labels)</td>
+        </tr>
+        <tr>
+            <td>NDCG@10</td>
+            <td>Rank‑aware quality, rewarding higher‑placed relevant items</td>
+            <td>≥ 0.78</td>
+            <td>Graded relevance scores</td>
+        </tr>
+        <tr>
+            <td>Mean Reciprocal Rank (MRR)</td>
+            <td>Average of reciprocal ranks of the first relevant hit</td>
+            <td>≥ 0.62</td>
+            <td>Binary relevance (first relevant)</td>
+        </tr>
+        <tr>
+            <td>Latency P95</td>
+            <td>End‑to‑end query response time for 95 % of requests</td>
+            <td>≤ 120 ms</td>
+            <td>Instrumented service timings</td>
+        </tr>
+        <tr>
+            <td>Embedding Drift Score</td>
+            <td>Statistical distance between current and baseline embedding distributions</td>
+            <td>≤ 0.05 (KS p‑value)</td>
+            <td>Sampled embedding vectors</td>
+        </tr>
+    </tbody>
+</table>
+
 <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -749,6 +818,6 @@ Apply the appropriate pipeline dynamically based on the detected domain or conte
 <div class="toast" id="toast"></div>
 <script>window.__ARTICLE_TITLE__ = "Vector Database vs Search in 2026: Knowing the Difference";</script>
 <script src="/js/article.js?v=20260901"></script>
-    <script src="/js/article-anim.js" defer></script>
+    <script src="/js/article-anim.js?v=20260920" defer></script>
 </body>
 </html>
