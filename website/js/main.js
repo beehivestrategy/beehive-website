@@ -396,6 +396,12 @@
       return;
     }
 
+    // Safety net: without IntersectionObserver, content must never stay hidden.
+    if (!('IntersectionObserver' in window)) {
+      DOM.revealElements.forEach(el => el.classList.add('visible'));
+      return;
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -404,8 +410,11 @@
         }
       });
     }, {
-      threshold: CONFIG.revealThreshold,
-      rootMargin: '0px 0px -50px 0px'
+      // threshold 0 + a large bottom rootMargin: reveal elements *before* they
+      // scroll into view, so long listing pages (e.g. the 1,100+ post blog
+      // index) never show blank gaps while scrolling fast.
+      threshold: 0,
+      rootMargin: '0px 0px 600px 0px'
     });
 
     DOM.revealElements.forEach(el => observer.observe(el));
@@ -1059,6 +1068,10 @@
     try { initMobileMenu(); } catch(e) {}
     try { initFAQ(); } catch(e) {}
     try { initActiveSectionNav(); } catch(e) {}
+    // Reveal must NOT be deferred to requestIdleCallback: on very long pages
+    // (blog index has 1,100+ cards / ~220k px) idle never arrives, leaving the
+    // whole page invisible for many seconds.
+    try { initScrollReveal(); } catch(e) {}
     
     // Defer non-critical visual enhancements to improve INP
     // Use requestIdleCallback if available, otherwise setTimeout
@@ -1066,7 +1079,6 @@
     
     deferFn(() => {
       try { initHeroParticles(); } catch(e) {}
-      try { initScrollReveal(); } catch(e) {}
       try { initCounterAnimation(); } catch(e) {}
       try { initNewAnimations(); } catch(e) {}
       try { initLineDrawAnimation(); } catch(e) {}
