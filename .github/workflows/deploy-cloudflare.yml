@@ -1,0 +1,55 @@
+# =============================================================================
+# Deploy Cloudflare Pages — HARD RULE ENFORCER
+# -----------------------------------------------------------------------------
+# Single source of truth = git. This workflow is the ONLY sanctioned deploy path.
+# Combined with "Allow direct uploads = OFF" in each Cloudflare Pages project,
+# nothing can reach dev/staging/prod except via a git push to the right branch.
+#
+#   push to `main`    -> deploys dev     (beehive-strategy-v2)
+#   push to `staging` -> deploys staging (beehive-strategy-v2-staging)
+#   push to `prod`    -> deploys prod    (beehivestrategy)
+#
+# Promotion flow main -> staging -> prod is enforced because `prod` only ever
+# receives a merge FROM `staging` (see DEPLOY_POLICY.md). You cannot push prod
+# content that didn't first pass through staging.
+# =============================================================================
+name: Deploy Cloudflare Pages
+
+on:
+  push:
+    branches: [main, staging, prod]
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Target environment"
+        required: true
+        default: "dev"
+        type: choice
+        options: [dev, staging, prod]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve target project
+        id: t
+        run: |
+          REF="${{ github.ref_name }}"
+          case "$REF" in
+            main)    echo "project=beehive-strategy-v2" ;;
+            staging) echo "project=beehive-strategy-v2-staging" ;;
+            prod)    echo "project=beehivestrategy" ;;
+            *) echo "::error::Unknown branch '$REF' — not a deploy branch"; exit 1 ;;
+          esac >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy website --project-name=${{ steps.t.outputs.project }}
