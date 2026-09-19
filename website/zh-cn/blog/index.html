@@ -25973,5 +25973,51 @@
     }
   })();
   </script>
+
+<script>
+/* Blog archive pagination — shows 24 posts at a time with a Load more button.
+   Works alongside the existing category/month filters: re-paginates after they run.
+   All article links stay in the DOM (display:none only), so crawlers still see them. */
+(function() {
+  var PAGE = 24;
+  var list = document.querySelector('.blog-list');
+  if (!list) return;
+  var shown = PAGE;
+
+  var wrap = document.createElement('div');
+  wrap.className = 'blog-pagination';
+  var info = document.createElement('p');
+  info.className = 'blog-pagination-info';
+  var btn = document.createElement('button');
+  btn.className = 'blog-loadmore';
+  btn.type = 'button';
+  wrap.appendChild(info);
+  wrap.appendChild(btn);
+  if (list.parentNode) list.parentNode.insertBefore(wrap, list.nextSibling);
+
+  function apply(reset) {
+    if (reset) shown = PAGE;
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.blog-card'));
+    var vis = cards.filter(function(c) { return c.style.display !== 'none'; });
+    vis.forEach(function(c, i) {
+      if (i < shown) c.classList.remove('pag-hidden');
+      else c.classList.add('pag-hidden');
+    });
+    info.textContent = 'Showing ' + Math.min(shown, vis.length) + ' of ' + vis.length + ' articles';
+    if (shown >= vis.length) { btn.style.display = 'none'; }
+    else { btn.style.display = ''; btn.textContent = 'Load more (' + (vis.length - shown) + ' remaining)'; }
+  }
+
+  btn.addEventListener('click', function() { shown += PAGE; apply(false); });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.blog-category-btn'), function(b) {
+    b.addEventListener('click', function() { setTimeout(function() { apply(true); }, 0); });
+  });
+  var mf = document.getElementById('blog-month-filter');
+  if (mf) mf.addEventListener('change', function() { setTimeout(function() { apply(true); }, 0); });
+
+  apply(true);
+})();
+</script>
 </body>
 </html>
