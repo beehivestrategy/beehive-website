@@ -36,7 +36,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="/css/article.css?v=20260901" rel="stylesheet">
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/global-ai-recap-2026-09-10#article", "headline": "Global AI Recap, 10 September 2026: Benchmarks, Honesty and the Evaluation Era", "description": "This week's signal: the industry stopped trusting vendor benchmarks and started trusting its own evaluation suites, marking the shift from marketing claims to measured honesty about what AI actually does.", "datePublished": "2026-09-11T09:00:00+08:00", "dateModified": "2026-09-11T09:00:00+08:00", "articleSection": "AI Strategy", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/global-ai-recap-2026-09-10"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/global-ai-recap-2026-09-10.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/global-ai-recap-2026-09-10#article", "headline": "Global AI Recap, 10 September 2026: Benchmarks, Honesty and the Evaluation Era", "description": "This week's signal: the industry stopped trusting vendor benchmarks and started trusting its own evaluation suites, marking the shift from marketing claims to measured honesty about what AI actually does.", "datePublished": "2026-09-11T09:00:00+08:00", "dateModified": "2026-09-19T02:39:24+08:00", "articleSection": "AI Strategy", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/global-ai-recap-2026-09-10"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/global-ai-recap-2026-09-10.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Global AI Recap, 10 September 2026: Benchmarks, Honesty and the Evaluation Era"}]}</script>
 
     <link rel="stylesheet" href="/css/article-anim.css">
@@ -174,7 +174,7 @@
         <div class="article-meta-row">
             <div class="article-avatar" aria-hidden="true">BK</div>
             <div class="article-meta-text">
-                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 11, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 4 min read
+                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 11, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 15 min read
             </div>
         </div>
     </section>
@@ -231,7 +231,138 @@
 </ul>
 <p>The point is not a perfect score. It is a repeatable habit that makes 'we scored 95 percent' irrelevant. A vendor who lets you run their suite on your own questions has already cleared the bar that most competitors quietly fail, because they only ever show you the benchmark they wrote for themselves.</p>
 
-        <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
+        
+
+<h2>Designing a Task‑Specific Evaluation Suite: A Worked Example</h2>
+<p>To illustrate how an organisation moves from trusting vendor leaderboards to running its own reproducible evaluation, consider the case of a multinational bank that needed to assess a large language model (LLM) for automated loan‑underwriting advice. The bank’s procurement team had grown sceptical of generic benchmark scores after several models performed well on public leaderboards but failed to respect regional credit‑policy nuances.</p>
+<blockquote>
+  <p>“We stopped asking ‘what is your score on MMLU?’ and started asking ‘show us the questions you use to test compliance with our credit rules.’”</p>
+  <p>– Head of AI Governance, Global Retail Bank</p>
+</p>
+<h3>Step 1: Pinpoint the decision‑critical tasks</h3>
+<p>The bank began by convening a cross‑functional workshop of credit analysts, risk managers and data scientists. They identified three high‑impact decision points where the model’s output directly influenced a loan decision:</p>
+<ul>
+  <li>Assessing the adequacy of collateral documentation for small‑business loans.</li>
+  <li>Detecting inconsistencies in applicant‑provided income statements.</li>
+  <li>Flagging potential adverse‑media signals that could affect creditworthiness.</li>
+</ul>
+<p>Each task was articulated as a concrete question‑answer pair that reflected the bank’s internal policy documents and regulatory expectations.</p>
+<h3>Step 2: Curate a representative question set</h3>
+<p>From the workshop, the team drafted 12 representative questions (four per task). For each question they produced a known‑good answer by having two senior analysts independently solve the case and then reconciling any divergence. The final set looked like this:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Question ID</th>
+      <th>Prompt (excerpt)</th>
+      <th>Known‑Good Answer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Collateral adequacy</td>
+      <td>C1</td>
+      <td>“The applicant offers a warehouse valued at £850k with a 70 % LTV cap. Is the collateral sufficient for a £500k loan?”</td>
+      <td>Yes – the adjusted value (£850k × 0.7 = £595k) exceeds the loan amount.</td>
+    </tr>
+    <tr>
+      <td>Income‑statement consistency</td>
+      <td>I3</td>
+      <td>“The applicant reports £120k annual salary but shows monthly bank deposits averaging £8k. Identify the discrepancy.”</td>
+      <td>Monthly deposits imply £96k annual income; the salary claim is overstated by £24k.</td>
+    </tr>
+    <tr>
+      <td>Adverse‑media flag</td>
+      <td>A2</td>
+      <td>“A news article mentions the applicant’s director was involved in a 2023 bankruptcy. Should this affect the risk rating?”</td>
+      <td>Yes – recent adverse media triggers a mandatory review under policy §4.2.</td>
+    </tr>
+    <!-- Additional rows omitted for brevity -->
+  </tbody>
+</table>
+<h3>Step 3: Define a transparent scoring rubric</h3>
+<p>For each question the bank devised a binary correctness metric (1 = exact match to known‑good answer, 0 = any deviation). They also added a secondary “explainability” score: if the model’s rationale matched the analyst’s reasoning (checked via a short free‑text justification), it earned 0.5 points; otherwise 0. The total possible score per question was therefore 1.5, and the suite score was the average across all 12 questions.</p>
+<h3>Step 4: Automate execution and versioning</h3>
+<p>The evaluation suite was stored as a plain‑text JSON file in the bank’s internal Git repository. A lightweight CI pipeline (GitHub Actions) was configured to:</p>
+<ol>
+  <li>Check out the latest model artefact (either a vendor‑provided API endpoint or an internally fine‑tuned checkpoint).</li>
+  <li>Run the 12 prompts via the model’s inference endpoint.</li>
+  <li>Compare responses to the known‑good answers using a Python script that applied the rubric.</li>
+  <li>Publish the suite score as a pipeline badge and fail the build if the score dropped below a pre‑agreed threshold (1.2/1.5, i.e., 80 %).</li>
+</ol>
+<p>Because the suite lived alongside the model code, any change – whether a vendor update or an internal prompt tweak – triggered an immediate, reproducible verification.</p>
+<h3>Step 5: Use the results in procurement negotiations</h3>
+<p>When the bank engaged three LLM vendors, it shared the evaluation suite and asked each to run it on their latest model. Vendor A scored 1.35, Vendor B scored 1.08, and Vendor C refused to run the suite, citing “proprietary evaluation”. The bank proceeded with Vendor A, using the transparent shortfall (0.15 points) to negotiate a service‑level agreement that required the vendor to remediate the identified gaps within six weeks.</p>
+<p>This worked example demonstrates that a task‑specific suite need not be large or complex; its power lies in relevance, reproducibility, and the ability to turn honesty into a contractual lever.</p>
+
+<h2>Maturity Model for Owned Evaluation: Approaches, Tools and Benchmarks</h2>
+<p>Organisations adopting owned evaluation typically progress through distinct stages of sophistication. The following maturity model outlines four levels, the typical characteristics of each, the tooling that tends to appear, and the measurable outcomes that signal readiness to advance.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Maturity Level</th>
+      <th>Characteristics</th>
+      <th>Typical Tools & Artefacts</th>
+      <th>Key Metrics</th>
+      <th>Illustrative Organisation Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1 – Ad‑hoc</td>
+      <td>Evaluation is performed sporadically, often on demand by a single data scientist. No standardised question set; results are shared via email or slides.</td>
+      <td>Spreadsheets, Jupyter notebooks, ad‑hoc scripts.</td>
+      <td>Frequency of evaluations (< 1 per quarter); variance in scores across analysts (> 30 %).</td>
+      <td>A mid‑size insurer testing a fraud‑detection LLM only before major releases.</td>
+    </tr>
+    <tr>
+      <td>2 – Defined</td>
+      <td>A core evaluation suite exists (questions, rubric, known‑good answers) and is version‑controlled. Execution is manual but repeatable.</td>
+      <td>Git‑hosted JSON/YAML suite, simple bash or Python runner, internal wiki for documentation.</td>
+      <td>Evaluation run‑rate (≥ 1 per month); score stability (± 5 % across runs).</td>
+      <td>A regional bank that runs its loan‑underwriting suite before each model update.</td>
+    </tr>
+    <tr>
+      <td>3 – Managed</td>
+      <td>The suite is automated in CI/CD, integrated with model registry, and results are visible to stakeholders via a dashboard. Regular reviews of the suite’s relevance are scheduled.</td>
+      <td>GitHub Actions / GitLab CI, model‑registry (MLflow, Sagemaker), BI dashboard (Power BI, Lookr), quarterly suite‑review meetings.</td>
+      <td>Mean time to detect regression (< 24 h); suite‑review compliance (≥ 90 % of scheduled reviews held).</td>
+      <td>A global pharmaceutical firm that publishes its clinical‑trial‑protocol‑checking suite score on an internal portal.</td>
+    </tr>
+    <tr>
+      <td>4 – Optimised</td>
+      <td>Evaluation is continuous, predictive, and feeds back into model development. The organisation employs anomaly‑detection on suite scores and refines the suite based on production‑feedback loops.</td>
+      <td>Continuous‑evaluation platform (e.g., WhyLabs, Arize), automated suite‑generation from production logs, feedback‑driven question prioritisation, SLO‑aligned alerts.</td>
+      <td>Regression detection latency (< 1 h); proportion of model changes blocked by evaluation (< 5 % false‑positives); improvement in production KPI tied to evaluation score (≥ 10 % YoY).</td>
+      <td>A leading tech‑consultancy that runs its customer‑support‑chatbot suite on every push, automatically rolling back releases that dip below the SLO.</td>
+    </tr>
+  </tbody>
+</table>
+<p>Progressing through these levels is not merely a matter of acquiring new tools; it requires institutionalising the habit of questioning whether the evaluation still mirrors the decisions the business actually makes. Organisations that treat the suite as a living artefact – revisiting the question set whenever a new product line, regulation, or customer segment emerges – tend to realise the greatest value from owned evaluation.</p>
+
+<h2>Common Pitfalls in Owned Evaluation and How to Avoid Them</h2>
+<p>Even with the best intentions, teams often encounter recurring obstacles that undermine the credibility and utility of their evaluation suites. Below are the most frequently observed pitfalls, accompanied by concrete mitigation strategies.</p>
+<h3>1. Over‑generalising the question set</h3>
+<p><strong>Pitfall:</strong> Creating a suite that tries to cover “everything” results in vague, low‑signal questions that fail to expose model weaknesses.</p>
+<p><strong>Mitigation:</strong> Apply the “5‑question rule”: start with no more than five high‑impact decision points (as described in the worked example). Each question must be tied to a specific business outcome or regulatory requirement. Expand only after the core set demonstrates stable discrimination power.</p>
+<h3>2. Using opaque or non‑reproducible scoring</h3>
+<p><strong>Pitfall:</strong> Relying on human judgement without a documented rubric leads to inconsistent scores and erodes trust.</p>
+<p><strong>Mitigation:</strong> Codify the scoring logic in a machine‑readable format (e.g., a Python function or JSON rule set). Store the function alongside the suite in version control and treat it as test code – subject to peer review and unit testing.</p>
+<h3>3. Neglecting suite maintenance</h3>
+<p><strong>Pitfall:</strong> Treating the evaluation as a one‑off artefact causes it to drift away from real‑world use, producing false confidence.</p>
+<p><strong>Mitigation:</strong> Institute a quarterly “suite health check” where stakeholders review each question for relevance, update known‑good answers if policies have changed, and retire any items that no longer discriminate between model versions.</p>
+<h3>4. Ignoring failure‑mode transparency</h3>
+<p><strong>Pitfall:</strong> Publishing only aggregate scores hides the specific contexts where the model struggles, making risk‑mitigation harder.</p>
+<p><strong>Mitigation:</strong> Release a complementary “failure‑mode catalogue” alongside the suite score: for each question that falls below a threshold, include the model’s raw output, the known‑good answer, and a brief analyst note on why the divergence matters.</p>
+<h3>5. Overlooking cultural adoption</h3>
+<p><strong>Pitfall:</strong> Evaluation is seen as a QA gate rather than a shared language between data scientists, product owners, and procurement.</p>
+<p><strong>Mitigation:</strong> Run a short workshop when onboarding new stakeholders to walk them through the suite, show how to trigger a run, and explain how to interpret a regression. Embed the suite review into existing sprint‑planning or risk‑review ceremonies.</p>
+<h3>6. Misaligning thresholds with business risk</h3>
+<p><strong>Pitfall:</strong> Using an arbitrary cut‑off (e.g., 80 % correct) without linking it to downstream impact leads to either excessive false alarms or missed risks.</p>
+<p><strong>Mitigation:</strong> Conduct a simple cost‑benefit analysis: estimate the financial or reputational cost of a false‑negative for each question type, then set the threshold to keep expected loss below an agreed tolerance (e.g., £50k per release). Adjust thresholds as the organisation’s risk appetite evolves.</p>
+<p>By recognising these anti‑patterns early and embedding the corresponding safeguards into the suite lifecycle, organisations can turn owned evaluation from a compliance checkbox into a genuine source of strategic insight.</p>
+
+<section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     Frequently Asked Questions

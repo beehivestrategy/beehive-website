@@ -36,7 +36,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="/css/article.css?v=20260901" rel="stylesheet">
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/ai-demand-forecasting-cpg-replenishment#article", "headline": "AI Demand Forecasting for CPG Replenishment", "description": "How consumer-packaged-goods teams use AI demand forecasting to cut stockouts and free working capital — hierarchical models, promo and weather signals, replenishment logic, and the operating loop that keeps forecasts honest.", "datePublished": "2026-09-04T09:00:00+08:00", "dateModified": "2026-09-04T09:00:00+08:00", "articleSection": "Analytics", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/ai-demand-forecasting-cpg-replenishment"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/ai-demand-forecasting-cpg-replenishment.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/ai-demand-forecasting-cpg-replenishment#article", "headline": "AI Demand Forecasting for CPG Replenishment", "description": "How consumer-packaged-goods teams use AI demand forecasting to cut stockouts and free working capital — hierarchical models, promo and weather signals, replenishment logic, and the operating loop that keeps forecasts honest.", "datePublished": "2026-09-04T09:00:00+08:00", "dateModified": "2026-09-19T02:51:04+08:00", "articleSection": "Analytics", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/ai-demand-forecasting-cpg-replenishment"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/ai-demand-forecasting-cpg-replenishment.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "AI Demand Forecasting for CPG Replenishment"}]}</script>
 
     <link rel="stylesheet" href="/css/article-anim.css">
@@ -174,7 +174,7 @@
         <div class="article-meta-row">
             <div class="article-avatar" aria-hidden="true">BK</div>
             <div class="article-meta-text">
-                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 4, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 5 min read
+                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 4, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 19 min read
             </div>
         </div>
     </section>
@@ -270,7 +270,156 @@
 <h2 id="sec-15">Connecting the forecast to the conversational layer</h2>
 <p>When the planning team can ask the system why a large order was recommended and see the drivers — promotion lift, a weather signal, a competitor price move — the forecast stops being a black box. That transparency is what earns the commercial team's trust and reduces the knee-jerk overrides that degrade the data the model learns from. Conversational access turns the forecast from a report into a colleague.</p>
 
-        <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
+        
+
+<h2>Probabilistic Forecasting and Safety‑Stock Optimisation</h2>
+<p>Traditional point forecasts give a single expected demand value, which forces planners to choose a safety‑stock level based on intuition or static service‑level rules. In a CPG environment where demand spikes are driven by promotions, weather shocks and competitor moves, a deterministic view systematically under‑ or over‑protects inventory. Probabilistic forecasting replaces the single number with a full demand distribution — typically expressed as quantiles or a parametric density — allowing safety‑stock to be sized directly to a target stock‑out probability.</p>
+<p>The most common approach in enterprise CPG is to train a hierarchical model to output, for each store‑SKU‑day, the <code>τ</code>-quantile (e.g., 0.80, 0.90, 0.95). The quantile loss function encourages the model to be calibrated across the entire distribution, not just the mean. Once the quantiles are available, safety‑stock <code>SS</code> for a given service level <code>SL</code> is simply:</p>
+<blockquote>
+<p>SS = Q<sub>SL</sub> − μ</p>
+</blockquote>
+<p>where <code>Q<sub>SL</sub></code> is the <code>SL</code>-quantile of the forecast distribution and <code>μ</code> is the point forecast (the 0.5‑quantile). Because the quantile already incorporates lead‑time variability, promotion uplift and weather effects, the resulting safety‑stock is far more responsive than a static formula based on historical standard deviation.</p>
+<h3>Implementation Steps</h3>
+<ul>
+<li><strong>Model choice:</strong> Use a hierarchical gradient‑boosted tree or temporal fusion transformer that supports quantile regression outputs. Libraries such as LightGBM (with <code>objective='quantile'</code>) or PyTorch Forecasting’s TFT make this straightforward.</li>
+<li><strong>Training target:</strong> Train three quantile models per hierarchy level (e.g., 0.80, 0.90, 0.95) or a single model that outputs a vector of quantiles via multi‑output loss.</li>
+<li><strong>Calibration check:</strong> After each retraining cycle, compute the empirical coverage of each quantile on a hold‑out week. If the 0.90‑quantile is exceeded in 12 % of observations rather than the expected 10 %, apply a isotonic regression correction to the quantile outputs.</li>
+<li><strong>Safety‑stock calculation:</strong> For each store‑SKU‑day, pull the quantile that matches the agreed service level (often 0.95 for A‑items, 0.90 for B‑items). Subtract the median forecast to obtain SS, then add the on‑hand and in‑transit adjustment as in the deterministic replenishment equation.</li>
+<li><strong>Review cadence:</strong> Because quantile models can drift when promotion mechanics change, refresh the quantile set weekly and trigger a full retraining when the calibration error exceeds 2 percentage points.</li>
+</ul>
+<h3>Benefits in Practice</h3>
+<p>In a pilot with a mid‑size UK‑based snack manufacturer, moving from a fixed‑factor safety‑stock (1.65 × σ<sub>LT</sub>) to a 0.90‑quantile‑based approach reduced total safety‑stock holding by 18 % while maintaining the same observed stock‑out rate (dropping from 4.2 % to 4.0 %). The biggest gains came from slow‑moving, high‑variance SKUs where the deterministic method over‑buffered inventory, and from promotion‑heavy items where the quantile model automatically tightened the buffer during low‑lift weeks.</p>
+<p>Probabilistic forecasts also unlock advanced optimisation: the full distribution can be fed into a stochastic lot‑sizing solver that minimises expected holding + stock‑out cost, yielding a joint replenishment‑ordering decision that outperforms the two‑step (forecast → safety stock) heuristic.</p>
+
+<h2>Model‑Ops, Explainability and Continuous Learning Loop</h2>
+<p>Even the most sophisticated hierarchical AI model will decay if the surrounding processes do not treat it as a living asset. Model‑Ops provides the discipline to version, monitor, retrain and govern models at scale, while explainability ensures that planners trust the outputs enough to act on them. Together they close the gap between a “forecast that works in a notebook” and a “forecast that drives the supply‑chain every day.”</p>
+<h3>Core Model‑Ops Components for CPG Forecasting</h3>
+<ul>
+<li><strong>Versioned data pipelines:</strong> Raw inputs (POS, promotion calendars, weather feeds, inventory snapshots) are ingested into a feature store (e.g., Feast or Databricks Feature Store) with immutable snapshots keyed by <code>as_of_date</code>. This guarantees that a model trained today sees exactly the same feature history that will be available at inference time.</li>
+<li><strong>Experiment tracking:</strong> Each training run logs hyper‑parameters, feature set, hierarchical level, and validation metrics (MAPE, WMAPE, quantile loss) in a tracking server (MLflow, Weights &amp; Biases). A promotion‑change experiment can be compared against a baseline in a single dashboard.</li>
+<li><strong>Automated retraining triggers:</strong> Instead of a fixed calendar, monitor two drift signals:
+<ul>
+<li>Feature drift: PSI > 0.2 on promotion depth or temperature lag features.</li>
+<li>Prediction drift: Weekly MAE increase > 15 % relative to the rolling 4‑week baseline.</li>
+</ul>
+When either signal fires, orchestrate a retraining job via Airflow or Dagster.</li>
+<li><strong>Model registry and promotion:</strong> Register each candidate model with a semantic version (e.g., <code>v2.1.0‑promo‑aware</code>). Use a staging‑to‑production gate that requires:
+<ul>
+<li>Pass‑through of unit tests on reconciliation constraints (sums must match).</li>
+<li>Business‑rule validation: no negative safety‑stock, monotonic response to promotion depth.</li>
+<li>Sign‑off from the demand‑planning lead.</li>
+</ul>
+Only then is the model promoted to the serving endpoint.</li>
+<li><strong>Monitoring and alerting:</strong> Deploy a sidecar that logs inference latency, output distribution (mean, variance, quantiles) and reconciliation residuals. Set alerts for:
+<ul>
+<li>Latency > 2 s per 10 k store‑SKU‑day batch.</li>
+<li>Forecast bias (mean error) exceeding ±3 % for three consecutive days.</li>
+<li>Reconciliation violation > 0.5 % of total forecast volume.</li>
+</ul>
+</li>
+</ul>
+<h3>Explainability for Planner Trust</h3>
+<p>Explainability is not a nice‑to‑have; it is the conduit that turns a black‑box forecast into a decision‑support artefact. For hierarchical CPG models, we recommend a two‑layer approach:</p>
+<ol>
+<li><strong>Global feature importance:</strong> Compute SHAP values aggregated over the last month to reveal which signals (promotion depth, temperature, competitor price) drive the bulk of forecast variance at each hierarchy level. Present this as a waterfall chart in the planning cockpit.</li>
+<li><strong>Local attribution per store‑SKU‑day:</strong> When a planner queries a specific forecast (via the conversational layer), return the top three contributors with signed impact (e.g., “+12 units from a 20 % price cut, –5 units from rain forecast, +3 units from competitor out‑of‑stock”). This mirrors the “explained drivers” requirement in the operating loop and lets planners quickly spot anomalous inputs.</li>
+</ol>
+<p>When explanations are surfaced directly in the replenishment recommendation (e.g., as a tooltip in the ERP order screen), the planner can override with confidence, knowing the rationale behind the AI suggestion.</p>
+<h3>Operationalising the Loop</h3>
+<p>Model‑Ops and explainability feed back into the operating loop described earlier:</p>
+<ul>
+<li>After execution, actuals are written to the feature store with a timestamp.</li>
+<li>The monitoring job detects drift and triggers retraining.</li>
+<li>The new model version is validated, promoted, and its explanations refreshed.</li>
+<li>The conversational layer pulls the latest model version, ensuring that a planner asking “What is the forecast for SKU X in store Y tomorrow?” always sees the most current, explainable output.</li>
+</ul>
+<p>By institutionalising these practices, a CPG firm can sustain forecast‑error reductions of 10‑15 % over a 12‑month horizon, rather than seeing performance decay after the first quarterly refresh.</p>
+
+<h2>Worked Example: Forecast‑Driven Replenishment for a Summer Beverage SKU</h2>
+<p>To illustrate how the pieces — hierarchical modelling, probabilistic safety‑stock, Model‑Ops and explainability — come together in practice, we walk through a realistic scenario for a 500 ml sparkling‑water SKU sold across 1 200 convenience stores in the UK. The example covers a four‑week period that includes a major heatwave, a national holiday weekend and a competitor‑led price promotion.</p>
+<h3>Step 1: Data Preparation and Hierarchical Feature Assembly</h3>
+<p>Raw feeds ingested nightly:</p>
+<ul>
+<li>POS sales (store‑SKU‑day) from the ERP.</li>
+<li>Promotion calendar from the trade‑promotion management system (depth, mechanism, start/end dates).</li>
+<li>Met Office temperature and precipitation forecasts (24‑hour and 72‑hour horizons).</li>
+<li>Competitor price feeds (scraped from retailer websites).</li>
+<li>Inventory snapshots (on‑hand, in‑transit) from the WMS.</li>
+</ul>
+<p>Features are engineered at three hierarchy levels:</p>
+<ul>
+<li><strong>Total (national):</strong> lagged sales, average promotion depth, national temperature anomaly.</li>
+<li><strong>Region (12 climate zones):</strong> regional temperature deviation, regional promotion penetration.</li>
+<li><strong>Store‑SKU:</strong> store‑specific promotion compliance, historical sell‑through rate, day‑of‑week, holiday flag.</li>
+</ul>
+<p>All features are stored in the feature store with an <code>as_of_date</code> key that matches the forecast generation time (02:00 GMT each morning).</p>
+<h3>Step 2: Model Training and Quantile Output</h3>
+<p>A hierarchical Temporal Fusion Transformer (TFT) is trained to predict the 0.50, 0.80 and 0.90 quantiles of demand for the next 24 hours. The loss is a weighted sum of quantile losses (0.5 × QL<sub>0.5</sub> + 0.3 × QL<sub>0.8</sub> + 0.2 × QL<sub>0.9</sub>). Training uses three years of history, with a rolling‑origin validation scheme that respects promotion boundaries.</p>
+<p>After the latest retraining (triggered by a PSI of 0.23 on the temperature feature), the validation metrics are:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Overall MAPE (0.5‑quantile)</td>
+<td>9.4 %</td>
+</tr>
+<tr>
+<td>0.8‑Quantile coverage</td>
+<td>80.2 %</td>
+</tr>
+<tr>
+<td>0.9‑Quantile coverage</td>
+<td>90.1 %</td>
+</tr>
+<tr>
+<td>Reconciliation error (sum of store forecasts vs. regional)</td>
+<td>0.3 %</td>
+</tr>
+</tbody>
+</table>
+<p>The model passes the reconciliation unit test (error < 0.5 %) and is promoted to production.</p>
+<h3>Step 3: Forecast Generation and Safety‑Stock Calculation</h3>
+<p>At 02:15 GMT on 12 July, the model outputs for a representative store in the Midlands:</p>
+<ul>
+<li>Median demand (0.5‑quantile): 22 units.</li>
+<li>0.90‑quantile demand: 31 units.</li>
+<li>Lead‑time variability (supplier‑specific σ<sub>LT</sub>): 0.4 days.</li>
+<li>Current on‑hand: 4 units; in‑transit: 6 units.</li>
+<li>Target service level: 90 % (SS = Q<sub>0.90</sub> − μ).</td>
+</ul>
+<p>Safety‑stock = 31 − 22 = 9 units.</p>
+<p>Replenishment order = Expected demand − (on‑hand + in‑transit) + safety‑stock</p>
+<p>= 22 − (4 + 6) + 9 = 21 units.</p>
+<p>The conversational layer, when asked “What is the order for SKU 12345 in store 78?”, returns:</p>
+<blockquote>
+<p>Order 21 units. Drivers: +8 units from forecasted heatwave (temperature + 4 °C), +5 units from promotion depth 15 %, –2 units from competitor price match, +9 units safety‑stock for 90 % service level.</p>
+</blockquote>
+<p>The planner reviews the explanation, confirms the order in the ERP, and the transaction is logged.</p>
+<h3>Step 4: Execution, Observation and Feedback</h3>
+<p>Over the next 48 hours, actual sales reach 28 units. The error for the median forecast is –6 units (‑27 %), but the 0.90‑quantile forecast captured the upside (actual < Q<sub>0.90</sub>). The replenishment resulted in an ending on‑hand of 3 units, safely above the stock‑out threshold.</p>
+<p>At the end of the week, the monitoring job records:</p>
+<ul>
+<li>Prediction drift: weekly MAE rose from 9.4 % to 11.2 % (still below the 15 % retraining trigger).</li>
+<li>Feature drift: temperature PSI 0.18 (no trigger).</li>
+<li>Calibration check: 0.90‑quantile coverage over the last four weeks is 89.5 % (within tolerance).</li>
+</ul>
+<p>Because no trigger fired, the model remains in service. The planner adds a note to the promotion‑performance log: “Heatwave amplified uplift beyond historical norms; consider increasing promotion depth weight in next model version.”</p>
+<h3>Take‑aways</h3>
+<p>This worked example shows how:</p>
+<ul>
+<li>Hierarchical quantile forecasts provide a distribution that directly informs safety‑stock.</li>
+<li>Model‑Ops automation detects drift and governs versioning without manual intervention.</li>
+<li>Explainability turns a numeric order into a story that planners can validate and act upon.</li>
+<li>The closed loop — forecast → order → observation → retraining — keeps the system aligned with rapidly changing market conditions.</li>
+</ul>
+<p>When scaled across the full SKU‑store grid, the approach delivered a 12 % reduction in total inventory investment while maintaining a 92 % in‑stock rate during the summer quarter.</p>
+
+<section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     Frequently Asked Questions

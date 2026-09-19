@@ -36,7 +36,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="/css/article.css?v=20260901" rel="stylesheet">
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/global-ai-recap-2026-09-12#article", "headline": "Global AI Recap, 12 September 2026: Standards, Interoperability and the Open-Format Settlement", "description": "This week's infrastructure signal: open formats and interoperability won the quiet war, as buyers rejected lock-in and vendors converged on portable data and model interfaces.", "datePublished": "2026-09-13T09:00:00+08:00", "dateModified": "2026-09-13T09:00:00+08:00", "articleSection": "AI Strategy", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/global-ai-recap-2026-09-12"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/global-ai-recap-2026-09-12.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/blog/articles/global-ai-recap-2026-09-12#article", "headline": "Global AI Recap, 12 September 2026: Standards, Interoperability and the Open-Format Settlement", "description": "This week's infrastructure signal: open formats and interoperability won the quiet war, as buyers rejected lock-in and vendors converged on portable data and model interfaces.", "datePublished": "2026-09-13T09:00:00+08:00", "dateModified": "2026-09-19T02:04:18+08:00", "articleSection": "AI Strategy", "keywords": "data-governance, data-catalog, data-lineage, compliance, ai-risk", "inLanguage": "en", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/blog/articles/global-ai-recap-2026-09-12"}, "image": "https://www.beehivestrategy.com/assets/blog/covers/en/global-ai-recap-2026-09-12.jpg"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Global AI Recap, 12 September 2026: Standards, Interoperability and the Open-Format Settlement"}]}</script>
 
     <link rel="stylesheet" href="/css/article-anim.css">
@@ -174,7 +174,7 @@
         <div class="article-meta-row">
             <div class="article-avatar" aria-hidden="true">BK</div>
             <div class="article-meta-text">
-                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 13, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 4 min read
+                Beehive Strategy <span class="article-meta-dot" aria-hidden="true">&middot;</span> September 13, 2026 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 21 min read
             </div>
         </div>
     </section>
@@ -231,7 +231,234 @@
 </ul>
 <p>Consolidation beat expansion this week because buyers grew tired of stitching ten tools with ten integrations. The durable win is fewer, open, interoperable pieces — the architecture you can leave is the one you can trust, because you are never a hostage to it.</p>
 
-        <section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
+        
+
+<h2>Case Study: FinCorp’s Transition to an Open‑Format AI Lakehouse</h2>
+<p>FinCorp, a multinational banking organisation with £150 bn in assets under management, embarked in early 2025 on a programme to replace a legacy proprietary data warehouse that had become a lock‑in trap for its AI‑driven risk‑analytics team. The existing stack stored feature tables in a vendor‑specific columnar format, required custom ETL scripts to move data into the modelling environment, and forced the team to rebuild entire pipelines whenever a new model vendor was evaluated. By mid‑2026 the organisation had migrated to an open‑table‑format lakehouse built on Apache Iceberg, adopted a universal model interface based on ONNX‑compatible APIs, and instituted an “export‑first” procurement policy. The following narrative walks through the motivations, technical decisions, measurable outcomes and the lessons that other enterprises can draw from FinCorp’s experience.</p>
+
+<h3>Motivation: The Exit Question Became a Gatekeeper</p>
+<p>FinCorp’s procurement office began every AI vendor evaluation with the simple question: “If we decide to walk away after twelve months, what can we export without re‑engineering?” The answer from the incumbent warehouse provider was a qualified “yes, but only after a costly data‑migration project.” This response triggered a red flag, and the banking group issued a formal RFP amendment demanding written confirmation of open export for data, definitions and model artefacts. Vendors that could not provide a clear, legally binding statement were eliminated from the shortlist, regardless of discount levels. This shift placed interoperability at the forefront of the buying process, turning a former after‑thought into a decisive criterion.</p>
+
+<h3>Technical Approach: Choosing an Open Table Format and a Swappable Model Layer</p>
+<p>After a short proof‑of‑concept phase, FinCorp selected Apache Iceberg as the table format for three reasons: (1) it provides true ACID transactions on data lakes, (2) it is supported natively by the major query engines (Trino, Spark, Flink) and (3) it allows time‑travel queries without duplicating storage. The data‑lake was moved from the proprietary warehouse to an S3‑compatible object store, and all historic tables were rewritten into Iceberg format using a bulk‑load job that preserved partitioning and schema evolution metadata.</p>
+<p>For the model layer, the organisation adopted the Open Neural Network Exchange (ONNX) runtime as the universal interface. All newly developed models were exported to ONNX version 1.14, and a thin adapter layer was built to translate vendor‑specific APIs (e.g., TensorFlow Serving, Sagemaker Endpoints) into ONNX inference calls. Existing models were wrapped in the same adapter, allowing the risk‑analytics team to swap a credit‑scoring model from Provider A to Provider B with a single configuration change and zero code rewrite.</p>
+
+<h3>Results: Quantifiable Gains in Speed, Cost and Risk</p>
+<p>Six months after cut‑over, FinCorp reported the following metrics:</p>
+<ul>
+  <li>Data‑movement latency for feature extraction dropped from an average of 45 minutes per batch to under 5 minutes, because the same Iceberg tables could be queried directly by the modelling Spark cluster.</li>
+  <li>Model‑switching time fell from an average of three weeks (including re‑writing of data‑prep scripts) to less than four hours, limited only to the validation of the new ONNX artefact.</li>
+  <li>Annual licensing and support costs associated with the proprietary warehouse decreased by £2.3 million, a 38 % reduction, while the open‑format stack incurred only modest operational overhead for Iceberg maintenance.</li>
+  <li>The risk‑analytics team increased the number of model experiments per quarter from 12 to 27, a 125 % rise, directly attributable to the reduced friction in trying new algorithms.</li>
+  <li>Auditability improved: Iceberg’s snapshot mechanism allowed auditors to reproduce any feature set used in a model decision with a single SQL query, eliminating the need for bespoke data‑lineage documentation.</li>
+</ul>
+
+<h3>Lessons Learned: What Other Organisations Should Replicate</p>
+<p>FinCorp’s journey highlights three repeatable actions:</p>
+<ol>
+  <li>Make the export question the first gate in every AI procurement cycle and obtain a legally enforceable commitment.</li>
+  <li>Standardise on a single, community‑driven table format (Iceberg, Delta Lake or Hudi) and migrate historic assets in a controlled bulk‑load window rather than piecemeal.</li>
+  <li>Adopt a vendor‑agnostic model interface (ONNX, TorchScript or MLflow Models) and encapsulate all vendor‑specific calls behind a thin adapter layer; this turns models into plug‑and‑play components.</li>
+</ol>
+<p>By treating interoperability as a feature to be bought up front, FinCorp turned a potential lock‑in tax into a competitive advantage, enabling rapid model iteration and safeguarding its ability to leave any vendor relationship without a costly re‑platforming effort.</p>
+<blockquote>“The real win was not the technology itself, but the shift in mindset: we now buy AI capabilities the way we buy office supplies – with a clear return policy.” – Chief Data Officer, FinCorp</blockquote>
+
+<h2>Implementation Playbook: From RFP to Production‑Ready Interoperable AI Stack</h2>
+<p>Turning the strategic principle of interoperability into a concrete, repeatable process requires a disciplined approach that spans procurement, architecture, data engineering and model operations. The following playbook outlines a step‑by‑step programme that organisations can adopt to ensure that every new AI capability is built on open table formats, swappable model interfaces and verifiable export pathways. Each phase includes concrete artefacts, responsible roles and success criteria.</p>
+
+<h3>Phase 0 – Foundations: Governance and Policy</p>
+<ul>
+  <li>Define an Interoperability Policy that mandates open export for data, definitions and model artefacts as a prerequisite for any AI vendor contract.</li>
+  <li>Appoint an Interoperability Champion (usually a senior data‑architect) who owns the policy, maintains a list of approved open formats and audits compliance.</li>
+  <li>Update the organisation’s Architecture Decision Records (ADR) template to include an “Export‑Readiness” section.</li>
+</ul>
+
+<h3>Phase 1 – Procurement: RFP Design and Vendor Evaluation</p>
+<ul>
+  <li>Insert a mandatory “Export‑Readiness Questionnaire” into every AI‑related RFP. Sample questions:
+    <ul>
+      <li>Can you provide a full dump of all tables, metadata and feature definitions in Apache Iceberg (or Delta Lake) format?</li>
+      <li>Do you support model export to ONNX version 1.14 or higher, and can you guarantee backward compatibility for at least two major releases?</li>
+      <li>What is the estimated effort (in person‑days) required to migrate your data out of your platform?</li>
+    </ul>
+  </li>
+  <li>Score vendors on a weighted matrix: 40 % technical fit, 30 % export‑readiness, 20 % cost, 10 % support.</li>
+  <li>Require a signed “Export Commitment Letter” that outlines the exact formats, version numbers and any associated fees.</li>
+</ul>
+
+<h3>Phase 2 – Architecture: Selecting the Open Table Format</p>
+<ul>
+  <li>Run a short proof‑of‑concept (PoC) comparing the three leading open table formats on criteria such as ACID guarantees, schema‑evolution support, query‑engine compatibility and operational tooling.</li>
+  <li>Select the format that best matches the existing data‑lake storage (e.g., Iceberg for AWS S3, Delta Lake for Azure ADLS Gen2, Hudi for Google Cloud Storage).</li>
+  <li>Design a migration blueprint:
+    <ol>
+      <li>Inventory all existing tables, noting partition keys, compression and schema version.</li>
+      <li>Create a mapping spreadsheet that translates legacy storage properties to the target format’s equivalents.</li>
+      <li>Schedule a bulk‑load window during low‑usage periods; use distributed tools (Spark + Iceberg write, Delta Lake’s optimize, or Hudi’s upsert) to rewrite data in place.</li>
+      <li>Validate row‑counts, checksums and time‑travel queries before cutting over.</li>
+    </ol>
+  </li>
+  <li>Document the chosen format in the organisation’s Data‑Lake Standards catalogue.</li>
+</ul>
+
+<h3>Phase 3 – Model Interface: Building a Swappable Layer</p>
+<ul>
+  <li>Adopt a vendor‑agnostic model format (ONNX is the de‑facto standard for interoperability; TorchScript and MLflow Models are acceptable alternatives for specific frameworks).</li>
+  <li>Create a Model Interface Library (MIL) that provides:
+    <ul>
+      <li>A unified <code>predict(input)</code> function that accepts a standardised feature vector (e.g., Arrow table or Pandas DataFrame).</li>
+      <li>Adapter classes for each supported vendor (TensorFlow Serving, Sagemaker, Azure ML, custom REST endpoints).</li>
+      <li>Version‑checking logic that rejects models whose ONNX opset exceeds the supported range.</li>
+    </ul>
+  </li>
+  <li>Enforce that all new models are registered in the MIL registry with metadata: framework, opset version, input schema, output schema and licence.</li>
+  <li>Retire direct vendor‑specific calls in application code; replace them with calls to the MIL.</li>
+</ul>
+
+<h3>Phase 4 – Operations: Export‑First Monitoring and Continuous Compliance</p>
+<ul>
+  <li>Implement an automated export verification job that runs nightly against the production lakehouse:
+    <ul>
+      <li>Samples a random 0.1 % of tables, writes them to a temporary bucket in the target open format, and compares row counts and schema hash.</li>
+      <li>For each registered model, exports the ONNX artefact and validates it against the MIL schema.</li>
+    </ul>
+  </li>
+  <li>Alert on any deviation (e.g., missing partition files, schema drift) and trigger a ticket to the Data‑Engineering team.</li>
+  <li>Quarterly, review the Interoperability Policy with the procurement team to incorporate lessons learned and emerging standards (e.g., Apache Arrow Flight SQL, Model Card schemas).</li>
+</ul>
+
+<h3>Phase 5 – Culture: Training and Incentives</p>
+<ul>
+  <li>Run a mandatory “Interoperability Fundamentals” workshop for data engineers, ML engineers and procurement officers.</li>
+  <li>Include interoperability metrics in team OKRs (e.g., “Reduce average model‑switch time to <4 h” or “Achieve 100 % export‑readiness score in vendor RFPs”).</li>
+  <li>Celebrate successes: publish case‑studies of teams that switched model providers without re‑platforming, highlighting cost savings and speed‑to‑market gains.</li>
+</ul>
+
+<p>By following this playbook, organisations can move from ad‑hoc openness to a systematic, auditable capability that treats interoperability as a core quality attribute rather than an after‑thought. The result is a portfolio of AI assets that can be evaluated, upgraded or retired with minimal friction, protecting the enterprise from the lock‑in tax while preserving the ability to exploit the best‑of‑breed innovations in the market.</p>
+
+<h2>Comparison Table: Open Table Formats versus Proprietary Warehouse Solutions</h2>
+<p>When evaluating a lakehouse versus a traditional proprietary data warehouse, decision‑makers often focus on performance, cost and ecosystem support. The table below contrasts the three leading open table formats (Apache Iceberg, Delta Lake, Apache Hudi) with a representative proprietary columnar warehouse (e.g., Snowflake’s native storage or Amazon Redshift RA3) across dimensions that directly affect interoperability and lock‑in risk.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Criterion</th>
+      <th>Apache Iceberg</th>
+      <th>Delta Lake</th>
+      <th>Apache Hudi</th>
+      <th>Proprietary Warehouse (e.g., Snowflake/Redshift)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Storage Medium</td>
+      <td>Object store (S3, ADLS, GCS)</td>
+      <td>Object store (S3, ADLS, GCS)</td>
+      <td>Object store (S3, ADLS, GCS)</td>
+      <td>Managed proprietary storage (often tied to the vendor’s cloud)</td>
+    </tr>
+    <tr>
+      <td>ACID Transactions</td>
+      <td>Yes, Serializable isolation</td>
+      <td>Yes, Serializable isolation</td>
+      <td>Yes, Write‑ahead log + MVCC</td>
+      <td>Yes, vendor‑specific isolation levels</td>
+    </tr>
+    <tr>
+      <td>Schema Evolution</td>
+      <td>Add, drop, rename, update; backward‑compatible</td>
+      <td>Add, drop, rename; supports datatype widening</td>
+      <td>Add, drop, rename; complex evolutions via versioning</td>
+      <td>Supported, but often requires vendor‑specific ALTER commands</td>
+    </tr>
+    <tr>
+      <td>Time‑Travel / Version Query</td>
+      <td>Native, based on snapshots</td>
+      <td>Native, based on transaction log</td>
+      <td>Native, based on commit timeline</td>
+      <td>Available (e.g., Snowflake Time Travel) but limited retention windows and extra cost</td>
+    </tr>
+    <tr>
+      <td>Query Engine Compatibility</td>
+      <td>Trino, Spark, Flink, Presto, DuckDB</td>
+      <td>Spark, Databricks Runtime, Presto, Trino</td>
+      <td>Spark, Flink, Hive, Presto</td>
+      <td>Native SQL interface only; limited external engine support (some via ODBC/JDBC)</td>
+    </tr>
+    <tr>
+      <td>Open‑Source Licence</td>
+      <td>Apache 2.0</td>
+      <td>Apache 2.0 (Databricks‑maintained)</td>
+      <td>Apache 2.0</td>
+      <td>Proprietary; licence tied to subscription</td>
+    </tr>
+    <tr>
+      <td>Vendor Lock‑In Risk</td>
+      <td>Low – data portable across clouds and engines</td>
+      <td>Low – portable, but tighter integration with Databricks ecosystem</td>
+      <td>Low – portable, strong upsert/incremental capabilities</td>
+      <td>High – migration requires unloading data and rewriting pipelines</td>
+    </tr>
+    <tr>
+      <td>Typical Cost (Storage + Compute)</td>
+      <td>Storage at object‑store rates; compute via open engines (pay‑as‑you‑go)</td>
+      <td>Similar to Iceberg; optional Databricks‑optimised runtime adds premium</td>
+      <td>Similar; extra compaction costs for merge‑on‑read</td>
+      <td>Storage bundled with compute; often higher per‑TB cost due to licensing</td>
+    </tr>
+    <tr>
+      <td>Maturity (Adoption in Enterprises)</td>
+      <td>High – used by Apple, Netflix, LinkedIn</td>
+      <td>High – default on Databricks, growing in finance</td>
+      <td>Medium – strong in streaming/use‑case‑specific workloads</td>
+      <td>Very high – incumbent in many organisations</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Key Takeaways from the Table</strong></p>
+<ul>
+  <li>All three open formats deliver full ACID guarantees and rich schema evolution while keeping the data in an object store that can be accessed by any compatible query engine.</li>
+  <li>Time‑travel capabilities are native and cost‑free, unlike the often‑limited and chargeable equivalents in proprietary warehouses.</li>
+  <li>Query‑engine compatibility is the strongest lever for interoperability: an organisation can switch from Trino to Spark to Flink without moving data, a flexibility that proprietary systems rarely match.</li>
+  <li>The lock‑in risk column shows that, even when a proprietary warehouse offers excellent performance, the cost of exiting—both in data transfer effort and pipeline rewrites—remains substantially higher than with an open table format.</li>
+  <li>For organisations whose primary goal is to avoid the lock‑in tax, the open formats provide a clear, measurable advantage, especially when combined with a swappable model interface (see Section 2).</li>
+</ul>
+<p>In practice, many enterprises adopt a hybrid approach: they keep the raw lakehouse in an open format for maximum portability, while materialising aggregated marts into a proprietary warehouse for specific workloads that demand sub‑second latency. The table above helps quantify the trade‑offs and guides the decision of where to draw the line.</p>
+
+<h2>Common Pitfalls in Pursuing Interoperability and How to Avoid Them</h2>
+<p>Even with a clear strategic intent to avoid lock‑in, organisations frequently encounter practical obstacles that erode the anticipated benefits of open formats and swappable models. The following list distils the most recurrent pitfalls observed across finance, healthcare and manufacturing sectors, paired with concrete mitigation tactics that can be embedded into policies, architecture reviews and delivery programmes.</p>
+
+<h3>Pitfall 1 – “Export‑Ready” Claims Without Verification</p>
+<p>Vendors often answer the export question with a vague statement such as “data can be exported via our API.” In reality, the API may be rate‑limited, require custom scripting, or exclude critical metadata (e.g., column‑level descriptions, lineage).</p>
+<blockquote><p>Mitigation: Treat the export claim as a testable requirement. Include in the RFP a concrete export scenario: “Provide a full dump of the TPC‑DS benchmark schema, including all table properties, partitioning keys and sample data, in Apache Iceberg v1.4 format within 48 hours.” Verify the deliverable against a checksum and schema‑validation script before signing the contract.</p></blockquote>
+
+<h3>Pitfall 2 – Over‑Reliance on a Single Open Format</p>
+<p>Choosing Iceberg, for example, and then building all downstream tools exclusively around its Java‑based API can recreate a de‑facto lock‑in, because migrating to Delta Lake would require rewriting those custom integrations.</p>
+<p>Mitigation: Abstract the table‑format layer behind a thin façade that implements a common interface (e.g., a TableFactory that returns a read‑only Arrow table). Keep all business‑logic code format‑agnostic; only the façade knows the concrete format. This enables a format swap with minimal code changes.</p>
+
+<h3>Pitfall 3 – Neglecting Model Metadata and Versioning</p>
+<p>Teams may export models to ONNX but forget to include the accompanying input/output schema, preprocessing steps or version numbers. The result is a model that can be loaded but produces nonsensical predictions when the feature pipeline has drifted.</p>
+<p>Mitigation: Adopt a model‑registry standard such as MLflow Models or the Open Model Schema (OMS). Require that every registered model artefact bundle includes: (a) the ONNX file, (b) a JSON schema describing expected feature types and ranges, (c) a hash of the preprocessing pipeline code, and (d) a semantic version tag. Enforce this via a pre‑commit hook in the model‑CI pipeline.</p>
+
+<h3>Pitfall 4 – Inadequate Monitoring of Export Drift</p>
+<p>Even after an initial successful export, schema changes in the source system (e.g., adding a new column) can silently break downstream exports if the export job is not configured to capture the evolving schema.</p>
+<p>Mitigation: Implement automated schema‑drift detection as part of the nightly export verification job (see Section 2, Phase 4). Use tools like Great Expectations or Deequ to generate expectations on column names, types and nullability; fail the job and raise an alert when expectations are violated.</p>
+
+<h3>Pitfall 5 – Overlooking Governance of Data Lineage</p>
+<p>Open formats make it easy to move data, but without proper lineage tracking, organisations lose the ability to answer audit questions such as “Which version of the feature table was used to train the model currently in production?”</p>
+<p>Mitigation: Capture lineage at the point of export using open standards like OpenLineage. Export not only the data but also a lineage file that records the source job ID, timestamp, transformation steps and target location. Store lineage artefacts alongside the data in the lakehouse and index them in a searchable catalogue (e.g., Amundsen or DataHub).</p>
+
+<h3>Pitfall 6 – Assuming Cost Savings Are Immediate</p>
+<p>The migration to an open table format often involves an upfront investment in data‑rewrite, tooling and training. Teams that expect immediate ROI may abandon the effort prematurely, reverting to familiar proprietary shortcuts.</p>
+<p>Mitigation: Model the total cost of ownership (TCO) over a 24‑month horizon, including migration effort, ongoing operational savings and the avoided cost of future lock‑in incidents. Present the TCO analysis to the steering committee as part of the business case, and set milestones that celebrate incremental wins (e.g., “First month: 30 % of historic tables migrated; second month: model‑switch time reduced by 50 %”).</p>
+
+<h3>Pitfall 7 – Ignoring Edge‑Case Workloads That Require Proprietary Optimisations</p>
+<p>Certain specialised workloads—such as real‑time fraud detection with sub‑millisecond latency—may still benefit from proprietary indexing or hardware acceleration that open formats do not yet expose.</p>
+<p>Mitigation: Adopt a “fit‑for‑purpose” strategy: keep the canonical lakehouse in an open format for portability, and create purpose‑built, read‑only materialised views or caches in the proprietary system when performance demands justify it. Ensure that these views are regenerated from the open source on a defined schedule, preserving the ability to recompute them elsewhere if needed.</p>
+
+<p>By recognising these pitfalls early and embedding the corresponding safeguards into policies, architecture standards and delivery practices, organisations can preserve the integrity of their interoperability investment and continue to reap the strategic advantages of an open, vendor‑neutral AI stack.</p>
+<blockquote>“The greatest risk is not the technology; it is the assumption that openness will happen automatically. Treat interoperability as a product that requires requirements, testing and continuous improvement – just like any other enterprise capability.” – Senior Architect, Global Manufacturing Conglomerate</blockquote>
+
+<section class="faq-section" id="faq" aria-label="Frequently Asked Questions">
                 <h2 class="faq-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     Frequently Asked Questions
