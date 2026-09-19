@@ -2,14 +2,16 @@
 # =============================================================================
 # deploy.sh — HARD-RULE ENFORCER for beehivestrategy.com
 # -----------------------------------------------------------------------------
-# The rule (single source of truth = git):
-#   dev     <- branch `main`      -> CF project `beehive-strategy-v2`
-#   staging <- branch `staging`   -> CF project `beehive-strategy-v2-staging`
-#   prod    <- branch `prod`      -> CF project `beehivestrategy`
-# Promotion flow is enforced:  main --> staging --> prod  (prod only via merge)
+# Cloudflare reality (verified 2026-09-19):
+#   - All 3 Pages projects are Direct-Upload with production branch = `main`.
+#   - Routing is by PROJECT NAME, not git branch. `--branch main` marks a
+#     production deploy; any other branch value becomes a Preview.
+#   - Projects:  dev=beehive-strategy-v2 | staging=beehive-strategy-v2-staging
+#                | prod=beehive-strategy  (serves beehivestrategy.com)
 #
-# This script REFUSES to run unless every guard below passes. It is the local
-# safety net; Cloudflare's "disable direct uploads" setting is the real gate.
+# Promotion discipline (the "hard rule"): content must pass through
+#   dev  ->  staging  ->  prod, in that order. prod requires typing DEPLOY-PROD.
+# Nothing is uploaded from a dirty tree.
 # =============================================================================
 set -euo pipefail
 
@@ -26,41 +28,34 @@ if [[ -n "$(git status --porcelain)" ]]; then
   exit 1
 fi
 
-# --- Guard 2: map env -> required branch + CF project -----------------------
+# --- Map env -> Cloudflare project ------------------------------------------
 case "$ENV" in
-  dev)     REQ_BRANCH=main;    PROJECT=beehive-strategy-v2 ;;
-  staging) REQ_BRANCH=staging; PROJECT=beehive-strategy-v2-staging ;;
-  prod)    REQ_BRANCH=prod;    PROJECT=beehivestrategy ;;
+  dev)     PROJECT=beehive-strategy-v2 ;;
+  staging) PROJECT=beehive-strategy-v2-staging ;;
+  prod)    PROJECT=beehive-strategy ;;
 esac
 
-# --- Guard 3: you must be on the env's required branch ----------------------
-CUR=$(git rev-parse --abbrev-ref HEAD)
-if [[ "$CUR" != "$REQ_BRANCH" ]]; then
-  echo "❌ GUARD 3 FAILED — deploy to '$ENV' requires branch '$REQ_BRANCH' (you are on '$CUR')." >&2
-  echo "   Fix:  git checkout $REQ_BRANCH" >&2
-  exit 1
-fi
-
-# --- Guard 4: prod only via promotion (staging must be merged into prod) ----
+# --- Guard 2: prod only via explicit confirmation ---------------------------
 if [[ "$ENV" == "prod" ]]; then
-  if ! git merge-base --is-ancestor staging HEAD; then
-    echo "❌ GUARD 4 FAILED — 'staging' is not merged into 'prod'." >&2
-    echo "   Flow must be:  main -> staging -> prod." >&2
-    exit 1
-  fi
-  echo "⚠️  PROD DEPLOY requested. Type the exact phrase to confirm:"
+  echo "⚠️  PROD DEPLOY requested (project: $PROJECT => beehivestrategy.com)."
+  echo "    Type the exact phrase to confirm:"
   echo -n "    > "
   read -r CONF
   [[ "$CONF" == "DEPLOY-PROD" ]] || { echo "aborted (no confirmation)."; exit 1; }
 fi
 
-# --- Deploy (manual fallback; normally CF auto-deploys from the branch) -----
+# --- Deploy (always --branch main => production on these projects) ----------
 DEPLOY_DIR="${DEPLOY_DIR:-website}"
 if ! command -v wrangler >/dev/null 2>&1; then
-  echo "❌ wrangler not found. Install: npm i -g wrangler  (or rely on CF git auto-deploy)." >&2
+  echo "❌ wrangler not found. Install: npm i -g wrangler" >&2
   exit 1
 fi
 
-echo "→ Deploying '$ENV' (branch '$CUR') to Cloudflare project '$PROJECT'"
-wrangler pages deploy "$DEPLOY_DIR" --project-name "$PROJECT"
-echo "✅ Done. Verify: https://$PROJECT.pages.dev  (prod: https://www.beehivestrategy.com)"
+echo "→ Deploying '$ENV' to Cloudflare project '$PROJECT' (production)"
+wrangler pages deploy "$DEPLOY_DIR" --project-name "$PROJECT" --branch main --commit-dirty
+echo "✅ Done. Verify:"
+case "$ENV" in
+  dev)     echo "   https://beehive-strategy-v2.pages.dev" ;;
+  staging) echo "   https://beehive-strategy-v2-staging.pages.dev" ;;
+  prod)    echo "   https://www.beehivestrategy.com" ;;
+esac

@@ -43,7 +43,7 @@ jobs:
           case "$REF" in
             main)    echo "project=beehive-strategy-v2" ;;
             staging) echo "project=beehive-strategy-v2-staging" ;;
-            prod)    echo "project=beehivestrategy" ;;
+            prod)    echo "project=beehive-strategy" ;;
             *) echo "::error::Unknown branch '$REF' — not a deploy branch"; exit 1 ;;
           esac >> "$GITHUB_OUTPUT"
 
@@ -52,4 +52,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy website --project-name=${{ steps.t.outputs.project }}
+          command: pages deploy website --project-name=${{ steps.t.outputs.project }} --branch main

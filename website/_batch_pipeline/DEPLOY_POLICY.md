@@ -13,11 +13,16 @@ tree. No deploying uncommitted files.**
                          │
         staging ─push──▶ staging  (CF: beehive-strategy-v2-staging)
                          │
-        prod ──push───▶ prod     (CF: beehivestrategy)
+        prod ──push───▶ prod     (CF: beehive-strategy)
 ```
 
 Promotion order is **main → staging → prod**. `prod` only ever receives a merge from
 `staging`, so content cannot reach production without first passing staging.
+
+> **Cloudflare reality (verified 2026-09-19):** all three Pages projects are
+> Direct-Upload with **production branch = `main`**. Routing is by **project name**,
+> not git branch — every deploy uses `wrangler pages deploy . --project-name <X>
+> --branch main`. The git branch only selects *which project* the CI deploys to.
 
 ## How it is enforced (3 layers)
 
