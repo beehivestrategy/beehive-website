@@ -78,12 +78,37 @@ def main():
     ap.add_argument("--strict", action="store_true")
     args = ap.parse_args()
 
-    root = Path(args.dir) if args.dir else Path(__file__).resolve().parent.parent
+    # 默认扫【部署产物树】website_deploy_clean/（真正上 Cloudflare 的那棵），
+    # 而非 website/ 源树 —— 源树下的 _batch_pipeline/_backup_* 是修复前的备份副本，
+    # 含旧粉碎 description，rsync 已排除出部署树，扫它们会误报致命缺陷。
+    if args.dir:
+        root = Path(args.dir)
+    else:
+        root = Path(__file__).resolve().parent.parent.parent / "website_deploy_clean"
     if not root.exists():
         print(f"❌ 目录不存在: {root}", file=sys.stderr)
         return 2
 
     files = sorted(root.rglob("*.html"))
+    # 只扫【真正会部署】的 HTML。镜像 sync_deploy_clean.sh 的 rsync 排除清单，
+    # 跳过非部署产物目录/文件，避免把备份、草稿、模板、脚本树里的存量缺陷误报成致命。
+    EXCLUDE_DIRS = {"_batch_pipeline", "_chrome", "scripts", "templates",
+                    "node_modules", ".git"}
+    def _skip(p: Path) -> bool:
+        for comp in p.parts:
+            if comp in EXCLUDE_DIRS:
+                return True
+            if comp.startswith(("seo-audit-", "beehive-homepage")):
+                return True
+            if "_backup" in comp:
+                return True
+        if ".bak" in p.name:       # *.bak* 文件（如 foo.bak.html）
+            return True
+        # wechat-*-preview.html 是微信草稿预览，rsync 已排除出部署树
+        if p.name.startswith("wechat-") and p.name.endswith("-preview.html"):
+            return True
+        return False
+    files = [f for f in files if not _skip(f)]
     print(f"预部署闸门扫描: {root}  ({len(files)} HTML)")
 
     fatal = 0
