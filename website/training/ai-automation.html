@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="zh-HK" data-lang="zh-tw">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 自動化實戰班 | n8n / Make 由零建流水線 | Beehive Strategy</title>
+<meta name="description" content="3 小時實戰班，用 n8n／Make 加 AI 建立 6 條自動化流水線，砍掉每個月 20 小時重複工作。HK$388/人，毋須程式基礎。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F172A;--navy-light:#1E293B;--slate:#334155;--sky:#0369A1;
+  --sky-light:#38BDF8;--gold:#D97706;--gold-light:#FBBF24;
+  --bg:#F8FAFC;--bg-warm:#FEF7ED;--surface:#FFFFFF;
+  --text:#0F172A;--text-secondary:#475569;--text-muted:#94A3B8;
+  --border:#E2E8F0;--radius:12px;--shadow:0 4px 24px rgba(15,23,42,.08);
+  --shadow-lg:0 12px 48px rgba(15,23,42,.12);
+  --font-en:'Inter',sans-serif;--font-sc:'Noto Sans SC',sans-serif;--font-tc:'Noto Sans TC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-tc);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;padding-top:64px}
+
+/* Language switching */
+html[data-lang="en"] body{font-family:var(--font-en)}
+html[data-lang="zh-hans"] body{font-family:var(--font-sc)}
+html[data-lang="zh-tw"] body{font-family:var(--font-tc)}
+
+.lang-btn{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px}
+.lang-btn button{border:none;background:transparent;padding:6px 14px;border-radius:16px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit}
+.lang-btn button.active{background:var(--navy);color:#fff}
+
+/* Navigation */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(248,250,252,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:700;font-size:18px;color:var(--navy);text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-logo span{width:32px;height:32px;background:linear-gradient(135deg,var(--navy),var(--sky));border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:.2s}
+.nav-links a:hover{color:var(--navy)}
+.nav-cta{background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff!important;padding:10px 22px;border-radius:24px;font-size:14px;font-weight:700;text-decoration:none!important;transition:.3s;box-shadow:0 4px 12px rgba(3,105,161,.3);display:inline-block}
+.nav-cta:hover{background:linear-gradient(135deg,var(--sky),var(--sky-light));transform:translateY(-2px);box-shadow:0 6px 16px rgba(3,105,161,.4);color:#fff!important}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 50%,#0F172A 100%)}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5}
+.hero-inner{max-width:1200px;margin:0 auto;padding:40px 24px 80px;width:100%;position:relative;z-index:1}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--sky-light);padding:8px 16px;border-radius:20px;font-size:13px;font-weight:500;margin-bottom:24px;backdrop-filter:blur(8px)}
+.hero-badge .dot{width:8px;height:8px;background:var(--gold-light);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:56px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:20px;letter-spacing:-.02em}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--sky-light),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:20px;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:32px;max-width:520px}
+.hero-stats{display:flex;gap:32px;margin-bottom:40px}
+.hero-stat{display:flex;flex-direction:column;gap:4px}
+.hero-stat .num{font-size:32px;font-weight:700;color:#fff}
+.hero-stat .label{font-size:13px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,var(--sky),var(--sky-light));color:#fff;padding:16px 32px;border-radius:12px;font-size:16px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.3s;box-shadow:0 8px 24px rgba(3,105,161,.3);border:none;cursor:pointer}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(3,105,161,.4)}
+.btn-secondary{background:rgba(255,255,255,.1);color:#fff;padding:16px 32px;border-radius:12px;font-size:16px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.3s;border:1px solid rgba(255,255,255,.2);cursor:pointer}
+.btn-secondary:hover{background:rgba(255,255,255,.15)}
+.hero-visual{position:relative}
+.hero-card{background:var(--surface);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-lg);position:relative;z-index:2}
+.hero-card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.hero-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--gold));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.hero-card-title{font-weight:600;color:var(--text);font-size:16px}
+.hero-card-subtitle{font-size:13px;color:var(--text-muted)}
+.hero-progress{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.hero-progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.hero-progress-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--sky-light));border-radius:4px;transition:width 1s ease}
+.hero-checklist{display:flex;flex-direction:column;gap:10px}
+.hero-checkitem{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-secondary)}
+.hero-checkitem .check{width:20px;height:20px;background:linear-gradient(135deg,var(--sky),var(--sky-light));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
+.hero-float{position:absolute;width:80px;height:80px;border-radius:16px;background:linear-gradient(135deg,var(--gold),var(--gold-light));opacity:.15;filter:blur(1px)}
+.hero-float-1{top:-20px;right:-20px;animation:float 6s ease-in-out infinite}
+.hero-float-2{bottom:40px;left:-30px;width:60px;height:60px;background:linear-gradient(135deg,var(--sky),var(--sky-light));animation:float 8s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+/* Sections */
+.section{padding:80px 24px}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:56px}
+.section-eyebrow{font-size:13px;font-weight:600;color:var(--sky);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.section-title{font-size:40px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:16px}
+.section-subtitle{font-size:18px;color:var(--text-secondary);max-width:600px;margin:0 auto}
+
+/* Problem/Solution */
+.prob-sol{background:var(--bg-warm)}
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.prob-card{background:var(--surface);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.prob-card h3{font-size:20px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.prob-card h3 .icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.prob-card.pain h3 .icon{background:#FEE2E2;color:#DC2626}
+.prob-card.gain h3 .icon{background:#D1FAE5;color:#059669}
+.prob-list{display:flex;flex-direction:column;gap:12px}
+.prob-item{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--text-secondary)}
+.prob-item::before{content:'•';color:var(--text-muted);font-weight:700}
+.prob-card.gain .prob-item::before{color:var(--sky)}
+
+/* Agenda / Parts */
+.agenda .parts{display:flex;flex-direction:column;gap:24px}
+.part-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;transition:.3s}
+.part-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.part-header{display:flex;align-items:center;gap:20px;padding:28px 32px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;cursor:pointer}
+.part-num{width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}
+.part-title{flex:1}
+.part-title h3{font-size:20px;font-weight:600;margin-bottom:4px}
+.part-title p{font-size:14px;opacity:.75}
+.part-duration{font-size:14px;background:rgba(255,255,255,.15);padding:6px 14px;border-radius:20px;white-space:nowrap}
+.part-toggle{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;transition:.3s}
+.part-card.active .part-toggle{transform:rotate(180deg)}
+.part-body{padding:28px 32px;display:none}
+.part-card.active .part-body{display:block}
+.part-modules{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.part-module{background:var(--bg);border-radius:8px;padding:16px}
+.part-module h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.part-module p{font-size:13px;color:var(--text-secondary)}
+.part-exercise{margin-top:20px;padding:16px;background:linear-gradient(135deg,#EFF6FF,#F0FDF4);border-radius:8px;display:flex;align-items:center;gap:12px}
+.part-exercise .icon{font-size:20px}
+.part-exercise span{font-size:14px;font-weight:500;color:var(--navy)}
+
+/* Exercises highlight section */
+.exercises{background:var(--bg-warm)}
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.ex-card{background:var(--surface);border-radius:var(--radius);padding:24px;border:1px solid var(--border);transition:.3s;position:relative}
+.ex-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.ex-num{position:absolute;top:-12px;left:24px;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--sky-light));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;box-shadow:0 4px 12px rgba(3,105,161,.3)}
+.ex-card h4{font-size:16px;font-weight:600;color:var(--navy);margin:12px 0 8px}
+.ex-card p{font-size:14px;color:var(--text-secondary);margin-bottom:12px}
+.ex-meta{display:flex;gap:12px;font-size:12px}
+.ex-tag{padding:4px 10px;border-radius:12px;font-weight:500}
+.ex-tag.time{background:#FEF3C7;color:#92400E}
+.ex-tag.format{background:#DBEAFE;color:#1E40AF}
+
+/* Pricing (single tier) */
+.pricing{background:var(--bg-warm)}
+.pricing-single{max-width:500px;margin:0 auto}
+.price-card-single{background:var(--surface);border-radius:var(--radius);padding:48px 36px;border:1px solid var(--border);text-align:center;transition:.3s;position:relative;box-shadow:var(--shadow-lg)}
+.price-card-single::before{content:'Limited Seats';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;padding:6px 18px;border-radius:20px;font-size:12px;font-weight:600}
+.price-name-single{font-size:14px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.price-amount-single{font-size:64px;font-weight:700;color:var(--navy);line-height:1}
+.price-amount-single .currency{font-size:24px;font-weight:400;color:var(--text-muted);vertical-align:top;margin-right:4px}
+.price-amount-single .unit{font-size:20px;font-weight:400;color:var(--text-muted)}
+.price-desc-single{font-size:16px;color:var(--text-secondary);margin:16px 0 28px}
+.price-features-single{display:flex;flex-direction:column;gap:14px;text-align:left;margin-bottom:32px}
+.price-feature-single{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--text-secondary)}
+.price-feature-single .check{color:var(--sky);font-weight:700;flex-shrink:0}
+.price-btn-single{width:100%;padding:16px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:.3s;border:none;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff}
+.price-btn-single:hover{background:linear-gradient(135deg,var(--sky),var(--sky-light));transform:translateY(-2px)}
+
+/* Revenue highlight */
+.revenue-highlight{text-align:center;margin-top:32px;padding:20px;background:var(--surface);border-radius:var(--radius);border:1px dashed var(--border)}
+.revenue-highlight p{font-size:14px;color:var(--text-muted)}
+.revenue-highlight strong{color:var(--sky)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:12px;max-width:800px;margin:0 auto}
+.faq-item{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden}
+.faq-question{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-weight:500;font-size:15px;transition:.2s}
+.faq-question:hover{background:var(--bg)}
+.faq-answer{padding:0 24px 20px;color:var(--text-secondary);font-size:15px;line-height:1.7;display:none}
+.faq-item.active .faq-answer{display:block}
+.faq-item.active .faq-question{color:var(--sky)}
+
+/* Upsell banner */
+.upsell{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;text-align:center;padding:60px 24px}
+.upsell-inner{max-width:800px;margin:0 auto}
+.upsell h3{font-size:28px;font-weight:700;margin-bottom:12px}
+.upsell p{font-size:16px;opacity:.8;margin-bottom:24px}
+.upsell-link{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:.3s}
+.upsell-link:hover{background:rgba(255,255,255,.15);transform:translateY(-2px)}
+.upsell-details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:0 auto 28px;max-width:520px;text-align:left}
+.upsell-detail{background:rgba(255,255,255,.08);border-radius:8px;padding:12px 16px;display:flex;flex-direction:column;gap:2px}
+.upsell-detail-label{font-size:11px;opacity:.5;text-transform:uppercase;letter-spacing:.05em}
+.upsell-detail-value{font-size:14px;font-weight:600}
+.upsell-price-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.upsell-price{font-size:32px;font-weight:700}
+.upsell-price .currency{font-size:18px;opacity:.7}
+.upsell-price-note{font-size:13px;opacity:.6}
+.upsell-note{font-size:12px;opacity:.5;margin-top:16px}
+@media(max-width:600px){
+  .upsell-details{grid-template-columns:1fr;max-width:280px}
+  .upsell h3{font-size:22px}
+  .upsell-price{font-size:26px}
+}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;text-align:center;padding:100px 24px;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5}
+.cta-section .section-inner{position:relative;z-index:1}
+.cta-section h2{font-size:40px;font-weight:700;margin-bottom:16px}
+.cta-section p{font-size:18px;opacity:.75;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.8}
+
+/* Footer */
+.footer{background:#fff;color:var(--text-secondary);padding:48px 24px 24px;font-size:14px;border-top:1px solid var(--border)}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.footer-brand .logo{font-weight:700;color:var(--navy);font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.footer-brand p{line-height:1.7;color:var(--text-muted)}
+.footer-col h4{color:var(--navy);font-size:14px;font-weight:600;margin-bottom:16px;text-transform:uppercase;letter-spacing:.05em}
+.footer-col a{display:block;color:var(--text-secondary);text-decoration:none;margin-bottom:10px;transition:.2s}
+.footer-col a:hover{color:var(--sky)}
+.footer-bottom{margin-top:40px;padding-top:24px;border-top:1px solid var(--border);text-align:center;font-size:13px;color:var(--text-muted)}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero-grid,.prob-grid{grid-template-columns:1fr}
+  .hero h1{font-size:36px}
+  .hero{min-height:auto}.hero-inner{padding:32px 24px 60px}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .part-modules{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .ex-grid{grid-template-columns:1fr}
+}
+.nav-toggle{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px;z-index:110}
+.nav-toggle span{display:block;width:24px;height:2px;background:var(--navy);border-radius:2px;transition:.3s}
+.nav-toggle.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.nav-toggle.active span:nth-child(2){opacity:0}
+.nav-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.nav-mobile{position:fixed;top:0;right:0;width:280px;height:100vh;background:var(--surface);box-shadow:var(--shadow-lg);padding:80px 28px 28px;transform:translateX(100%);transition:transform .3s ease;z-index:105;display:flex;flex-direction:column;gap:16px}
+.nav-mobile.open{transform:translateX(0)}
+.nav-mobile a{color:var(--text);text-decoration:none;font-size:16px;font-weight:500;padding:10px 0;border-bottom:1px solid var(--border)}
+.nav-mobile a:hover{color:var(--sky)}
+.nav-mobile .lang-btn{display:flex;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px;width:fit-content}
+.nav-mobile .lang-btn button{border:none;background:transparent;padding:6px 14px;border-radius:16px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit}
+.nav-mobile .lang-btn button.active{background:var(--navy);color:#fff}
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100;opacity:0;visibility:hidden;transition:.3s}
+.nav-overlay.open{opacity:1;visibility:visible}
+@media(max-width:900px){
+.nav-links{display:none}
+.nav-toggle{display:flex}
+}
+@media(max-width:600px){
+  .hero-stats{gap:16px}
+  .hero-stat .num{font-size:22px}
+  .hero-stat .label{font-size:12px}
+  .hero{min-height:auto}.hero-inner{padding:28px 20px 50px}
+  .hero h1{font-size:30px}
+  .hero-subtitle{font-size:16px;margin-bottom:24px}
+  .hero-cta{gap:10px}
+  .btn-primary,.btn-secondary{padding:14px 24px;font-size:14px;width:100%;justify-content:center}
+  .section-title{font-size:28px}
+  .section{padding:48px 20px}
+  .section-header{margin-bottom:32px}
+  .section-subtitle{font-size:15px}
+  .footer-inner{grid-template-columns:1fr}
+  .footer{padding:32px 20px 20px}
+  .revenue-highlight{padding:16px;margin-top:20px}
+  .part-header{padding:20px;gap:12px;flex-wrap:wrap}
+  .part-body{padding:20px}
+  .part-num{width:36px;height:36px;font-size:16px}
+  .part-title h3{font-size:16px}
+  .part-duration{font-size:12px;padding:4px 10px}
+  .price-card-single{padding:32px 20px}
+  .price-amount-single{font-size:48px}
+  .prob-card{padding:24px}
+  .prob-grid{gap:20px}
+  .ex-card{padding:20px}
+  .ex-num{width:30px;height:30px;font-size:14px;top:-10px;left:16px}
+  .cta-section{padding:60px 20px}
+  .cta-section h2{font-size:28px}
+  .cta-section p{font-size:15px}
+  .upsell{padding:40px 20px}
+  .upsell h3{font-size:22px}
+  .upsell p{font-size:14px}
+  .upsell-link{padding:12px 20px;font-size:14px}
+  .faq-question{padding:16px 20px;font-size:14px}
+  .faq-answer{padding:0 20px 16px;font-size:14px}
+  .hero-visual{display:none}
+  .hero-badge{font-size:12px;padding:6px 12px}
+}
+
+/* Scroll animations */
+.reveal{opacity:0;transform:translateY(30px);transition:all .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ===== Payment Overlay ===== */
+.payment-overlay{position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;visibility:hidden;transition:.3s}
+.payment-overlay.open{opacity:1;visibility:visible}
+.payment-modal{max-width:460px;width:100%;max-height:85vh;max-height:85dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--surface);border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.2);transform:scale(.95);transition:.3s}
+.payment-overlay.open .payment-modal{transform:scale(1)}
+.payment-modal-header{background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;padding:24px 28px;border-radius:16px 16px 0 0;position:relative}
+.payment-modal-header h3{font-size:20px;font-weight:700;margin-bottom:4px}
+.payment-modal-header p{font-size:14px;opacity:.85}
+.payment-close{position:absolute;top:16px;right:16px;width:32px;height:32px;background:rgba(255,255,255,.15);border:none;border-radius:50%;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.payment-close:hover{background:rgba(255,255,255,.25)}
+.payment-body{padding:28px}
+.payment-price-display{text-align:center;margin-bottom:24px}
+.payment-price-display .amount{font-size:40px;font-weight:700;color:var(--sky)}
+.payment-price-display .currency{font-size:20px;font-weight:600;color:var(--text-secondary)}
+.payment-price-display .label{font-size:13px;color:var(--text-muted);margin-top:4px}
+.payment-field{margin-bottom:16px}
+.payment-field label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
+.payment-field input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:15px;font-family:inherit;transition:.2s}
+.payment-field input:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(3,105,161,.1)}
+.payment-methods{display:grid;gap:10px;margin-bottom:20px}
+.payment-method{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:.2s}
+.payment-method:hover{border-color:var(--sky)}
+.payment-method.selected{border-color:var(--sky);background:#EFF6FF}
+.payment-method input[type="radio"]{width:auto;margin:0}
+.payment-method .pm-icon{font-size:22px}
+.payment-method .pm-info{flex:1}
+.payment-method .pm-info h4{font-size:14px;margin:0}
+.payment-method .pm-info p{font-size:12px;color:var(--text-muted);margin:0}
+.stripe-card-container{display:none;margin-bottom:20px;padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--bg)}
+.stripe-card-container.active{display:block}
+#cardElement{padding:12px;border:1px solid var(--border);border-radius:8px;background:#fff}
+#cardErrors{margin-top:8px;font-size:13px;color:#DC2626;min-height:18px}
+.payment-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:.3s}
+.payment-submit:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(3,105,161,.3)}
+.payment-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.payment-msg{padding:14px;border-radius:8px;margin-bottom:16px;font-size:14px;display:none}
+.payment-msg.success{background:#D1FAE5;color:#065F46;border:1px solid #A7F3D0;display:block}
+.payment-msg.error{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;display:block}
+.payment-msg.info{background:#DBEAFE;color:#1E40AF;border:1px solid #BFDBFE;display:block}
+/* Success screen */
+.payment-success{text-align:center;padding:40px 28px}
+.payment-success .check-circle{width:72px;height:72px;margin:0 auto 20px;background:linear-gradient(135deg,#10B981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;animation:pop .4s ease}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+.payment-success h3{font-size:24px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.payment-success p{font-size:15px;color:var(--text-secondary);margin-bottom:8px}
+.payment-success .ref{font-size:13px;color:var(--text-muted);margin-bottom:24px}
+.payment-success .next-steps{text-align:left;background:var(--bg);border-radius:8px;padding:16px;margin-bottom:24px}
+.payment-success .next-steps h4{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--navy)}
+.payment-success .next-steps li{font-size:13px;color:var(--text-secondary);margin-bottom:6px;list-style:none;padding-left:20px;position:relative}
+.payment-success .next-steps li::before{content:'✓';position:absolute;left:0;color:#10B981;font-weight:700}
+.payment-done-btn{width:100%;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:.2s}
+.payment-done-btn:hover{background:var(--sky)}
+
+/* ===== Countdown Banner ===== */
+.countdown-banner{background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;padding:12px 24px;position:relative;left:0;right:0;z-index:99;box-shadow:0 4px 16px rgba(15,23,42,.2)}
+.countdown-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.countdown-label{font-size:14px;font-weight:600;opacity:.9;display:flex;align-items:center;gap:6px}
+.countdown-label .highlight{background:var(--gold-light);color:var(--navy);padding:3px 10px;border-radius:5px;font-weight:700;white-space:nowrap}
+.countdown-timer{display:flex;gap:8px;align-items:center}
+.countdown-unit{text-align:center;min-width:44px}
+.countdown-unit .num{font-size:22px;font-weight:700;line-height:1.2;display:block}
+.countdown-unit .lbl{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.05em}
+.countdown-sep{font-size:18px;opacity:.4;font-weight:300}
+.countdown-cta{background:var(--gold-light);color:var(--navy);padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;transition:.2s;white-space:nowrap;min-height:44px;display:flex;align-items:center}
+.countdown-cta:hover{background:#fff;transform:translateY(-1px)}
+.countdown-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;opacity:.5;font-size:20px;cursor:pointer;transition:.2s;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.countdown-close:hover{opacity:1;background:rgba(255,255,255,.1)}
+@media(max-width:768px){
+  body{padding-top:52px}
+  .countdown-banner{padding:8px 12px}
+  .countdown-inner{flex-direction:row;flex-wrap:wrap;gap:6px;padding-right:32px;justify-content:center}
+  .countdown-label{font-size:12px}
+  .countdown-unit{min-width:32px}
+  .countdown-unit .num{font-size:16px}
+  .countdown-unit .lbl{font-size:9px}
+  .countdown-sep{font-size:12px}
+  .countdown-cta{padding:5px 14px;font-size:11px;min-height:32px;border-radius:16px}
+  .countdown-close{right:4px;width:32px;height:32px}
+}
+
+/* ===== Schedule Section ===== */
+.schedule-section{background:linear-gradient(180deg,var(--bg),#fff)}
+.schedule-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
+.schedule-tab{padding:10px 24px;border-radius:24px;border:2px solid var(--border);background:var(--surface);font-size:14px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:.2s;font-family:inherit}
+.schedule-tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.schedule-tab:hover:not(.active){border-color:var(--sky);color:var(--sky)}
+.schedule-grid{display:grid;gap:16px;max-width:800px;margin:0 auto}
+.schedule-card{background:var(--surface);border-radius:var(--radius);padding:20px 24px;border:1px solid var(--border);display:flex;align-items:center;gap:16px;transition:.3s;position:relative}
+.schedule-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.schedule-card.next-class{border:2px solid var(--sky);background:linear-gradient(135deg,#EFF6FF,#fff)}
+.schedule-card.next-class::before{content:'NEXT';position:absolute;top:-10px;left:20px;background:var(--sky);color:#fff;padding:3px 12px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:.05em}
+.schedule-date{min-width:64px;text-align:center}
+.schedule-date .day{font-size:28px;font-weight:700;color:var(--navy);line-height:1}
+.schedule-date .month{font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
+.schedule-date .weekday{font-size:11px;color:var(--sky);font-weight:600;margin-top:2px}
+.schedule-info{flex:1}
+.schedule-info h4{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.schedule-info p{font-size:14px;color:var(--text-secondary)}
+.schedule-info .time{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-top:4px}
+.schedule-badge{padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap}
+.schedule-badge.workshop{background:#DBEAFE;color:#1E40AF}
+.schedule-badge.cohort{background:#FEF3C7;color:#92400E}
+.schedule-badge.seats{background:#D1FAE5;color:#065F46}
+.schedule-cta-section{text-align:center;margin-top:32px}
+.schedule-cta-btn{background:linear-gradient(135deg,var(--navy),var(--sky));color:#fff;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:.3s}
+.schedule-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(3,105,161,.3)}
+@media(max-width:768px){.schedule-card{flex-direction:row;flex-wrap:wrap;gap:8px;padding:16px 20px}.schedule-card.next-class{padding-top:20px}.schedule-date{min-width:auto;display:flex;align-items:center;gap:6px}.schedule-date .day{font-size:22px;min-width:28px;text-align:center}.schedule-badge{font-size:11px;padding:3px 10px}.schedule-cta-section{margin-top:24px}.schedule-cta-btn{padding:12px 24px;font-size:14px;width:100%}}
+@media(max-width:600px){
+  .payment-overlay{padding:0;align-items:flex-end}
+  .payment-modal{max-width:100%;max-height:92vh;max-height:92dvh;border-radius:16px 16px 0 0}
+  .payment-modal-header{padding:20px 24px;border-radius:16px 16px 0 0}
+  .payment-modal-header h3{font-size:18px}
+  .payment-body{padding:20px}
+  .payment-price-display .amount{font-size:32px}
+  .payment-field input{padding:10px 12px;font-size:16px}
+  .payment-submit{padding:12px;font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo"><img src="/assets/images/beehive-logo.png" alt="Beehive Strategy" style="height:32px"></a>
+    <div class="nav-links">
+      <a href="#agenda" class="nav-link-agenda">議程</a>
+      <a href="#schedule" class="nav-link-schedule">時間表</a>
+      <a href="#exercises" class="nav-link-exercises">實戰練習</a>
+      <a href="#pricing" class="nav-link-pricing">價格</a>
+      <a href="#faq" class="nav-link-faq">常見問題</a>
+      <a href="javascript:void(0)" onclick="openPayment()" class="nav-cta nav-cta-text">立即報名</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="nav-mobile" id="navMobile">
+  <a href="#agenda" class="nav-link-agenda">議程</a>
+  <a href="#schedule" class="nav-link-schedule">時間表</a>
+  <a href="#exercises" class="nav-link-exercises">實戰練習</a>
+  <a href="#pricing" class="nav-link-pricing">價格</a>
+  <a href="#faq" class="nav-link-faq">常見問題</a>
+  <a href="javascript:void(0)" onclick="openPayment()" class="nav-cta nav-cta-text">立即報名</a>
+  </div>
+
+<!-- Countdown Banner -->
+<div class="countdown-banner" id="countdownBanner">
+  <div class="countdown-inner">
+    <div class="countdown-label countdown-label-text">下一場 <span class="highlight">9月30日（星期三）</span></div>
+    <div class="countdown-timer" id="countdownTimer">
+      <div class="countdown-unit"><span class="num" id="cdDays">--</span><span class="lbl">天</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdHours">--</span><span class="lbl">時</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdMinutes">--</span><span class="lbl">分</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdSeconds">--</span><span class="lbl">秒</span></div>
+    </div>
+    <a href="javascript:void(0)" onclick="openPayment()" class="countdown-cta countdown-cta-text">立即報名</a>
+  </div>
+  <button class="countdown-close" onclick="document.getElementById('countdownBanner').classList.add('hidden')">&times;</button>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          <span class="hero-badge-text">蜂啟咨詢 · 3 小時 AI 自動化實戰班</span>
+        </div>
+        <h1>
+          <span class="hero-title-1">每個月</span><br>
+          <span class="gradient hero-title-2">慳返 20 個鐘</span>
+        </h1>
+        <p class="hero-subtitle hero-subtitle-text">用 AI + 自動化工具把重複工作交出去<br>3 小時由零建成 6 條會自己跑嘅流水線</p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="num">3</span>
+            <span class="label hero-stat-hours">小時實戰</span>
+          </div>
+          <div class="hero-stat">
+            <span class="num">6</span>
+            <span class="label hero-stat-slides">條流水線</span>
+          </div>
+          <div class="hero-stat">
+            <span class="num">0</span>
+            <span class="label hero-stat-exercises">程式基礎</span>
+          </div>
+        </div>
+        <div class="hero-cta">
+          <a href="javascript:void(0)" onclick="openPayment()" class="btn-primary hero-cta-primary">
+            <span class="hero-cta-text-1">HK$388 立即報名</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#agenda" class="btn-secondary hero-cta-secondary">
+            <span class="hero-cta-text-2">查看議程</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-float hero-float-1"></div>
+        <div class="hero-float hero-float-2"></div>
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div class="hero-avatar">AA</div>
+            <div>
+              <div class="hero-card-title hero-card-title-text">實戰班藍圖</div>
+              <div class="hero-card-subtitle hero-card-subtitle-text">3 小時 · 5 個環節 · 7 個練習</div>
+            </div>
+          </div>
+          <div class="hero-progress">
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-secondary);margin-bottom:4px">
+              <span class="hero-progress-label">完成路線圖</span>
+              <span style="font-weight:600;color:var(--sky)">0% → 100%</span>
+            </div>
+            <div class="hero-progress-bar"><div class="hero-progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="hero-checklist">
+            <div class="hero-checkitem"><span class="check">✓</span> <span class="hero-check-1">學識判斷咩嘢值得自動化</span></div>
+            <div class="hero-checkitem"><span class="check">✓</span> <span class="hero-check-2">由零建成第一條流水線</span></div>
+            <div class="hero-checkitem"><span class="check">✓</span> <span class="hero-check-3">把 AI 加落去做分類同摘要</span></div>
+            <div class="hero-checkitem"><span class="check">✓</span> <span class="hero-check-4">帶走 30 天自動化行動計劃</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Problem / Solution -->
+<section class="section prob-sol">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow prob-eyebrow">點解你要嚟？</div>
+      <h2 class="section-title prob-title">AI 已經改變緊做生意嘅玩法</h2>
+      <p class="section-subtitle prob-subtitle">唔係講緊將來，係而家已經發生緊</p>
+    </div>
+    <div class="prob-grid">
+      <div class="prob-card pain">
+        <h3><span class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#EF4444" stroke-width="2"/><path d="M9 9h.01M15 9h.01M9 15c1-1 2-1.5 3-1.5s2 .5 3 1.5" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/></svg></span> <span class="prob-pain-title">你可能面對緊嘅問題</span></h3>
+        <div class="prob-list">
+          <div class="prob-item prob-pain-1">每個禮拜都要人手 copy paste、對錶、出報告</div>
+          <div class="prob-item prob-pain-2">知自動化有用，但唔知邊個流程值得做、由邊度開始</div>
+          <div class="prob-item prob-pain-3">試過整，但一有例外情況就斷，最後都係人手補鑊</div>
+          <div class="prob-item prob-pain-4">工具太多（n8n、Make、Zapier），唔知揀邊個、使幾錢</div>
+        </div>
+      </div>
+      <div class="prob-card gain">
+        <h3><span class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#10B981" stroke-width="2"/></svg></span> <span class="prob-gain-title">3 個鐘之後，你會學到</span></h3>
+        <div class="prob-list">
+          <div class="prob-item prob-gain-1">學識判斷邊個流程值得自動化、點計回本</div>
+          <div class="prob-item prob-gain-2">由零建成 6 條會自己跑嘅流水線並帶走範本</div>
+          <div class="prob-item prob-gain-3">識得把 AI 加落去做分類、摘要同生成</div>
+          <div class="prob-item prob-gain-4">一份屬於你嘅 30 天自動化行動計劃</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Agenda / 5 Parts -->
+<section class="section agenda" id="agenda">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow agenda-eyebrow">實戰班流程</div>
+      <h2 class="section-title agenda-title">3 小時，5 個環節</h2>
+      <p class="section-subtitle agenda-subtitle">2.5 小時內容 + 2 次 10 分鐘休息 · 37% 動手練習時間</p>
+    </div>
+    <div class="parts">
+
+      <div class="part-card active">
+        <div class="part-header" onclick="togglePart(this)">
+          <div class="part-num">1</div>
+          <div class="part-title">
+            <h3 class="part-1-title">開場：咩嘢值得自動化？</h3>
+            <p class="part-1-subtitle">自動化嘅經濟學、識別高價值流程、常見陷阱</p>
+          </div>
+          <span class="part-duration part-1-duration">30 分鐘</span>
+          <div class="part-toggle">▼</div>
+        </div>
+        <div class="part-body">
+          <div class="part-modules">
+            <div class="part-module">
+              <h4 class="part-1-mod-1-title">自動化嘅經濟學</h4>
+              <p class="part-1-mod-1-desc">一條流水線值幾錢？點計回本時間</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-1-mod-2-title">點揀第一個流程</h4>
+              <p class="part-1-mod-2-desc">高頻、規則清晰、錯咗代價低——三個條件</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-1-mod-3-title">常見陷阱</h4>
+              <p class="part-1-mod-3-desc">點解多數人嘅自動化三星期後就爛尾</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-1-mod-4-title">真實案例</h4>
+              <p class="part-1-mod-4-desc">香港中小企由 20 小時變 2 小時嘅做法</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="part-card">
+        <div class="part-header" onclick="togglePart(this)">
+          <div class="part-num">2</div>
+          <div class="part-title">
+            <h3 class="part-2-title">工具全景圖</h3>
+            <p class="part-2-subtitle">n8n / Make / Zapier / WorkBuddy 點揀</p>
+          </div>
+          <span class="part-duration part-2-duration">36 分鐘</span>
+          <div class="part-toggle">▼</div>
+        </div>
+        <div class="part-body">
+          <div class="part-modules">
+            <div class="part-module">
+              <h4 class="part-2-mod-1-title">四大工具比較</h4>
+              <p class="part-2-mod-1-desc">成本、彈性、學習曲線、數據放邊</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-2-mod-2-title">邊個場景用邊個</h4>
+              <p class="part-2-mod-2-desc">簡單通知 vs 複雜邏輯 vs 要有 AI</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-2-mod-3-title">成本陷阱</h4>
+              <p class="part-2-mod-3-desc">按次收費點樣食爆你嘅預算</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-2-mod-4-title">練習：畫出你嘅流程</h4>
+              <p class="part-2-mod-4-desc">15 分鐘 · 把你一個真實流程畫成流程圖</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="part-card">
+        <div class="part-header" onclick="togglePart(this)">
+          <div class="part-num">3</div>
+          <div class="part-title">
+            <h3 class="part-3-title">第一條流水線：由表單到通知</h3>
+            <p class="part-3-subtitle">觸發、轉換、輸出三件事</p>
+          </div>
+          <span class="part-duration part-3-duration">36 分鐘</span>
+          <div class="part-toggle">▼</div>
+        </div>
+        <div class="part-body">
+          <div class="part-modules">
+            <div class="part-module">
+              <h4 class="part-3-mod-1-title">流水線三件套</h4>
+              <p class="part-3-mod-1-desc">Trigger → Transform → Action</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-3-mod-2-title">資料清洗</h4>
+              <p class="part-3-mod-2-desc">格式、欄位、異常值點處理</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-3-mod-3-title">練習：建第一條流水線</h4>
+              <p class="part-3-mod-3-desc">20 分鐘 · 表單提交自動通知指定人</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-3-mod-4-title">測試與除錯</h4>
+              <p class="part-3-mod-4-desc">點樣知道佢真係跑咗</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="part-card">
+        <div class="part-header" onclick="togglePart(this)">
+          <div class="part-num">4</div>
+          <div class="part-title">
+            <h3 class="part-4-title">把 AI 加落去</h3>
+            <p class="part-4-subtitle">分類、摘要、生成、判斷</p>
+          </div>
+          <span class="part-duration part-4-duration">36 分鐘</span>
+          <div class="part-toggle">▼</div>
+        </div>
+        <div class="part-body">
+          <div class="part-modules">
+            <div class="part-module">
+              <h4 class="part-4-mod-1-title">AI 喺邊度加</h4>
+              <p class="part-4-mod-1-desc">分類、摘要、抽取、生成回覆——四種用法</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-4-mod-2-title">提示詞點寫先穩定</h4>
+              <p class="part-4-mod-2-desc">溫度、格式約束、範例，令輸出可預測</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-4-mod-3-title">練習：AI 自動分類</h4>
+              <p class="part-4-mod-3-desc">20 分鐘 · 客戶查詢自動分類並分流</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-4-mod-4-title">練習：錯誤處理</h4>
+              <p class="part-4-mod-4-desc">10 分鐘 · 失敗重試同通知機制</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="part-card">
+        <div class="part-header" onclick="togglePart(this)">
+          <div class="part-num">5</div>
+          <div class="part-title">
+            <h3 class="part-5-title">上線、監控同行動計劃</h3>
+            <p class="part-5-subtitle">由做到跑，再由跑到穩</p>
+          </div>
+          <span class="part-duration part-5-duration">12 分鐘</span>
+          <div class="part-toggle">▼</div>
+        </div>
+        <div class="part-body">
+          <div class="part-modules">
+            <div class="part-module">
+              <h4 class="part-5-mod-1-title">上線檢查清單</h4>
+              <p class="part-5-mod-1-desc">權限、備份、日誌、告警</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-5-mod-2-title">點樣監控</h4>
+              <p class="part-5-mod-2-desc">失敗率、延遲、成本三個指標</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-5-mod-3-title">成本計算</h4>
+              <p class="part-5-mod-3-desc">每條流水線每個月使幾錢</p>
+            </div>
+            <div class="part-module">
+              <h4 class="part-5-mod-4-title">30 天路線圖</h4>
+              <p class="part-5-mod-4-desc">由一條去到一套系統嘅次序</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Exercises Highlight -->
+<section class="section exercises" id="exercises">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow ex-eyebrow">落手做，唔係齋聽</div>
+      <h2 class="section-title ex-title">7 個實戰練習</h2>
+      <p class="section-subtitle ex-subtitle">55 分鐘練習時間佔 150 分鐘內容的 37% — 每個人都會帶走實際產出</p>
+    </div>
+    <div class="ex-grid">
+      <div class="ex-card">
+        <div class="ex-num">1</div>
+        <h4 class="ex-1-title">畫出你嘅流程</h4>
+        <p class="ex-1-desc">把一個真實重複流程畫成可自動化的流程圖</p>
+        <div class="ex-meta">
+          <span class="ex-tag time ex-1-time">15 分鐘</span>
+          <span class="ex-tag format ex-1-format">個人</span>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-num">2</div>
+        <h4 class="ex-2-title">建第一條流水線</h4>
+        <p class="ex-2-desc">表單提交 → 自動通知指定人</p>
+        <div class="ex-meta">
+          <span class="ex-tag time ex-2-time">20 分鐘</span>
+          <span class="ex-tag format ex-2-format">個人</span>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-num">3</div>
+        <h4 class="ex-3-title">AI 自動分類</h4>
+        <p class="ex-3-desc">客戶查詢自動分類並分流到負責人</p>
+        <div class="ex-meta">
+          <span class="ex-tag time ex-3-time">20 分鐘</span>
+          <span class="ex-tag format ex-3-format">個人</span>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-num">4</div>
+        <h4 class="ex-4-title">自動出報告</h4>
+        <p class="ex-4-desc">每日／每週自動生成並發送一份報告</p>
+        <div class="ex-meta">
+          <span class="ex-tag time ex-4-time">15 分鐘</span>
+          <span class="ex-tag format ex-4-format">配對</span>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-num">5</div>
+        <h4 class="ex-5-title">錯誤處理與重試</h4>
+        <p class="ex-5-desc">設定失敗重試與告警通知</p>
+        <div class="ex-meta">
+          <span class="ex-tag time ex-5-time">10 分鐘</span>
+          <span class="ex-tag format ex-5-format">個人</span>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-num">6</div>
+        <h4 class="ex-6-title">成本計算</h4>
+        <p class="ex-6-desc">計出你條流水線每個月要幾錢</p>
+        <div class="ex-meta">
+          <span class="ex-tag time ex-6-time">10 分鐘</span>
+          <span class="ex-tag format ex-6-format">個人</span>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-num">7</div>
+        <h4 class="ex-7-title">30 天路線圖</h4>
+        <p class="ex-7-desc">排定優先次序，帶走可執行計劃</p>
+        <div class="ex-meta">
+          <span class="ex-tag time ex-7-time">10 分鐘</span>
+          <span class="ex-tag format ex-7-format">個人</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section pricing" id="pricing">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow pricing-eyebrow">入門體驗</div>
+      <h2 class="section-title pricing-title">HK$388 換每個月 20 個鐘</h2>
+      <p class="section-subtitle pricing-subtitle">一餐飯嘅價錢，換返每個月兩日嘅工作時間</p>
+    </div>
+    <div class="pricing-single">
+      <div class="price-card-single">
+        <div class="price-name-single price-name-single-text">AI 自動化實戰班</div>
+        <div class="price-amount-single">
+          <span class="currency">HK$</span>388<span class="unit price-unit-text">/ 人</span>
+        </div>
+        <p class="price-desc-single price-desc-single-text">3 小時實戰班 · 50頁簡報 · 7 個動手練習</p>
+        <div class="price-features-single">
+          <div class="price-feature-single"><span class="check">✓</span> <span class="price-feat-1">3 小時密集實戰教學（2.5 小時內容 + 休息）</span></div>
+          <div class="price-feature-single"><span class="check">✓</span> <span class="price-feat-2">50 頁精華簡報（可帶走）</span></div>
+          <div class="price-feature-single"><span class="check">✓</span> <span class="price-feat-3">7 個動手練習，堂上完成並即場指導</span></div>
+          <div class="price-feature-single"><span class="check">✓</span> <span class="price-feat-4">6 條流水線範本（可直接導入使用）</span></div>
+          <div class="price-feature-single"><span class="check">✓</span> <span class="price-feat-5">工具選型對照表 + 成本計算表</span></div>
+          <div class="price-feature-single"><span class="check">✓</span> <span class="price-feat-6">30 天行動計劃表</span></div>
+          <div class="price-feature-single"><span class="check">✓</span> <span class="price-feat-7">毋須任何程式基礎</span></div>
+          <div class="price-feature-single"><span class="check">✓</span> <span class="price-feat-8">小班制，導師逐個睇你嘅實作</span></div>
+        </div>
+        <button class="price-btn-single" onclick="openPayment()"><span class="price-btn-single-text">HK$388 立即報名</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Schedule -->
+<section class="section schedule-section" id="schedule">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">開課時間表</div>
+      <h2 class="section-title">選擇適合你的場次</h2>
+      <p class="section-subtitle">每月舉辦 · 線上直播（Zoom）或尖沙咀東實體</p>
+    </div>
+    <div class="schedule-grid" id="scheduleWorkshops">
+      <div class="schedule-card next-class">
+        <div class="schedule-date">
+          <div class="day">30</div>
+          <div class="month">9月</div>
+          <div class="weekday">星期三</div>
+        </div>
+        <div class="schedule-info">
+          <h4>AI 自動化實戰班</h4>
+          <p>單日密集體驗 · 5個環節 · 7個動手練習</p>
+          <div class="time">14:00 - 17:00 · 線上直播（Zoom）／尖沙咀東實體</div>
+        </div>
+        <span class="schedule-badge workshop">工作坊</span>
+        <span class="schedule-badge seats">熱烈報名中</span>
+      </div>
+      <div class="schedule-card">
+        <div class="schedule-date">
+          <div class="day">28</div>
+          <div class="month">10月</div>
+          <div class="weekday">星期三</div>
+        </div>
+        <div class="schedule-info">
+          <h4>AI 自動化實戰班</h4>
+          <p>單日密集體驗 · 5個環節 · 7個動手練習</p>
+          <div class="time">14:00 - 17:00 · 線上直播（Zoom）／尖沙咀東實體</div>
+        </div>
+        <span class="schedule-badge workshop">工作坊</span>
+        <span class="schedule-badge seats">接受報名</span>
+      </div>
+      <div class="schedule-card">
+        <div class="schedule-date">
+          <div class="day">25</div>
+          <div class="month">11月</div>
+          <div class="weekday">星期三</div>
+        </div>
+        <div class="schedule-info">
+          <h4>AI 自動化實戰班</h4>
+          <p>單日密集體驗 · 5個環節 · 7個動手練習</p>
+          <div class="time">14:00 - 17:00 · 線上直播（Zoom）／尖沙咀東實體</div>
+        </div>
+        <span class="schedule-badge workshop">工作坊</span>
+        <span class="schedule-badge seats">接受報名</span>
+      </div>
+      <div class="schedule-card">
+        <div class="schedule-date">
+          <div class="day">23</div>
+          <div class="month">12月</div>
+          <div class="weekday">星期三</div>
+        </div>
+        <div class="schedule-info">
+          <h4>AI 自動化實戰班</h4>
+          <p>單日密集體驗 · 5個環節 · 7個動手練習</p>
+          <div class="time">14:00 - 17:00 · 線上直播（Zoom）／尖沙咀東實體</div>
+        </div>
+        <span class="schedule-badge workshop">工作坊</span>
+        <span class="schedule-badge seats">接受報名</span>
+      </div>
+    </div>
+    <div class="schedule-cta-section">
+      <button class="schedule-cta-btn" onclick="openPayment()">報名下一場工作坊</button>
+    </div>
+  </div>
+</section>
+
+<!-- Upsell -->
+<section class="upsell">
+  <div class="upsell-inner">
+    <h3 class="upsell-title">想更深入？</h3>
+    <p class="upsell-subtitle">完成實戰班後，可升級至 4 週深度實戰課程，由一條流水線做到一套完整系統。</p>
+    <a href="/training/opc/4week-deep-dive" class="upsell-link upsell-link-text">
+      <span>了解 4 週深度課程</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow faq-eyebrow">常見問題</div>
+      <h2 class="section-title faq-title">你可能想問的</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item active">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-1">我完全唔識寫程式，可以參加嗎？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer faq-a-1">可以。n8n 同 Make 都係拖拉式介面，所有練習毋須寫程式。課堂會由零開始。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-2">n8n、Make、Zapier 我應該學邊個？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer faq-a-2">課堂會用一整節比較四個工具嘅成本、彈性同適用場景，並幫你即場判斷自己應該用邊個。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-3">要帶電腦嗎？要預先註冊帳號嗎？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer faq-a-3">要帶手提電腦。報名後會收到準備清單，建議課前先免費註冊好帳號，課堂時間全部用喺實作。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-4">小班幾多人？會唔會跟唔到？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer faq-a-4">每班 12–20 人，每個練習都有導師巡場。跟唔切可以即場舉手，唔會自己卡住。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-5">學完真係用得到？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer faq-a-5">課堂上你會建成 6 條流水線並帶走範本，可直接使用。並提供課後一個月 WhatsApp 答疑。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-6">可以公司報銷／開發票嗎？</span>
+          <span>▼</span>
+        </div>
+        <div class="faq-answer faq-a-6">可以，報名時填寫公司資料即可開立發票。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="section-inner">
+    <h2 class="cta-title">每個月慳返 20 個鐘</h2>
+    <p class="cta-subtitle">下一場實戰班即將開始，名額有限。HK$388 換返每個月兩日工作時間。</p>
+    <div class="hero-cta" style="justify-content:center">
+      <a href="javascript:void(0)" onclick="openPayment()" class="btn-primary cta-btn-primary">
+        <span class="cta-btn-text">立即報名留位</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <p style="margin-top:24px;font-size:14px;opacity:.6" class="cta-contact">或 Email 查詢：<a href="mailto:account@beehivestrategy.com" style="color:var(--sky-light);text-decoration:none">account@beehivestrategy.com</a> · 付款方式：Stripe 線上付款</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><img src="/beehive-logo.png" alt="Beehive Strategy" style="height:28px;margin-right:8px"></div>
+      <p class="footer-tagline">蜂啟咨詢 · Beehive Strategy — 教你用 AI 同自動化工具，把重複工作交出去。</p>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title-1">課程</h4>
+      <a href="/training/webinar" class="footer-link-webinar">30 分鐘線上體驗課</a>
+      <a href="/training/opc/4week-deep-dive" class="footer-link-deep">4 週深度課程</a>
+      <a href="#" class="footer-link-corporate">企業內訓</a>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title-2">資源</h4>
+      <a href="#" class="footer-link-blog">創業日誌</a>
+      <a href="#" class="footer-link-tools">工具推薦</a>
+      <a href="#" class="footer-link-templates">免費模板</a>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title-3">聯絡</h4>
+      <a href="https://wa.me/85294427290" class="footer-link-whatsapp">WhatsApp</a>
+      <a href="https://www.linkedin.com/company/beehivestrategy" class="footer-link-linkedin" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:account@beehivestrategy.com" class="footer-link-email">account@beehivestrategy.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copyright">© 2026 Beehive Strategy 蜂啟咨詢</p>
+  </div>
+</footer>
+
+<!-- ===== Payment Overlay Modal ===== -->
+<div class="payment-overlay" id="paymentOverlay">
+  <div class="payment-modal" id="paymentModal">
+    <!-- Form Step -->
+    <div id="paymentFormStep">
+      <div class="payment-modal-header">
+        <h3 id="payModalTitle">報名 AI 自動化實戰班</h3>
+        <p id="payModalSubtitle">2026年9月30日（星期三）· 14:00-17:00 · 線上直播（Zoom）／尖沙咀東實體</p>
+        <button class="payment-close" onclick="closePayment()">&times;</button>
+      </div>
+      <div class="payment-body">
+        <div class="payment-price-display">
+          <span class="currency">HK$</span><span class="amount">388</span>
+          <div class="label" id="payPriceLabel">3 小時實戰工作坊 · 50頁簡報 · 7 個練習</div>
+        </div>
+        <div id="paymentMsg" class="payment-msg"></div>
+        <div class="payment-field">
+          <label for="payName" id="payNameLabel">姓名 *</label>
+          <input type="text" id="payName" required placeholder="請輸入您的姓名">
+        </div>
+        <div class="payment-field">
+          <label for="payEmail" id="payEmailLabel">電郵 *</label>
+          <input type="email" id="payEmail" required placeholder="your@email.com">
+        </div>
+        <div class="payment-field">
+          <label for="payPhone" id="payPhoneLabel">電話 *</label>
+          <input type="tel" id="payPhone" required placeholder="+852 1234 5678">
+        </div>
+        <div class="payment-field">
+          <label for="payCompany" id="payCompanyLabel">公司（選填）</label>
+          <input type="text" id="payCompany" placeholder="您的公司名稱">
+        </div>
+        <div class="payment-field">
+          <label id="payMethodLabel">付款方式</label>
+          <div id="paymentElement"><!-- Stripe Payment Element mounts here --></div>
+          <div id="paymentElementErrors" style="margin-top:8px;font-size:13px;color:#DC2626;min-height:18px"></div>
+        </div>
+        <button class="payment-submit" id="paySubmitBtn" onclick="submitRegistration()">立即付款 HK$388</button>
+      </div>
+    </div>
+    <!-- Success Step -->
+    <div id="paymentSuccessStep" style="display:none">
+      <div class="payment-success">
+        <div class="check-circle">✓</div>
+        <h3 id="paySuccessTitle">報名成功！</h3>
+        <p id="paySuccessMsg">您已成功報名 AI 自動化實戰班。</p>
+        <p class="ref" id="paySuccessRef"></p>
+        <div class="next-steps">
+          <h4 id="payNextStepsTitle">下一步：</h4>
+          <ul id="payNextSteps">
+            <li id="payNextStep1">確認電郵已發送至您的信箱</li>
+            <li id="payNextStep2">工作坊前 3 天將收到詳細通知</li>
+            <li id="payNextStep3">請自備筆記型電腦出席</li>
+          </ul>
+        </div>
+        <button class="payment-done-btn" onclick="closePayment()" id="payDoneBtn">完成</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+// ===== Language Switching =====
+const translations = { 'en': {}, 'zh-hans': {}, 'zh-hant': {} };
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  document.querySelectorAll('.lang-btn button').forEach(b => b.classList.toggle('active', b.dataset.setLang === lang));
+  const t = translations[lang];
+  for (const key in t) {
+    const els = document.querySelectorAll('.' + key);
+    els.forEach(el => {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = t[key];
+      else el.innerHTML = t[key];
+    });
+  }
+}
+
+document.querySelectorAll('.lang-btn button').forEach(btn => {
+  btn.addEventListener('click', () => setLanguage(btn.dataset.setLang));
+});
+
+// ===== Countdown Timer =====
+(function initCountdown() {
+  const target = new Date('2026-09-30T14:00:00+08:00');
+  const daysEl = document.getElementById('cdDays');
+  const hoursEl = document.getElementById('cdHours');
+  const minutesEl = document.getElementById('cdMinutes');
+  const secondsEl = document.getElementById('cdSeconds');
+  if (!daysEl) return;
+
+  function update() {
+    const now = new Date();
+    const diff = target - now;
+    if (diff <= 0) {
+      daysEl.textContent = '00';
+      hoursEl.textContent = '00';
+      minutesEl.textContent = '00';
+      secondsEl.textContent = '00';
+      return;
+    }
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+    daysEl.textContent = String(d).padStart(2, '0');
+    hoursEl.textContent = String(h).padStart(2, '0');
+    minutesEl.textContent = String(m).padStart(2, '0');
+    secondsEl.textContent = String(s).padStart(2, '0');
+  }
+  update();
+  setInterval(update, 1000);
+})();
+
+// ===== Schedule Tabs =====
+// (reserved for future 4-week course tab)
+
+function togglePart(header) {
+  const card = header.closest('.part-card');
+  card.classList.toggle('active');
+}
+const navToggle = document.getElementById('navToggle');
+const navOverlay = document.getElementById('navOverlay');
+const navMobile = document.getElementById('navMobile');
+if (navToggle && navOverlay && navMobile) {
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active');
+    navOverlay.classList.toggle('open');
+    navMobile.classList.toggle('open');
+  });
+  navOverlay.addEventListener('click', () => {
+    navToggle.classList.remove('active');
+    navOverlay.classList.remove('open');
+    navMobile.classList.remove('open');
+  });
+  navMobile.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('active');
+      navOverlay.classList.remove('open');
+      navMobile.classList.remove('open');
+    });
+  });
+}
+function toggleFaq(question) {
+  const item = question.closest('.faq-item');
+  const wasActive = item.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+  if (!wasActive) item.classList.add('active');
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.section-header, .part-card, .ex-card, .faq-item, .prob-card, .price-card-single').forEach(el => {
+  el.classList.add('reveal');
+  observer.observe(el);
+});
+
+// Hero progress animation
+setTimeout(() => {
+  document.querySelector('.hero-progress-fill').style.width = '25%';
+}, 1000);
+
+// ===== Payment Overlay Logic =====
+const API_BASE = '/training/opc/workshop';
+const STRIPE_PUB_KEY = 'pk_live_BbnNCr74efoXu2h1zaeDuKaq00wd5ulNzk';
+let stripeInstance = null;
+let elementsInstance = null;   // Stripe Elements instance (needed for confirmPayment)
+let paymentElementInstance = null;
+let currentClientSecret = null;
+let currentLang = 'zh-hant';
+
+function openPayment() {
+  document.getElementById('paymentOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Init Stripe Payment Element on each open (needs fresh client_secret)
+  initStripePaymentElement();
+}
+
+function closePayment() {
+  document.getElementById('paymentOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    document.getElementById('paymentFormStep').style.display = '';
+    document.getElementById('paymentSuccessStep').style.display = 'none';
+    document.getElementById('paymentMsg').className = 'payment-msg';
+    document.getElementById('paymentMsg').textContent = '';
+    document.getElementById('paySubmitBtn').disabled = false;
+    document.getElementById('paySubmitBtn').textContent = currentLang === 'en' ? 'Pay HK$388 Now' : '立即付款 HK$388';
+  }, 300);
+}
+
+// Create PaymentIntent on backend, then mount Payment Element
+async function initStripePaymentElement() {
+  if (typeof Stripe === 'undefined') return;
+
+  try {
+    // Step 1: Create PaymentIntent on server
+    const res = await fetch(API_BASE + '/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: 38800, currency: 'HKD' })
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+      document.getElementById('paymentElementErrors').textContent =
+        currentLang === 'en' ? 'Failed to initialize payment. Please refresh.' : '付款初始化失敗，請重新整理頁面。';
+      return;
+    }
+
+    currentClientSecret = data.client_secret;
+
+    // Step 2: Initialize Stripe
+    stripeInstance = Stripe(STRIPE_PUB_KEY);
+
+    // Step 3: Create and mount Payment Element
+    elementsInstance = stripeInstance.elements({
+      clientSecret: currentClientSecret,
+      locale: 'zh-TW',
+      appearance: {
+        theme: 'stripe',
+        variables: {
+          colorPrimary: '#0284C7',
+          fontFamily: 'Noto Sans TC, sans-serif',
+          fontSizeBase: '15px'
+        }
+      }
+    });
+
+    paymentElementInstance = elementsInstance.create('payment');
+    paymentElementInstance.mount('#paymentElement');
+    paymentElementInstance.on('change', (e) => {
+      document.getElementById('paymentElementErrors').textContent = e.error ? e.error.message : '';
+    });
+  } catch (err) {
+    document.getElementById('paymentElementErrors').textContent =
+      currentLang === 'en' ? 'Payment system error: ' + err.message : '付款系統錯誤：' + err.message;
+  }
+}
+
+function showPayMsg(text, type) {
+  const msg = document.getElementById('paymentMsg');
+  msg.textContent = text;
+  msg.className = 'payment-msg ' + type;
+}
+
+async function submitRegistration() {
+  const name = document.getElementById('payName').value.trim();
+  const email = document.getElementById('payEmail').value.trim();
+  const phone = document.getElementById('payPhone').value.trim();
+  const company = document.getElementById('payCompany').value.trim();
+
+  if (!name || !email || !phone) {
+    showPayMsg(currentLang === 'en' ? 'Please fill in all required fields' : '請填寫所有必填欄位', 'error');
+    return;
+  }
+
+  if (!stripeInstance || !paymentElementInstance || !currentClientSecret) {
+    showPayMsg(currentLang === 'en' ? 'Payment system is still loading, please wait...' : '付款系統載入中，請稍候...', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('paySubmitBtn');
+  btn.disabled = true;
+  btn.textContent = currentLang === 'en' ? 'Processing...' : '處理中...';
+
+  try {
+    // Step 1: Register in database
+    const regRes = await fetch(API_BASE + '/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone, company })
+    });
+    const regData = await regRes.json();
+
+    if (!regData.success) {
+      showPayMsg(regData.error || 'Error', 'error');
+      btn.disabled = false;
+      btn.textContent = currentLang === 'en' ? 'Pay HK$388 Now' : '立即付款 HK$388';
+      return;
+    }
+
+    const registrationId = regData.id;
+
+    // Step 2: Confirm payment with Stripe using Elements instance
+    const { error, paymentIntent } = await stripeInstance.confirmPayment({
+      elements: elementsInstance,
+      redirect: 'if_required',
+      confirmParams: {
+        return_url: window.location.href,
+        payment_method_data: {
+          billing_details: { name: name, email: email, phone: phone }
+        }
+      }
+    });
+
+    if (error) {
+      showPayMsg((currentLang === 'en' ? 'Payment failed: ' : '付款失敗：') + error.message, 'error');
+      btn.disabled = false;
+      btn.textContent = currentLang === 'en' ? 'Pay HK$388 Now' : '立即付款 HK$388';
+      return;
+    }
+
+    if (paymentIntent && (paymentIntent.status === 'succeeded' || paymentIntent.status === 'processing')) {
+      // Confirm on server — link PI to registration and mark as paid
+      await fetch(API_BASE + '/api/confirm-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          payment_intent_id: paymentIntent.id,
+          status: 'succeeded',
+          registration_id: registrationId
+        })
+      });
+      showSuccess(name, email, paymentIntent.id);
+    } else if (paymentIntent && paymentIntent.status === 'requires_action') {
+      // For redirect-based methods (AlipayHK, WeChat Pay, etc.)
+      // Stripe handles redirect automatically
+      showPayMsg(currentLang === 'en' ? 'Redirecting to payment...' : '正在跳轉到付款頁面...', 'info');
+    }
+  } catch (err) {
+    showPayMsg((currentLang === 'en' ? 'System error: ' : '系統錯誤：') + err.message, 'error');
+    btn.disabled = false;
+    btn.textContent = currentLang === 'en' ? 'Pay HK$388 Now' : '立即付款 HK$388';
+  }
+}
+
+function showSuccess(name, email, ref) {
+  // Clear any error messages
+  document.getElementById('paymentMsg').className = 'payment-msg';
+  document.getElementById('paymentMsg').textContent = '';
+  document.getElementById('paymentFormStep').style.display = 'none';
+  document.getElementById('paymentSuccessStep').style.display = '';
+  document.getElementById('paySuccessRef').textContent = currentLang === 'en' ? 'Ref: ' + ref : '參考編號：' + ref;
+}
+
+// Close on overlay click
+document.getElementById('paymentOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('paymentOverlay')) closePayment();
+});
+
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.getElementById('paymentOverlay').classList.contains('open')) closePayment();
+});
+</script>
+</body>
+</html>
