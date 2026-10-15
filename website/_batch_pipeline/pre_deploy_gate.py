@@ -37,22 +37,42 @@ def get_head(p: Path, n: int = 4000) -> str:
         return ""
 
 
-def get_meta_desc(head: str):
-    i = head.find('name="description"')
+def _content_in_tag(tag: str):
+    """Backslash-aware content="..." / content='...' extraction inside ONE meta
+    tag. Tolerates an escaped apostrophe (\\') which would otherwise truncate the
+    value, and works whether content= precedes or follows name/property."""
+    i = tag.find('content=')
     if i < 0:
         return None
-    j = head.find('content="', i)
-    if j < 0:
+    j = i + len('content=')
+    q = tag[j] if j < len(tag) else ''
+    if q not in ('"', "'"):
         return None
-    k = head.find('"', j + 9)
-    return head[j + 9:k] if k > 0 else None
+    p = j + 1
+    while p < len(tag):
+        if tag[p] == q and (p == j + 1 or tag[p - 1] != '\\'):
+            break
+        p += 1
+    else:
+        return None
+    return tag[j + 1:p]
+
+
+def get_meta_desc(head: str):
+    # Exact attribute match so we don't catch name="twitter:description".
+    m = re.search(r'<meta\b[^>]*?name=["\']description["\'][^>]*?>', head, re.I)
+    return _content_in_tag(m.group(0)) if m else None
 
 
 def get_meta_prop(head: str, prop: str):
-    m = re.search(r'<meta[^>]+property=["\']' + re.escape(prop) + r'["\'][^>]+content=["\'](.*?)["\']', head, re.I | re.S)
-    if not m:
-        m = re.search(r'<meta[^>]+content=["\'](.*?)["\'][^>]+property=["\']' + re.escape(prop) + r'["\']', head, re.I | re.S)
-    return m.group(1) if m else None
+    for marker in (f'property=["\']{re.escape(prop)}["\']',
+                   f'name=["\']{re.escape(prop)}["\']'):
+        m = re.search(r'<meta\b[^>]*?' + marker + r'[^>]*?>', head, re.I)
+        if m:
+            v = _content_in_tag(m.group(0))
+            if v is not None:
+                return v
+    return None
 
 
 def get_title(head: str):
