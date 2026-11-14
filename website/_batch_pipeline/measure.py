@@ -45,7 +45,7 @@ def stats(path):
 if __name__ == '__main__':
     for slug in [l.strip() for l in open(sys.argv[1]) if l.strip()]:
         row = [slug]
-        for lang, prefix in [('EN', 'blog'), ('CN', 'zh-cn/blog'), ('TW', 'zh-tw/blog')]:
+        for lang, prefix in [('EN', 'blog'), ('CN', 'zh-cn/blog'), ('TW', 'zh-hk/blog')]:
             p = os.path.join(ROOT, prefix, 'articles', slug + '.html')
             if not os.path.exists(p):
                 row.append(f'{lang}:MISSING')

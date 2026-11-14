@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Rebuild the zh-CN / zh-TW bodies of case-study-supply-chain-ai-resilience."""
+"""Rebuild the zh-CN / zh-HK bodies of case-study-supply-chain-ai-resilience."""
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _gb002_h2 import rewrite_body
@@ -87,7 +87,7 @@ FAQ = [
 ]
 
 for rel, conv in (('zh-cn/blog/articles', lambda s: s),
-                  ('zh-tw/blog/articles', cc.convert)):
+                  ('zh-hk/blog/articles', cc.convert)):
     p = os.path.join(rel, SLUG + '.html')
     secs = [(i, conv(t), conv(b)) for i, t, b in S]
     print(rel, '->', rewrite_body(p, conv(LEAD), secs, [(conv(q), conv(a)) for q, a in FAQ]))

@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/finance-ai-regulatory-reporting-automation.html"
 ZHCN = W + "zh-cn/blog/articles/finance-ai-regulatory-reporting-automation.html"
-ZHTW = W + "zh-tw/blog/articles/finance-ai-regulatory-reporting-automation.html"
+ZHTW = W + "zh-hk/blog/articles/finance-ai-regulatory-reporting-automation.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -200,7 +200,7 @@ def process_cn():
     save(ZHCN, s)
     print("zh-CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("AI能自動化監管報告的哪些環節，哪些仍需人工？",
      "AI能可靠地自動化管線的機械中段：源欄位到監管口徑的映射、跨系統資料對帳、異常偵測和標準化敘述初稿。最終判斷——被標記的異常是資料錯誤還是真實業務事件、報告是否簽發——屬於受訓的合規專業人員。採用人機協同模式的機構標準報告返工減少40-60%。"),
@@ -292,10 +292,10 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="2026-年產業-ai-成熟度"', 'id="人機協同工作流"', 'id="啟動路徑"',
         '監管報告自動化的領域實施模式是怎樣的',
-    ], 9, "zh-TW")
+    ], 9, "zh-HK")
     assert '監管報告' in body_h1(s)
     save(ZHTW, s)
-    print("zh-TW done")
+    print("zh-HK done")
 
 if __name__ == "__main__":
     process_en()

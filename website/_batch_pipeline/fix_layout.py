@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Batch-fix layout gaps in deepseek-harness rewritten articles.
 
-Fixes applied to every verified (harness) article across EN/zh-CN/zh-TW:
+Fixes applied to every verified (harness) article across EN/zh-CN/zh-HK:
   1. Replace the harness (dark) footer with the LIVE white production footer.
   2. Fix header / CTA / mobile-menu relative links  href="contact"->/contact, href="solution"->/solution.
   3. Fix related + recommended article links to be root-relative and language-aware
-     (EN -> /blog/articles/, zh-CN -> /zh-cn/blog/articles/, zh-TW -> /zh-tw/blog/articles/).
+     (EN -> /blog/articles/, zh-CN -> /zh-cn/blog/articles/, zh-HK -> /zh-hk/blog/articles/).
 
 article.js (shared) is fixed separately. article.css (shared) got the live footer styles appended.
 """
@@ -74,7 +74,7 @@ FOOTER_RE = re.compile(r'<footer\b[^>]*>.*?</footer>', re.S | re.I)
 LANGS = [
     ("blog/articles", ""),
     ("zh-cn/blog/articles", "zh-cn/"),
-    ("zh-tw/blog/articles", "zh-tw/"),
+    ("zh-hk/blog/articles", "zh-hk/"),
 ]
 
 def fix_one(path, prefix):

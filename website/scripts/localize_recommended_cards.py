@@ -4,7 +4,7 @@
 localize_recommended_cards.py
 =============================
 Deterministic (no-LLM) localization of the "recommended reading" module
-that sits OUTSIDE <article> on every zh-cn / zh-tw blog article page.
+that sits OUTSIDE <article> on every zh-cn / zh-hk blog article page.
 
 Fixes applied:
   1. <h3 class="recommended-card-title">ENGLISH TITLE</h3>
@@ -35,12 +35,12 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LANGS = ["zh-cn", "zh-tw"]
+LANGS = ["zh-cn", "zh-hk"]
 
 # 'Technology' -> per-language Chinese label (matches the existing site vocabulary)
 CAT_MAP = {
     "zh-cn": {"Technology": "技术"},
-    "zh-tw": {"Technology": "技術"},
+    "zh-hk": {"Technology": "技術"},
 }
 
 

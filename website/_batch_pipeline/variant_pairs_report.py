@@ -36,7 +36,7 @@ for lang in ("en", "cn", "tw"):
             "lang": lang, "title": title,
             "pairs": [{"slug": s,
                        "dated_variant": bool(DATE_PAT.search(s)),
-                       "size_kb": round(os.path.getsize(os.path.join(SITE, {"en": "", "cn": "zh-cn/", "tw": "zh-tw/"}[lang], "blog/articles", s + ".html"))/1024, 1) if os.path.exists(os.path.join(SITE, {"en": "", "cn": "zh-cn/", "tw": "zh-tw/"}[lang], "blog/articles", s + ".html")) else None}
+                       "size_kb": round(os.path.getsize(os.path.join(SITE, {"en": "", "cn": "zh-cn/", "tw": "zh-hk/"}[lang], "blog/articles", s + ".html"))/1024, 1) if os.path.exists(os.path.join(SITE, {"en": "", "cn": "zh-cn/", "tw": "zh-hk/"}[lang], "blog/articles", s + ".html")) else None}
                       for s in slugs],
         }
         rows.append(entry)

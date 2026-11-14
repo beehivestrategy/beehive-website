@@ -5,7 +5,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 for slug in sys.argv[1:]:
     print("=" * 20, slug)
-    for rel in ("blog/articles", "zh-cn/blog/articles", "zh-tw/blog/articles"):
+    for rel in ("blog/articles", "zh-cn/blog/articles", "zh-hk/blog/articles"):
         p = os.path.join(ROOT, rel, slug + ".html")
         if not os.path.exists(p):
             print("MISSING", p); continue

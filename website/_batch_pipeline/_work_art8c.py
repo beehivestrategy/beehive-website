@@ -145,17 +145,17 @@ tw_title = cc.convert(cn_title)
 tw_desc = cc.convert(cn_desc)
 
 cn_html = build("zh-CN", cn_inner, cn_title, cn_desc, "zh_CN", "预约演示")
-tw_html = build("zh-TW", tw_inner, tw_title, tw_desc, "zh_TW", "預約示範")
+tw_html = build("zh-HK", tw_inner, tw_title, tw_desc, "zh_HK", "預約示範")
 
-for lang, html in (("zh-cn", cn_html), ("zh-tw", tw_html)):
+for lang, html in (("zh-cn", cn_html), ("zh-hk", tw_html)):
     p = os.path.join(ROOT, "%s/blog/articles/%s.html"%(lang, slug))
     open(p,'w',encoding='utf-8').write(html)
     print(lang, "written")
 
-for lang, html in (("zh-cn", cn_html), ("zh-tw", tw_html)):
+for lang, html in (("zh-cn", cn_html), ("zh-hk", tw_html)):
     b = re.search(r'<article class="article-content" id="article-content">(.*?)</article>', html, re.S).group(1)
     print(lang, "cjk=", len(re.findall(r'[\u4e00-\u9fff]', b)), "faq=", b.count('faq-item'),
           "jsonld=", 'FAQPage' in html, "head=", '<head>' in html, "css=", html.count('article.css?v=20260826'),
           "js=", html.count('article.js?v=20260826'), "footer=", html.count('footer class="footer"'),
-          "cta=", ('預約示範' if lang=='zh-tw' else '预约演示') in html,
+          "cta=", ('預約示範' if lang=='zh-hk' else '预约演示') in html,
           "title_ok=", (cn_title if lang=='zh-cn' else tw_title) in html)

@@ -66,7 +66,7 @@ def fill_excerpts(t, excerpts):
     return re.sub(r'<p class="recommended-card-excerpt"></p>', repl, t)
 
 for slug in TW_H2:
-    p=os.path.join(ROOT,"zh-tw/blog/articles/"+slug+".html")
+    p=os.path.join(ROOT,"zh-hk/blog/articles/"+slug+".html")
     t=open(p,encoding='utf-8').read()
     t=conv_h2(t, TW_H2[slug])
     t=fill_excerpts(t, TW_EXCERPTS.get(slug,[]))

@@ -7,7 +7,7 @@ import _gb001r_lib as L
 
 SLUGS = [l.strip() for l in open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
          "gap_batches/gbatch_001.txt")) if l.strip()]
-FLOOR = {"en": 2500, "zh-cn": 3500, "zh-tw": 3500}
+FLOOR = {"en": 2500, "zh-cn": 3500, "zh-hk": 3500}
 QEN = re.compile(r"^(how|what|why|when|which|where|who|can|do|does|did|is|are|should|will|would|must|need)", re.I)
 QZH = re.compile(r"(如何|什麼|什么|為什麼|为什么|怎麼|怎么|是否|怎樣|怎样|為何|为何|何時|何时|哪些|哪裡|哪里|為什|怎)")
 

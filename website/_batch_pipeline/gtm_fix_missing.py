@@ -7,7 +7,7 @@ Mode 2 (--patch):  insert GTM snippet after viewport meta, matching existing pat
 import os, glob, sys, re, io
 
 base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECTIONS = ["blog/articles", "zh-cn/blog/articles", "zh-tw/blog/articles"]
+SECTIONS = ["blog/articles", "zh-cn/blog/articles", "zh-hk/blog/articles"]
 
 GTM_JS = "  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>"
 GTM_NOSCRIPT = '  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>'

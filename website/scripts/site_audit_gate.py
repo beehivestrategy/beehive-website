@@ -34,7 +34,7 @@ SKIP_DIRS = {'_chrome', 'scripts', 'functions', 'node_modules', 'templates',
              'seo-audit-reports', 'assets', 'css', 'js', '.git'}
 
 LOCALES = {'en': 'blog/articles', 'zh-cn': 'zh-cn/blog/articles',
-           'zh-tw': 'zh-tw/blog/articles'}
+           'zh-hk': 'zh-hk/blog/articles'}
 
 # ---------- helpers ----------
 HREF_RE = re.compile(r'<a\b[^>]*href="([^"]*)"', re.I)
@@ -89,7 +89,7 @@ def iter_all_pages():
                 p = os.path.join(dirpath, fn)
                 rel = os.path.relpath(p, ROOT).replace(os.sep, '/')
                 loc = 'zh-cn' if rel.startswith('zh-cn/') else (
-                    'zh-tw' if rel.startswith('zh-tw/') else 'en')
+                    'zh-hk' if rel.startswith('zh-hk/') else 'en')
                 yield loc, rel, p
 
 
@@ -176,7 +176,7 @@ def audit():
                 if not h.startswith('/'):
                     continue
                 if loc == 'en':
-                    if h.startswith(('/zh-cn/', '/zh-tw/')):
+                    if h.startswith(('/zh-cn/', '/zh-hk/')):
                         bad.append(h)
                 elif not h.startswith('/' + loc + '/'):
                     bad.append(h)
@@ -193,7 +193,7 @@ def audit():
                 m['rec_pages_empty'] += 1
             seen = {}
             for href, inner in cards:
-                mm = re.match(r'^/(zh-cn|zh-tw)?/?blog/articles/', href)
+                mm = re.match(r'^/(zh-cn|zh-hk)?/?blog/articles/', href)
                 if mm:
                     cl = mm.group(1) or 'en'
                     if cl != loc:

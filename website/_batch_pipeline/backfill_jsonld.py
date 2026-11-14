@@ -8,7 +8,7 @@ BASE = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 LANGS = [
     ("blog/articles", "en"),
     ("zh-cn/blog/articles", "zh-cn"),
-    ("zh-tw/blog/articles", "zh-tw"),
+    ("zh-hk/blog/articles", "zh-hk"),
 ]
 STATUS = os.path.join(BASE, "_batch_pipeline/status.json")
 

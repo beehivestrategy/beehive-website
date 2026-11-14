@@ -1,0 +1,449 @@
+/* ============================================================
+   BEEHIVE STRATEGY — LEGACY BRIDGE  (v1.0 · 2026-10-19)
+   ------------------------------------------------------------
+   用途：把历史页面（styles.css / article.css 深色·青绿+金 主题）
+        桥接到现行设计系统 accenture.css（浅色 · IBM 蓝 #0F62FE）。
+
+   加载顺序必须是：
+     <旧主题 css>  →  accenture.css  →  legacy-bridge.css
+
+   原理：
+     1) 旧 CSS 里 447 处使用 var(--color-*)，本文件在 :root 重映射
+        这批 token 到浅色/IBM 蓝，一次性换肤；
+     2) accenture.css 自包含 chrome（header/nav/footer/btn/container/
+        reveal），因加载在后而胜出，保证全站导航与页脚一致；
+     3) 旧 CSS 中硬编码的青绿 rgba(43,158,139)/金 rgba(212,168,67)
+        渐变与强调件，在此按 IBM 蓝逐项覆盖。
+
+   本文件只做「视觉对齐」，不改动任何页面结构或文案。
+   ============================================================ */
+
+/* ---------- 1. TOKEN 重映射（深色 → 浅色 + IBM 蓝） ---------- */
+:root {
+  color-scheme: light;
+
+  /* brand：青绿 → IBM 蓝 */
+  --color-primary:       #0F62FE;
+  --color-primary-light: #4589FF;
+  --color-primary-dark:  #0043CE;
+
+  /* accent：金 → 深蓝（用于次级强调、徽标底） */
+  --color-accent:        #0043CE;
+  --color-accent-light:  #A6C8FF;
+  --color-accent-dark:   #002D9C;
+
+  /* 底色：深色 → 浅色 */
+  --color-bg:            #FFFFFF;
+  --color-bg-alt:        #F4F7FE;
+  --color-bg-card:       #FFFFFF;
+  --color-bg-card-hover: #F7F9FE;
+  --color-card-bg:       #FFFFFF;
+  --color-card-bg-hover: #F7F9FE;
+
+  /* 描边 */
+  --color-border:        #DFE5F5;
+  --color-border-hover:  #C5CEE6;
+
+  /* 文字 */
+  --color-text:          #101828;
+  --color-text-secondary:#4A5568;
+  --color-text-muted:    #8B94A8;
+  --color-text-inverse:  #FFFFFF;
+
+  /* 语义色（IBM Carbon） */
+  --color-success:       #24A148;
+  --color-warning:       #F1C21B;
+  --color-error:         #DA1E28;
+  --color-info:          #0F62FE;
+
+  /* 字体对齐现行系统 */
+  --font-heading: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                  "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+                  "Microsoft YaHei", sans-serif;
+  --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+                  "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+                  "Helvetica Neue", Arial, sans-serif;
+  --font-mono:    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+                  "Roboto Mono", monospace;
+
+  /* 光晕改为蓝调 */
+  --shadow-glow:        0 0 40px rgba(15, 98, 254, 0.14);
+  --shadow-glow-accent: 0 0 40px rgba(0, 67, 206, 0.14);
+}
+
+/* article.css 里有第二组 :root 覆盖，这里再压一次确保生效 */
+html, body { color-scheme: light; }
+
+/* ---------- 1b. 旧页引用了但从未定义的 token（补齐为浅色值） ----------
+   这些名字在历史页面/内联 <style> 里出现却没有声明，浏览器会退回
+   浅色 fallback（#e8ede9 等），在白底上直接变成「白字不可见」。
+   在此统一声明，让所有 var() 都有确定值。 */
+:root {
+  --color-text-primary:          #101828;
+  --color-bg-secondary:          #F4F7FE;
+  --color-bg-tertiary:           #E8EEFB;
+  --color-card-hover:            #F7F9FE;
+  --color-black:                 #101828;
+  --color-white:                 #FFFFFF;
+
+  --color-light-bg:              #FFFFFF;
+  --color-light-surface:         #FFFFFF;
+  --color-light-surface-alt:     #F7F9FE;
+  --color-light-surface-faint:   #FAFBFF;
+  --color-light-hover:           #F0F4FE;
+  --color-light-shadow:          rgba(16, 24, 40, 0.08);
+  --color-light-border:          #DFE5F5;
+  --color-light-border-medium:   #D3DAEC;
+  --color-light-border-strong:   #C5CEE6;
+  --color-light-border-chrome:   #DFE5F5;
+  --color-light-text:            #101828;
+  --color-light-text-heading:    #101828;
+  --color-light-text-secondary:  #4A5568;
+  --color-light-text-tertiary:   #8B94A8;
+  --color-light-text-quaternary: #A3ABC0;
+  --color-light-text-muted:      #8B94A8;
+  --color-light-text-subtle:     #A3ABC0;
+
+  --color-chrome-bg:             #FFFFFF;
+  --color-chrome-bg-subtle:      #F7F9FE;
+  --color-chrome-bg-hover:       #F0F4FE;
+  --color-chrome-surface:        #FFFFFF;
+  --color-chrome-surface-2:      #F7F9FE;
+  --color-chrome-text:           #101828;
+  --color-chrome-text-strong:    #101828;
+  --color-chrome-text-secondary: #4A5568;
+  --color-chrome-text-muted:     #8B94A8;
+  --color-chrome-text-subtle:    #8B94A8;
+  --color-chrome-text-tertiary:  #A3ABC0;
+  --color-chrome-border:         #DFE5F5;
+  --color-chrome-border-subtle:  #EDF1FA;
+  --color-chrome-border-2:       #DFE5F5;
+  --color-chrome-border-hover:   #C5CEE6;
+}
+
+/* ---------- 2. 强制浅色底（覆盖旧硬编码深色） ---------- */
+body,
+.page-wrap,
+main,
+.wrapper {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+}
+
+/* 旧 hero / section / 装饰层：深色底 → 浅底或蓝色 band */
+.hero,
+.hero-bg,
+.bg-mesh-violet,
+.section-bg {
+  background: var(--color-bg) !important;
+}
+.hero-mesh::before,
+.bg-mesh-violet::before {
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 20%, rgba(15, 98, 254, 0.07), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(0, 67, 206, 0.05), transparent 60%) !important;
+}
+.hero-aurora {
+  background: radial-gradient(circle, rgba(15, 98, 254, 0.10) 0%, transparent 70%) !important;
+}
+.hero-visual::before,
+.hero-bg::after {
+  background: radial-gradient(ellipse at center, rgba(15, 98, 254, 0.08) 0%, transparent 70%) !important;
+}
+.hero-bg-gradient {
+  background: linear-gradient(180deg, transparent 0%, var(--color-bg) 92%) !important;
+}
+
+/* 网格/点阵：白线 → 蓝线（浅底才看得见） */
+.hero-mesh::after,
+.bg-grid-subtle::before,
+.bg-mesh-violet::after {
+  background-image:
+    linear-gradient(rgba(15, 98, 254, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 98, 254, 0.05) 1px, transparent 1px) !important;
+  background-size: 56px 56px !important;
+}
+.bg-dot-matrix::before {
+  background-image: radial-gradient(circle, rgba(15, 98, 254, 0.14) 1px, transparent 1px) !important;
+  background-size: 26px 26px !important;
+}
+
+/* 各色 glow：青绿/金 → 蓝 */
+.bg-glow-teal::before,
+.bg-glow-gold::before,
+.bg-glow-center::before,
+.bg-aurora::before,
+.bg-diagonal-sweep::before,
+.bg-floating-orbs::before,
+.bg-floating-orbs::after {
+  background: radial-gradient(ellipse at center, rgba(15, 98, 254, 0.10), transparent 70%) !important;
+}
+.bg-data-stream::before,
+.bg-data-stream::after {
+  background-image:
+    linear-gradient(90deg, transparent, rgba(15, 98, 254, 0.16), transparent) !important;
+}
+.feature-image-glow::before {
+  background: radial-gradient(ellipse at center, rgba(15, 98, 254, 0.12), transparent 70%) !important;
+}
+
+/* ---------- 3. 按钮：青绿/金 → IBM 蓝 ---------- */
+.btn-primary,
+.btn-accent {
+  background: var(--brand-grad, linear-gradient(135deg, #0F62FE 0%, #0043CE 54%, #002D9C 100%));
+  color: #fff;
+  border: 1px solid transparent;
+}
+.btn-primary:hover,
+.btn-accent:hover {
+  background: #0043CE;
+  color: #fff;
+}
+.btn-ghost:hover,
+.btn-secondary:hover {
+  background: rgba(15, 98, 254, 0.06);
+  color: var(--color-primary);
+  border-color: rgba(15, 98, 254, 0.28);
+}
+.btn-shimmer::after {
+  background: rgba(255, 255, 255, 0.22);
+}
+.blog-loadmore {
+  background: var(--color-primary);
+  color: #fff;
+}
+.blog-loadmore:hover { background: var(--color-primary-dark); color: #fff; }
+.back-to-top {
+  background: var(--color-primary);
+  color: #fff;
+}
+.back-to-top:hover { background: var(--color-primary-dark); color: #fff; }
+
+/* ---------- 4. 强调件（图标 / 徽标 / 标签）：统一蓝调 ---------- */
+.card-icon,
+.solution-feature .icon,
+.arch-layer .layer-icon,
+.industry-card .icon,
+.reason-card .icon,
+.security-feature .check,
+.contact-info-card .icon,
+.ecosystem-card .ecosystem-icon,
+.icon-feature .icon-wrap,
+.flow-node .flow-icon,
+.highlight-item .h-icon,
+.bento-icon,
+.faq-number {
+  background: rgba(15, 98, 254, 0.08);
+  color: var(--color-primary);
+  border-color: rgba(15, 98, 254, 0.22);
+}
+.industry-card:hover .icon,
+.icon-feature:hover .icon-wrap {
+  background: var(--color-primary);
+  color: #fff;
+}
+.security-badge,
+.agent-card .agent-tag,
+.timeline-content .timeline-tag,
+.blog-card-category,
+.blog-featured-category,
+.article-cat-pill,
+.recommended-card-cat,
+.article-tag,
+.case-study-card .case-tag {
+  background: rgba(15, 98, 254, 0.08);
+  color: var(--color-primary);
+  border-color: rgba(15, 98, 254, 0.20);
+}
+.problem-card .problem-stat { color: var(--color-primary); }
+.hero-badge {
+  background: rgba(15, 98, 254, 0.07);
+  border-color: rgba(15, 98, 254, 0.22);
+  color: var(--color-primary-dark);
+}
+.hero-badge .dot { background: var(--color-primary); }
+.text-gradient,
+.hero-tagline .text-gradient {
+  background: linear-gradient(135deg, #0F62FE 0%, #0043CE 50%, #002D9C 100%);
+  background-size: 100% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #0043CE;            /* 渐变失效时的兜底，避免透明白字 */
+}
+.solution-point { border-left-color: var(--color-primary); }
+.card::before { background: var(--brand-grad, linear-gradient(90deg, #0F62FE, #0043CE)); }
+
+/* ---------- 5. CTA / 面板：金青渐变 → 蓝 ---------- */
+.cta::before {
+  background: linear-gradient(135deg, rgba(15, 98, 254, 0.10), rgba(0, 45, 156, 0.05)) !important;
+}
+.cta-banner {
+  background: linear-gradient(135deg, rgba(15, 98, 254, 0.07), rgba(0, 67, 206, 0.04)) !important;
+  border: 1px solid rgba(15, 98, 254, 0.18) !important;
+}
+.article-cta-card,
+.article-cta-btn {
+  background: var(--brand-grad, linear-gradient(135deg, #0F62FE 0%, #0043CE 54%, #002D9C 100%));
+  color: #fff;
+}
+.article-cta-label { color: rgba(255, 255, 255, 0.82); }
+.chat-mockup { border-color: var(--color-border); background: var(--color-bg-card); }
+.case-showcase-visual { background: linear-gradient(135deg, rgba(15, 98, 254, 0.08), rgba(0, 67, 206, 0.04)); }
+.case-showcase-visual::after { background: radial-gradient(circle, rgba(15, 98, 254, 0.12), transparent 70%); }
+
+/* ---------- 6. 玻璃卡 / 表单 ---------- */
+.glass-card {
+  background: var(--color-bg-card) !important;
+  border: 1px solid var(--color-border) !important;
+}
+.glass-card:hover {
+  background: var(--color-bg-card-hover) !important;
+  border-color: rgba(15, 98, 254, 0.24) !important;
+}
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(15, 98, 254, 0.14);
+}
+
+/* ---------- 7. 语言切换器 / 导航徽标 ---------- */
+.lang-switcher-btn,
+.lang-switcher-dropdown {
+  background: #fff !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+.lang-switcher-btn:hover,
+.lang-switcher:focus-within .lang-switcher-btn,
+.lang-switcher-dropdown a:hover,
+.lang-switcher-dropdown a.active,
+.mobile-lang-switcher a:hover,
+.mobile-lang-switcher a.active {
+  background: rgba(15, 98, 254, 0.07) !important;
+  color: var(--color-primary) !important;
+}
+.nav-badge-new {
+  background: rgba(15, 98, 254, 0.10) !important;
+  color: var(--color-primary) !important;
+}
+.nav-dropdown-link:hover,
+.nav-dropdown-link:focus-visible,
+.nav-dropdown-link.active,
+.mobile-submenu-links a:hover,
+.mobile-submenu-links a.active {
+  background: rgba(15, 98, 254, 0.06);
+  color: var(--color-primary);
+}
+
+/* ---------- 8. 链接 / 列表（accenture reset 后补回可读性） ---------- */
+main ul, main ol { padding-left: 1.15em; }
+main ul { list-style: disc; }
+main ol { list-style: decimal; }
+main li { margin: 0 0 0.45em; }
+.article-content a,
+.blog-card:hover .blog-card-title,
+.blog-featured:hover .blog-featured-title {
+  color: var(--color-primary);
+}
+.blog-tag:hover { background: rgba(15, 98, 254, 0.08); color: var(--color-primary); }
+
+/* ---------- 9. 滚动进度条（chrome partial 已注入元素） ---------- */
+#scroll-progress,
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  z-index: 9999;
+  background: linear-gradient(90deg, #0F62FE, #0043CE);
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+/* ---------- 10. 打印/降级：隐藏装饰层，避免浅底噪点 ---------- */
+@media print {
+  .hero-mesh::after,
+  .bg-grid-subtle::before,
+  .bg-dot-matrix::before,
+  .bg-aurora::before { display: none !important; }
+}
+
+/* ---------- 11. 版式翻译：旧 section-header → Accenture 双栏抬头 ----------
+   旧主题把所有 section 抬头做成「居中 + 700px 窄栏」，在 1440 宽度下显得空。
+   现行设计系统用的是「左栏 label + 大标题 / 右栏 lead」的编辑式分栏。
+   这里只在桌面宽度下改写，移动端保持原居中单栏。 */
+@media (min-width: 960px) {
+  .section-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    column-gap: clamp(2rem, 6vw, 5rem);
+    align-items: end;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+  }
+  .section-header > .label {
+    grid-column: 1 / -1;
+    margin-bottom: 0.35rem;
+  }
+  .section-header > h2 {
+    grid-column: 1;
+    margin-bottom: 0;
+    text-wrap: balance;
+  }
+  .section-header > p {
+    grid-column: 2;
+    margin: 0 0 0.15rem;
+    font-size: var(--fs-lead);
+    line-height: 1.6;
+    max-width: 40ch;
+  }
+  /* FAQ 抬头也统一走编辑式双栏；canonical FAQ 规范在 accenture.css §14，
+     这里不再把 .faq-section .section-header 改回居中窄栏（2026-11-12）。 */
+}
+
+/* 正文栏目：略放宽到编辑式阅读宽度 */
+.content-section { max-width: 880px; }
+.content-section h2 { letter-spacing: -0.02em; }
+.content-section h3 { color: var(--color-primary); letter-spacing: -0.01em; }
+
+/* 栅格间距统一 */
+.grid-2, .grid-3, .grid-4, .problems-grid, .security-grid, .agents-grid, .stats-grid {
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* 卡片统一描边 + 顶线，密度更接近咨询站 */
+.glass-card,
+.stat-card,
+.problem-card,
+.agent-card,
+.icon-feature,
+.case-study-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  transition: border-color 0.25s var(--ease, ease), box-shadow 0.25s var(--ease, ease),
+              transform 0.25s var(--ease, ease);
+}
+.glass-card:hover,
+.stat-card:hover,
+.problem-card:hover,
+.agent-card:hover,
+.icon-feature:hover,
+.case-study-card:hover {
+  border-color: rgba(15, 98, 254, 0.32);
+  box-shadow: 0 18px 40px -28px rgba(16, 24, 40, 0.35);
+  transform: translateY(-2px);
+}
+
+/* ---------- 12. 次级文字对比度（wcag 4.5:1 目标） ---------- */
+.cta-banner-content p,
+.stat-card .stat-desc,
+.hero-cta-note,
+.last-updated { color: var(--color-text-secondary); }
+.related-reading li::before { color: var(--color-primary); }
+.related-reading a:hover { color: var(--color-primary); }

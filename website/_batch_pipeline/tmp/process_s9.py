@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/building-an-ai-ready-workforce-training-vs-hiring-part-2.html"
 ZHCN = W + "zh-cn/blog/articles/building-an-ai-ready-workforce-training-vs-hiring-part-2.html"
-ZHTW = W + "zh-tw/blog/articles/building-an-ai-ready-workforce-training-vs-hiring-part-2.html"
+ZHTW = W + "zh-hk/blog/articles/building-an-ai-ready-workforce-training-vs-hiring-part-2.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -181,7 +181,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("培訓和招聘AI人才的最佳預算分配比例是多少？",
      "我們客戶實踐中浮現的標準是60/40分配：將AI人才預算的60%-70%用於提升現有員工的資料素養、提示工程和資料分析解讀能力，30%-40%用於MLOps、資料工程等深度技術領域的戰略性外部招聘。把一名中級分析師培養至AI勝任水平12個月成本為18,000-32,000美元，而外部招聘需支付35%-60%的薪資溢價、第一年再增加約25%的招聘與入職成本——而且你培訓出的隊伍才是你留得住的隊伍。"),
@@ -270,7 +270,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="何時應該選擇外部招聘"', 'id="構建高效的內部ai學院"',
         '18,000-32,000美元', '60/40', '對話式BI',
-    ], 7, "zh-TW")
+    ], 7, "zh-HK")
     assert '人才' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

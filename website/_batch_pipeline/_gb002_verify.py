@@ -12,7 +12,7 @@ from _gb002_lib import path_for, SLUGS
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 BK = os.path.join(ROOT, '_batch_pipeline/_backup_gb002run')
-PFX = {'en': 'en.', 'zh-cn': 'cn.', 'zh-tw': 'tw.'}
+PFX = {'en': 'en.', 'zh-cn': 'cn.', 'zh-hk': 'tw.'}
 
 LD_RE = re.compile(r'<script type="application/ld\+json"[^>]*>(.*?)</script>', re.S | re.I)
 VOID = {'img', 'br', 'hr', 'meta', 'link', 'input', 'source', 'path', 'circle', 'line',
@@ -74,7 +74,7 @@ class Checker(HTMLParser):
 def main():
     problems = []
     for slug in SLUGS:
-        for lang in ('en', 'zh-cn', 'zh-tw'):
+        for lang in ('en', 'zh-cn', 'zh-hk'):
             p = path_for(slug, lang)
             new = open(p, encoding='utf-8').read()
             old = open(os.path.join(BK, PFX[lang] + slug + '.html'), encoding='utf-8').read()

@@ -95,12 +95,12 @@ ZHCN = {"renames": ZHCN_RENAMES, "faq": ZHCN_FAQ,
           "用AI情景规划在供应链受扰动之前完成压力测试。",
           "用AI做需求感知，缩短波动市场中的信号到决策链路。"]}
 
-# ------------------------------------------------------------------ zh-TW (converted)
+# ------------------------------------------------------------------ zh-HK (converted)
 import _gb001_s2t as T
 
 ZHTW = T.spec_s2tw(ZHCN)
 
 if __name__ == "__main__":
-    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-TW", ZHTW)):
+    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-HK", ZHTW)):
         b, a, n = apply(SLUG, lang, spec)
         print(f"{SLUG} {lang}: {b} -> {a}  [{', '.join(n)}]")

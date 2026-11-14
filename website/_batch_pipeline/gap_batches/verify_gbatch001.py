@@ -47,7 +47,7 @@ def check_file(path):
 for slug in slugs:
     print("="*70)
     print("SLUG:", slug)
-    for lang, prefix in [("en",""), ("zh-CN","zh-cn/"), ("zh-TW","zh-tw/")]:
+    for lang, prefix in [("en",""), ("zh-CN","zh-cn/"), ("zh-HK","zh-hk/")]:
         p = os.path.join(ROOT, prefix+"blog/articles/"+slug+".html")
         if not os.path.exists(p):
             print(f"  [{lang}] MISSING")

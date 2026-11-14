@@ -88,5 +88,5 @@ def process(path, expand, h2map, excerpts):
 
 process(os.path.join(ROOT,"blog/articles/"+SLUG+".html"), EN_EXPAND, EN_H2, EN_EXCERPTS)
 process(os.path.join(ROOT,"zh-cn/blog/articles/"+SLUG+".html"), None, ZH_H2, ZH_EXCERPTS)
-process(os.path.join(ROOT,"zh-tw/blog/articles/"+SLUG+".html"), None, ZH_H2, ZH_EXCERPTS)
+process(os.path.join(ROOT,"zh-hk/blog/articles/"+SLUG+".html"), None, ZH_H2, ZH_EXCERPTS)
 print("done", SLUG)

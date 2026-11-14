@@ -32,12 +32,12 @@ except ImportError:
 SITE_BASE_URL = "https://www.beehivestrategy.com"
 BLOG_DIR = Path(__file__).parent.parent / "blog" / "articles"
 BLOG_CN_DIR = Path(__file__).parent.parent / "zh-cn" / "blog" / "articles"
-BLOG_TW_DIR = Path(__file__).parent.parent / "zh-tw" / "blog" / "articles"
+BLOG_TW_DIR = Path(__file__).parent.parent / "zh-hk" / "blog" / "articles"
 BLOG_INDEX = Path(__file__).parent.parent / "blog.html"
 SITEMAP = Path(__file__).parent.parent / "sitemap.xml"
 SITEMAP_EN = Path(__file__).parent.parent / "sitemap-blog-en.xml"
 SITEMAP_ZHCN = Path(__file__).parent.parent / "sitemap-blog-zhcn.xml"
-SITEMAP_ZHTW = Path(__file__).parent.parent / "sitemap-blog-zhtw.xml"
+SITEMAP_ZHTW = Path(__file__).parent.parent / "sitemap-blog-zhhk.xml"
 SITEMAP_INDEX = Path(__file__).parent.parent / "sitemap-index.xml"
 FEED_XML = Path(__file__).parent.parent / "blog" / "feed.xml"
 
@@ -226,7 +226,7 @@ def translate_article(api_key, article, target_lang, dry_run=False):
 
     lang_name = {
         "zh-CN": "Simplified Chinese (zh-CN)",
-        "zh-TW": "Traditional Chinese (zh-TW)",
+        "zh-HK": "Traditional Chinese (zh-HK)",
     }.get(target_lang, target_lang)
 
     prompt = f"""You are an expert technical translator. Translate the following JSON article into {lang_name}.
@@ -285,13 +285,13 @@ def generate_html_article(article, lang="en", date_str=None):
         dir_attr = "ltr"
         og_locale = "zh_CN"
         company = COMPANY_CN
-    elif lang == "zh-TW":
-        lang_prefix = "/zh-tw"
-        lang_code = "zh-tw"
+    elif lang == "zh-HK":
+        lang_prefix = "/zh-hk"
+        lang_code = "zh-hk"
         lang_label = "繁"
-        lang_attr = "zh-TW"
+        lang_attr = "zh-HK"
         dir_attr = "ltr"
-        og_locale = "zh_TW"
+        og_locale = "zh_HK"
         company = COMPANY_CN
     else:
         lang_prefix = ""
@@ -351,7 +351,7 @@ def generate_html_article(article, lang="en", date_str=None):
   <link rel="canonical" href="{canonical}">
   <link rel="alternate" hreflang="en" href="{SITE_BASE_URL}/blog/articles/{slug}">
   <link rel="alternate" hreflang="zh-CN" href="{SITE_BASE_URL}/zh-cn/blog/articles/{slug}">
-  <link rel="alternate" hreflang="zh-TW" href="{SITE_BASE_URL}/zh-tw/blog/articles/{slug}">
+  <link rel="alternate" hreflang="zh-HK" href="{SITE_BASE_URL}/zh-hk/blog/articles/{slug}">
   <link rel="alternate" hreflang="x-default" href="{SITE_BASE_URL}/blog/articles/{slug}">
 
   <meta property="og:type" content="article">
@@ -372,7 +372,8 @@ def generate_html_article(article, lang="en", date_str=None):
   <link rel="alternate" type="application/rss+xml" title="Beehive Strategy Blog RSS Feed" href="{SITE_BASE_URL}/blog/feed.xml">
 
   <meta name="theme-color" content="#0a0e0d">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png?v=20261107.6">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261107.6">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -444,7 +445,7 @@ def generate_html_article(article, lang="en", date_str=None):
           <div class="lang-switcher-dropdown" role="menu">
             <a href="/blog/articles/{slug}" role="menuitem" class="{'active' if lang == 'en' else ''}" data-lang="en"><span>English</span></a>
             <a href="/zh-cn/blog/articles/{slug}" role="menuitem" class="{'active' if lang == 'zh-CN' else ''}" data-lang="zh-cn"><span>简体中文</span></a>
-            <a href="/zh-tw/blog/articles/{slug}" role="menuitem" class="{'active' if lang == 'zh-TW' else ''}" data-lang="zh-tw"><span>繁體中文</span></a>
+            <a href="/zh-hk/blog/articles/{slug}" role="menuitem" class="{'active' if lang == 'zh-HK' else ''}" data-lang="zh-hk"><span>繁體中文</span></a>
           </div>
         </div>
         <a href="{lang_prefix}/contact" class="btn btn-primary">Book a Demo</a>
@@ -468,15 +469,6 @@ def generate_html_article(article, lang="en", date_str=None):
     <a href="{lang_prefix}/contact" class="btn btn-primary btn-lg">Book a Demo</a>
   </div>
 
-  <nav aria-label="Breadcrumb" class="breadcrumb-nav">
-    <div class="container">
-      <ol>
-        <li><a href="{SITE_BASE_URL}/">Home</a></li>
-        <li><a href="{SITE_BASE_URL}{lang_prefix}/blog">Blog</a></li>
-        <li aria-current="page">{title}</li>
-      </ol>
-    </div>
-  </nav>
 
   <main role="main">
     <article class="article">
@@ -556,7 +548,7 @@ def update_sitemap(slug, date_str):
     urls = [
         f"{SITE_BASE_URL}/blog/articles/{slug}",
         f"{SITE_BASE_URL}/zh-cn/blog/articles/{slug}",
-        f"{SITE_BASE_URL}/zh-tw/blog/articles/{slug}",
+        f"{SITE_BASE_URL}/zh-hk/blog/articles/{slug}",
     ]
 
     # Update legacy combined sitemap.xml
@@ -577,7 +569,7 @@ def update_sitemap(slug, date_str):
 
     # Build hreflang alternates for sub-sitemaps
     alternates_xml = ""
-    for lang_code, url in [("en", urls[0]), ("zh-CN", urls[1]), ("zh-TW", urls[2])]:
+    for lang_code, url in [("en", urls[0]), ("zh-CN", urls[1]), ("zh-HK", urls[2])]:
         alternates_xml += f'\n    <xhtml:link rel="alternate" hreflang="{lang_code}" href="{url}"/>'
     alternates_xml += f'\n    <xhtml:link rel="alternate" hreflang="x-default" href="{urls[0]}"/>'
 
@@ -710,7 +702,7 @@ def main():
 
     # Generate Chinese translations
     if not args.no_translate:
-        for lang, lang_dir in [("zh-CN", BLOG_CN_DIR), ("zh-TW", BLOG_TW_DIR)]:
+        for lang, lang_dir in [("zh-CN", BLOG_CN_DIR), ("zh-HK", BLOG_TW_DIR)]:
             print(f"\n--- Generating {lang} article ---")
             translated = translate_article(api_key, article, lang)
             html = generate_html_article(translated, lang=lang, date_str=date_str)

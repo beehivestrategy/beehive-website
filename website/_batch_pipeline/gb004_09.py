@@ -17,7 +17,7 @@ CC = L.CC
 PATHS = {
     "en": os.path.join(ROOT, "blog/articles", SLUG + ".html"),
     "zh-cn": os.path.join(ROOT, "zh-cn/blog/articles", SLUG + ".html"),
-    "zh-tw": os.path.join(ROOT, "zh-tw/blog/articles", SLUG + ".html"),
+    "zh-hk": os.path.join(ROOT, "zh-hk/blog/articles", SLUG + ".html"),
 }
 
 NAV = L.NAV  # unused here (footer keeps its own nav)
@@ -247,7 +247,7 @@ def main():
     zh_cjk = R._count_zh(zh_inner)
 
     tw_inner = CC.convert(zh_inner)
-    rebuild_old(PATHS["zh-tw"], tw_inner)
+    rebuild_old(PATHS["zh-hk"], tw_inner)
     tw_cjk = R._count_zh(tw_inner)
 
     rep = {"slug": SLUG, "en_words": en_w, "zh_cjk": zh_cjk, "tw_cjk": tw_cjk,

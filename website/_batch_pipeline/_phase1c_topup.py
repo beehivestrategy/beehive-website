@@ -50,7 +50,7 @@ for slug, p in EN_PARAS.items():
 
 for slug, langs in ZH_PARAS.items():
     for lg, p in langs.items():
-        sub = "zh-cn/blog/articles" if lg=="cn" else "zh-tw/blog/articles"
+        sub = "zh-cn/blog/articles" if lg=="cn" else "zh-hk/blog/articles"
         fn = os.path.join(BASE, sub, slug + ".html")
         html = open(fn, encoding="utf-8").read()
         head0 = html[:html.index("<body")]

@@ -57,7 +57,7 @@ rows = []
 for s in slugs:
     for lang, path in (("en", f"blog/articles/{s}.html"),
                        ("cn", f"zh-cn/blog/articles/{s}.html"),
-                       ("tw", f"zh-tw/blog/articles/{s}.html")):
+                       ("tw", f"zh-hk/blog/articles/{s}.html")):
         fp = os.path.join(ROOT, path)
         if not os.path.exists(fp):
             rows.append((s, lang, "MISSING", 0, 0, 0, 0, False))

@@ -122,7 +122,7 @@ cn_inner = cn_sections + "\n" + cn_faq_html + "\n" + cn_jsonld + "\n"
 
 tw_inner = cc.convert(cn_inner)
 
-for lang, inner in (("zh-cn", cn_inner), ("zh-tw", tw_inner)):
+for lang, inner in (("zh-cn", cn_inner), ("zh-hk", tw_inner)):
     p = os.path.join(ROOT, "%s/blog/articles/%s.html"%(lang, slug))
     h = open(p, encoding='utf-8').read()
     mm = re.search(r'(<p class="article-lead">.*?)(<nav class="article-nav")', h, re.S)
@@ -131,7 +131,7 @@ for lang, inner in (("zh-cn", cn_inner), ("zh-tw", tw_inner)):
     print(lang, "written")
 
 # ---------- verify ----------
-for lang,pat in (("en","blog/articles/%s.html"),("zh-cn","zh-cn/blog/articles/%s.html"),("zh-tw","zh-tw/blog/articles/%s.html")):
+for lang,pat in (("en","blog/articles/%s.html"),("zh-cn","zh-cn/blog/articles/%s.html"),("zh-hk","zh-hk/blog/articles/%s.html")):
     p=os.path.join(ROOT, pat%slug)
     h=open(p,encoding='utf-8').read()
     body=re.search(r'<article class="article-content" id="article-content">(.*?)</article>',h,re.S).group(1)

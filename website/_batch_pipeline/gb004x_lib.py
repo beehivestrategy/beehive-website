@@ -105,7 +105,7 @@ def metrics(h):
 
 # ------------------------------------------------------------------ link fixing
 def fix_links(h, prefix):
-    """prefix: '' | 'zh-cn/' | 'zh-tw/'. Only rewrites RELATIVE hrefs (no leading
+    """prefix: '' | 'zh-cn/' | 'zh-hk/'. Only rewrites RELATIVE hrefs (no leading
     '/' and no scheme) inside the recommended grid, the sidebar related list and
     the CTA card. Root-relative / absolute links are left untouched."""
     out = []
@@ -312,7 +312,7 @@ _MANIFEST = {}
 
 def manifest(lang):
     if lang not in _MANIFEST:
-        sub = {"en": "blog", "zh-cn": "zh-cn/blog", "zh-tw": "zh-tw/blog"}[lang]
+        sub = {"en": "blog", "zh-cn": "zh-cn/blog", "zh-hk": "zh-hk/blog"}[lang]
         data = json.load(open(os.path.join(ROOT, sub, "articles/manifest.json"), encoding="utf-8"))
         arts = data["articles"] if isinstance(data, dict) else data
         _MANIFEST[lang] = {a["slug"]: a for a in arts}
@@ -365,7 +365,7 @@ def fill_cards(h, lang):
 CTA_MAP = {
     "en": ("Book a Demo", "Explore the Solution"),
     "zh-cn": ("预约演示", "了解解决方案"),
-    "zh-tw": ("預約示範", "了解解決方案"),
+    "zh-hk": ("預約示範", "了解解決方案"),
 }
 
 

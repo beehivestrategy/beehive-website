@@ -108,7 +108,7 @@ def process(path, expand, h2map, excerpts):
 for lang,pre,exp,h2,exc in [
     ("EN","blog/articles/",EN_EXPAND,EN_H2,EN_EXCERPTS),
     ("zh-CN","zh-cn/blog/articles/",ZH_EXPAND,ZH_H2,ZH_EXCERPTS),
-    ("zh-TW","zh-tw/blog/articles/",ZH_EXPAND,ZH_H2,ZH_EXCERPTS),
+    ("zh-HK","zh-hk/blog/articles/",ZH_EXPAND,ZH_H2,ZH_EXCERPTS),
 ]:
     p=os.path.join(ROOT,pre+SLUG+".html")
     process(p, exp, h2, exc)

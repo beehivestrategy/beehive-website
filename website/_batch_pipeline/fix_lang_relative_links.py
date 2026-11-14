@@ -2,27 +2,27 @@
 """
 fix_lang_relative_links.py
 
-Repairs broken relative links inside the zh-CN and zh-TW article trees.
+Repairs broken relative links inside the zh-CN and zh-HK article trees.
 
 BUG
 ---
-Article files under zh-cn/ and zh-TW/ contain links written WITHOUT a leading
+Article files under zh-cn/ and zh-HK/ contain links written WITHOUT a leading
 slash, e.g.
 
-    <a href="zh-cn/contact">     (inside /zh-tw/blog/articles/foo.html)
+    <a href="zh-cn/contact">     (inside /zh-hk/blog/articles/foo.html)
 
 Because there is no <base> tag anywhere on the site, that resolves against the
 current directory:
 
-    /zh-tw/blog/articles/zh-cn/contact     -> 404
+    /zh-hk/blog/articles/zh-cn/contact     -> 404
 
-Root pages (zh-tw/index.html etc.) already use the correct root-relative form
-("/zh-tw/contact"), so this only affects the generated article files.
+Root pages (zh-hk/index.html etc.) already use the correct root-relative form
+("/zh-hk/contact"), so this only affects the generated article files.
 
 FIX
 ---
 1. href="zh-cn/X"  ->  href="/<pagelang>/X"
-2. href="zh-tw/X"  ->  href="/<pagelang>/X"
+2. href="zh-hk/X"  ->  href="/<pagelang>/X"
 3. bare href="page" (contact|solution|services|pricing|about|case-studies|
    industries|blog)  ->  href="/<pagelang>/page"
 
@@ -50,12 +50,12 @@ BARE_PAGES = (
     "about", "case-studies", "industries", "blog", "index",
 )
 
-# href="zh-cn/..." or href="zh-tw/..." with NO leading slash.
-PREFIXED = re.compile(r'href="(zh-cn|zh-tw)/')
+# href="zh-cn/..." or href="zh-hk/..." with NO leading slash.
+PREFIXED = re.compile(r'href="(zh-cn|zh-hk)/')
 
 # href="contact" etc. - bare, no slash, no scheme, no anchor.
 BARE = re.compile(
-    r'href="(?!\/|#|https?:|mailto:|tel:|zh-cn\/|zh-tw\/|\.\.?)'
+    r'href="(?!\/|#|https?:|mailto:|tel:|zh-cn\/|zh-hk\/|\.\.?)'
     r'(' + "|".join(BARE_PAGES) + r')(\.html)?"'
 )
 
@@ -94,7 +94,7 @@ def main() -> None:
     per_lang: dict[str, dict[str, int]] = {}
     samples: list[tuple[str, str, str]] = []
 
-    for lang in ("zh-cn", "zh-tw"):
+    for lang in ("zh-cn", "zh-hk"):
         stats = {"files": 0, "repl": 0}
         for path in sorted((ROOT / lang).rglob("*.html")):
             n, changes = fix_file(path, lang)

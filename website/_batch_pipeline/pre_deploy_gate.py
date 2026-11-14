@@ -87,8 +87,8 @@ def get_canonical(head: str):
 def lang_of(rel: str) -> str:
     if "/zh-cn/" in "/" + rel or rel.startswith("zh-cn/"):
         return "zh-cn"
-    if "/zh-tw/" in "/" + rel or rel.startswith("zh-tw/"):
-        return "zh-tw"
+    if "/zh-hk/" in "/" + rel or rel.startswith("zh-hk/"):
+        return "zh-hk"
     return "en"
 
 

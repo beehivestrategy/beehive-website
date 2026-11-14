@@ -106,7 +106,7 @@ MCP_THIRD_EN = ("How does MCP affect the total cost of ownership of AI integrati
 "By standardising how AI models discover and access data, MCP turns bespoke per-source connector work into reusable protocol connections. In Beehive Strategy benchmark engagements this typically cuts integration effort by 60 to 80 percent and shrinks the data-engineering bandwidth spent on plumbing from 40 to 60 percent toward a far smaller, centralised figure — so the total cost of ownership of every new AI data connection falls with each additional source.")
 
 for slug in SLUGS:
-    for lang, sub in [("en","blog/articles"),("cn","zh-cn/blog/articles"),("tw","zh-tw/blog/articles")]:
+    for lang, sub in [("en","blog/articles"),("cn","zh-cn/blog/articles"),("tw","zh-hk/blog/articles")]:
         fn = os.path.join(BASE, sub, slug+".html")
         raw = open(fn, encoding="utf-8").read()
         head0 = raw[:raw.index("<body")]
@@ -172,7 +172,7 @@ for slug in SLUGS:
         assert html[:html.index("<body")] == head0, "HEAD CHANGED "+slug+" "+lang
         assert "?v=20260826" in html
         # ensure no link path changed (spot checks)
-        for tok in ['/css/article.css','/js/article.js','/blog/articles/','/zh-cn/','/zh-tw/','/assets/']:
+        for tok in ['/css/article.css','/js/article.js','/blog/articles/','/zh-cn/','/zh-hk/','/assets/']:
             pass
         open(fn, "w", encoding="utf-8").write(html)
         print("written", slug, lang)

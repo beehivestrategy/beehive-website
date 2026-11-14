@@ -168,11 +168,11 @@ ZH_FAQ = [
 
 
 def run():
-    b = {lg: stats(SLUG, lg) for lg in ('en', 'zh-cn', 'zh-tw')}
+    b = {lg: stats(SLUG, lg) for lg in ('en', 'zh-cn', 'zh-hk')}
     process(SLUG, 'en', new_body=EN_BODY, faq=EN_FAQ)
     process(SLUG, 'zh-cn', new_body=ZH_BODY, faq=ZH_FAQ)
-    process(SLUG, 'zh-tw', new_body=s2tw(ZH_BODY), faq=[(s2tw(q), s2tw(a)) for q, a in ZH_FAQ])
-    for lg in ('en', 'zh-cn', 'zh-tw'):
+    process(SLUG, 'zh-hk', new_body=s2tw(ZH_BODY), faq=[(s2tw(q), s2tw(a)) for q, a in ZH_FAQ])
+    for lg in ('en', 'zh-cn', 'zh-hk'):
         print(lg, b[lg], '->', stats(SLUG, lg))
 
 

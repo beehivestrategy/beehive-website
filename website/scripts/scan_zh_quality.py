@@ -17,7 +17,7 @@ Detects:
 
 Usage:
   python3 scripts/scan_zh_quality.py            # summary only (zh-cn)
-  python3 scripts/scan_zh_quality.py --all      # scan zh-cn + zh-tw
+  python3 scripts/scan_zh_quality.py --all      # scan zh-cn + zh-hk
   python3 scripts/scan_zh_quality.py --verbose  # list every defect
 Exit code 0 always (report tool).
 """
@@ -106,7 +106,7 @@ def scan_file(path: Path):
 def main():
     dirs = [ZH]
     if ALL_LANGS:
-        dirs.append(ROOT / "zh-tw" / "blog" / "articles")
+        dirs.append(ROOT / "zh-hk" / "blog" / "articles")
     files = []
     for d in dirs:
         files.extend(sorted(d.glob("*.html")))
@@ -134,7 +134,7 @@ def main():
         if d["faq_multi"]:
             faq_multi_files.append((f.name, d["faq_multi"]))
 
-    print(f"scanned: {len(files)} articles ({'zh-cn + zh-tw' if ALL_LANGS else 'zh-cn'})")
+    print(f"scanned: {len(files)} articles ({'zh-cn + zh-hk' if ALL_LANGS else 'zh-cn'})")
     print(f"files with duplicate paragraphs: {len(dup_files)} (excess paras: {total_dup_paras})")
     print(f"files with duplicate H2 sections: {len(h2_files)}")
     print(f"files with english-leak paragraphs: {len(leak_files)} (leaked paras: {total_leaks})")

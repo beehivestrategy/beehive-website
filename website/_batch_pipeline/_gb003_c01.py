@@ -89,7 +89,7 @@ ZH_FAQ = [
 
 
 def run():
-    b = {lg: stats(SLUG, lg) for lg in ('en', 'zh-cn', 'zh-tw')}
+    b = {lg: stats(SLUG, lg) for lg in ('en', 'zh-cn', 'zh-hk')}
     process(SLUG, 'en', h2_renames=EN_RENAMES, inserts=EN_INSERTS, faq=EN_FAQ, drop_body_faq=True)
     process(SLUG, 'zh-cn', h2_renames=ZH_RENAMES, faq=ZH_FAQ)
     TW_RENAMES = {
@@ -101,10 +101,10 @@ def run():
         '技術基礎設施與實施考量': '技術基礎設施與實施上有哪些考量？',
         '中國市場特有的實施優勢': '台灣與華語市場在數據素養落地上有哪些優勢？',
     }
-    process(SLUG, 'zh-tw', h2_renames=TW_RENAMES, faq=[(s2tw(q), s2tw(a)) for q, a in ZH_FAQ],
+    process(SLUG, 'zh-hk', h2_renames=TW_RENAMES, faq=[(s2tw(q), s2tw(a)) for q, a in ZH_FAQ],
             drop_body_faq=True)
-    a = {lg: stats(SLUG, lg) for lg in ('en', 'zh-cn', 'zh-tw')}
-    for lg in ('en', 'zh-cn', 'zh-tw'):
+    a = {lg: stats(SLUG, lg) for lg in ('en', 'zh-cn', 'zh-hk')}
+    for lg in ('en', 'zh-cn', 'zh-hk'):
         print(lg, b[lg], '->', a[lg])
 
 

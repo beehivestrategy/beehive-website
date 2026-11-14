@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Batch part 3: second-round top-ups to clear floors.
-EN: +1 H2 each for 5 files (<2500). zh-CN/zh-TW: +1 H2 each for 7 files (<3500).
+EN: +1 H2 each for 5 files (<2500). zh-CN/zh-HK: +1 H2 each for 7 files (<3500).
 Idempotent via unique ids. Never touches head/footer/links."""
 import os, re
 from opencc import OpenCC
@@ -42,7 +42,7 @@ EN_TOPUP2 = {
 ''',
 }
 
-# ---- zh-CN second-round (simplified); converted for zh-TW ----
+# ---- zh-CN second-round (simplified); converted for zh-HK ----
 ZH_TOPUP2 = {
 "how-to-choose-conversational-bi-platform": '''
 <h2 id="bi-change-management">如何选择能推动采纳的变革管理方式？</h2>
@@ -128,7 +128,7 @@ for slug, block in EN_TOPUP2.items():
 # zh
 for slug, cn_block in ZH_TOPUP2.items():
     tw_block = cc.convert(cn_block)
-    for (lang, sub, anchor) in [('zh-CN','zh-cn',ZH_FAQ_ANCHOR_CN),('zh-TW','zh-tw',ZH_FAQ_ANCHOR_TW)]:
+    for (lang, sub, anchor) in [('zh-CN','zh-cn',ZH_FAQ_ANCHOR_CN),('zh-HK','zh-hk',ZH_FAQ_ANCHOR_TW)]:
         p = os.path.join(ROOT, sub+"/blog/articles", slug + ".html")
         s = open(p, encoding='utf-8').read()
         blk = cn_block if lang=='zh-CN' else tw_block
@@ -154,7 +154,7 @@ for slug in slugs_all:
     if slug not in affected: continue
     for path, lang in [("blog/articles/%s.html"%slug,'EN'),
                       ("zh-cn/blog/articles/%s.html"%slug,'zh-CN'),
-                      ("zh-tw/blog/articles/%s.html"%slug,'zh-TW')]:
+                      ("zh-hk/blog/articles/%s.html"%slug,'zh-HK')]:
         s = open(os.path.join(ROOT,path),encoding='utf-8').read()
         a = article(s); w = word_count(a) if lang=='EN' else cjk_count(a)
         flag = '' if (lang=='EN' and w>=2500) or (lang!='EN' and w>=3500) else '  <-- BELOW FLOOR'

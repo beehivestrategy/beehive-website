@@ -10,9 +10,9 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 LANGS = [
     ("en", "blog/articles"),
     ("zh-cn", "zh-cn/blog/articles"),
-    ("zh-tw", "zh-tw/blog/articles"),
+    ("zh-hk", "zh-hk/blog/articles"),
 ]
-CTA = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-tw": "預約示範"}
+CTA = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-hk": "預約示範"}
 
 def cjk_count(s):
     return len(re.findall(r"[\u3400-\u9fff\uf900-\ufaff]", s))

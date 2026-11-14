@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# zh-tw (繁體中文/台灣用語) FAQ 內容：每篇 4 組問答
+# zh-hk (繁體中文/台灣用語) FAQ 內容：每篇 4 組問答
 FAQ = {
 "ai-liability-insurance-emerging-market.html": [
  ["企業現有的責任險保單是否足以涵蓋AI造成的損害？",

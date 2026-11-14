@@ -91,7 +91,7 @@
     grid: { left: 50, right: 20, top: 40, bottom: 30 },
     xAxis: {
       type: 'category',
-      data: ['English', 'zh-CN', 'zh-TW'],
+      data: ['English', 'zh-CN', 'zh-HK'],
       axisLine: { lineStyle: { color: rule } },
       axisLabel: { color: muted, fontSize: 12 }
     },
@@ -148,7 +148,7 @@
     grid: { left: 60, right: 20, top: 45, bottom: 30 },
     xAxis: {
       type: 'category',
-      data: ['English', 'zh-CN', 'zh-TW'],
+      data: ['English', 'zh-CN', 'zh-HK'],
       axisLine: { lineStyle: { color: rule } },
       axisLabel: { color: muted, fontSize: 12 }
     },

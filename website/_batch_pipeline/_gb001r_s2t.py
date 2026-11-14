@@ -50,7 +50,7 @@ def s2tw(s):
 
 
 def spec_s2tw(spec):
-    """Convert a zh-CN spec dict into a zh-TW spec dict."""
+    """Convert a zh-CN spec dict into a zh-HK spec dict."""
     out = {}
     if "replace" in spec:
         out["replace"] = [(s2tw(a), s2tw(b)) for a, b in spec["replace"]]

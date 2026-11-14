@@ -2,7 +2,7 @@
 """
 GEO/SEO in-place fixer for gbatch_003 articles.
 Mechanical fixes + content injection, idempotent.
-Reads AUG from _content.py. zh-TW regenerated from zh-CN via OpenCC (s2twp).
+Reads AUG from _content.py. zh-HK regenerated from zh-CN via OpenCC (s2twp).
 """
 import os, re, sys, json
 try:
@@ -278,8 +278,8 @@ def main():
         zh0 = open(fp_zh, encoding="utf-8").read() if os.path.exists(fp_zh) else ""
         zh1 = process_lang(zh0, spec.get("zh", {})) if zh0 else zh0
         open(fp_zh, "w", encoding="utf-8").write(zh1)
-        # zh-TW: keep original head+tail, swap body with traditional of zh-CN body
-        fp_tw = os.path.join(ROOT, "zh-tw/blog/articles", slug + ".html")
+        # zh-HK: keep original head+tail, swap body with traditional of zh-CN body
+        fp_tw = os.path.join(ROOT, "zh-hk/blog/articles", slug + ".html")
         if os.path.exists(fp_tw) and CC:
             tw0 = open(fp_tw, encoding="utf-8").read()
             tw_head = remove_faqpage_jld(extract_head(tw0))   # drop head FAQPage JSON-LD

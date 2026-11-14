@@ -153,9 +153,9 @@ def main():
         bodies={},
         faq=FAQ,
         tw_from_cn=True,
-        faq_titles={"EN": "Frequently Asked Questions", "zh-CN": "常见问题", "zh-TW": "常見問題"},
+        faq_titles={"EN": "Frequently Asked Questions", "zh-CN": "常见问题", "zh-HK": "常見問題"},
     )
-    for lang in ("EN", "zh-CN", "zh-TW"):
+    for lang in ("EN", "zh-CN", "zh-HK"):
         print(lang, "before", before[lang], "after", after[lang])
 
 import re

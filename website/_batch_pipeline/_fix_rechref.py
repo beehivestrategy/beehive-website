@@ -7,10 +7,10 @@ files = {}
 for slug in slugs:
     files[("en", slug)]   = os.path.join(ROOT, f"blog/articles/{slug}.html")
     files[("zh-cn", slug)]= os.path.join(ROOT, f"zh-cn/blog/articles/{slug}.html")
-    files[("zh-tw", slug)]= os.path.join(ROOT, f"zh-tw/blog/articles/{slug}.html")
+    files[("zh-hk", slug)]= os.path.join(ROOT, f"zh-hk/blog/articles/{slug}.html")
 
 # for each (lang, slug) the recommended prefix
-prefix = {"en":"/blog/articles/", "zh-cn":"/zh-cn/blog/articles/", "zh-tw":"/zh-tw/blog/articles/"}
+prefix = {"en":"/blog/articles/", "zh-cn":"/zh-cn/blog/articles/", "zh-hk":"/zh-hk/blog/articles/"}
 
 def fix(path, lang):
     h = open(path, encoding="utf-8").read()

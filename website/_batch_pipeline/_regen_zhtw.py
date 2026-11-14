@@ -15,13 +15,13 @@ def count_cjk(s):
 report = []
 for slug in slugs:
     src = os.path.join(ROOT, "zh-cn/blog/articles", slug + ".html")
-    dst = os.path.join(ROOT, "zh-tw/blog/articles", slug + ".html")
+    dst = os.path.join(ROOT, "zh-hk/blog/articles", slug + ".html")
     if not os.path.exists(src):
         report.append(f"[MISSING SRC] {slug}")
         continue
     html = open(src, encoding="utf-8").read()
     tw = opencc_convert(html)
-    # fix recommended-card hrefs to /zh-tw/blog/articles/
+    # fix recommended-card hrefs to /zh-hk/blog/articles/
     def repl(m):
         tag = m.group(0)
         hm = re.search(r'href="([^"]*)"', tag)
@@ -29,9 +29,9 @@ for slug in slugs:
         href = hm.group(1)
         new = href
         if href.startswith("/zh-cn/blog/articles/"):
-            new = "/zh-tw/blog/articles/" + href[len("/zh-cn/blog/articles/"):]
+            new = "/zh-hk/blog/articles/" + href[len("/zh-cn/blog/articles/"):]
         elif href.startswith("/blog/articles/"):
-            new = "/zh-tw/blog/articles/" + href[len("/blog/articles/"):]
+            new = "/zh-hk/blog/articles/" + href[len("/blog/articles/"):]
         return tag.replace('href="%s"' % href, 'href="%s"' % new, 1)
     tw = re.sub(r'<a class="recommended-card"[^>]*>', repl, tw)
     # set faq aria-label to traditional

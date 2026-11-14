@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Pre-flight: check the 78 proposed new titles for collisions against
-(a) each other, (b) all existing titles in zh-cn + zh-tw (audit norm rules).
+(a) each other, (b) all existing titles in zh-cn + zh-hk (audit norm rules).
 Read-only.
 """
 import json, os, re, glob, unicodedata, io
@@ -28,7 +28,7 @@ def scan(lang_dir):
             out[os.path.basename(f)[:-5]] = norm(clean(m.group(1)))
     return out
 
-existing = {"cn": scan("zh-cn"), "tw": scan("zh-tw")}
+existing = {"cn": scan("zh-cn"), "tw": scan("zh-hk")}
 
 with open(os.path.join(BASE, "title_fixes_proposal.json"), encoding="utf-8") as f:
     prop = json.load(f)

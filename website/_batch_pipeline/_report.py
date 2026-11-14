@@ -35,7 +35,7 @@ def main():
     print("SLUG | EN(b/a) | CN(b/a) | TW(b/a) | FAQ | LD(loc) | defects")
     for slug in slugs:
         row = []
-        for lang, prefix in [("en", ""), ("zh-CN", "zh-cn/"), ("zh-TW", "zh-tw/")]:
+        for lang, prefix in [("en", ""), ("zh-CN", "zh-cn/"), ("zh-HK", "zh-hk/")]:
             path = prefix + "blog/articles/" + slug + ".html"
             before = git_head(path)
             with open(os.path.join(ROOT, path), encoding="utf-8") as fh:

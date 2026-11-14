@@ -129,16 +129,16 @@ H2_SIX_TW_4 = '零售團隊如何在不提交數據需求的前提下獲得細�
 
 def run():
     for slug in (S3, S4):
-        b = {lg: stats(slug, lg) for lg in ('en', 'zh-cn', 'zh-tw')}
+        b = {lg: stats(slug, lg) for lg in ('en', 'zh-cn', 'zh-hk')}
         process(slug, 'en', h2_renames=EN_RENAMES, inserts=EN_INSERTS, faq=EN_FAQ_S3)
         h6_cn = H2_SIX_CN if slug == S3 else H2_SIX_CN_4
         h6_tw = H2_SIX_TW if slug == S3 else H2_SIX_TW_4
         body_cn = ZH_BODY.replace('{H2_SIX}', h6_cn)
         body_tw = s2tw(ZH_BODY).replace(s2tw('{H2_SIX}'), h6_tw).replace('{H2_SIX}', h6_tw)
         process(slug, 'zh-cn', new_body=body_cn, faq=ZH_FAQ)
-        process(slug, 'zh-tw', new_body=body_tw, faq=[(s2tw(q), s2tw(a)) for q, a in ZH_FAQ])
+        process(slug, 'zh-hk', new_body=body_tw, faq=[(s2tw(q), s2tw(a)) for q, a in ZH_FAQ])
         print('##', slug)
-        for lg in ('en', 'zh-cn', 'zh-tw'):
+        for lg in ('en', 'zh-cn', 'zh-hk'):
             print('  ', lg, b[lg], '->', stats(slug, lg))
 
 

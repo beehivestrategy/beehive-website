@@ -176,12 +176,12 @@ ei = h.find('</nav>', si)
 h = h[:si] + ZH_SIDEBAR + h[ei+len('</nav>'):]
 open(zh_p, 'w', encoding='utf-8').write(h)
 
-# 3) zh-TW from zh-CN main
+# 3) zh-HK from zh-CN main
 zhcn = open(zh_p, encoding='utf-8').read()
 m = re.search(r'<main>.*</main>', zhcn, re.S)
 tw_main = cc.convert(m.group(0))
-tw_main = tw_main.replace('/zh-cn/', '/zh-tw/').replace('zh-cn/', 'zh-tw/').replace('预约演示', '預約示範')
-zhtw = open(base + "/zh-tw/blog/articles/" + slug + ".html", encoding='utf-8').read()
-zhtw = re.sub(r'<main>.*</main>', tw_main, zhtw, flags=re.S)
-open(base + "/zh-tw/blog/articles/" + slug + ".html", 'w', encoding='utf-8').write(zhtw)
+tw_main = tw_main.replace('/zh-cn/', '/zh-hk/').replace('zh-cn/', 'zh-hk/').replace('预约演示', '預約示範')
+zhhk = open(base + "/zh-hk/blog/articles/" + slug + ".html", encoding='utf-8').read()
+zhhk = re.sub(r'<main>.*</main>', tw_main, zhhk, flags=re.S)
+open(base + "/zh-hk/blog/articles/" + slug + ".html", 'w', encoding='utf-8').write(zhhk)
 print("slug12 done")

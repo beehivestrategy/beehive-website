@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/retail-demand-forecasting-ai.html"
 ZHCN = W + "zh-cn/blog/articles/retail-demand-forecasting-ai.html"
-ZHTW = W + "zh-tw/blog/articles/retail-demand-forecasting-ai.html"
+ZHTW = W + "zh-hk/blog/articles/retail-demand-forecasting-ai.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -197,7 +197,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("AI需求預測相比傳統統計方法能帶來多大提升？",
      "麥肯錫關於AI在供應鏈的研究顯示，基於機器學習的預測可將預測誤差降低20-50%，而傳統移動平均和季節性曲線方法無法捕捉促銷、天氣和競爭動作帶來的非線性波動。實際提升取決於兩件事：預測層級是否對齊決策發生的粒度（門店-SKU-週），以及模型是否攝取了足夠的外部訊號——最大的準確性提升來自添加新訊號，而非更換演算法。"),
@@ -302,7 +302,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="理解當前格局"', 'id="零售預測為何失準"', 'id="如何啟動ai需求預測"',
         '1.75兆美元', '對話式BI',
-    ], 9, "zh-TW")
+    ], 9, "zh-HK")
     assert '需求預測' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

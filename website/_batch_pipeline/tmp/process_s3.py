@@ -9,7 +9,7 @@ from common import (load, save, rep1, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/human-in-the-loop-ai-when-automation-needs-oversight-a-2026-update.html"
 ZHCN = W + "zh-cn/blog/articles/human-in-the-loop-ai-when-automation-needs-oversight-a-2026-update.html"
-ZHTW = W + "zh-tw/blog/articles/human-in-the-loop-ai-when-automation-needs-oversight-a-2026-update.html"
+ZHTW = W + "zh-hk/blog/articles/human-in-the-loop-ai-when-automation-needs-oversight-a-2026-update.html"
 
 FAQ_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
 
@@ -214,7 +214,7 @@ def process_cn():
     save(ZHCN, s)
     print("zh-CN done")
 
-# ================= zh-TW =================
+# ================= zh-HK =================
 TW_FAQ = [
     ("什麼是人在迴路AI？它在2026年為什麼重要？",
      "人在迴路AI指在自動化流程的關鍵節點保留人類批准、審查或否決的架構。2026年它重要有兩個原因：監管上，歐盟AI法案等已把高風險系統的人類監督從建議變為可審計的義務；營運上，過度信任自動化帶來的錯誤決策代價陡增。"),
@@ -292,7 +292,7 @@ def process_tw():
     s = load(ZHTW)
     assert '人在迴路' in body_h1(s), "wrong file"
     if '為什麼人在迴路AI在2026年成為董事會級優先事項' in s:
-        print("zh-TW already processed, skip"); return
+        print("zh-HK already processed, skip"); return
     m = re.search(r'<p class="article-lead">.*?(?=\n\n            <nav class="article-nav")', s, re.S)
     assert m, "tw body anchor not found"
     body = TW_BODY + faq_block(TW_FAQ, "常見問題")
@@ -306,10 +306,10 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         '為什麼人在迴路AI在2026年成為董事會級優先事項',
         '可規模化的監督營運模型',
-    ], 11, "zh-TW")
+    ], 11, "zh-HK")
     assert s.count('class="faq-item"') == 4
     save(ZHTW, s)
-    print("zh-TW done")
+    print("zh-HK done")
 
 process_en()
 process_cn()

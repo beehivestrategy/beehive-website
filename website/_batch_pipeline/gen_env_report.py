@@ -7,7 +7,7 @@ BASE = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipel
 data = json.load(open(f"{BASE}/blog_inventory.json"))
 lang_stats = data["lang_stats"]
 per_day_lang = data["per_day_lang"]
-LANGS = ["en", "zh-CN", "zh-TW"]
+LANGS = ["en", "zh-CN", "zh-HK"]
 
 # monthly aggregation
 months = defaultdict(lambda: {l: 0 for l in LANGS})
@@ -18,16 +18,16 @@ months = dict(sorted(months.items()))
 
 # Live-verified environment counts (curl of each sitemap <loc>, 2026-09-02)
 ENV = {
-    "Local (source)":   {"en":1101,"zh-CN":1101,"zh-TW":1101,"note":"Authoritative — files on disk"},
-    "dev  (beehive-strategy-v2)":      {"en":1101,"zh-CN":1101,"zh-TW":1101,"note":"✅ verified live; repair present (canonical fixed)"},
-    "staging (beehive-strategy-v2-staging)": {"en":1060,"zh-CN":1060,"zh-TW":1060,"note":"⚠️ 41 articles/lang BEHIND dev/prod"},
-    "prod (beehivestrategy.com)":      {"en":1101,"zh-CN":1101,"zh-TW":1101,"note":"✅ count matches; repair not directly probed"},
+    "Local (source)":   {"en":1101,"zh-CN":1101,"zh-HK":1101,"note":"Authoritative — files on disk"},
+    "dev  (beehive-strategy-v2)":      {"en":1101,"zh-CN":1101,"zh-HK":1101,"note":"✅ verified live; repair present (canonical fixed)"},
+    "staging (beehive-strategy-v2-staging)": {"en":1060,"zh-CN":1060,"zh-HK":1060,"note":"⚠️ 41 articles/lang BEHIND dev/prod"},
+    "prod (beehivestrategy.com)":      {"en":1101,"zh-CN":1101,"zh-HK":1101,"note":"✅ count matches; repair not directly probed"},
 }
 
 def row_env(name, d):
-    tot = d["en"]+d["zh-CN"]+d["zh-TW"]
+    tot = d["en"]+d["zh-CN"]+d["zh-HK"]
     flag = "⚠️" if d["en"]<1101 else "✅"
-    return f"<tr><td>{name}</td><td class='num'>{d['en']:,}</td><td class='num'>{d['zh-CN']:,}</td><td class='num'>{d['zh-TW']:,}</td><td class='num'>{tot:,}</td><td class='foot'>{d['note']}</td></tr>"
+    return f"<tr><td>{name}</td><td class='num'>{d['en']:,}</td><td class='num'>{d['zh-CN']:,}</td><td class='num'>{d['zh-HK']:,}</td><td class='num'>{tot:,}</td><td class='foot'>{d['note']}</td></tr>"
 
 env_rows = "".join(row_env(n,d) for n,d in ENV.items())
 
@@ -43,12 +43,12 @@ char_rows = "".join(char_row(l) for l in LANGS)
 # by-day (monthly) table
 maxm = max(max(d.values()) for d in months.values()) or 1
 def day_row(m, d):
-    tot = d["en"]+d["zh-CN"]+d["zh-TW"]
+    tot = d["en"]+d["zh-CN"]+d["zh-HK"]
     bars = "".join(
         f"<span class='bar b{l}' style='width:{d[l]/maxm*120:.0f}px' title='{l}:{d[l]}'></span>"
         for l in LANGS)
     return (f"<tr><td>{m}</td><td class='num'>{d['en']}</td><td class='num'>{d['zh-CN']}</td>"
-            f"<td class='num'>{d['zh-TW']}</td><td class='num'>{tot}</td><td>{bars}</td></tr>")
+            f"<td class='num'>{d['zh-HK']}</td><td class='num'>{tot}</td><td>{bars}</td></tr>")
 day_rows = "".join(day_row(m,d) for m,d in months.items())
 
 HTML = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
@@ -66,7 +66,7 @@ td.num{{text-align:right;font-variant-numeric:tabular-nums}} .foot{{color:var(--
 .kpi{{display:flex;flex-wrap:wrap;gap:12px}} .kpi div{{flex:1 1 150px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px}}
 .kpi b{{display:block;font-size:22px;line-height:1.1}} .kpi span{{color:var(--mut);font-size:12px}}
 .bar{{display:inline-block;height:11px;margin-right:2px;border-radius:2px;vertical-align:middle}}
-.ben{{background:#2B9E8B}} .bzh-CN{{background:#d4a843}} .bzh-TW{{background:#7c6bd4}}
+.ben{{background:#2B9E8B}} .bzh-CN{{background:#d4a843}} .bzh-HK{{background:#7c6bd4}}
 .legend span{{margin-right:14px;font-size:12px}} .dot{{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}}
 .warn{{color:var(--warn);font-weight:600}} .ok{{color:var(--ok);font-weight:600}}
 ul{{margin:8px 0;padding-left:20px}} li{{margin:5px 0}}
@@ -76,7 +76,7 @@ ul{{margin:8px 0;padding-left:20px}} li{{margin:5px 0}}
 
 <div class="card">
   <h2>1 · Blog count by environment (live-checked via sitemap &lt;loc&gt;)</h2>
-  <table><thead><tr><th>Environment</th><th>EN</th><th>zh-CN</th><th>zh-TW</th><th>Total</th><th>Note</th></tr></thead>
+  <table><thead><tr><th>Environment</th><th>EN</th><th>zh-CN</th><th>zh-HK</th><th>Total</th><th>Note</th></tr></thead>
   <tbody>{env_rows}</tbody></table>
   <p class="foot">✅ dev &amp; prod both at full 1,101 / language (3,303 total). ⚠️ <b>staging is 41 articles/language behind</b> — a push to staging will catch it up. Local source = 1,101 each (authoritative).</p>
 </div>
@@ -85,13 +85,13 @@ ul{{margin:8px 0;padding-left:20px}} li{{margin:5px 0}}
   <h2>2 · Character volume by language (local source)</h2>
   <table><thead><tr><th>Lang</th><th>Articles</th><th>Total chars (body)</th><th>Avg / article</th><th>Total chars (file)</th><th>Avg / file</th><th>With date</th><th>Date span</th></tr></thead>
   <tbody>{char_rows}</tbody></table>
-  <p class="foot">"Body" = HTML/JS/CSS stripped. EN averages ~19.9k chars/article; CJK articles ~6.3k chars/article (denser — each char ≈ a word). Total body content: EN 21.9M · zh-CN 6.9M · zh-TW 7.0M.</p>
+  <p class="foot">"Body" = HTML/JS/CSS stripped. EN averages ~19.9k chars/article; CJK articles ~6.3k chars/article (denser — each char ≈ a word). Total body content: EN 21.9M · zh-CN 6.9M · zh-HK 7.0M.</p>
 </div>
 
 <div class="card">
   <h2>3 · Publish cadence by month (articles per language)</h2>
-  <div class="legend"><span><span class="dot ben"></span>EN</span><span><span class="dot bzh-CN"></span>zh-CN</span><span><span class="dot bzh-TW"></span>zh-TW</span></div>
-  <table style="margin-top:8px"><thead><tr><th>Month</th><th>EN</th><th>zh-CN</th><th>zh-TW</th><th>Total</th><th></th></tr></thead>
+  <div class="legend"><span><span class="dot ben"></span>EN</span><span><span class="dot bzh-CN"></span>zh-CN</span><span><span class="dot bzh-HK"></span>zh-HK</span></div>
+  <table style="margin-top:8px"><thead><tr><th>Month</th><th>EN</th><th>zh-CN</th><th>zh-HK</th><th>Total</th><th></th></tr></thead>
   <tbody>{day_rows}</tbody></table>
   <p class="foot">{data['distinct_publish_days']} distinct publish days · span {lang_stats['en']['date_min']} → {lang_stats['en']['date_max']}. Daily granular data in blog_inventory.json.</p>
 </div>
@@ -99,7 +99,7 @@ ul{{margin:8px 0;padding-left:20px}} li{{margin:5px 0}}
 <div class="card">
   <h2>4 · "Is everything in dev?" — verification</h2>
   <ul>
-    <li class="ok">✅ Your assumption holds for dev: a sampled repaired zh-TW article on <code>beehive-strategy-v2.pages.dev</code> returns the <b>fixed</b> canonical (<code>/zh-tw/blog/articles/...</code>), confirming the non-destructive repair batch is live in dev.</li>
+    <li class="ok">✅ Your assumption holds for dev: a sampled repaired zh-HK article on <code>beehive-strategy-v2.pages.dev</code> returns the <b>fixed</b> canonical (<code>/zh-hk/blog/articles/...</code>), confirming the non-destructive repair batch is live in dev.</li>
     <li class="ok">✅ dev and prod both report the full 1,101 / language.</li>
     <li class="warn">⚠️ staging is stale (1,060 / language) — it has NOT received the latest content/repairs.</li>
     <li class="foot">Note: repairs are committed to the repo (dev auto-deploys from it); local working tree still has a few uncommitted auxiliary files (gaps_audit.json, _redirects) — these are non-article and don't affect blog counts.</li>

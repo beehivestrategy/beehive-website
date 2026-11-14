@@ -9,11 +9,11 @@ spec = {
   "ops": [
      {"file":"cn", "anchor":"<exact string in zh-cn file>", "pos":"before",
       "block":"<html to insert>"},
-     {"file":"tw", "anchor":"<exact string in zh-tw file>", "pos":"before",
+     {"file":"tw", "anchor":"<exact string in zh-hk file>", "pos":"before",
       "block":"<html to insert>", "from_cn": true}   # from_cn -> OpenCC s2t
   ]
 }
-For zh-TW ops, set "block_cn" to Simplified source and it will be converted s2t;
+For zh-HK ops, set "block_cn" to Simplified source and it will be converted s2t;
 or set "block" directly if already Traditional.
 """
 import re, os, sys, json
@@ -26,7 +26,7 @@ def s2t(t):
     if _cc is None: _cc = OpenCC('s2t')
     return _cc.convert(t)
 
-# OpenCC s2t over-conversions that are objectively wrong in zh-TW business prose.
+# OpenCC s2t over-conversions that are objectively wrong in zh-HK business prose.
 # Applied only to text we newly insert (never rewrites existing page content).
 POST_FIX = {
     "隻有": "只有",   # 只(zhǐ) -> 隻 is a measure-word error
@@ -41,7 +41,7 @@ def s2t_fixed(t):
 
 PATHS = {"en": "blog/articles/%s.html",
          "cn": "zh-cn/blog/articles/%s.html",
-         "tw": "zh-tw/blog/articles/%s.html"}
+         "tw": "zh-hk/blog/articles/%s.html"}
 
 def path_of(slug, f):
     return os.path.join(ROOT, PATHS[f] % slug)

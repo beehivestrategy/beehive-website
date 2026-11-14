@@ -4,7 +4,7 @@
 import os, re, json, html as H
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-PFX = {'en': '', 'zh-cn': 'zh-cn/', 'zh-tw': 'zh-tw/'}
+PFX = {'en': '', 'zh-cn': 'zh-cn/', 'zh-hk': 'zh-hk/'}
 ART_OPEN = '<article class="article-content"'
 H2_RE = re.compile(r'(<h2 id="([^"]*)"[^>]*>)(.*?)(</h2>)', re.S)
 TAG = re.compile(r'<[^>]+>')
@@ -66,11 +66,11 @@ def h2_texts(slug, lang, doc=None):
 
 
 def tw_renames(slug, cn_renames, convert):
-    """Map zh-CN H2 renames onto the zh-TW file by heading position (files drift in conversion)."""
+    """Map zh-CN H2 renames onto the zh-HK file by heading position (files drift in conversion)."""
     cn_bk = os.path.join(ROOT, '_batch_pipeline/_backup_gb003/zh-cn/blog/articles', slug + '.html')
     cn_src = cn_bk if os.path.exists(cn_bk) else path_for(slug, 'zh-cn')
     cn = h2_texts(slug, 'zh-cn', open(cn_src, encoding='utf-8').read())
-    tw = h2_texts(slug, 'zh-tw')
+    tw = h2_texts(slug, 'zh-hk')
     if len(cn) == len(tw):
         out = {}
         for c, t in zip(cn, tw):
@@ -179,7 +179,7 @@ def process(slug, lang, h2_renames=None, inserts=None, faq=None, excerpts=None,
     # 6. links: recommended-card / sidebar-related-card -> root-relative + lang prefix
     pfx = PFX[lang]
     doc = re.sub(r'<a href="([^"]*)" class="(recommended-card|sidebar-related-card)">',
-                 lambda m: '<a href="/%s%s" class="%s">' % (pfx, re.sub(r'^(zh-cn|zh-tw)/', '', m.group(1)), m.group(2))
+                 lambda m: '<a href="/%s%s" class="%s">' % (pfx, re.sub(r'^(zh-cn|zh-hk)/', '', m.group(1)), m.group(2))
                  if not (m.group(1).startswith('/') or m.group(1).startswith('http') or m.group(1).startswith('#')) else m.group(0),
                  doc)
 

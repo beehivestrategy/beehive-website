@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
+    <title>爲甚麼函數調用正在取代提示工程 | Beehive Strategy</title>
+    <meta name="description" content="函數調用爲AI模型提供對外部工具和數據的結構化、可靠訪問——使大多數企業任務的提示工程變得不必要。">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://www.beehivestrategy.com/zh-hk/blog/articles/why-function-calling-replaces-prompt-engineering">
+    <link href="https://www.beehivestrategy.com/blog/articles/why-function-calling-replaces-prompt-engineering" hreflang="en" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/zh-cn/blog/articles/why-function-calling-replaces-prompt-engineering" hreflang="zh-CN" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/zh-hk/blog/articles/why-function-calling-replaces-prompt-engineering" hreflang="zh-HK" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/blog/articles/why-function-calling-replaces-prompt-engineering" hreflang="x-default" rel="alternate"/>
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Beehive Strategy">
+    <meta property="og:title" content="爲甚麼函數調用正在取代提示工程">
+    <meta property="og:description" content="函數調用爲AI模型提供對外部工具和數據的結構化、可靠訪問——使大多數企業任務的提示工程變得不必要。">
+    <meta property="og:url" content="https://www.beehivestrategy.com/zh-hk/blog/articles/why-function-calling-replaces-prompt-engineering">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-tw/why-function-calling-replaces-prompt-engineering.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="zh_HK">
+    <meta property="article:published_time" content="2026-06-03T09:00:00+08:00">
+    <meta property="article:modified_time" content="2026-06-03T09:00:00+08:00">
+    <meta property="article:author" content="蜂啟諮詢">
+    <meta property="article:section" content="技術">
+    <meta property="article:tag" content="Function Calling"><meta property="article:tag" content="Function Calling"><meta property="article:tag" content="Prompt Engineering"><meta property="article:tag" content="AI代理"><meta property="article:tag" content="大語言模型"><meta property="article:tag" content="MCP">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="爲甚麼函數調用正在取代提示工程">
+    <meta name="twitter:description" content="函數調用爲AI模型提供對外部工具和數據的結構化、可靠訪問——使大多數企業任務的提示工程變得不必要。">
+    <meta name="twitter:image" content="https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-tw/why-function-calling-replaces-prompt-engineering.jpg">
+    <link href="/assets/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/css/article.css?v=20261113.15" rel="stylesheet">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/why-function-calling-replaces-prompt-engineering#article", "headline": "爲甚麼函數調用正在取代提示工程", "description": "函數調用爲AI模型提供對外部工具和數據的結構化、可靠訪問——使大多數企業任務的提示工程變得不必要。", "datePublished": "2026-06-03T09:00:00+08:00", "dateModified": "2026-06-03T09:00:00+08:00", "articleSection": "技術", "keywords": "函數調用, 提示工程, AI代理, LLM工具使用, 企業AI", "inLanguage": "zh-HK", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/why-function-calling-replaces-prompt-engineering"}, "image": "https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-tw/why-function-calling-replaces-prompt-engineering.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog"}, {"@type": "ListItem", "position": 3, "name": "爲甚麼函數調用正在取代提示工程"}]}</script>
+    
+    <link rel="stylesheet" href="/css/article-anim.css?v=20261113.15">
+  <link rel="stylesheet" href="/css/accenture.css?v=20261114.03">
+  <link rel="stylesheet" href="/css/legacy-bridge.css?v=20261112.11">
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+<div id="scroll-progress" class="scroll-progress" role="presentation"></div>
+<header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="/zh-hk/" class="logo" aria-label="蜂啟諮詢 — 回到首頁">
+        <img src="/assets/images/beehive-logo.png" alt="蜂啟諮詢 Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="主導航">
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/what-we-do" class="nav-link" aria-haspopup="true" aria-expanded="false">我們做甚麼 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--md" style="min-width: 780px; max-width: 92vw;">
+            <div class="nav-dropdown-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">從這裏開始</div>
+                <a href="/zh-hk/services" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>全部服務</span>
+                  <span class="dropdown-subtitle">我們提供的每一次交付</span>
+                </a>
+                <a href="/zh-hk/training" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>培訓</span>
+                  <span class="dropdown-subtitle">課程按形式與深度劃分</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">我們交付甚麼</div>
+                <a href="/zh-hk/conversational-ai" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>對話式 AI</span>
+                  <span class="dropdown-subtitle">提問即答，答案與證據一併呈現</span>
+                </a>
+                <a href="/zh-hk/agentic-tools" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>AI 代理工具</span>
+                  <span class="dropdown-subtitle">部署並管治代理 AI</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">我們怎樣交付</div>
+                <a href="/zh-hk/aifde" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>前沿部署工程</span>
+                  <span class="dropdown-subtitle">即時通訊原生部署，駐場交付</span>
+                </a>
+                <a href="/zh-hk/how-we-work" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>我們怎樣工作</span>
+                  <span class="dropdown-subtitle">範圍固定、兩星期完成，之後由你們自己營運</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/proof" class="nav-link" aria-haspopup="true" aria-expanded="false">我們的成果 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">交付物與實例</div>
+                <a href="/zh-hk/proof" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>你會得到甚麼</span>
+                  <span class="dropdown-subtitle">交付物、移交機制與已投入運作的系統</span>
+                </a>
+                <a href="/zh-hk/case-studies" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>交付示範</span>
+                  <span class="dropdown-subtitle">四類情境，逐項列出交付物</span>
+                </a>
+                <a href="/zh-hk/industries" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>行業</span>
+                  <span class="dropdown-subtitle">按行業的切入點</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/blog" class="nav-link" aria-haspopup="true" aria-expanded="false">洞見 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">閱讀</div>
+                <a href="/zh-hk/blog" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>部落格</span>
+                  <span class="dropdown-subtitle">關於應用型 AI 的每週信號</span>
+                </a>
+                <a href="/zh-hk/guides" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>指南</span>
+                  <span class="dropdown-subtitle">長篇操作指南</span>
+                </a>
+                <a href="/zh-hk/news" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>新聞</span>
+                  <span class="dropdown-subtitle">我們交付了甚麼</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/about" class="nav-link" aria-haspopup="true" aria-expanded="false">關於我們 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm nav-dropdown--right">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">公司</div>
+                <a href="/zh-hk/about" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>關於我們</span>
+                  <span class="dropdown-subtitle">香港，服務亞太</span>
+                </a>
+                <a href="/zh-hk/partners" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>合作夥伴</span>
+                  <span class="dropdown-subtitle">與我們同行的夥伴</span>
+                </a>
+                <a href="/zh-hk/credentials" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>資質</span>
+                  <span class="dropdown-subtitle">我們有資質做的事</span>
+                </a>
+                <a href="/zh-hk/security" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>安全</span>
+                  <span class="dropdown-subtitle">你的數據如何被保管</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="/zh-hk/contact" class="nav-link">聯絡我們</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="切換語言" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">繁</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/why-function-calling-replaces-prompt-engineering" role="menuitem" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/why-function-calling-replaces-prompt-engineering" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-hk/blog/articles/why-function-calling-replaces-prompt-engineering" role="menuitem" class="active" data-lang="zh-hk"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/zh-hk/readiness" class="btn btn-primary">免費自評</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="切換選單" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">我們做甚麼 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">從這裏開始</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/services">全部服務<span class="dropdown-subtitle">我們提供的每一次交付</span></a>
+            <a href="/zh-hk/training">培訓<span class="dropdown-subtitle">課程按形式與深度劃分</span></a>
+          </div>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">我們交付甚麼</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/conversational-ai">對話式 AI<span class="dropdown-subtitle">提問即答，答案與證據一併呈現</span></a>
+            <a href="/zh-hk/agentic-tools">AI 代理工具<span class="dropdown-subtitle">部署並管治代理 AI</span></a>
+          </div>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">我們怎樣交付</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/aifde">前沿部署工程<span class="dropdown-subtitle">即時通訊原生部署，駐場交付</span></a>
+            <a href="/zh-hk/how-we-work">我們怎樣工作<span class="dropdown-subtitle">範圍固定、兩星期完成，之後由你們自己營運</span></a>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">我們的成果 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">交付物與實例</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/proof">你會得到甚麼<span class="dropdown-subtitle">交付物、移交機制與已投入運作的系統</span></a>
+          <a href="/zh-hk/case-studies">交付示範<span class="dropdown-subtitle">四類情境，逐項列出交付物</span></a>
+          <a href="/zh-hk/industries">行業<span class="dropdown-subtitle">按行業的切入點</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">洞見 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">閱讀</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/blog">部落格<span class="dropdown-subtitle">關於應用型 AI 的每週信號</span></a>
+          <a href="/zh-hk/guides">指南<span class="dropdown-subtitle">長篇操作指南</span></a>
+          <a href="/zh-hk/news">新聞<span class="dropdown-subtitle">我們交付了甚麼</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">關於我們 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">公司</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/about">關於我們<span class="dropdown-subtitle">香港，服務亞太</span></a>
+          <a href="/zh-hk/partners">合作夥伴<span class="dropdown-subtitle">與我們同行的夥伴</span></a>
+          <a href="/zh-hk/credentials">資質<span class="dropdown-subtitle">我們有資質做的事</span></a>
+          <a href="/zh-hk/security">安全<span class="dropdown-subtitle">你的數據如何被保管</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="/zh-hk/contact">聯絡我們</a>
+  <div class="mobile-lang-switcher">
+    <a href="/zh-hk/blog/articles/why-function-calling-replaces-prompt-engineering" data-lang="en">English</a>
+    <a href="/zh-cn/blog/articles/why-function-calling-replaces-prompt-engineering" data-lang="zh-cn">简体中文</a>
+    <a href="/zh-hk/blog/articles/why-function-calling-replaces-prompt-engineering" data-lang="zh-hk" class="active">繁體中文</a>
+  </div>
+  <a href="/zh-hk/readiness" class="btn btn-primary btn-lg">免費自評</a>
+  </div>
+
+<main>
+
+<div class="container">
+    <section class="article-header">
+        <span class="article-cat-pill">技術</span>
+        <h1 class="article-h1">爲甚麼函數調用正在取代提示工程</h1>
+        <div class="article-meta-row">
+            <div class="article-avatar" aria-hidden="true">蜂</div>
+            <div class="article-meta-text">
+                蜂啟諮詢 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 2026年6月3日 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 5 分鐘閱讀
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <div class="article-layout">
+        <article class="article-content" id="article-content">
+            <div class="toc-mobile" id="toc-mobile">
+                <button class="toc-mobile-toggle" aria-expanded="false">目錄 <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="toc-mobile-links">
+                    <a href="#甚麼是函數調用" class="toc-mobile-link">甚麼是函數調用？</a>
+                    <a href="#爲甚麼提示會撞上天花板" class="toc-mobile-link">爲甚麼提示會撞上天花板？</a>
+                    <a href="#轉向工具之後實際發生了甚麼變化" class="toc-mobile-link">轉向工具之後實際發生了甚麼變化？</a>
+                    <a href="#如何設計出模型會正確使用的工具" class="toc-mobile-link">如何設計出模型會正確使用的工具？</a>
+                    <a href="#工具需要哪些管治" class="toc-mobile-link">工具需要哪些管治？</a>
+                    <a href="#提示工程還重要嗎" class="toc-mobile-link">提示工程還重要嗎？</a>
+                    <a href="#遷移路徑長甚麼樣" class="toc-mobile-link">遷移路徑長甚麼樣？</a>
+                    <a href="#基於工具的系統有哪些失效模式" class="toc-mobile-link">基於工具的系統有哪些失效模式？</a>
+                    <a href="#組織應該如何起步" class="toc-mobile-link">組織應該如何起步？</a>
+                </div>
+            </div>
+<p><strong>函數調用之所以正在取代提示工程、成爲企業 AI 準確性的首要槓桿，是因爲它修好了提示工程修不了的那個失效模式：一個被問到自己沒有的事實的模型，會編出一個可信的事實。</strong>提示工程決定答案表達得多好；工具使用決定它是否爲真。當組織從演示走向生產，這個區分就不再是學術性的——董事會材料裏一個文采斐然的錯誤數字，代價高於一次簡短的拒答；而最早明白這一點的團隊，正是那些系統活過了規模化的團隊。</p>
+<p>這並不是說提示不再重要。它依然一如既往地重要，只是它不再是槓桿所在。槓桿轉移到了工具、schema 與護欄的設計上——它們決定模型能夠觸達甚麼。本文解釋原因、實踐中的變化，以及你該怎樣做。</p>
+
+<h2 id="甚麼是函數調用">甚麼是函數調用？</h2>
+        <figure class="article-figure" data-fig-slug="why-function-calling-replaces-prompt-engineering">
+          <img src="/assets/blog/svg/why-function-calling-replaces-prompt-engineering.svg" alt="爲甚麼函數調用正在取代提示工程 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>圖：<b>爲甚麼函數調用正在取代提示工程</b> 的核心脈絡一覽</figcaption>
+        </figure>
+
+<p>函數調用——也稱工具使用——是這樣一種機制：語言模型不直接作答，而是發出一個結構化請求，調用一個帶類型參數的具名操作。應用程序執行它、返回結果，模型再把結果納入自己的答案。</p>
+<p>一個具體例子。用戶問：「我們北區上季度的毛利率是多少，和計劃相比如何？」一個僅靠提示的模型會產出一段文字；一個帶工具的模型則會發出類似這樣的請求：</p>
+<ul>
+<li><code>get_metric(metric="gross_margin", region="north", period="2026Q1")</code></li>
+<li><code>get_plan_value(metric="gross_margin", region="north", period="2026Q1")</code></li>
+</ul>
+<p>應用程序針對受管治的系統執行這兩條調用、返回數字，模型再寫出對比。差別不是文體上的：在第二種情況下，答案裏的每個數字都來自一個記錄系統，並且可以追溯回去。</p>
+<p>讓這套機制運轉起來需要三個組件：一個<strong>工具註冊表</strong>，描述每個函數、參數與語意；一份<strong>參數契約</strong>，通常是帶類型、枚舉與必填標記的 JSON schema；以及一條<strong>執行與返回路徑</strong>，以調用者的權限執行該調用，並以模型可用的形態返回結果。</p>
+
+<h2 id="爲甚麼提示會撞上天花板">爲甚麼提示會撞上天花板？</h2>
+<p>因爲有四重限制是結構性的，不是靠更好的措辭能修好的。</p>
+<p><strong>不確定時的虛構。</strong>一個缺少某事實的模型照樣會把模式補全。「只使用所提供的數據」這類指令能減少但不能消除這一點，因爲模型仍是在按合理性而非按檢索結果來生成 token。</p>
+<p><strong>算術與聚合。</strong>語言模型是在近似地做算術。讓它在上下文裏把三十個數字相加，等於接受一個任何財務部門都無法容忍的錯誤率。正確的架構是：讓模型請求一次計算，由確定性系統來執行。</p>
+<p><strong>新鮮度。</strong>訓練截止之後發生的一切，或者今天早上剛變的一切，都在模型知識之外。提示夠不到它；工具調用可以。</p>
+<p><strong>約束坍塌。</strong>隨着同時施加的規則增多，指令遵循能力會退化。團隊的反應是把提示寫得更長，這隻有邊際效果，還增加了延遲與成本。替代方案——把約束表達爲運行時強制執行的帶類型 schema——之所以有效，是因爲執行是機械的，而不是統計性的。</p>
+<p>簡而言之：提示控制的是行爲，而行爲從來不是真正的約束。準確性、新鮮度與可審計性纔是。</p>
+
+<h2 id="轉向工具之後實際發生了甚麼變化">轉向工具之後實際發生了甚麼變化？</h2>
+<p>五重轉變，而第三重是組織最容易低估的。</p>
+<p><strong>1. 從指令轉向接口。</strong>你不再用散文描述想要甚麼，而是定義一個帶類型參數的操作。一個命名良好、描述精確的函數，比三段指令更可靠地教會模型，因爲 schema 從機械層面約束了輸出空間。</p>
+<p><strong>2. 從希望轉向強制。</strong>約束從「請返回合法 JSON」變成運行時會校驗並拒絕的 schema。一次帶越界枚舉值的工具調用，要麼校驗失敗並帶着錯誤重試，要麼根本不執行。在說服是概率性的地方，執行是確定性的。</p>
+<p><strong>3. 工作量轉移到數據層。</strong>一旦模型能調用工具，答案質素的上界就由底層系統的質素與可訪問性決定。大多數組織在幾星期內就會發現這一點：模型沒問題，問題在於數據沒接上、沒定義、或不是當前的。這正是讓團隊措手不及的轉變，因爲它在預算剛剛花完的那個時點，把一個 AI 問題變成了一個數據工程問題。</p>
+<p><strong>4. 從答案轉向出處。</strong>一個以工具爲推行依據的答案裏，每個數字都能引用系統、查詢與時間戳。這正是讓輸出在 CFO、監管方或法庭面前站得住腳的東西，而單靠提示永遠得不到它。</p>
+<p><strong>5. 從單次調用轉向循環。</strong>有了工具，模型就能規劃：調用、觀察、調整、重試。這正是代理成爲可能的原因，也正是"工具設計而非提示設計"決定了這個循環表現好壞的原因。</p>
+
+<h2 id="如何設計出模型會正確使用的工具">如何設計出模型會正確使用的工具？</h2>
+<p>工具設計如今是核心技能，而且它有具體的規則。</p>
+<p><strong>按業務意圖命名操作，而不是按數據庫對象命名。</strong><code>get_gross_margin</code> 優於 <code>query_fact_table</code>。模型是靠用戶問題與工具描述之間的語意匹配來選擇工具的，因此描述本身就是接口。</p>
+<p><strong>在描述裏寫明"何時用"與"何時不用"。</strong>「用於按區域與期間查詢實際毛利率。不要用於預測值或計劃值——那請用 get_plan_value。」負向指引可以攔下最常見的選擇錯誤。</p>
+<p><strong>激進地約束參數。</strong>對類別取值使用枚舉，並顯式聲明類型、必填標記與取值範圍。你編碼進 schema 的每一條約束，都是模型不必去猜的一條，也是運行時可以校驗的一條。</p>
+<p><strong>以模型能夠推理的形態返回結果。</strong>包含單位、幣種、期間標籤與一個狀態字段。一個只返回裸數字的工具，是在邀請模型自行補充上下文——錯誤正是從這裏進入的。</p>
+<p><strong>讓錯誤資訊具有可操作性。</strong>當調用失敗時，返回一個模型可以採取行動的結構化錯誤：「區域 north 無法識別；有效取值爲 north、south、east、west。」這會把失敗變成可恢復的一步，而不是死衚衕。</p>
+<p><strong>把工具數量控制在可管理範圍。</strong>幾十個重疊的工具會降低選擇準確率。請把相關操作分組，並按領域路由到相關子集，而不是一次把全部工具都擺出來。</p>
+
+<h2 id="工具需要哪些管治">工具需要哪些管治？</h2>
+<p>工具是可被執行的能力，這使它成爲一個安全邊界，而不是一項便利。五項控制不容妥協。</p>
+<ul>
+<li><strong>在執行處強制授權。</strong>工具以調用用戶的權限運行，且在服務端解析。絕不要相信模型關於「誰在提問」的陳述。一個返回了他人數據行的工具，就是一場用自然語言交付的數據泄露。</li>
+<li><strong>對有副作用的動作使用白名單。</strong>讀與寫是不同風險等級。任何會創建、更新或發送的操作都應單獨授權，高價值動作還應要求顯式人工審批。</li>
+<li><strong>成本與迭代天花板。</strong>對每次請求的調用數、每個任務的循環次數、以及每次運行的支出設定硬上限。一個循環失控的代理，可能在失敗之前燒掉一大筆預算。</li>
+<li><strong>對每次調用做審計日誌。</strong>誰、甚麼工具、甚麼參數、甚麼結果、甚麼時間。這既是事件響應的證據基礎，也是合規的證據基礎。</li>
+<li><strong>獨立於模型做輸入校驗。</strong>在執行前，於工具邊界按 schema 校驗參數——正如你會校驗任何不可信 API 輸入那樣，因爲它本來就是。</li>
+</ul>
+
+<h2 id="提示工程還重要嗎">提示工程還重要嗎？</h2>
+        <figure class="article-figure" data-fig-slug2="why-function-calling-replaces-prompt-engineering">
+          <img src="/assets/blog/svg/why-function-calling-replaces-prompt-engineering.svg" alt="爲甚麼函數調用正在取代提示工程 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>圖：<b>爲甚麼函數調用正在取代提示工程</b> 的核心脈絡一覽</figcaption>
+        </figure>
+
+<p>重要，而且這個分工是穩定的，不是過渡性的。</p>
+<p><strong>提示依然擁有「理解」：</strong>模型如何拆解問題、以甚麼順序提問、如何處理歧義、如何呈現結果、使用甚麼語氣，以及何時拒絕作答。這些都是行爲屬性，沒有哪個 schema 能定義它們。</p>
+<p><strong>提示依然擁有「拒答行爲」：</strong>「數據未覆蓋此項」而不是臨場發揮，這是一條提示層面的控制，而且它是你會寫下的價值最高的指令之一。</p>
+<p><strong>提示依然擁有「錯誤恢復」：</strong>模型在一次工具調用失敗後做甚麼——帶着修正後的參數重試、換一個工具，還是升級給人工——是在系統指令裏規定的，而它決定了這個循環能否優雅降級。</p>
+<p>變化的是投入比例。在一個成熟系統裏，大部分工程時間花在工具、schema、評估與數據層上；提示變成一個更小、更穩定的表面。我們那篇關於「甚麼是提示工程」的配套文章，涵蓋了在這個更小的表面上仍然必不可少的技術。</p>
+
+<h2 id="遷移路徑長甚麼樣">遷移路徑長甚麼樣？</h2>
+<p>四個階段，而大多數組織正處在中間某處。</p>
+<p><strong>第一階段——提示式答案。</strong>模型憑自身知識作答，檢索到的文檔只是被粘貼進上下文。構建快，但對任何事實性或數字性的內容都不可靠。</p>
+<p><strong>第二階段——把檢索變成工具。</strong>模型調用一個搜索函數，而不是被動地接收上下文。這是第一項也是最大的一項準確率提升，而且幾乎所有人都能立刻獲得它。</p>
+<p><strong>第三階段——結構化數據工具。</strong>模型針對受管治的度量與實體調用具名操作，由語意層定義可用範圍。企業級的答案正是在這一階段變得可審計，大部分持久價值也在這一階段。</p>
+<p><strong>第四階段——編排式代理。</strong>帶工具循環的多步規劃、驗證，以及對重大動作的人工審批。威力強大，但只有在第三階段牢固之後才安全，因爲一個建立在無管治工具之上的代理，會放大其下方的每一個弱點。</p>
+<p>不要跳到第四階段。過早引入自主性的失效模式是：一個令人印象深刻、卻無法被託付真實決策的演示，隨之而來的是組織信心的流失，把整個項目拖後一年。</p>
+
+<h2 id="基於工具的系統有哪些失效模式">基於工具的系統有哪些失效模式？</h2>
+<p><strong>選錯工具，卻給出自信答案。</strong>模型選擇了一個看似合理但錯誤的操作。緩解手段是精確的描述加負向指引、更小的工具集，以及在真實問題分佈上做評估。</p>
+<p><strong>工具對、參數錯。</strong>操作正確，但期間或區域錯了。緩解手段是枚舉、校驗，以及返回能讓模型帶着修正重試的可操作錯誤。</p>
+<p><strong>把靜默的工具失敗當成數據。</strong>調用實際失敗，卻被渲染成「無數據」。請始終返回顯式的狀態字段，並指示模型區分缺失與失敗。</p>
+<p><strong>繞過管治。</strong>某個工具讀取了調用者無權查看的內容。請在服務端、按每次調用強制授權，並用刻意過寬的問題來測試它。</p>
+<p><strong>循環失控。</strong>強制迭代與支出上限，並對高成本或高影響的動作設置審批閾值。</p>
+<p><strong>虛假精確。</strong>工具返回一個數字，模型卻以超出數據配套的自信呈現它。請指示模型報告新鮮度與覆蓋範圍，並在答案中展示它們。</p>
+<p><strong>工具蔓延。</strong>每個團隊各自加工具而不協調，會產出語意不一致的重疊操作。請把註冊表當作產品來管治——有負責人、有版本、有棄用機制。</p>
+
+<h2 id="組織應該如何起步">組織應該如何起步？</h2>
+<p>從高管最常問的那五個問題出發，讓每一個都能由一個受管治的工具來回答。這是一個小而有限的表面——通常涉及兩到四個源系統和少數幾個經過認證的度量。構建工具、接好授權，並度量端到端答案的準確率，而不是單次調用的準確率。</p>
+<p>蜂啟諮詢（Beehive Strategy）正是圍繞這一點構建的：MCP 連接器在既有系統之上暴露受管治的操作；語意層定義這些操作可以返回哪些經過認證的度量；行級安全在執行時按角色施加。用戶在 Teams、Slack 或 WhatsApp 裏用自然語言提問，平台把問題解析爲針對實時數據的工具調用——SQL 與來源均可見以供審計。以託管服務方式約兩星期部署，這是從提示式猜測走向你能夠捍衛的答案的最短路徑。</p>
+
+            <section class="faq-section" id="faq" aria-label="常見問題">
+                <h2 class="faq-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    常見問題
+                </h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3 class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">1</span>AI 中的函數調用是甚麼？</span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>函數調用——也稱工具使用——是這樣一種機制：語言模型不直接作答，而是發出一個結構化請求，調用一個帶類型參數的具名操作；應用程序執行該調用、返回結果，模型再把結果納入答案。它需要三個組件：描述各函數及其參數的工具註冊表；通常以帶類型與枚舉的 JSON schema 表達的參數契約；以及以調用者權限執行調用、並以可用形態返回結果的執行路徑。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">2</span>爲甚麼函數調用正在取代提示工程？</span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>因爲提示決定答案表達得多好，而工具使用決定它是否爲真。提示的四重限制是結構性的：缺少某事實的模型會編出可信的事實；語言模型只是近似地做算術，不應被信任去聚合數字；訓練截止之後的一切都在其知識之外；以及隨着約束增多，指令遵循能力會退化。工具調用同時回應了這四點：讓事實來自檢索、讓計算由確定性系統執行、讓數據保持當前、讓約束被機械地強制執行。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">3</span>有了函數調用，提示工程還重要嗎？</span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>重要。這個分工是穩定的，而非過渡性的。提示擁有理解——問題如何拆解、歧義如何處理、結果如何呈現、使用甚麼語氣、何時拒絕作答；它也擁有拒答行爲與錯誤恢復，規定模型在一次調用失敗後做甚麼。變化的是投入比例：在成熟系統中，大部分工程時間花在工具、schema、評估與數據層上，而提示變成一個更小、更穩定的表面。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">4</span>如何設計出模型會正確使用的工具？</span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>按業務意圖而非數據庫對象命名操作，因爲模型是靠問題與工具描述之間的語意匹配來選擇工具的；在描述中寫明何時用與何時不用，因爲負向指引能攔下最常見的選擇錯誤；用枚舉、類型、必填標記與取值範圍激進地約束參數；返回結果時帶上單位、期間標籤與狀態字段；讓錯誤資訊具有可操作性，使失敗可恢復；並把工具數量控制在可管理範圍，按領域路由到相關子集。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">5</span>AI 工具需要哪些安全控制？</span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>五項控制不容妥協：在執行處於服務端強制授權，使工具永不返回調用者無權查看的記錄；對有副作用的動作單獨使用白名單並要求人工審批；對每次請求的調用數、循環迭代次數與單次運行支出設定硬上限；對每次調用做審計日誌，記錄主體、工具、參數、結果與時間；以及在執行前於工具邊界按 schema 校驗參數，正如你會校驗任何不可信的 API 輸入。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">6</span>基於工具的 AI 系統主要有哪些失效模式？</span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>反覆出現的有：選擇了看似合理但錯誤的工具，可用精確描述與更小的工具集緩解；工具對但參數錯，可用枚舉與可操作錯誤緩解；把靜默的工具失敗渲染成無數據，需始終返回顯式狀態字段來修正；管治被繞過，即工具讀取超出調用者權限的內容；循環失控，需靠迭代與支出上限控制；虛假精確，需靠報告新鮮度與覆蓋範圍應對；以及工具蔓延，需要把註冊表當作產品來管治。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">7</span>從提示工程遷移到函數調用的路徑是甚麼？</span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>四個階段。第一階段是憑模型知識的提示式答案，構建快但事實不可靠；第二階段把檢索變成工具，這是第一項也是最大的準確率提升；第三階段暴露針對受管治度量的結構化數據工具，由語意層定義可用範圍，答案在此階段變得可審計，大部分持久價值也在此階段；第四階段加入帶驗證與人工審批的編排式代理——威力強大，但只有在第三階段牢固後才安全，而直接跳到它是最常見的戰略錯誤。</p></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "AI 中的函數調用是甚麼？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "函數調用——也稱工具使用——是這樣一種機制：語言模型不直接作答，而是發出一個結構化請求，調用一個帶類型參數的具名操作；應用程序執行該調用、返回結果，模型再把結果納入答案。它需要三個組件：描述各函數及其參數的工具註冊表；通常以帶類型與枚舉的 JSON schema 表達的參數契約；以及以調用者權限執行調用、並以可用形態返回結果的執行路徑。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "爲甚麼函數調用正在取代提示工程？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因爲提示決定答案表達得多好，而工具使用決定它是否爲真。提示的四重限制是結構性的：缺少某事實的模型會編出可信的事實；語言模型只是近似地做算術，不應被信任去聚合數字；訓練截止之後的一切都在其知識之外；以及隨着約束增多，指令遵循能力會退化。工具調用同時回應了這四點：讓事實來自檢索、讓計算由確定性系統執行、讓數據保持當前、讓約束被機械地強制執行。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "有了函數調用，提示工程還重要嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "重要。這個分工是穩定的，而非過渡性的。提示擁有理解——問題如何拆解、歧義如何處理、結果如何呈現、使用甚麼語氣、何時拒絕作答；它也擁有拒答行爲與錯誤恢復，規定模型在一次調用失敗後做甚麼。變化的是投入比例：在成熟系統中，大部分工程時間花在工具、schema、評估與數據層上，而提示變成一個更小、更穩定的表面。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "如何設計出模型會正確使用的工具？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按業務意圖而非數據庫對象命名操作，因爲模型是靠問題與工具描述之間的語意匹配來選擇工具的；在描述中寫明何時用與何時不用，因爲負向指引能攔下最常見的選擇錯誤；用枚舉、類型、必填標記與取值範圍激進地約束參數；返回結果時帶上單位、期間標籤與狀態字段；讓錯誤資訊具有可操作性，使失敗可恢復；並把工具數量控制在可管理範圍，按領域路由到相關子集。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "AI 工具需要哪些安全控制？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "五項控制不容妥協：在執行處於服務端強制授權，使工具永不返回調用者無權查看的記錄；對有副作用的動作單獨使用白名單並要求人工審批；對每次請求的調用數、循環迭代次數與單次運行支出設定硬上限；對每次調用做審計日誌，記錄主體、工具、參數、結果與時間；以及在執行前於工具邊界按 schema 校驗參數，正如你會校驗任何不可信的 API 輸入。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "基於工具的 AI 系統主要有哪些失效模式？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "反覆出現的有：選擇了看似合理但錯誤的工具，可用精確描述與更小的工具集緩解；工具對但參數錯，可用枚舉與可操作錯誤緩解；把靜默的工具失敗渲染成無數據，需始終返回顯式狀態字段來修正；管治被繞過，即工具讀取超出調用者權限的內容；循環失控，需靠迭代與支出上限控制；虛假精確，需靠報告新鮮度與覆蓋範圍應對；以及工具蔓延，需要把註冊表當作產品來管治。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "從提示工程遷移到函數調用的路徑是甚麼？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "四個階段。第一階段是憑模型知識的提示式答案，構建快但事實不可靠；第二階段把檢索變成工具，這是第一項也是最大的準確率提升；第三階段暴露針對受管治度量的結構化數據工具，由語意層定義可用範圍，答案在此階段變得可審計，大部分持久價值也在此階段；第四階段加入帶驗證與人工審批的編排式代理——威力強大，但只有在第三階段牢固後才安全，而直接跳到它是最常見的戰略錯誤。"
+      }
+    }
+  ]
+}
+            </script>
+
+
+            <nav class="article-nav" aria-label="Article navigation">
+                <a href="https://www.beehivestrategy.com/zh-hk/blog" class="btn-back-to-blog">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                    返回全部文章
+                </a>
+            </nav>
+                </article>
+
+        <aside class="toc-sidebar" id="toc-sidebar" aria-label="Article sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-heading">目錄</div>
+                <nav class="toc-links">
+                    <a href="#甚麼是函數調用" class="toc-link">甚麼是函數調用？</a>
+                    <a href="#爲甚麼提示會撞上天花板" class="toc-link">爲甚麼提示會撞上天花板？</a>
+                    <a href="#轉向工具之後實際發生了甚麼變化" class="toc-link">轉向工具之後實際發生了甚麼變化？</a>
+                    <a href="#如何設計出模型會正確使用的工具" class="toc-link">如何設計出模型會正確使用的工具？</a>
+                    <a href="#工具需要哪些管治" class="toc-link">工具需要哪些管治？</a>
+                    <a href="#提示工程還重要嗎" class="toc-link">提示工程還重要嗎？</a>
+                    <a href="#遷移路徑長甚麼樣" class="toc-link">遷移路徑長甚麼樣？</a>
+                    <a href="#基於工具的系統有哪些失效模式" class="toc-link">基於工具的系統有哪些失效模式？</a>
+                    <a href="#組織應該如何起步" class="toc-link">組織應該如何起步？</a>
+                
+                    <a href="#函數調用取代提示工程的-5-大原因" class="toc-link">函數調用取代提示工程的 5 大原因</a>
+                    <a href="#函數調用與提示工程" class="toc-link">函數調用與提示工程</a>
+                    <a href="#模型更新時提示詞爲甚麼會失效" class="toc-link">模型更新時提示詞爲甚麼會失效？</a>
+                    <a href="#這對你的數據平台意味着甚麼" class="toc-link">這對你的數據平台意味着甚麼？</a>
+                    <a href="#蜂啟諮詢如何幫助" class="toc-link">蜂啟諮詢如何幫助</a>
+                
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">主題</div>
+                <div class="sidebar-tags"><span class="article-tag-pill">Function Calling</span><span class="article-tag-pill">Function Calling</span><span class="article-tag-pill">Prompt Engineering</span><span class="article-tag-pill">AI代理</span><span class="article-tag-pill">大語言模型</span><span class="article-tag-pill">MCP</span></div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">分享本文</div>
+                <div class="sidebar-share">
+                    <button class="article-share-btn" id="share-linkedin" aria-label="Share on LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+                    <button class="article-share-btn" id="share-x" aria-label="Share on X"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.232 10.768L20 4"/></svg></button>
+                    <button class="article-share-btn" id="share-copy" aria-label="Copy link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">相關文章</div>
+                <div class="sidebar-related-list">
+                    <a href="/zh-hk/blog/articles/generative-ai-enterprise-search" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">面向企業搜索的生成式AI</h4>
+                        <span class="sidebar-related-meta">3 分鐘閱讀</span>
+                    </a>
+                    <a href="/zh-hk/blog/articles/snowflake-databricks-genie-conversational-ai" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">Snowflake、Databricks Genie與對話式AI競賽</h4>
+                        <span class="sidebar-related-meta">6 分鐘閱讀</span>
+                    </a>
+                    <a href="/zh-hk/blog/articles/vector-database-selection-enterprise-guide" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">爲企業搜索選擇向量數據庫</h4>
+                        <span class="sidebar-related-meta">7 分鐘閱讀</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<div class="container">
+    <section class="recommended-section" aria-labelledby="recommended-heading">
+        <div class="recommended-header">
+            <h2 class="recommended-title" id="recommended-heading">推薦文章</h2>
+            <a href="https://www.beehivestrategy.com/zh-cn/blog" class="recommended-view-all">查看全部 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+        </div>
+        <div class="recommended-grid">
+            <a href="/zh-hk/blog/articles/data-visualization-ai-insights" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/data-visualization-ai-insights.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">分析</span>
+                    <h3 class="recommended-card-title">把AI洞察轉化爲決策的數據可視化</h3>
+                    <p class="recommended-card-excerpt">爲甚麼正確的圖表能把AI答案變成有人行動的決策。</p>
+                    <div class="recommended-card-meta">
+                        <span>3 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年8月17日</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/zh-hk/blog/articles/data-quality-automation-from-reactive-to-proactive-part-2" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/data-quality-automation-from-reactive-to-proactive-part-2.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">技術</span>
+                    <h3 class="recommended-card-title">數據質素自動化：從被動響應到主動預防（第二部分）</h3>
+                    <p class="recommended-card-excerpt">從被動救火到主動預防：數據質素自動化的監控規則、溯源定位與責任機制如何推行。</p>
+                    <div class="recommended-card-meta">
+                        <span>1 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年7月20日</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/zh-hk/blog/articles/cfo-guide-ai-budget-allocation" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/cfo-guide-ai-budget-allocation.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">技術</span>
+                    <h3 class="recommended-card-title">CFO人工智慧預算分配指南：2026年投資報酬最大化策略</h3>
+                    <p class="recommended-card-excerpt">CFO 視角的 AI 預算分配框架：如何區分能力建設與試點投入，並設定可驗證的回報門檻。</p>
+                    <div class="recommended-card-meta">
+                        <span>1 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年7月17日</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <section class="article-cta" aria-labelledby="cta-heading">
+        <div class="article-cta-card">
+            <div class="article-cta-inner">
+                <div class="article-cta-content">
+                    <div class="article-cta-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 預約個性化演示</div>
+                    <h2 class="article-cta-title" id="cta-heading">準備好改變貴公司的數據策略了嗎？</h2>
+                    <p class="article-cta-desc">了解蜂啟諮詢的對話式分析平台如何在整個營運中解鎖實時洞察——從上游數據到下游決策。</p>
+                    <div class="article-cta-actions">
+                        <a href="/zh-hk/contact" class="article-cta-btn">預約示範</a>
+                        <a href="/zh-hk/solution" class="article-cta-secondary">了解解決方案</a>
+                    </div>
+                </div>
+                <div class="article-cta-stats">
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">3x</div><div class="article-cta-stat-label">典型首年 ROI</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">78%</div><div class="article-cta-stat-label">更快解決查詢</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">92%</div><div class="article-cta-stat-label">6 個月內採用率</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">50+</div><div class="article-cta-stat-label">數據連接器</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+
+<footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/zh-hk/" class="logo" aria-label="蜂啟諮詢 — 回到首頁">
+            <img src="/assets/images/beehive-logo-white.png" alt="蜂啟諮詢 Logo" width="144" height="36" loading="lazy">
+          </a>
+          <p>我們把受管治的對話式 AI 部署進你們團隊已在用的溝通工具裏——範圍固定、兩星期完成，我們走後由你們自己人營運。</p>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="mailto:account@beehivestrategy.com" aria-label="郵箱"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>我們做甚麼</h4>
+          <ul>
+            <li><a href="/zh-hk/what-we-do">我們做甚麼</a></li>
+            <li><a href="/zh-hk/training">培訓</a></li>
+            <li><a href="/zh-hk/services">全部服務</a></li>
+            <li><a href="/zh-hk/conversational-ai">對話式 AI</a></li>
+            <li><a href="/zh-hk/aifde">前沿部署工程</a></li>
+            <li><a href="/zh-hk/agentic-tools">AI 代理工具</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>我們的成果</h4>
+          <ul>
+            <li><a href="/zh-hk/proof">你會得到甚麼</a></li>
+            <li><a href="/zh-hk/case-studies">交付示範</a></li>
+            <li><a href="/zh-hk/industries">行業</a></li>
+            <li><a href="/zh-hk/how-we-work">我們怎樣工作</a></li>
+            <li><a href="/zh-hk/blog">洞察</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>公司</h4>
+          <ul>
+            <li><a href="/zh-hk/about">關於我們</a></li>
+            <li><a href="/zh-hk/partners">合作夥伴</a></li>
+            <li><a href="/zh-hk/credentials">資質</a></li>
+            <li><a href="/zh-hk/security">安全</a></li>
+            <li><a href="/zh-hk/contact">聯絡我們</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 蜂啟諮詢有限公司（香港）版權所有</p>
+        <div class="legal">
+          <a href="/zh-hk/privacy">隱私政策</a>
+          <a href="/zh-hk/terms">服務條款</a>
+          <a href="/zh-hk/cookies">Cookie政策</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div class="toast" id="toast"></div>
+<script>window.__ARTICLE_TITLE__ = "爲甚麼函數調用正在取代提示工程";</script>
+<script src="/js/article.js?v=20261113.15"></script>
+    <script src="/js/article-anim.js?v=20261113.15" defer></script>
+</body>
+</html>

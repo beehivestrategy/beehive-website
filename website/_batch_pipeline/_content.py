@@ -4,7 +4,7 @@ h2: id -> question text (only statement H2s need mapping).
 expand: list of (id, question_title, html) inserted before FAQ. html is ONE triple-quoted string.
 faq: list of (question, answer) -> exactly the FAQPage content (>=3).
 excerpts: list of 3 one-sentence recommended-card summaries.
-zh-TW is assembled from zh-CN via OpenCC in fix_article.py.
+zh-HK is assembled from zh-CN via OpenCC in fix_article.py.
 """
 AUG = {}
 

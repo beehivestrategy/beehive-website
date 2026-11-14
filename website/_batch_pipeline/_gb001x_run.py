@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Driver: apply a spec module's SPECS to every slug it covers, then sync zh-TW."""
+"""Driver: apply a spec module's SPECS to every slug it covers, then sync zh-HK."""
 import sys
 import os
 
@@ -15,7 +15,7 @@ def run(SPECS, slugs=None, do_tw=True):
             continue
         print("=" * 12, slug)
         print("  BEFORE:", {l: metrics(read(slug, d), l) for l, d in LANGS})
-        sp = {k: v for k, v in spec.items() if k != "zh-TW"}
+        sp = {k: v for k, v in spec.items() if k != "zh-HK"}
         res = apply_spec(slug, sp)
         for lang, r in res.items():
             if r and r[0] == "GUARD-FAIL":
@@ -27,7 +27,7 @@ def run(SPECS, slugs=None, do_tw=True):
                 old = read(slug, LANGS[2][1])
                 probs = guard_ok(tw, old)
                 if probs:
-                    print("  !! zh-TW GUARD FAIL", probs)
+                    print("  !! zh-HK GUARD FAIL", probs)
                 else:
                     write(slug, LANGS[2][1], tw)
         print("  AFTER :", {l: metrics(read(slug, d), l) for l, d in LANGS})

@@ -759,8 +759,8 @@
     if (path.indexOf('/zh-cn/') !== -1) {
       currentLang = 'zh-cn';
       currentLabel = '简';
-    } else if (path.indexOf('/zh-tw/') !== -1) {
-      currentLang = 'zh-tw';
+    } else if (path.indexOf('/zh-hk/') !== -1) {
+      currentLang = 'zh-hk';
       currentLabel = '繁';
     }
 
@@ -778,20 +778,20 @@
 
     // Build alternate paths (always use clean URLs, no .html extension)
     const isZhCn = path.indexOf('/zh-cn/') === 0;
-    const isZhTw = path.indexOf('/zh-tw/') === 0;
-    let basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-tw/, '') : path);
+    const isZhTw = path.indexOf('/zh-hk/') === 0;
+    let basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-hk/, '') : path);
     // Normalize: strip .html, ensure trailing slash for index
     if (basePath === '' || basePath === '/') basePath = '/';
     else if (basePath === '/index') basePath = '/';
     const enPath = basePath;
     const zhCnPath = '/zh-cn' + basePath;
-    const zhTwPath = '/zh-tw' + basePath;
+    const zhTwPath = '/zh-hk' + basePath;
 
     dropdownLinks.forEach(link => {
       const dl = link.getAttribute('data-lang');
       if (dl === 'en') link.setAttribute('href', enPath);
       else if (dl === 'zh-cn') link.setAttribute('href', zhCnPath);
-      else if (dl === 'zh-tw') link.setAttribute('href', zhTwPath);
+      else if (dl === 'zh-hk') link.setAttribute('href', zhTwPath);
     });
 
     // Toggle dropdown

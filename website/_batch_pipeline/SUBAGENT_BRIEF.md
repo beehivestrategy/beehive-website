@@ -1,8 +1,8 @@
 # Blog Batch Rewrite — Sub-Agent Brief (GEO Standard)
 
 You are rewriting ONE Beehive Strategy blog article (EN + zh-CN) to meet the
-site's GEO/SEO design standard. The orchestrator will later regenerate zh-TW
-and reconcile the verifier — **you must NOT run `gen_zhtw_one.py`,
+site's GEO/SEO design standard. The orchestrator will later regenerate zh-HK
+and reconcile the verifier — **you must NOT run `gen_zhhk_one.py`,
 `update_manifest`, or touch `status.json`. You must NOT run git restore/checkout.**
 
 ## Paths
@@ -19,7 +19,7 @@ and reconcile the verifier — **you must NOT run `gen_zhtw_one.py`,
 3. **FAQPage JSON-LD** — a `<script type="application/ld+json">` containing `"@type":"FAQPage"` with `mainEntity` array of ≥3 items. Place it INSIDE `<article>` (as the last child, after the container `</div>`, before the file's own `</article>`). Valid JSON (no trailing commas). This is the ONLY FAQPage JSON-LD in the file.
 4. **CTA block** inside `<article>`: `<div class="cta article-cta">…</div>` — the verifier checks the substring `class="cta` (must be FIRST class). EN CTA text must include **"Book a Demo"**; zh-CN CTA text must include **"预约演示"**.
 5. **Balanced `<div>`** tags inside the body (equal open/close).
-6. **hreflang** ×4 (en / zh-CN / zh-TW / x-default) and **canonical** are in the `<head>` — **preserve them; do not touch**. `splice()` keeps the head untouched.
+6. **hreflang** ×4 (en / zh-CN / zh-HK / x-default) and **canonical** are in the `<head>` — **preserve them; do not touch**. `splice()` keeps the head untouched.
 7. **og:locale** — EN head is fine. For **zh-CN** the existing head has REVERSED attribute order `<meta content="zh_CN" property="og:locale"/>` which FAILS the verifier (its regex is `og:locale"[^>]*content="zh_CN"`). After splicing, fix it in the zh-CN file: replace with `<meta property="og:locale" content="zh_CN"/>`.
 8. **No placeholder text** (Lorem / TODO / TBD / 占位 / 待补充 / "coming soon").
 9. Include ≥1 question-style `<h2>` (good GEO practice; not a hard verifier gate but include it).

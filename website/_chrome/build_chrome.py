@@ -2,11 +2,11 @@
 """
 build_chrome.py — Beehive 站点 chrome 的「真·include 引擎」（自包含，无外部依赖）
 
-单一事实源 = website/_chrome/_partials/{en,zh-cn,zh-tw}/{header,footer,mobile}.html
+单一事实源 = website/_chrome/_partials/{en,zh-cn,zh-hk}/{header,footer,mobile}.html
 （由 extract_partials.py 从三语 fde 模板抽取，已是首页同设计 + zh 已对齐首页）。
 
 每页 chrome 在构建时由其 partial + 每页派生数据重新生成：
-  - 语言：路径前缀 (en / zh-cn / zh-tw)
+  - 语言：路径前缀 (en / zh-cn / zh-hk)
   - 三语锚点 URL：derive_urls(rel) 从路径推导
   - active nav：沿用该页当前 active（old_active_href）—— active 是每页固有属性，
     不是 chrome 编辑项，故从页面自身继承而非写死在 partial
@@ -38,7 +38,7 @@ EXCLUDE_DIRS = ("_batch_pipeline", "node_modules", ".git", "beehive-homepage-dra
                 "templates", "_chrome")
 KNOWN_PREFIXES = ("wechat-preview", "wechat-draft-preview",
                   "wechat-article-draft-preview", "training/opc/")
-KNOWN_PAGES = {"zh-cn.html", "zh-tw.html"}
+KNOWN_PAGES = {"zh-cn.html", "zh-hk.html"}
 
 
 # ---------- helpers (self-contained; no import from gitignored dirs) ----------
@@ -66,7 +66,7 @@ def mobile_menu(s):
 def norm(x):
     if x is None:
         return None
-    x = re.sub(r'(<a\s[^>]*?href=")[^"]*("[^>]*?data-lang="(?:en|zh-cn|zh-tw)")',
+    x = re.sub(r'(<a\s[^>]*?href=")[^"]*("[^>]*?data-lang="(?:en|zh-cn|zh-hk)")',
                r"\1X\2", x)
     x = x.replace('class="nav-link active"', 'class="nav-link"')
     x = re.sub(r"/cdn-cgi/l/email-protection#[0-9a-f]+", "EMAILPROT", x)
@@ -77,8 +77,8 @@ def norm(x):
 def lang_of(rel):
     if rel.startswith("zh-cn/"):
         return "zh-cn"
-    if rel.startswith("zh-tw/"):
-        return "zh-tw"
+    if rel.startswith("zh-hk/"):
+        return "zh-hk"
     return "en"
 
 
@@ -95,17 +95,17 @@ def derive_urls(rel):
     s = self_url(rel)
     if s.startswith("/zh-cn"):
         en = s[len("/zh-cn"):] or "/"
-        return {"en": en, "zh-cn": s, "zh-tw": "/zh-tw" + (en if en != "/" else "/")}
-    if s.startswith("/zh-tw"):
-        en = s[len("/zh-tw"):] or "/"
-        return {"en": en, "zh-cn": "/zh-cn" + (en if en != "/" else "/"), "zh-tw": s}
+        return {"en": en, "zh-cn": s, "zh-hk": "/zh-hk" + (en if en != "/" else "/")}
+    if s.startswith("/zh-hk"):
+        en = s[len("/zh-hk"):] or "/"
+        return {"en": en, "zh-cn": "/zh-cn" + (en if en != "/" else "/"), "zh-hk": s}
     tail = s if s != "/" else "/"
-    return {"en": s, "zh-cn": "/zh-cn" + tail, "zh-tw": "/zh-tw" + tail}
+    return {"en": s, "zh-cn": "/zh-cn" + tail, "zh-hk": "/zh-hk" + tail}
 
 
 def extract_lang_urls(old_header, relpath, lang):
     cand = None
-    anchors = re.findall(r'<a\s[^>]*?href="([^"]+)"[^>]*?data-lang="(en|zh-cn|zh-tw)"', old_header)
+    anchors = re.findall(r'<a\s[^>]*?href="([^"]+)"[^>]*?data-lang="(en|zh-cn|zh-hk)"', old_header)
     if len(anchors) >= 3:
         d = {l: u for u, l in anchors[:3]}
         if len(d) == 3:
@@ -115,7 +115,7 @@ def extract_lang_urls(old_header, relpath, lang):
         if m:
             hrefs = re.findall(r'<a href="([^"]+)"', m.group(1))
             if len(hrefs) == 3:
-                cand = {"en": hrefs[0], "zh-cn": hrefs[1], "zh-tw": hrefs[2]}
+                cand = {"en": hrefs[0], "zh-cn": hrefs[1], "zh-hk": hrefs[2]}
     self_u = self_url(relpath)
     if cand and cand.get(lang) == self_u and len(set(cand.values())) == 3:
         return cand
@@ -138,16 +138,16 @@ def apply_active(header, href, lang="en"):
         return None
 
     variants = [href]
-    m = re.match(r"^/(zh-cn|zh-tw)(/.*)$", href)
+    m = re.match(r"^/(zh-cn|zh-hk)(/.*)$", href)
     if m:
         tail = m.group(2)
-        variants += [tail, "/zh-cn" + tail, "/zh-tw" + tail]
+        variants += [tail, "/zh-cn" + tail, "/zh-hk" + tail]
     elif href.startswith("/"):
-        variants += ["/zh-cn" + href, "/zh-tw" + href]
+        variants += ["/zh-cn" + href, "/zh-hk" + href]
     if lang == "zh-cn":
         variants.sort(key=lambda u: not u.startswith("/zh-cn"))
-    elif lang == "zh-tw":
-        variants.sort(key=lambda u: not u.startswith("/zh-tw"))
+    elif lang == "zh-hk":
+        variants.sort(key=lambda u: not u.startswith("/zh-hk"))
     for u in variants:
         out = try_mark(u)
         if out is not None:
@@ -158,7 +158,7 @@ def apply_active(header, href, lang="en"):
 def rewrite_lang_urls(html, urls):
     def repl(m):
         return m.group(1) + urls[m.group(3)] + m.group(2)
-    return re.sub(r'(<a\s[^>]*?href=")[^"]*("[^>]*?data-lang="(en|zh-cn|zh-tw)")', repl, html)
+    return re.sub(r'(<a\s[^>]*?href=")[^"]*("[^>]*?data-lang="(en|zh-cn|zh-hk)")', repl, html)
 
 
 def read(p):
@@ -175,7 +175,7 @@ def load_partials(lang):
 
 def main():
     dry = "--dry" in sys.argv
-    partials = {l: load_partials(l) for l in ("en", "zh-cn", "zh-tw")}
+    partials = {l: load_partials(l) for l in ("en", "zh-cn", "zh-hk")}
 
     targets = []
     for dp, dn, fn in os.walk(ROOT):

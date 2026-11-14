@@ -28,7 +28,7 @@ On article pages the file lives at `/blog/articles/<slug>.html`, so a page-relat
 Language prefix for Related/Recommended:
 - EN:          `/blog/articles/<slug>`
 - zh-CN:       `/zh-cn/blog/articles/<slug>`
-- zh-TW:       `/zh-tw/blog/articles/<slug>`
+- zh-HK:       `/zh-hk/blog/articles/<slug>`
 (the slug is language-neutral; the prefix selects the language version)
 
 ## 3. Share buttons
@@ -44,5 +44,5 @@ Language prefix for Related/Recommended:
 
 ## Batch-fix script
 `_batch_pipeline/fix_layout.py` swaps the live footer in and fixes all links for the
-`verified` (deepseek-harness) set across EN/zh-CN/zh-TW. Re-run after any future
+`verified` (deepseek-harness) set across EN/zh-CN/zh-HK. Re-run after any future
 harness rewrite that regresses layout.

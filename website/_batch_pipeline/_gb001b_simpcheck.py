@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Detect residual Simplified Chinese in zh-TW article bodies.
+"""Detect residual Simplified Chinese in zh-HK article bodies.
 
 Single characters such as 台/干/准/游 are valid Traditional in context, so a
 char-level s2t check yields many false positives. We instead flag CONTIGUOUS RUNS
@@ -23,7 +23,7 @@ def body_text(html):
 
 total = 0
 for s in SLUGS:
-    p = os.path.join(ROOT, "zh-tw/blog/articles/%s.html" % s)
+    p = os.path.join(ROOT, "zh-hk/blog/articles/%s.html" % s)
     if not os.path.exists(p):
         print("MISSING", p); continue
     t = body_text(open(p, encoding="utf-8").read())
@@ -45,4 +45,4 @@ for s in SLUGS:
         for run, ctx in flags:
             print(f"   SIMPL: {run!r}\n     ctx: …{ctx}…")
         total += len(flags)
-print(f"\nTOTAL simplified runs (>= {MINRUN} chars) in zh-TW bodies: {total}")
+print(f"\nTOTAL simplified runs (>= {MINRUN} chars) in zh-HK bodies: {total}")

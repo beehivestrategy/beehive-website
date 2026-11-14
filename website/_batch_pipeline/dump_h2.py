@@ -6,7 +6,7 @@ def body_of(t):
     return m.group(1) if m else t
 for slug in slugs:
     print("==== ", slug)
-    for lang, pref in [("EN","blog/articles"),("zh-CN","zh-cn/blog/articles"),("zh-TW","zh-tw/blog/articles")]:
+    for lang, pref in [("EN","blog/articles"),("zh-CN","zh-cn/blog/articles"),("zh-HK","zh-hk/blog/articles")]:
         fp = os.path.join(ROOT, pref, slug+".html")
         t = open(fp, encoding="utf-8").read()
         hs = re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', body_of(t), re.S)

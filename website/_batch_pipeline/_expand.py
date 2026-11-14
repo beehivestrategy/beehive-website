@@ -27,7 +27,7 @@ def main():
     with open(prose_file, encoding="utf-8") as f:
         prose = f.read().strip()
     # determine language by file path
-    is_zh = ("/zh-cn/" in file) or ("/zh-tw/" in file)
+    is_zh = ("/zh-cn/" in file) or ("/zh-hk/" in file)
     cnt = count_cjk if is_zh else count_en
     before = cnt(body_region(html))
     idx = html.find(marker)

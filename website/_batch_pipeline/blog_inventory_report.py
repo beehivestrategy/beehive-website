@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Local-source inventory: blog count, publish-day distribution, and character
-counts per language (en=blog/articles, zh-cn=zh-cn/blog/articles, zh-tw=zh-tw/blog/articles)."""
+counts per language (en=blog/articles, zh-cn=zh-cn/blog/articles, zh-hk=zh-hk/blog/articles)."""
 import os, re, json, glob
 from collections import defaultdict, Counter
 
@@ -8,7 +8,7 @@ ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 LANGS = {
     "en":    os.path.join(ROOT, "blog/articles"),
     "zh-CN": os.path.join(ROOT, "zh-cn/blog/articles"),
-    "zh-TW": os.path.join(ROOT, "zh-tw/blog/articles"),
+    "zh-HK": os.path.join(ROOT, "zh-hk/blog/articles"),
 }
 DATE_RE = re.compile(r'<meta\s+property=["\']article:published_time["\']\s+content=["\']([^"\']+)', re.I)
 

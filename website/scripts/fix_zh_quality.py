@@ -50,7 +50,7 @@ HAND_FIX = {
             "The practical takeaway is that bias detection is not a one-time audit but a standing capability.",
             "<p>实践层面的结论是：偏见检测不是一次性的审计动作，而是一项需要长期在岗的能力。把它当作一个正式控制项来对待——可度量、有门禁、持续监控——的团队，能把声誉风险转化为竞争优势，因为利益相关方只会信任他们看得见正在被检查的系统。每个训练周期都跑子群体评估的成本，远远低于部署之后才发现模型悄悄损害了某个受保护群体的代价。</p>",
         ),
-        "zh-tw": (
+        "zh-hk": (
             "The practical takeaway is that bias detection is not a one-time audit but a standing capability.",
             "<p>實務層面的結論是：偏見檢測不是一次性的稽核動作，而是一項需要長期在崗的能力。把它當作一個正式控制項來對待——可度量、有門檻、持續監控——的團隊，能把聲譽風險轉化為競爭優勢，因為利益相關方只會信任他們看得見正在被檢查的系統。每個訓練週期都跑子群體評估的成本，遠低於部署之後才發現模型悄悄損害了某個受保護群體的代價。</p>",
         ),
@@ -60,7 +60,7 @@ HAND_FIX = {
             "The load-bearing points are worth isolating from the detail.",
             "<p>值得把最关键的支撑点从细节中单独拎出来看。</p>",
         ),
-        "zh-tw": (
+        "zh-hk": (
             "The load-bearing points are worth isolating from the detail.",
             "<p>值得把最關鍵的支撐點從細節中單獨拎出來看。</p>",
         ),
@@ -97,8 +97,8 @@ def fix_file(path: Path, lang: str):
 
     # ---- rule 2: FAQ heading de-duplication & translation ----
     has_widget = 'class="faq-section' in body
-    faq_label = "重點問答" if lang == "zh-tw" else "要点问答"
-    faq_std = "常見問題" if lang == "zh-tw" else "常见问题"
+    faq_label = "重點問答" if lang == "zh-hk" else "要点问答"
+    faq_std = "常見問題" if lang == "zh-hk" else "常见问题"
     en_faq = "frequently asked questions"
 
     # 2a. widget <h2 class="faq-section-title"> with ENGLISH text → translate
@@ -193,7 +193,7 @@ def fix_file(path: Path, lang: str):
 def main():
     total = Counter()
     changed = 0
-    for lang in ("zh-cn", "zh-tw"):
+    for lang in ("zh-cn", "zh-hk"):
         for f in sorted((ROOT / lang / "blog" / "articles").glob("*.html")):
             st = fix_file(f, lang)
             if st:

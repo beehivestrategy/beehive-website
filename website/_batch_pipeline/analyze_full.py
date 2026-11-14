@@ -66,7 +66,7 @@ def analyze_lang(html, lang):
     else:
         has_demo = ("預約示範" in (html or "")) or ("预约演示" in (html or ""))
     # hreflang x4
-    has_href = all(x in low for x in ['hreflang="en"', 'hreflang="zh-cn"', 'hreflang="zh-tw"', 'hreflang="x-default"'])
+    has_href = all(x in low for x in ['hreflang="en"', 'hreflang="zh-cn"', 'hreflang="zh-hk"', 'hreflang="x-default"'])
     # canonical
     has_canon = '<link rel="canonical"' in low or "<link rel='canonical'" in low
     # question-style H2
@@ -77,8 +77,8 @@ def analyze_lang(html, lang):
                 cta=has_cta, demo=has_demo, href4=has_href, canon=has_canon, qh2=has_qh2,
                 h2count=len(h2s))
 
-languages = ["en", "zh-cn", "zh-tw"]
-subdir = {"en":"blog/articles", "zh-cn":"zh-cn/blog/articles", "zh-tw":"zh-tw/blog/articles"}
+languages = ["en", "zh-cn", "zh-hk"]
+subdir = {"en":"blog/articles", "zh-cn":"zh-cn/blog/articles", "zh-hk":"zh-hk/blog/articles"}
 
 results = {s:{} for s in slugs}
 per_lang = {l: dict(n=0, meet=0, wcs=[], faq_sec=0, faq_json=0, cta=0, demo=0, href4=0, canon=0, qh2=0) for l in languages}

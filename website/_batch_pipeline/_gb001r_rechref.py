@@ -9,7 +9,7 @@ from _gb001r_excerpt import summary_for, first_sentence
 
 PREFIX = {"blog/articles": "/blog/articles",
           "zh-cn/blog/articles": "/zh-cn/blog/articles",
-          "zh-tw/blog/articles": "/zh-tw/blog/articles"}
+          "zh-hk/blog/articles": "/zh-hk/blog/articles"}
 
 REC_RE = re.compile(r'(<a href=")([^"]*)(" class="recommended-card")', re.I)
 EXC_RE = re.compile(r'<p class="recommended-card-excerpt">\s*</p>')

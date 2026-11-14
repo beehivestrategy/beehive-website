@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Batch GEO/SEO apply script (part 2): EN top-ups, zh-CN/zh-TW expansion,
-FAQ+JSON-LD for missing-FAQ files, zh-TW CTA fixes.
+"""Batch GEO/SEO apply script (part 2): EN top-ups, zh-CN/zh-HK expansion,
+FAQ+JSON-LD for missing-FAQ files, zh-HK CTA fixes.
 Idempotent: guarded by unique id/anchor presence checks.
 Safety: only writes to each slug's own derived path; never touches head/footer/links.
 """
@@ -279,7 +279,7 @@ for slug, block in EN_TOPUP.items():
     log.append(("EN", slug, f"OK words={word_count(article(ns))}"))
 
 # ---------------------------------------------------------------------------
-# 2) zh-CN and zh-TW content + FAQ
+# 2) zh-CN and zh-HK content + FAQ
 # ---------------------------------------------------------------------------
 ZH_FAQ_ANCHOR_CN = '<section class="faq-section" id="faq" aria-label="常见问题">'
 ZH_FAQ_ANCHOR_TW = '<section class="faq-section" id="faq" aria-label="常見問題">'
@@ -315,34 +315,34 @@ for slug in ZH_CONTENT:
                 ns = insert_before(s, ARTICLE_NAV_ANCHOR, block)
                 open(p,'w',encoding='utf-8').write(ns)
                 log.append(("zh-CN", slug, f"OK+FAQ cjk={cjk_count(article(ns))} faq={faq_items(ns)} jsonld={jsonld_count(ns)}"))
-    # zh-TW (traditional)
-    p = os.path.join(ROOT, "zh-tw/blog/articles", slug + ".html")
+    # zh-HK (traditional)
+    p = os.path.join(ROOT, "zh-hk/blog/articles", slug + ".html")
     s = open(p, encoding='utf-8').read()
     uid = re.search(r'id="([^"]+)"', tw_block)
     if uid and uid.group(1) in s:
-        log.append(("zh-TW", slug, "SKIP(idempotent)"))
+        log.append(("zh-HK", slug, "SKIP(idempotent)"))
     else:
         if has_faq(s):
             ns = insert_before(s, ZH_FAQ_ANCHOR_TW, tw_block)
             if ns is None:
-                log.append(("zh-TW", slug, "FAQ anchor missing")); 
+                log.append(("zh-HK", slug, "FAQ anchor missing")); 
             else:
                 open(p,'w',encoding='utf-8').write(ns)
-                log.append(("zh-TW", slug, f"OK cjk={cjk_count(article(ns))} faq={faq_items(ns)}"))
+                log.append(("zh-HK", slug, f"OK cjk={cjk_count(article(ns))} faq={faq_items(ns)}"))
         else:
             items_tw = [(cc.convert(q), cc.convert(a)) for (q,a) in FAQ[slug]]
             faq_html = build_faq(items_tw, "常見問題")
             jsonld = build_jsonld(items_tw)
             block = tw_block + "\n" + faq_html + "\n" + jsonld + "\n"
             if ARTICLE_NAV_ANCHOR not in s:
-                log.append(("zh-TW", slug, "article-nav anchor missing")); 
+                log.append(("zh-HK", slug, "article-nav anchor missing")); 
             else:
                 ns = insert_before(s, ARTICLE_NAV_ANCHOR, block)
                 open(p,'w',encoding='utf-8').write(ns)
-                log.append(("zh-TW", slug, f"OK+FAQ cjk={cjk_count(article(ns))} faq={faq_items(ns)} jsonld={jsonld_count(ns)}"))
+                log.append(("zh-HK", slug, f"OK+FAQ cjk={cjk_count(article(ns))} faq={faq_items(ns)} jsonld={jsonld_count(ns)}"))
 
 # ---------------------------------------------------------------------------
-# 3) zh-TW CTA fix: 預約演示 -> 預約示範
+# 3) zh-HK CTA fix: 預約演示 -> 預約示範
 # ---------------------------------------------------------------------------
 CTA_FIX_SLUGS = [
  "what-is-vector-database",
@@ -351,15 +351,15 @@ CTA_FIX_SLUGS = [
  "enterprise-data-products-operating-model-that-makes-data-useful",
 ]
 for slug in CTA_FIX_SLUGS:
-    p = os.path.join(ROOT, "zh-tw/blog/articles", slug + ".html")
+    p = os.path.join(ROOT, "zh-hk/blog/articles", slug + ".html")
     s = open(p, encoding='utf-8').read()
     n = s.count("預約演示")
     if n:
         ns = s.replace("預約演示","預約示範")
         open(p,'w',encoding='utf-8').write(ns)
-        log.append(("zh-TW-CTA", slug, f"fixed {n} -> 預約示範"))
+        log.append(("zh-HK-CTA", slug, f"fixed {n} -> 預約示範"))
     else:
-        log.append(("zh-TW-CTA", slug, "no 預約演示 found"))
+        log.append(("zh-HK-CTA", slug, "no 預約演示 found"))
 
 # ---------------------------------------------------------------------------
 # Report
@@ -371,7 +371,7 @@ print("\n==== POST-VERIFY ====")
 for slug in slugs:
     for path, lang in [(f"blog/articles/{slug}.html",'EN'),
                       (f"zh-cn/blog/articles/{slug}.html",'zh-CN'),
-                      (f"zh-tw/blog/articles/{slug}.html",'zh-TW')]:
+                      (f"zh-hk/blog/articles/{slug}.html",'zh-HK')]:
         s = open(os.path.join(ROOT, path), encoding='utf-8').read()
         a = article(s)
         w = word_count(a) if lang=='EN' else cjk_count(a)

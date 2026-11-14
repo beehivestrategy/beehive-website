@@ -94,7 +94,7 @@ def title_h1(html):
 def simplified_in_tw(html):
     b = body_of(html)
     t = text_of(b)
-    # common simplified-only chars that must not appear in zh-TW
+    # common simplified-only chars that must not appear in zh-HK
     bad = re.findall(r'[数据据联网开发设计业务产量问题实际时间供应链预测维护检测报告管理机制优化价值网络数字智能企业产业产品项目运营数据]', t)
     return len(bad)
 
@@ -102,7 +102,7 @@ rows = []
 for s in SLUGS:
     for lang, path in (("en", f"blog/articles/{s}.html"),
                        ("cn", f"zh-cn/blog/articles/{s}.html"),
-                       ("tw", f"zh-tw/blog/articles/{s}.html")):
+                       ("tw", f"zh-hk/blog/articles/{s}.html")):
         fp = os.path.join(ROOT, path)
         if not os.path.exists(fp):
             print(f"MISSING {lang} {fp}"); continue

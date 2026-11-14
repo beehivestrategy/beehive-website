@@ -2,7 +2,7 @@
 import re, os, sys, json
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"EN": "", "zh-CN": "zh-cn/", "zh-TW": "zh-tw/"}
+LANGS = {"EN": "", "zh-CN": "zh-cn/", "zh-HK": "zh-hk/"}
 
 CJK = re.compile(r'[\u4e00-\u9fff]')
 WORD = re.compile(r"[A-Za-z][A-Za-z'\-]*")
@@ -85,7 +85,7 @@ res = [audit(s) for s in slugs]
 for r in res:
     print("="*70)
     print(r["slug"])
-    for lang in ["EN","zh-CN","zh-TW"]:
+    for lang in ["EN","zh-CN","zh-HK"]:
         d = r["langs"][lang]
         if d.get("missing"): print("  ",lang,"MISSING"); continue
         print(f"  {lang}: words={d['words']} cjk={d['cjk']} faqQ={d['faq_q']} h3={d['h3_total']} jsonld={d['jsonld']}(body={d['jsonld_in_body']}) cta={d['cta']} cards={d['cards']} bad={d['bad_cards']} emptyEx={d['empty_excerpts']} undef={d['undef']}")

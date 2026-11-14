@@ -11,7 +11,7 @@ W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 S = "snowflake-databricks-genie-conversational-ai"
 EN = W + "blog/articles/" + S + ".html"
 ZHCN = W + "zh-cn/blog/articles/" + S + ".html"
-ZHTW = W + "zh-tw/blog/articles/" + S + ".html"
+ZHTW = W + "zh-hk/blog/articles/" + S + ".html"
 
 FAQ_SHELL = '''<section class="faq-section" id="frequently-asked-questions" aria-label="Frequently Asked Questions">
     <h2 class="faq-section-title">
@@ -189,7 +189,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("Snowflake和Databricks語境下的Genie是什麼？",
      "它是兩家平台給各自對話式分析助手起的名字——Databricks於2024年5月發布Genie，Snowflake在2024年6月的峰會上發布了自己的Genie。兩者都讓用戶用自然語言向資料提問，並得到以資料倉儲為基礎、由SQL生成的答案。"),
@@ -279,7 +279,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="為什麼snowflake與databricks的對話式ai競賽很重要"', 'id="接下來應該怎麼做"',
         '80%到90%', '語義層', '蜂啟諮詢',
-    ], 7, "zh-TW")
+    ], 7, "zh-HK")
     assert '對話式' in body_h1(s) or 'Genie' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

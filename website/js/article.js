@@ -7,20 +7,24 @@
     var hamburger = document.getElementById('hamburger') || document.getElementById('hamburger-btn');
     var mobileMenu = document.getElementById('mobile-menu');
     var langSwitcher = document.getElementById('lang-switcher');
-    var langBtn = langSwitcher.querySelector('.lang-switcher-btn');
-    var langDropdown = langSwitcher.querySelector('.lang-switcher-dropdown') || langSwitcher.querySelector('.lang-dropdown');
+    var langBtn = langSwitcher ? langSwitcher.querySelector('.lang-switcher-btn') : null;
+    var langDropdown = langSwitcher
+        ? (langSwitcher.querySelector('.lang-switcher-dropdown') || langSwitcher.querySelector('.lang-dropdown'))
+        : null;
     var backToTop = document.getElementById('backToTop');
     var articleContent = document.getElementById('article-content');
     var tocLinks = document.querySelectorAll('.toc-sidebar .toc-link');
     var tocMobile = document.getElementById('toc-mobile');
-    var tocMobileToggle = tocMobile.querySelector('.toc-mobile-toggle');
+    // 部分历史文章没有移动版目录；缺失时必须降级，否则整段 IIFE 抛错、
+    // 阅读进度/汉堡菜单/分享按钮全部失效（2026-10-19 实测）。
+    var tocMobileToggle = tocMobile ? tocMobile.querySelector('.toc-mobile-toggle') : null;
     var toast = document.getElementById('toast');
     var faqItems = document.querySelectorAll('.faq-item');
 
     // ---- 1. Reading Progress Bar ----
     function updateProgress() {
         var article = articleContent;
-        if (!article) return;
+        if (!article || !progressBar) return;
         var rect = article.getBoundingClientRect();
         var articleTop = rect.top + window.scrollY;
         var articleHeight = article.offsetHeight;
@@ -33,6 +37,7 @@
 
     // ---- 2. Header Shadow on Scroll ----
     function handleHeaderScroll() {
+        if (!header) return;
         if (window.scrollY > 10) {
             header.classList.add('scrolled');
         } else {
@@ -42,6 +47,7 @@
 
     // ---- 3. Back to Top ----
     function handleBackToTop() {
+        if (!backToTop) return;
         if (window.scrollY > 400) {
             backToTop.classList.add('visible');
         } else {
@@ -49,12 +55,14 @@
         }
     }
 
-    backToTop.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    if (backToTop) {
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 
     // ---- 4. Hamburger Menu ----
-    hamburger.addEventListener('click', function() {
+    if (hamburger && mobileMenu) hamburger.addEventListener('click', function() {
         var isOpen = mobileMenu.classList.toggle('open');
         hamburger.classList.toggle('active');
         hamburger.setAttribute('aria-expanded', isOpen);
@@ -62,18 +70,20 @@
     });
 
     // ---- 5. Language Switcher ----
-    langBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var isOpen = langDropdown.classList.toggle('open');
-        langBtn.setAttribute('aria-expanded', isOpen);
-    });
+    if (langBtn && langDropdown && langSwitcher) {
+        langBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var isOpen = langDropdown.classList.toggle('open');
+            langBtn.setAttribute('aria-expanded', isOpen);
+        });
 
-    document.addEventListener('click', function(e) {
-        if (!langSwitcher.contains(e.target)) {
-            langDropdown.classList.remove('open');
-            langBtn.setAttribute('aria-expanded', 'false');
-        }
-    });
+        document.addEventListener('click', function(e) {
+            if (!langSwitcher.contains(e.target)) {
+                langDropdown.classList.remove('open');
+                langBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
 
     // ---- 5b. Desktop Services dropdown (click + keyboard, parity with main.js) ----
     function closeAllNavDropdowns(except) {
@@ -105,7 +115,7 @@
     });
 
     // ---- 5c. Mobile submenu toggles ----
-    mobileMenu.querySelectorAll('.mobile-submenu-toggle').forEach(function(toggle) {
+    if (mobileMenu) mobileMenu.querySelectorAll('.mobile-submenu-toggle').forEach(function(toggle) {
         toggle.addEventListener('click', function(e) {
             e.stopPropagation();
             var submenu = this.closest('.mobile-submenu');
@@ -117,7 +127,8 @@
     faqItems.forEach(function(item) {
         var question = item.querySelector('.faq-question');
         var answer = item.querySelector('.faq-answer');
-        var inner = answer.querySelector('.faq-answer-inner');
+        var inner = answer ? answer.querySelector('.faq-answer-inner') : null;
+        if (!question || !answer || !inner) return;
 
         question.addEventListener('click', function() {
             var isOpen = item.classList.contains('open');
@@ -147,10 +158,12 @@
     });
 
     // ---- 7. Mobile TOC Toggle ----
-    tocMobileToggle.addEventListener('click', function() {
-        var isOpen = tocMobile.classList.toggle('open');
-        tocMobileToggle.setAttribute('aria-expanded', isOpen);
-    });
+    if (tocMobileToggle && tocMobile) {
+        tocMobileToggle.addEventListener('click', function() {
+            var isOpen = tocMobile.classList.toggle('open');
+            tocMobileToggle.setAttribute('aria-expanded', isOpen);
+        });
+    }
 
     // ---- 8. TOC Active Link Tracking (IntersectionObserver) ----
     var sectionIds = [];

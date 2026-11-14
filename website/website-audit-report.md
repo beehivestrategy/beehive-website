@@ -30,9 +30,9 @@
   - `href="articles/ai-powered-financial-risk-control-real-time-monitoring.html"` resolves to `zh-cn/blog/articles/ai-powered-financial-risk-control-real-time-monitoring.html` (not-found)
   - The file `blog/articles/ai-powered-financial-risk-control-real-time-monitoring.html` exists in EN but has no zh-cn translation.
 
-- **`zh-tw/blog/index.html`** (line 404)
-  - `href="articles/ai-powered-financial-risk-control-real-time-monitoring.html"` resolves to `zh-tw/blog/articles/ai-powered-financial-risk-control-real-time-monitoring.html` (not-found)
-  - Same as above -- EN-only article, no zh-tw translation.
+- **`zh-hk/blog/index.html`** (line 404)
+  - `href="articles/ai-powered-financial-risk-control-real-time-monitoring.html"` resolves to `zh-hk/blog/articles/ai-powered-financial-risk-control-real-time-monitoring.html` (not-found)
+  - Same as above -- EN-only article, no zh-hk translation.
 
 ---
 
@@ -49,68 +49,68 @@ Two EN blog articles have not been translated to Simplified Chinese:
 - **`blog/articles/enterprise-ai-adoption-trends-2026-what-data-reveals.html`**
   - EN exists but `zh-cn/blog/articles/enterprise-ai-adoption-trends-2026-what-data-reveals.html` is missing.
 
-### Missing zh-tw mirror (2)
+### Missing zh-hk mirror (2)
 
 Same two EN blog articles have not been translated to Traditional Chinese:
 
 - **`blog/articles/ai-powered-financial-risk-control-real-time-monitoring.html`**
-  - EN exists but `zh-tw/blog/articles/ai-powered-financial-risk-control-real-time-monitoring.html` is missing.
-  - Also referenced from `zh-tw/blog/index.html` line 404 (broken link).
+  - EN exists but `zh-hk/blog/articles/ai-powered-financial-risk-control-real-time-monitoring.html` is missing.
+  - Also referenced from `zh-hk/blog/index.html` line 404 (broken link).
 
 - **`blog/articles/enterprise-ai-adoption-trends-2026-what-data-reveals.html`**
-  - EN exists but `zh-tw/blog/articles/enterprise-ai-adoption-trends-2026-what-data-reveals.html` is missing.
+  - EN exists but `zh-hk/blog/articles/enterprise-ai-adoption-trends-2026-what-data-reveals.html` is missing.
 
-### Incomplete hreflang on zh-tw pages (3)
+### Incomplete hreflang on zh-hk pages (3)
 
-Three zh-tw pages use `hreflang="zh-CN"` but are **missing `hreflang="zh-TW"`** entirely. This means search engines cannot correctly identify the page language for Traditional Chinese visitors.
+Three zh-hk pages use `hreflang="zh-CN"` but are **missing `hreflang="zh-HK"`** entirely. This means search engines cannot correctly identify the page language for Traditional Chinese visitors.
 
-- **`zh-tw/services.html`** (line ~24)
-  - Has: `en`, `zh-CN`, `x-default` -- **Missing: `zh-TW`**
+- **`zh-hk/services.html`** (line ~24)
+  - Has: `en`, `zh-CN`, `x-default` -- **Missing: `zh-HK`**
 
-- **`zh-tw/pricing.html`** (line ~24)
-  - Has: `en`, `zh-CN`, `x-default` -- **Missing: `zh-TW`**
+- **`zh-hk/pricing.html`** (line ~24)
+  - Has: `en`, `zh-CN`, `x-default` -- **Missing: `zh-HK`**
 
-- **`zh-tw/contact.html`** (line ~24)
-  - Has: `en`, `zh-CN`, `x-default` -- **Missing: `zh-TW`**
+- **`zh-hk/contact.html`** (line ~24)
+  - Has: `en`, `zh-CN`, `x-default` -- **Missing: `zh-HK`**
 
 ### Incomplete hreflang on EN root pages (3)
 
-Three EN root pages only have `hreflang="en"` but are missing `zh-CN` and `zh-TW` alternate links, despite zh-cn/zh-tw translations existing.
+Three EN root pages only have `hreflang="en"` but are missing `zh-CN` and `zh-HK` alternate links, despite zh-cn/zh-hk translations existing.
 
 - **`privacy.html`** (line 21)
-  - Has: `en` only -- **Missing: `zh-CN`, `zh-TW`**
+  - Has: `en` only -- **Missing: `zh-CN`, `zh-HK`**
 
 - **`terms.html`** (line 21)
-  - Has: `en` only -- **Missing: `zh-CN`, `zh-TW`**
+  - Has: `en` only -- **Missing: `zh-CN`, `zh-HK`**
 
 - **`cookies.html`** (line ~21)
-  - Has: `en` only -- **Missing: `zh-CN`, `zh-TW`**
+  - Has: `en` only -- **Missing: `zh-CN`, `zh-HK`**
 
-### Missing zh-cn/zh-tw localized RSS feed (1)
+### Missing zh-cn/zh-hk localized RSS feed (1)
 
 - **`blog/feed.xml`**
-  - EN has `blog/feed.xml` but neither `zh-cn/blog/feed.xml` nor `zh-tw/blog/feed.xml` exists.
-  - Blog index pages in zh-cn and zh-tw may reference localized feeds that do not exist.
+  - EN has `blog/feed.xml` but neither `zh-cn/blog/feed.xml` nor `zh-hk/blog/feed.xml` exists.
+  - Blog index pages in zh-cn and zh-hk may reference localized feeds that do not exist.
 
 ---
 
 ## MINOR Issues (8)
 
-### Missing x-default hreflang on zh-cn/zh-tw legal pages (6)
+### Missing x-default hreflang on zh-cn/zh-hk legal pages (6)
 
-The zh-cn and zh-tw versions of `privacy.html`, `terms.html`, and `cookies.html` have `hreflang="en"` only (copied from the EN template) but are missing `x-default` and the correct language-specific hreflang entries.
+The zh-cn and zh-hk versions of `privacy.html`, `terms.html`, and `cookies.html` have `hreflang="en"` only (copied from the EN template) but are missing `x-default` and the correct language-specific hreflang entries.
 
 - **`zh-cn/privacy.html`** -- Has: `en` only
 - **`zh-cn/terms.html`** -- Has: `en` only
 - **`zh-cn/cookies.html`** -- Has: `en` only
-- **`zh-tw/privacy.html`** -- Has: `en` only
-- **`zh-tw/terms.html`** -- Has: `en` only
-- **`zh-tw/cookies.html`** -- Has: `en` only
+- **`zh-hk/privacy.html`** -- Has: `en` only
+- **`zh-hk/terms.html`** -- Has: `en` only
+- **`zh-hk/cookies.html`** -- Has: `en` only
 
 ### Missing localized sitemap.xml (2)
 
-- **`sitemap.xml`** exists at root level only. Neither `zh-cn/sitemap.xml` nor `zh-tw/sitemap.xml` exists.
-  - Note: A single sitemap with all language variants is a valid approach, but if the `robots.txt` files in zh-cn/zh-tw reference localized sitemaps, they would be broken.
+- **`sitemap.xml`** exists at root level only. Neither `zh-cn/sitemap.xml` nor `zh-hk/sitemap.xml` exists.
+  - Note: A single sitemap with all language variants is a valid approach, but if the `robots.txt` files in zh-cn/zh-hk reference localized sitemaps, they would be broken.
 
 ---
 
@@ -134,10 +134,10 @@ The zh-cn and zh-tw versions of `privacy.html`, `terms.html`, and `cookies.html`
 
 1. **Fix the typo in the internal link** in `blog/articles/enterprise-ai-adoption-trends-2026-what-data-reveals.html` line 266: change `building-a-semantic-layer-self-service-analytics` to `building-semantic-layer-self-service-analytics`.
 
-2. **Add `hreflang="zh-TW"` to `zh-tw/services.html`, `zh-tw/pricing.html`, and `zh-tw/contact.html`**. These pages have `zh-CN` but are missing their own `zh-TW` entry, which confuses search engine language detection.
+2. **Add `hreflang="zh-HK"` to `zh-hk/services.html`, `zh-hk/pricing.html`, and `zh-hk/contact.html`**. These pages have `zh-CN` but are missing their own `zh-HK` entry, which confuses search engine language detection.
 
-3. **Add complete hreflang set (en, zh-CN, zh-TW, x-default) to `privacy.html`, `terms.html`, and `cookies.html`** in all three language versions. Currently only `en` is declared.
+3. **Add complete hreflang set (en, zh-CN, zh-HK, x-default) to `privacy.html`, `terms.html`, and `cookies.html`** in all three language versions. Currently only `en` is declared.
 
-4. **Translate or remove links to** `ai-powered-financial-risk-control-real-time-monitoring.html` and `enterprise-ai-adoption-trends-2026-what-data-reveals.html` in the zh-cn and zh-tw blog index pages.
+4. **Translate or remove links to** `ai-powered-financial-risk-control-real-time-monitoring.html` and `enterprise-ai-adoption-trends-2026-what-data-reveals.html` in the zh-cn and zh-hk blog index pages.
 
-5. **Create localized `blog/feed.xml`** for zh-cn and zh-tw, or ensure the blog index pages do not reference localized feeds.
+5. **Create localized `blog/feed.xml`** for zh-cn and zh-hk, or ensure the blog index pages do not reference localized feeds.

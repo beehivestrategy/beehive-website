@@ -7,7 +7,7 @@ suspicious for manual review."""
 import os, re, glob, json
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}
+LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}
 
 ld_re = re.compile(r'<script\s+type="application/ld\+json"[^>]*>.*?</script>', re.S | re.I)
 faq_re = re.compile(r'"@type"\s*:\s*"FAQPage"')

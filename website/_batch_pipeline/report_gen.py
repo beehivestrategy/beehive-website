@@ -130,7 +130,7 @@ code{{background:#0c0e12;padding:1px 6px;border-radius:5px;font-size:12px;color:
 <div class="sub">生成时间 {now} · 覆盖范围：1,061 slug × 3 语言 = 3,183 个 HTML 文件 · 多维度审计</div>
 
 <div class="kpi">
-  <div class="box"><div class="n">1,061</div><div class="l">slug 总数（EN/zh-CN/zh-TW 各 1,061）</div></div>
+  <div class="box"><div class="n">1,061</div><div class="l">slug 总数（EN/zh-CN/zh-HK 各 1,061）</div></div>
   <div class="box"><div class="n">100%</div><div class="l">GEO 基础门禁达标率（长度+FAQ+JSON-LD+CTA）</div></div>
   <div class="box"><div class="n">{summary['per_lang']['en']['clean']+summary['per_lang']['cn']['clean']+summary['per_lang']['tw']['clean']}</div><div class="l">三语言零问题文件数合计</div></div>
   <div class="box"><div class="n">{len(META)}</div><div class="l">审计维度</div></div>
@@ -166,7 +166,7 @@ code{{background:#0c0e12;padding:1px 6px;border-radius:5px;font-size:12px;color:
 <h2>六、方法论与修复路线</h2>
 <div class="card">
 <ol>
-<li><b>P0 立即修</b>：32 个 zh-TW canonical 错误、7 个缺失 H1、4 个未翻译标题 + broken_titles.json 中 35 个损坏标题（半翻译/混排）。</li>
+<li><b>P0 立即修</b>：32 个 zh-HK canonical 错误、7 个缺失 H1、4 个未翻译标题 + broken_titles.json 中 35 个损坏标题（半翻译/混排）。</li>
 <li><b>P1 批量修</b>：47/43/43 个 FAQPage JSON-LD 与正文不符 → 重新生成匹配 schema；39/41/40 个 FAQ <3 组 → 补足；166/7/7 个 OG + 165/6/6 个 Twitter 卡片缺失 → 补齐 meta；21/21/16 个站内死链 → 修复或 301。</li>
 <li><b>P2 优化</b>：页内锚点、图片 alt、meta description 长度、标题层级。</li>
 <li><b>防回归</b>：将本审计脚本接入 CI / 发布前门禁，任何新文章必须 0 问题才允许上线。</li>

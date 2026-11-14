@@ -7,8 +7,8 @@ What it does:
   1. Backs up affected files to _batch_pipeline/title_fix_backups/<ts>/
   2. For each proposal entry:
      - zh-cn/blog/articles/<slug>.html : <title>, og:title, twitter:title, JSON-LD headline
-     - zh-tw/blog/articles/<slug>.html : same (only where changed_tw)
-  3. Updates zh-cn + zh-tw manifest.json title fields (preserves "| Beehive" suffix style).
+     - zh-hk/blog/articles/<slug>.html : same (only where changed_tw)
+  3. Updates zh-cn + zh-hk manifest.json title fields (preserves "| Beehive" suffix style).
 Run:  python3 apply_title_fixes.py            # dry-run: show what would change
       python3 apply_title_fixes.py --apply   # real write
 """
@@ -64,7 +64,7 @@ def patch_article(path, new_title):
 
 def patch_manifests(entries):
     changed = []
-    for lang, key in (("zh-cn", "new_cn"), ("zh-tw", "new_tw")):
+    for lang, key in (("zh-cn", "new_cn"), ("zh-hk", "new_tw")):
         mp = os.path.join(SITE, lang, "blog", "articles", "manifest.json")
         with open(mp, encoding="utf-8") as f:
             m = json.load(f)
@@ -93,7 +93,7 @@ def main():
     results = []
     files_touched = set()
     for e in entries:
-        for lang, key, flag in (("zh-cn", "new_cn", "changed_cn"), ("zh-tw", "new_tw", "changed_tw")):
+        for lang, key, flag in (("zh-cn", "new_cn", "changed_cn"), ("zh-hk", "new_tw", "changed_tw")):
             if not e[flag]:
                 continue
             p = os.path.join(SITE, lang, "blog", "articles", e["slug"] + ".html")

@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/bias-detection-in-training-data-tools-and-techniques-a-2026-update.html"
 ZHCN = W + "zh-cn/blog/articles/bias-detection-in-training-data-tools-and-techniques-a-2026-update.html"
-ZHTW = W + "zh-tw/blog/articles/bias-detection-in-training-data-tools-and-techniques-a-2026-update.html"
+ZHTW = W + "zh-hk/blog/articles/bias-detection-in-training-data-tools-and-techniques-a-2026-update.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -211,7 +211,7 @@ def process_cn():
     save(ZHCN, s)
     print("zh-CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("什麼是訓練資料偏見偵測？為什麼它在2026年如此重要？",
      "偏見偵測是在模型部署前後系統性發現並修復跨客群、人口屬性或地區效能差距的紀律。它在當下重要，是因為監管已將其變為義務：歐盟AI法案的高風險義務自2026年8月起適用，明確要求偏見測試與文件。偵測的成本很小，而發現的代價——罰款、品牌損害、部署失敗——很大。"),
@@ -307,10 +307,10 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="實用偏見檢測工具"', 'id="歐盟AI法案的要求"',
         '為什麼偏見偵測在2026年成為企業AI的當務之急', 'id="理解當前格局"', 'id="結論"',
-    ], 9, "zh-TW")
+    ], 9, "zh-HK")
     assert '偏見' in body_h1(s), "TW h1 changed!"
     save(ZHTW, s)
-    print("zh-TW done")
+    print("zh-HK done")
 
 if __name__ == "__main__":
     process_en()

@@ -60,7 +60,7 @@ def s2tw(s):
 
 
 def spec_s2tw(spec):
-    """Convert a zh-CN spec dict into a zh-TW spec dict."""
+    """Convert a zh-CN spec dict into a zh-HK spec dict."""
     out = {}
     if "lead" in spec:
         out["lead"] = s2tw(spec["lead"])
@@ -78,7 +78,7 @@ def spec_s2tw(spec):
 
 
 def audit_s2tw(spec):
-    """Report simplified-only characters / stray ASCII words in a zh-TW spec."""
+    """Report simplified-only characters / stray ASCII words in a zh-HK spec."""
     import re as _re
     txt = []
     for _, t, b in spec.get("sections", []):

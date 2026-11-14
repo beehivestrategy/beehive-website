@@ -108,6 +108,6 @@ ZHTW = {"renames": ZHTW_RENAMES, "faq": ZHTW_FAQ,
           "用AI做需求感知，縮短波動市場中的訊號到決策鏈路。"]}
 
 if __name__ == "__main__":
-    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-TW", ZHTW)):
+    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-HK", ZHTW)):
         b, a, n = apply(SLUG, lang, spec)
         print(f"{SLUG} {lang}: {b} -> {a}  [{', '.join(n)}]")

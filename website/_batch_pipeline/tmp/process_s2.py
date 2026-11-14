@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/build-enterprise-knowledge-graph-ai.html"
 ZHCN = W + "zh-cn/blog/articles/build-enterprise-knowledge-graph-ai.html"
-ZHTW = W + "zh-tw/blog/articles/build-enterprise-knowledge-graph-ai.html"
+ZHTW = W + "zh-hk/blog/articles/build-enterprise-knowledge-graph-ai.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -171,7 +171,7 @@ def process_cn():
     save(ZHCN, s)
     print("zh-CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("為什麼企業AI需要知識圖譜，而不能只靠RAG？",
      "RAG按語義相似度檢索文件，但不會編碼實體之間的關係。知識圖譜顯式建模客戶、產品、供應商與監管之間的關聯，讓AI智能體能夠確定性地回答多跳問題。兩者互補：RAG提供非結構化上下文，知識圖譜提供把檢索變成推理的關係結構。"),
@@ -237,10 +237,10 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         '為什麼企業AI需要知識圖譜', 'id="規模化推廣的關鍵成功因素-2"',
         'MCP與語義層如何支撐企業知識圖譜架構',
-    ], 9, "zh-TW")
+    ], 9, "zh-HK")
     assert s[:s.index('</head>')].count('FAQPage') == 0, "tw head FAQPage present"
     save(ZHTW, s)
-    print("zh-TW done")
+    print("zh-HK done")
 
 process_en()
 process_cn()

@@ -8,7 +8,7 @@ content dict, including toc-mobile, lead, question-style H2 sections, takeaways,
 conclusion, faq-section (>=3 <h3>), a FAQPage JSON-LD placed immediately after
 the faq-section closing tag, and the article-nav (preserved markup).
 
-build(): renders EN + zh-CN, derives zh-TW via OpenCC s2twp, splices all three
+build(): renders EN + zh-CN, derives zh-HK via OpenCC s2twp, splices all three
 real article files via rewrite_lib.splice, then reports length/FAQ/JSON-LD.
 
 Content dict shape (per language):
@@ -124,11 +124,11 @@ def _article_inner(path):
 def patch_zh(slug, h2_map, faq, faq_h2="常见问题", paths=None, regen_tw=True):
     """Patch an already-length-compliant zh-CN article: convert listed H2 ids to
     question text and append a faq-section + FAQPage JSON-LD (idempotent). Then
-    regenerate zh-TW from the patched zh-CN via OpenCC."""
+    regenerate zh-HK from the patched zh-CN via OpenCC."""
     if paths is None:
         paths = {
             "zh-cn": os.path.join(ROOT, "zh-cn/blog/articles", slug + ".html"),
-            "zh-tw": os.path.join(ROOT, "zh-tw/blog/articles", slug + ".html"),
+            "zh-hk": os.path.join(ROOT, "zh-hk/blog/articles", slug + ".html"),
         }
     h, a, e = _article_inner(paths["zh-cn"])
     inner = h[a.end():e]
@@ -142,7 +142,7 @@ def patch_zh(slug, h2_map, faq, faq_h2="常见问题", paths=None, regen_tw=True
         inner = inner.rstrip() + "\n" + _faq_block(faq_h2, faq) + "\n"
         R.splice(paths["zh-cn"], inner)
     if regen_tw:
-        h2, a2, e2 = _article_inner(paths["zh-tw"])
+        h2, a2, e2 = _article_inner(paths["zh-hk"])
         inner_tw = h2[a2.end():e2]
         # convert H2 question texts and append faq (idempotent)
         if "faq-section" not in inner_tw:
@@ -152,9 +152,9 @@ def patch_zh(slug, h2_map, faq, faq_h2="常见问题", paths=None, regen_tw=True
                                   lambda m: m.group(1) + qt + m.group(2), inner_tw,
                                   flags=re.S, count=1)
             inner_tw = inner_tw.rstrip() + "\n" + CC.convert(_faq_block(faq_h2, faq)) + "\n"
-        R.splice(paths["zh-tw"], inner_tw)
+        R.splice(paths["zh-hk"], inner_tw)
     cjk = R._count_zh(open(paths["zh-cn"], encoding="utf-8").read()[a.end():e])
-    twcjk = R._count_zh(open(paths["zh-tw"], encoding="utf-8").read()[a2.end():e2])
+    twcjk = R._count_zh(open(paths["zh-hk"], encoding="utf-8").read()[a2.end():e2])
     return {"slug": slug, "patch": "zh", "zh_cjk": cjk, "tw_cjk": twcjk,
             "faq": len(faq), "jsonld": "y"}
 
@@ -190,21 +190,21 @@ def patch_lang(path, h2_map, faq, faq_h2="常见问题"):
 
 
 def process_patch(slug, EN, zh_faq, h2_cn, h2_tw, paths=None):
-    """EN: full rewrite via render_inner. zh-CN / zh-TW: patch (convert H2s to
+    """EN: full rewrite via render_inner. zh-CN / zh-HK: patch (convert H2s to
     questions, replace faq-section with standard <h3> + body JSON-LD), preserving
     existing prose and ids. Returns report dict."""
     if paths is None:
         paths = {
             "en": os.path.join(ROOT, "blog/articles", slug + ".html"),
             "zh-cn": os.path.join(ROOT, "zh-cn/blog/articles", slug + ".html"),
-            "zh-tw": os.path.join(ROOT, "zh-tw/blog/articles", slug + ".html"),
+            "zh-hk": os.path.join(ROOT, "zh-hk/blog/articles", slug + ".html"),
         }
     en_inner = render_inner(EN)
     R.splice(paths["en"], en_inner)
     en_w = R._count_en(en_inner)
     zh_cjk = patch_lang(paths["zh-cn"], h2_cn, zh_faq, "常见问题")
     tw_faq = [(CC.convert(q), CC.convert(a)) for q, a in zh_faq]
-    tw_cjk = patch_lang(paths["zh-tw"], h2_tw, tw_faq, "常見問題")
+    tw_cjk = patch_lang(paths["zh-hk"], h2_tw, tw_faq, "常見問題")
     return {"slug": slug, "en_words": en_w, "zh_cjk": zh_cjk, "tw_cjk": tw_cjk,
             "faq": len(EN["faq"]), "jsonld": "y",
             "en_ok": en_w >= 2500, "zh_ok": zh_cjk >= 3500 and tw_cjk >= 3500,
@@ -216,20 +216,20 @@ def build(slug, EN, ZH, paths=None):
         paths = {
             "en": os.path.join(ROOT, "blog/articles", slug + ".html"),
             "zh-cn": os.path.join(ROOT, "zh-cn/blog/articles", slug + ".html"),
-            "zh-tw": os.path.join(ROOT, "zh-tw/blog/articles", slug + ".html"),
+            "zh-hk": os.path.join(ROOT, "zh-hk/blog/articles", slug + ".html"),
         }
     en_inner = render_inner(EN)
     zhcn_inner = render_inner(ZH)
-    zhtw_inner = CC.convert(zhcn_inner)
+    zhhk_inner = CC.convert(zhcn_inner)
 
     R.splice(paths["en"], en_inner)
     R.splice(paths["zh-cn"], zhcn_inner)
-    R.splice(paths["zh-tw"], zhtw_inner)
+    R.splice(paths["zh-hk"], zhhk_inner)
 
     # report
     en_w = R._count_en(en_inner)
     zh_cjk = R._count_zh(zhcn_inner)
-    tw_cjk = R._count_zh(zhtw_inner)
+    tw_cjk = R._count_zh(zhhk_inner)
     faq_n = len(EN["faq"])
     rep = {
         "slug": slug,

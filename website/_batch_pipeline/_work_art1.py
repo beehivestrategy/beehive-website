@@ -62,7 +62,7 @@ def inject_body(path, new_inner):
 
 tw_body = cc.convert(cn_body)
 inject_body(os.path.join(ROOT, "zh-cn/blog/articles/%s.html"%slug), cn_body)
-inject_body(os.path.join(ROOT, "zh-tw/blog/articles/%s.html"%slug), tw_body)
+inject_body(os.path.join(ROOT, "zh-hk/blog/articles/%s.html"%slug), tw_body)
 
 # verify
 for lang,body in (("cn",cn_body),("tw",tw_body)):

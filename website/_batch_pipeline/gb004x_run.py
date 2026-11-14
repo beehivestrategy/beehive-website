@@ -30,7 +30,7 @@ def paths(slug):
     return {
         "en": os.path.join(L.ROOT, "blog/articles", slug + ".html"),
         "zh-cn": os.path.join(L.ROOT, "zh-cn/blog/articles", slug + ".html"),
-        "zh-tw": os.path.join(L.ROOT, "zh-tw/blog/articles", slug + ".html"),
+        "zh-hk": os.path.join(L.ROOT, "zh-hk/blog/articles", slug + ".html"),
     }
 
 
@@ -53,7 +53,7 @@ def apply_spec(h, spec, lang):
 
 
 def build_tw(cn_html, tw_html):
-    """Rebuild the zh-TW content regions from the (already fixed) zh-CN file."""
+    """Rebuild the zh-HK content regions from the (already fixed) zh-CN file."""
     out = tw_html
 
     def grab(html, pattern):
@@ -105,15 +105,15 @@ def run(slug, mod):
     h = apply_spec(h, mod.ZH, "zh-cn")
     L.write(P["zh-cn"], h)
 
-    # zh-TW derived from zh-CN
-    htw = L.read(P["zh-tw"])
-    before["zh-tw"] = L.metrics(htw)[1]
+    # zh-HK derived from zh-CN
+    htw = L.read(P["zh-hk"])
+    before["zh-hk"] = L.metrics(htw)[1]
     htw = build_tw(L.read(P["zh-cn"]), htw)
     htw = L.rebuild_toc(htw)
-    htw = L.fix_links(htw, "zh-tw/")
-    htw = L.fill_cards(htw, "zh-tw")
-    htw = L.fix_cta(htw, "zh-tw")
-    L.write(P["zh-tw"], htw)
+    htw = L.fix_links(htw, "zh-hk/")
+    htw = L.fill_cards(htw, "zh-hk")
+    htw = L.fix_cta(htw, "zh-hk")
+    L.write(P["zh-hk"], htw)
 
     after = {}
     for lang, p in P.items():
@@ -123,7 +123,7 @@ def run(slug, mod):
     n = len(mod.EN["faq"])
     print("%-62s EN %5d->%5d | zhCN %5d->%5d | zhTW %5d->%5d | faq=%d"
           % (slug, before["en"], after["en"], before["zh-cn"], after["zh-cn"],
-             before["zh-tw"], after["zh-tw"], n))
+             before["zh-hk"], after["zh-hk"], n))
 
 
 if __name__ == "__main__":

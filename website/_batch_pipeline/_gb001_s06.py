@@ -167,11 +167,11 @@ ZHCN = {"lead": ZHCN_LEAD, "replace": ZHCN_REPLACE, "renames": ZHCN_RENAMES,
           "用AI驱动的数据可视化，让洞察真正被看见。",
           "数据质量自动化：从被动响应走向主动治理。"]}
 
-# ------------------------------------------------------------------ zh-TW (converted)
+# ------------------------------------------------------------------ zh-HK (converted)
 import _gb001_s2t as T
 ZHTW = T.spec_s2tw(ZHCN)
 
 if __name__ == "__main__":
-    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-TW", ZHTW)):
+    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-HK", ZHTW)):
         b, a, n = apply(SLUG, lang, spec)
         print(f"{SLUG} {lang}: {b} -> {a}  [{', '.join(n)}]")

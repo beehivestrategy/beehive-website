@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Slug 2 follow-up: zh-TW is missing the section referenced by its TOC
+"""Slug 2 follow-up: zh-HK is missing the section referenced by its TOC
 (#2026-年的技術景觀). Add the section so every TOC anchor resolves."""
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

@@ -8,7 +8,7 @@ Multi-dimensional checks (scanning the correct document regions):
   - heading hierarchy (H2 exists, no H3 before H2) within article body
   - question-style H2 ratio (GEO signal)
   - canonical present + correct URL shape
-  - hreflang set (en/zh-CN/zh-TW/x-default)  [case-insensitive]
+  - hreflang set (en/zh-CN/zh-HK/x-default)  [case-insensitive]
   - OpenGraph + Twitter cards completeness
   - FAQ section present + >=3 Q/A (faq-item count, full document)
   - FAQPage JSON-LD: exactly one, valid JSON, matches FAQ count
@@ -27,7 +27,7 @@ import os, re, json, glob
 from collections import defaultdict
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}
+LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}
 SITE = "https://www.beehivestrategy.com"
 
 def read(p):
@@ -204,13 +204,13 @@ for slug in slugs:
         else:
             expected_suffix = "/blog/articles/" + slug
             if lang == "cn": expected_suffix = "/zh-cn" + expected_suffix
-            if lang == "tw": expected_suffix = "/zh-tw" + expected_suffix
+            if lang == "tw": expected_suffix = "/zh-hk" + expected_suffix
             if not can.startswith(SITE) or not can.endswith(expected_suffix):
                 issues.append("canonical_wrong")
 
         # hreflang (case-insensitive)
         alts = [a.lower() for a in re.findall(r'hreflang=["\']([^"\']+)["\']', head, re.I)]
-        need = {"en","zh-cn","zh-tw","x-default"}
+        need = {"en","zh-cn","zh-hk","x-default"}
         have = set(alts)
         missing_hl = need - have
         if missing_hl:
@@ -253,7 +253,7 @@ for slug in slugs:
         hrefs = extract_hrefs(body)
         broken = 0
         for h in hrefs:
-            if h.startswith("/blog/articles/") or h.startswith("/zh-cn/blog/articles/") or h.startswith("/zh-tw/blog/articles/"):
+            if h.startswith("/blog/articles/") or h.startswith("/zh-cn/blog/articles/") or h.startswith("/zh-hk/blog/articles/"):
                 clean = h.split("#")[0].split("?")[0]
                 fpath = os.path.join(ROOT, clean.lstrip("/"))
                 if not os.path.exists(fpath): broken += 1

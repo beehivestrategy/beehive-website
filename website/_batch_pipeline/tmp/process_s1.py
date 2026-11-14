@@ -5,7 +5,7 @@ import re, sys, io
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 EN = f"{ROOT}/blog/articles/enterprise-ai-southeast-asia-opportunities-challenges.html"
 ZHCN = f"{ROOT}/zh-cn/blog/articles/enterprise-ai-southeast-asia-opportunities-challenges.html"
-ZHTW = f"{ROOT}/zh-tw/blog/articles/enterprise-ai-southeast-asia-opportunities-challenges.html"
+ZHTW = f"{ROOT}/zh-hk/blog/articles/enterprise-ai-southeast-asia-opportunities-challenges.html"
 
 def load(p):
     with io.open(p, encoding="utf-8") as f: return f.read()
@@ -227,10 +227,10 @@ assert "规模化推广的关键成功因素-3" in s and s.count("<h2 ") >= 7, "
 save(ZHCN, s)
 print("zh-CN done")
 
-# ================= zh-TW =================
+# ================= zh-HK =================
 s = load(ZHTW)
 h1 = re.search(r'<h1[^>]*>(.*?)</h1>', s, re.S).group(1)
-assert "東南亞" in h1, f"zh-TW h1 check failed: {h1}"
+assert "東南亞" in h1, f"zh-HK h1 check failed: {h1}"
 
 tw_h2 = {
     '<h2 id="東南亞的-ai-機會">東南亞的 AI 機會</h2>': '<h2 id="東南亞的-ai-機會">為什麼東南亞的企業AI機會正在快速成長？</h2>',
@@ -260,5 +260,5 @@ s = rep1(s, '<p class="recommended-card-excerpt"></p>',
 
 assert "實施路線圖與成功案例" in s and s.count("<h2 ") >= 4, "zhTW body integrity check failed"
 save(ZHTW, s)
-print("zh-TW done")
+print("zh-HK done")
 print("SLUG 1 COMPLETE")

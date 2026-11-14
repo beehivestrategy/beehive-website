@@ -52,7 +52,7 @@ for s in slugs:
     print("SLUG:", s)
     for lang, path in (("EN", f"blog/articles/{s}.html"),
                        ("CN", f"zh-cn/blog/articles/{s}.html"),
-                       ("TW", f"zh-tw/blog/articles/{s}.html")):
+                       ("TW", f"zh-hk/blog/articles/{s}.html")):
         fp = os.path.join(ROOT, path)
         if not os.path.exists(fp):
             print(f"  {lang}: MISSING")

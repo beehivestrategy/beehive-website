@@ -21,7 +21,7 @@ EXCERPTS = {
         'A practical guide to selecting, sizing and operating vector databases for enterprise-scale semantic search.',
 }
 
-CTA_TEXT = {'en': 'Book a Demo', 'zh-cn': '预约演示', 'zh-tw': '預約示範'}
+CTA_TEXT = {'en': 'Book a Demo', 'zh-cn': '预约演示', 'zh-hk': '預約示範'}
 
 
 def fix_faq_h3(doc):
@@ -47,9 +47,9 @@ def dedupe_faq_numbers(doc):
 
 
 def fix_hrefs(doc, lang):
-    """lang: 'en' | 'zh-cn' | 'zh-tw'"""
+    """lang: 'en' | 'zh-cn' | 'zh-hk'"""
     changed = 0
-    prefix = {'en': '/blog/articles/', 'zh-cn': 'zh-cn/blog/articles/', 'zh-tw': 'zh-tw/blog/articles/'}[lang]
+    prefix = {'en': '/blog/articles/', 'zh-cn': 'zh-cn/blog/articles/', 'zh-hk': 'zh-hk/blog/articles/'}[lang]
 
     def rec_repl(m):
         nonlocal changed
@@ -63,7 +63,7 @@ def fix_hrefs(doc, lang):
     doc = re.sub(r'<a href="([^"]*)" class="recommended-card"', rec_repl, doc)
 
     # CTA button href
-    cta_href = {'en': '/contact', 'zh-cn': 'zh-cn/contact', 'zh-tw': 'zh-tw/contact'}[lang]
+    cta_href = {'en': '/contact', 'zh-cn': 'zh-cn/contact', 'zh-hk': 'zh-hk/contact'}[lang]
     def cta_repl(m):
         nonlocal changed
         if m.group(1) != cta_href:
@@ -71,7 +71,7 @@ def fix_hrefs(doc, lang):
         return f'<a href="{cta_href}" class="article-cta-btn"'
     doc = re.sub(r'<a href="([^"]*)" class="article-cta-btn"', cta_repl, doc)
 
-    sec_href = {'en': '/solution', 'zh-cn': 'zh-cn/solution', 'zh-tw': 'zh-tw/solution'}[lang]
+    sec_href = {'en': '/solution', 'zh-cn': 'zh-cn/solution', 'zh-hk': 'zh-hk/solution'}[lang]
     def sec_repl(m):
         nonlocal changed
         if m.group(1) != sec_href:
@@ -81,7 +81,7 @@ def fix_hrefs(doc, lang):
 
     # covers image prefix
     img_pfx = {'en': '/assets/blog/covers/en/', 'zh-cn': '/assets/blog/covers/zh-cn/',
-               'zh-tw': '/assets/blog/covers/zh-tw/'}[lang]
+               'zh-hk': '/assets/blog/covers/zh-hk/'}[lang]
     def img_repl(m):
         nonlocal changed
         slug = m.group(1).split('/')[-1]
@@ -95,7 +95,7 @@ def fix_hrefs(doc, lang):
 
 def fix_cta_text(doc, lang):
     want = CTA_TEXT[lang]
-    wrong = {'zh-tw': ['預約演示', '预约演示', '预约示範']}.get(lang, ['Book A Demo', 'book a demo'])
+    wrong = {'zh-hk': ['預約演示', '预约演示', '预约示範']}.get(lang, ['Book A Demo', 'book a demo'])
     m = re.search(r'(<a href="[^"]*" class="article-cta-btn"[^>]*>)([^<]*)(<)', doc)
     if not m:
         return doc, 0
@@ -126,7 +126,7 @@ def fix_excerpts(doc, lang):
 
 def main():
     for slug in SLUGS:
-        for lang, pfx in (('en', ''), ('zh-cn', 'zh-cn/'), ('zh-tw', 'zh-tw/')):
+        for lang, pfx in (('en', ''), ('zh-cn', 'zh-cn/'), ('zh-hk', 'zh-hk/')):
             p = os.path.join(ROOT, pfx, 'blog/articles', slug + '.html')
             doc = open(p, encoding='utf-8').read()
             orig = doc

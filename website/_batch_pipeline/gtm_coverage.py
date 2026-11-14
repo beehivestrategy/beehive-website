@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os, glob
 base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sections = ["blog/articles", "zh-cn/blog/articles", "zh-tw/blog/articles"]
+sections = ["blog/articles", "zh-cn/blog/articles", "zh-hk/blog/articles"]
 for s in sections:
     files = glob.glob(os.path.join(base, s, "*.html"))
     with_gtm = 0

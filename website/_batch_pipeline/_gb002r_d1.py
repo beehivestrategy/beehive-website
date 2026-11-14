@@ -330,7 +330,7 @@ DATA = {
             ("Measuring Conversational BI Impact", "How Do You Measure Conversational BI Impact?"),
         ], "add": S1_EN_ADD, "faq": S1_EN_FAQ},
         "zh-CN": {"h2": S1_CN_H2, "faq": S1_ZH_FAQ},
-        "zh-TW": {"h2": S1_TW_H2, "faq": S1_ZH_FAQ},
+        "zh-HK": {"h2": S1_TW_H2, "faq": S1_ZH_FAQ},
     },
     S2: {
         "EN": {"h2": [
@@ -338,7 +338,7 @@ DATA = {
             ("Measuring Personalization ROI and Getting Started", "How Should Retailers Measure Personalization ROI?"),
         ], "add": S2_EN_ADD, "faq": S2_EN_FAQ},
         "zh-CN": {"h2": S2_CN_H2, "faq": S2_ZH_FAQ},
-        "zh-TW": {"h2": S2_TW_H2, "faq": S2_ZH_FAQ},
+        "zh-HK": {"h2": S2_TW_H2, "faq": S2_ZH_FAQ},
     },
     S3: {
         "EN": {"h2": [
@@ -349,7 +349,7 @@ DATA = {
             ("In-Depth Analysis of Conversational BI Technical Architecture", "How Should the Conversational BI Architecture Be Built?"),
         ], "add": S3_EN_ADD, "faq": S3_EN_FAQ},
         "zh-CN": {"h2": S3_CN_H2, "faq": S3_ZH_FAQ},
-        "zh-TW": {"h2": S3_TW_H2, "faq": S3_ZH_FAQ},
+        "zh-HK": {"h2": S3_TW_H2, "faq": S3_ZH_FAQ},
     },
     S4: {
         "EN": {"h2": [
@@ -360,7 +360,7 @@ DATA = {
             ("Preparing for the Next Wave of Regulation", "How Do You Prepare for the Next Wave of AI Regulation?"),
         ], "add": S4_EN_ADD, "faq": S4_EN_FAQ},
         "zh-CN": {"h2": S4_CN_H2, "faq": S4_ZH_FAQ},
-        "zh-TW": {"h2": S4_TW_H2, "faq": S4_ZH_FAQ},
+        "zh-HK": {"h2": S4_TW_H2, "faq": S4_ZH_FAQ},
     },
     S5: {
         "EN": {"h2": [
@@ -368,6 +368,6 @@ DATA = {
             ("Technical Architecture for AI Dashboards", "What Architecture Do AI Dashboards Need?"),
         ], "add": S5_EN_ADD, "faq": S5_EN_FAQ},
         "zh-CN": {"h2": S5_CN_H2, "faq": S5_ZH_FAQ},
-        "zh-TW": {"h2": S5_TW_H2, "faq": S5_ZH_FAQ},
+        "zh-HK": {"h2": S5_TW_H2, "faq": S5_ZH_FAQ},
     },
 }

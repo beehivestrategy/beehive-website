@@ -47,7 +47,7 @@ def has_faqpage(html):
     return False
 
 slugs = [l.strip() for l in open(os.path.join(ROOT,'_batch_pipeline/gap_batches/gbatch_003.txt')) if l.strip()]
-paths = {'EN':'blog/articles/%s.html','zh-CN':'zh-cn/blog/articles/%s.html','zh-TW':'zh-tw/blog/articles/%s.html'}
+paths = {'EN':'blog/articles/%s.html','zh-CN':'zh-cn/blog/articles/%s.html','zh-HK':'zh-hk/blog/articles/%s.html'}
 res = {}
 for s in slugs:
     row = {}
@@ -74,7 +74,7 @@ for s in slugs:
 for s in slugs:
     r = res[s]
     parts = []
-    for lang in ('EN','zh-CN','zh-TW'):
+    for lang in ('EN','zh-CN','zh-HK'):
         d = r[lang]
         if d.get('missing'):
             parts.append(f"{lang}: MISSING")

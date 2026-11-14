@@ -15,9 +15,9 @@ EX = {
         'A practical guide to selecting, sizing and operating vector databases for enterprise-scale semantic search.',
     ('zh-cn', 'data-quality-automation-from-reactive-to-proactive-part-2'):
         '把数据质量从事后补救转向事前预防的自动化机制与落地路径。',
-    ('zh-tw', 'data-quality-automation-from-reactive-to-proactive-part-2'):
+    ('zh-hk', 'data-quality-automation-from-reactive-to-proactive-part-2'):
         '把數據質量從事後補救轉向事前預防的自動化機制與落地路徑。',
-    ('zh-tw', 'cfo-guide-ai-budget-allocation'):
+    ('zh-hk', 'cfo-guide-ai-budget-allocation'):
         'CFO如何为AI预算分配建立可审计的资本配置与回报追踪机制。',
 }
 
@@ -36,7 +36,7 @@ def fill(doc, lang):
 
 
 for slug in SLUGS:
-    for lang, pfx in (('en', ''), ('zh-cn', 'zh-cn/'), ('zh-tw', 'zh-tw/')):
+    for lang, pfx in (('en', ''), ('zh-cn', 'zh-cn/'), ('zh-hk', 'zh-hk/')):
         p = os.path.join(ROOT, pfx, 'blog/articles', slug + '.html')
         d = open(p, encoding='utf-8').read()
         nd = fill(d, lang)

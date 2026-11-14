@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Pass 1 (mechanical): recommended-card hrefs + excerpts, zh-TW s2twp conversion."""
+"""Pass 1 (mechanical): recommended-card hrefs + excerpts, zh-HK s2twp conversion."""
 import sys
 sys.path.insert(0, '/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipeline')
 import _gb002r_lib as L
@@ -50,7 +50,7 @@ EX_ZH_CN = {
         "生成式AI如何让企业搜索从关键词匹配升级为可直接引用的答案。",
 }
 
-# manual zh-TW heading overrides (after opencc)
+# manual zh-HK heading overrides (after opencc)
 TW_H2 = {
     "conversational-bi-executives-natural-language-queries": [
         ("Architecture and Technical Foundation", "對話式BI的技術架構與基礎設施是什麼？"),
@@ -106,7 +106,7 @@ for slug in SLUGS:
         o = h
         h = L.fix_rec_hrefs(h, lang)
         h = L.fill_excerpts(h, EX_EN if lang == "EN" else (EX_ZH_CN if lang == "zh-CN" else EX_ZH))
-        if lang == "zh-TW":
+        if lang == "zh-HK":
             h = L.map_art(h, L.opencc_inner)
             for old, new in TW_H2.get(slug, []):
                 h = L.retitle_h2(h, [(old, new)])

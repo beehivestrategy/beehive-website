@@ -2,7 +2,7 @@
 import re, os, sys, json, html as H
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"EN": "", "zh-CN": "zh-cn/", "zh-TW": "zh-tw/"}
+LANGS = {"EN": "", "zh-CN": "zh-cn/", "zh-HK": "zh-hk/"}
 CJK = re.compile(r'[\u4e00-\u9fff]')
 WORD = re.compile(r"[A-Za-z][A-Za-z'\-]*")
 
@@ -64,7 +64,7 @@ slugs = [l.strip() for l in open(os.path.join(ROOT,"_batch_pipeline/gap_batches/
 for s in slugs:
     r = audit(s)
     print("="*78); print(r["slug"])
-    for lang in ["EN","zh-CN","zh-TW"]:
+    for lang in ["EN","zh-CN","zh-HK"]:
         d = r[lang]
         if d == "MISSING": print(f"  {lang}: MISSING"); continue
         print(f"  {lang}: words={d['words']:5d} cjk={d['cjk']:5d} faqQ={d['faqQ']} faqH3={d['faqH3']} headLD={d['headLD']} bodyLD={d['bodyLD']} afterFaq={d['ldAfterFaq']} cards={d['cards']} rel={d['relCards']} emptyEx={d['emptyEx']} undef={d['undef']} h2={d['h2n']} cta={d['cta']}")

@@ -6,7 +6,7 @@ BASE = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 LANGS = [
     ("blog/articles", "en", 2500),
     ("zh-cn/blog/articles", "zh-cn", 3500),
-    ("zh-tw/blog/articles", "zh-tw", 3500),
+    ("zh-hk/blog/articles", "zh-hk", 3500),
 ]
 
 def read(p):
@@ -62,7 +62,7 @@ def jsonld_locs(h):
 
 def cta(h, lang):
     if not re.search(r'class="[^"]*article-cta-btn[^"]*"', h, flags=re.I): return "NO_BTN"
-    phrase = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-tw": "預約示範"}[lang]
+    phrase = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-hk": "預約示範"}[lang]
     return "ok" if phrase in h else "NO_PHRASE"
 
 slugs = [l.strip() for l in open(os.path.join(BASE, "_batch_pipeline/gap_batches/gbatch_001.txt")) if l.strip()]

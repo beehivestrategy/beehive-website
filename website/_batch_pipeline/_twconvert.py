@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Convert a Simplified-Chinese HTML prose snippet to Traditional (Taiwan) and
-align each <h2 id> to the existing zh-TW TOC id by matching simplified forms.
-Usage: _twconvert.py <src_snippet> <target_zhtw_html> <out_snippet>"""
+align each <h2 id> to the existing zh-HK TOC id by matching simplified forms.
+Usage: _twconvert.py <src_snippet> <target_zhhk_html> <out_snippet>"""
 import re, sys, opencc
 cc = opencc.OpenCC('s2twp')
 t2s = opencc.OpenCC('t2s')
@@ -9,7 +9,7 @@ src = open(sys.argv[1], encoding="utf-8").read()
 target = open(sys.argv[2], encoding="utf-8").read()
 out = cc.convert(src)
 
-# zh-TW toc ids (from toc-mobile-links, and sidebar toc-links should match)
+# zh-HK toc ids (from toc-mobile-links, and sidebar toc-links should match)
 toc = re.search(r'<div class="toc-mobile-links">(.*?)</div>\s*</div>', target, re.S)
 toc_ids = re.findall(r'href="#([^"]+)"', toc.group(1)) if toc else []
 # also gather sidebar toc ids

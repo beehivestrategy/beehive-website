@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Fix zh-TW <head>/structure language-prefix corruption introduced by full-file
+"""Fix zh-HK <head>/structure language-prefix corruption introduced by full-file
 OpenCC regeneration from zh-CN, and repair relative recommended-card hrefs in
-both zh-CN and zh-TW.
+both zh-CN and zh-HK.
 
 Surgical: we must NOT touch the hreflang zh-CN alternate (points to zh-cn, correct)
 nor the lang-switcher 简体中文 link (points to zh-cn, correct). We only flip the
-page's OWN language signals from zh-cn -> zh-tw.
+page's OWN language signals from zh-cn -> zh-hk.
 
-Run: python3 _fix_zhtw_head.py
+Run: python3 _fix_zhhk_head.py
 """
 import os
 import re
@@ -18,42 +18,42 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NAV_PATHS = ["solution", "services", "industries", "case-studies", "pricing", "about", "blog"]
 
 
-def fix_zhtw(html):
-    # 1. <html lang="zh-cn"> -> zh-tw (only the document element)
-    html = html.replace('<html lang="zh-cn"', '<html lang="zh-tw"')
+def fix_zhhk(html):
+    # 1. <html lang="zh-cn"> -> zh-hk (only the document element)
+    html = html.replace('<html lang="zh-cn"', '<html lang="zh-hk"')
 
-    # 2. og:locale zh_CN -> zh_TW
-    html = html.replace('og:locale" content="zh_CN"', 'og:locale" content="zh_TW"')
+    # 2. og:locale zh_CN -> zh_HK
+    html = html.replace('og:locale" content="zh_CN"', 'og:locale" content="zh_HK"')
 
-    # 3. JSON-LD inLanguage zh-CN -> zh-TW
-    html = html.replace('"inLanguage": "zh-CN"', '"inLanguage": "zh-TW"')
+    # 3. JSON-LD inLanguage zh-CN -> zh-HK
+    html = html.replace('"inLanguage": "zh-CN"', '"inLanguage": "zh-HK"')
 
-    # 4. canonical (full URL) -> zh-tw
+    # 4. canonical (full URL) -> zh-hk
     html = re.sub(
         r'(rel="canonical" href="https://www\.beehivestrategy\.com/)zh-cn/',
-        r'\1zh-tw/', html)
+        r'\1zh-hk/', html)
 
-    # 5. og:url (full URL) -> zh-tw
+    # 5. og:url (full URL) -> zh-hk
     html = re.sub(
         r'(property="og:url" content="https://www\.beehivestrategy\.com/)zh-cn/',
-        r'\1zh-tw/', html)
+        r'\1zh-hk/', html)
 
-    # 6. og:image + twitter:image: domain prefix AND cover folder zh-cn -> zh-tw
+    # 6. og:image + twitter:image: domain prefix AND cover folder zh-cn -> zh-hk
     html = re.sub(
         r'(property="og:image" content="https://www\.beehivestrategy\.com/)zh-cn(/assets/blog/covers/)zh-cn/',
-        r'\1zh-tw\2zh-tw/', html)
+        r'\1zh-hk\2zh-hk/', html)
     html = re.sub(
         r'(name="twitter:image" content="https://www\.beehivestrategy\.com/)zh-cn(/assets/blog/covers/)zh-cn/',
-        r'\1zh-tw\2zh-tw/', html)
+        r'\1zh-hk\2zh-hk/', html)
 
     # 7. BlogPosting + BreadcrumbList JSON-LD: fix domain + cover folder.
     #    (FAQPage JSON-LD contains no zh-cn domain URL, so it is untouched.)
     def fix_ld(m):
         s = m.group(0)
         s = s.replace('https://www.beehivestrategy.com/zh-cn/',
-                      'https://www.beehivestrategy.com/zh-tw/')
+                      'https://www.beehivestrategy.com/zh-hk/')
         s = s.replace('/assets/blog/covers/zh-cn/',
-                      '/assets/blog/covers/zh-tw/')
+                      '/assets/blog/covers/zh-hk/')
         return s
 
     html = re.sub(r'<script type="application/ld\+json">.*?</script>',
@@ -62,17 +62,17 @@ def fix_zhtw(html):
     # 8. Home link (footer breadcrumb uses https://.../zh-cn/  with trailing /")
     html = html.replace(
         'https://www.beehivestrategy.com/zh-cn/"',
-        'https://www.beehivestrategy.com/zh-tw/"')
+        'https://www.beehivestrategy.com/zh-hk/"')
 
-    # 9. Known nav paths with leading slash + closing quote -> zh-tw.
+    # 9. Known nav paths with leading slash + closing quote -> zh-hk.
     #    Boundary is the closing quote so /zh-cn/blog/articles/ (lang-switcher)
     #    is NOT matched (it is /zh-cn/blog/articles, not /zh-cn/blog").
     pat = r'/zh-cn/(%s)"' % "|".join(NAV_PATHS)
-    html = re.sub(pat, lambda m: '/zh-tw/%s"' % m.group(1), html)
+    html = re.sub(pat, lambda m: '/zh-hk/%s"' % m.group(1), html)
 
     # 10. Relative recommended-card / relative footer hrefs (no leading slash):
-    #     href="zh-cn/... -> href="/zh-tw/...   (lang-switcher has leading slash, safe)
-    html = re.sub(r'href="zh-cn/', 'href="/zh-tw/', html)
+    #     href="zh-cn/... -> href="/zh-hk/...   (lang-switcher has leading slash, safe)
+    html = re.sub(r'href="zh-cn/', 'href="/zh-hk/', html)
 
     return html
 
@@ -93,15 +93,15 @@ def main():
                 slugs.append(s)
 
     for slug in slugs:
-        tw = os.path.join(ROOT, "zh-tw", "blog", "articles", slug + ".html")
+        tw = os.path.join(ROOT, "zh-hk", "blog", "articles", slug + ".html")
         cn = os.path.join(ROOT, "zh-cn", "blog", "articles", slug + ".html")
         if os.path.exists(tw):
             with open(tw, encoding="utf-8") as fh:
                 h = fh.read()
-            h2 = fix_zhtw(h)
+            h2 = fix_zhhk(h)
             with open(tw, "w", encoding="utf-8") as fh:
                 fh.write(h2)
-            print("zh-tw  fixed:", slug, "(changed)" if h2 != h else "(no-op)")
+            print("zh-hk  fixed:", slug, "(changed)" if h2 != h else "(no-op)")
         if os.path.exists(cn):
             with open(cn, encoding="utf-8") as fh:
                 h = fh.read()

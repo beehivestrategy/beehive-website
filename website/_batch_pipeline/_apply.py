@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 """Insert a prose block before the FAQ section for one article, with optional
-s2t conversion for zh-tw. Measures prose-before-FAQ (words for EN, CJK for zh)."""
+s2t conversion for zh-hk. Measures prose-before-FAQ (words for EN, CJK for zh)."""
 import sys, re, os
 import opencc
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 slug = sys.argv[1]
-lang = sys.argv[2]          # en | zh-cn | zh-tw
+lang = sys.argv[2]          # en | zh-cn | zh-hk
 prose_file = sys.argv[3]
 rel = {"en": "blog/articles",
        "zh-cn": "zh-cn/blog/articles",
-       "zh-tw": "zh-tw/blog/articles"}[lang]
+       "zh-hk": "zh-hk/blog/articles"}[lang]
 path = os.path.join(BASE, rel, slug + ".html")
 html = open(path, encoding="utf-8").read()
 prose = open(prose_file, encoding="utf-8").read().strip()
-if lang == "zh-tw":
+if lang == "zh-hk":
     prose = opencc.OpenCC("s2t").convert(prose)
 
-is_zh = lang in ("zh-cn", "zh-tw")
+is_zh = lang in ("zh-cn", "zh-hk")
 def cnt(s):
     return len(re.findall(r"[\u3400-\u9fff\uf900-\ufaff]", s)) if is_zh else len(re.findall(r"[A-Za-z0-9']+", s))
 

@@ -33,7 +33,7 @@ These are facts we can verify today — the "are we even eligible to be cited" l
 | Entity anchoring (Layer 1) | ✅ Partial | Organization schema present | Add sameAs to authoritative profiles |
 | `credentials.html` (honest capability page) | ✅ New | Added this cycle (fills 404) | Submit to index |
 | Case-study honesty disclaimers | ✅ New | 33 articles + 3 indexes flagged "Illustrative scenario" | N/A — done |
-| Broken meta descriptions | ✅ Fixed | 403 → 0 across EN/zh-cn/zh-tw | N/A — done |
+| Broken meta descriptions | ✅ Fixed | 403 → 0 across EN/zh-cn/zh-hk | N/A — done |
 | Contact trust signals | ✅ New | 3-card bar on all 3 languages | N/A — done |
 
 **Critical Day-0 gap:** `llms.txt` advertises pages (`/solution`, `/services`, `/industries`, `/pricing`, `/about`) — verify each resolves 200, not 404. A 404 in `llms.txt` actively *harms* GEO trust. (Flagged for verification in #826.)

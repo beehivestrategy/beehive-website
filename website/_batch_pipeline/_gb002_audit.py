@@ -80,7 +80,7 @@ def audit(path, lang):
                 ld_match = all(n.strip() in p or p.endswith(n.strip()) for n, p in zip(names, pageq))
 
     # --- CTA
-    cta_phrases = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-tw": "預約示範"}
+    cta_phrases = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-hk": "預約示範"}
     has_cta = ('class="article-cta-btn"' in raw) and (cta_phrases[lang] in raw)
 
     # --- H2 question check (exclude structural labels)
@@ -133,13 +133,13 @@ if __name__ == "__main__":
     for s in slugs:
         row = {}
         for lang, rel in (("en", "blog/articles"), ("zh-cn", "zh-cn/blog/articles"),
-                          ("zh-tw", "zh-tw/blog/articles")):
+                          ("zh-hk", "zh-hk/blog/articles")):
             p = os.path.join(ROOT, rel, s + ".html")
             r = audit(p, lang)
             row[lang] = r
         out[s] = row
         parts = []
-        for lang in ("en", "zh-cn", "zh-tw"):
+        for lang in ("en", "zh-cn", "zh-hk"):
             r = row[lang]
             v = verdict(r, lang)
             parts.append(f"{lang}: {r.get('words')}w/{r.get('cjk')}cjk faq={r.get('faq_items')}/{r.get('faq_h3')}h3 LD={'B' if r.get('ld_body') else '-'}{'H' if r.get('ld_head') else ''}{'m' if r.get('ld_match') else ''} cta={int(bool(r.get('cta')))} -> {v}")

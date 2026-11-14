@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/role-mcp-multi-cloud-data-strategies-2025.html"
 ZHCN = W + "zh-cn/blog/articles/role-mcp-multi-cloud-data-strategies-2025.html"
-ZHTW = W + "zh-tw/blog/articles/role-mcp-multi-cloud-data-strategies-2025.html"
+ZHTW = W + "zh-hk/blog/articles/role-mcp-multi-cloud-data-strategies-2025.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -183,7 +183,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("MCP為多雲資料戰略解決了什麼問題？",
      "碎片化。Flexera的State of the Cloud報告顯示89%的組織在運行多雲戰略，而在MCP之前，每個AI智慧代理都需要為每個資料源、每個團隊、每朵雲定製連接器。MCP把存取層標準化，讓每個資料源一個受治理的伺服器服務所有智慧代理、所有工具和未來的所有模型——成熟部署報告，協定成為預設後定製整合開發量減少40%到60%。"),
@@ -262,7 +262,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="mcp為何成為多雲資料的互操作性層"', 'id="如何在受監管的多雲環境中保障mcp安全"',
         '89%', 'Linux基金會',
-    ], 6, "zh-TW")
+    ], 6, "zh-HK")
     assert 'MCP' in body_h1(s) or '多雲' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

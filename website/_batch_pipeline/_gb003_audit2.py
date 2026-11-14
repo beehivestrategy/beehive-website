@@ -1,9 +1,9 @@
 import re, os
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 slugs = [l.strip() for l in open(os.path.join(ROOT,'_batch_pipeline/gap_batches/gbatch_003.txt')) if l.strip()]
-paths = {'EN':'blog/articles/%s.html','zh-CN':'zh-cn/blog/articles/%s.html','zh-TW':'zh-tw/blog/articles/%s.html'}
+paths = {'EN':'blog/articles/%s.html','zh-CN':'zh-cn/blog/articles/%s.html','zh-HK':'zh-hk/blog/articles/%s.html'}
 BF = re.compile(r'<h2 id="([^"]*)">(常见问题|常見問題|Frequently asked questions|Frequently Asked Questions)</h2>\s*((?:<p><strong>.*?</strong>.*?</p>\s*)+)', re.S)
-PHRASE = {'EN':'Book a Demo','zh-CN':'预约演示','zh-TW':'預約示範'}
+PHRASE = {'EN':'Book a Demo','zh-CN':'预约演示','zh-HK':'預約示範'}
 for s in slugs:
     out=[]
     for lang,tpl in paths.items():

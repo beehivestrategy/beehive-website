@@ -124,8 +124,8 @@ def main():
     F.save(SLUG, "zh-CN", F.set_body(s, b))
 
     before, after = F.process(SLUG, faq=FAQ, tw_from_cn=True,
-                              faq_titles={"EN": "Frequently Asked Questions", "zh-CN": "常见问题", "zh-TW": "常見問題"})
-    for lang in ("EN", "zh-CN", "zh-TW"):
+                              faq_titles={"EN": "Frequently Asked Questions", "zh-CN": "常见问题", "zh-HK": "常見問題"})
+    for lang in ("EN", "zh-CN", "zh-HK"):
         print(lang, "before", before[lang], "after", after[lang])
 
 main()

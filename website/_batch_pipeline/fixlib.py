@@ -4,7 +4,7 @@ import re, os, json, sys
 import opencc
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"EN": "", "zh-CN": "zh-cn/", "zh-TW": "zh-tw/"}
+LANGS = {"EN": "", "zh-CN": "zh-cn/", "zh-HK": "zh-hk/"}
 CJK = re.compile(r'[\u4e00-\u9fff]')
 WORD = re.compile(r"[A-Za-z][A-Za-z'\-]*")
 S2TWP = opencc.OpenCC('s2twp')
@@ -234,7 +234,7 @@ def excerpt_for(slug_target, lang):
 
 def _card_path(h, lang):
     pre = LANGS[lang].rstrip('/')
-    h = re.sub(r'^(zh-cn/|zh-tw/)', '', h).lstrip('/')
+    h = re.sub(r'^(zh-cn/|zh-hk/)', '', h).lstrip('/')
     return '/' + (pre + '/' if pre else '') + h
 
 def fix_cards(html, lang):
@@ -242,7 +242,7 @@ def fix_cards(html, lang):
         h = m.group(2)
         if h.startswith('/') or h.startswith('http'):
             return m.group(0)
-        if h.startswith('zh-cn/') or h.startswith('zh-tw/') or h.startswith('blog/'):
+        if h.startswith('zh-cn/') or h.startswith('zh-hk/') or h.startswith('blog/'):
             return m.group(1) + _card_path(h, lang) + m.group(3)
         return m.group(0)
     html = CARD_HREF.sub(href_rep, html)
@@ -333,12 +333,12 @@ def process(slug, bodies=None, faq=None, h2map=None, tw_from_cn=False, faq_title
     faq_titles = faq_titles or {}
     before = {}
     after = {}
-    for lang in ("EN", "zh-CN", "zh-TW"):
+    for lang in ("EN", "zh-CN", "zh-HK"):
         if not os.path.exists(path(slug, lang)):
             continue
         s = load(slug, lang)
         before[lang] = stats(s)
-        if lang == "zh-TW" and tw_from_cn:
+        if lang == "zh-HK" and tw_from_cn:
             cn = load(slug, "zh-CN")
             s = set_body(s, s2twp_text(get_body(cn) or ""))
         elif lang in bodies:
@@ -354,7 +354,7 @@ def process(slug, bodies=None, faq=None, h2map=None, tw_from_cn=False, faq_title
         # FAQ
         if lang in faq:
             title = faq_titles.get(lang) or {"EN": "Frequently Asked Questions",
-                                              "zh-CN": "常见问题", "zh-TW": "常見問題"}[lang]
+                                              "zh-CN": "常见问题", "zh-HK": "常見問題"}[lang]
             s = set_faq(s, faq[lang], title)
         s = kill_undefined(s)
         s = ensure_faq_ld(s, "https://www.beehivestrategy.com/" + LANGS[lang] + "blog/articles/" + slug)
@@ -366,7 +366,7 @@ def process(slug, bodies=None, faq=None, h2map=None, tw_from_cn=False, faq_title
     return before, after
 
 def cta_text_for(lang):
-    return {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-TW": "預約示範"}[lang]
+    return {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-HK": "預約示範"}[lang]
 
 def ensure_cta(html, lang):
     want = cta_text_for(lang)
@@ -378,7 +378,7 @@ def ensure_cta(html, lang):
     return html
 
 def tw_headings(html_zh_tw, html_zh_cn):
-    """Force zh-TW headings to Traditional Chinese derived from zh-CN."""
+    """Force zh-HK headings to Traditional Chinese derived from zh-CN."""
     cb = get_body(html_zh_cn)
     tb = get_body(html_zh_tw)
     if cb is None or tb is None:

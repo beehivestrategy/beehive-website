@@ -124,5 +124,5 @@ def process_lang(path, expand, h2map, excerpts, faq=None, faq_jsonld=None, tw=Fa
 
 process_lang(os.path.join(ROOT,"blog/articles/"+SLUG+".html"), EN_EXPAND, EN_H2, EN_EXCERPTS, faq=FAQ_EN)
 process_lang(os.path.join(ROOT,"zh-cn/blog/articles/"+SLUG+".html"), ZH_EXPAND, ZH_H2, ZH_EXCERPTS_CN, faq=FAQ_ZH)
-process_lang(os.path.join(ROOT,"zh-tw/blog/articles/"+SLUG+".html"), ZH_EXPAND, ZH_H2, ZH_EXCERPTS_CN, faq=FAQ_ZH, tw=True)
+process_lang(os.path.join(ROOT,"zh-hk/blog/articles/"+SLUG+".html"), ZH_EXPAND, ZH_H2, ZH_EXCERPTS_CN, faq=FAQ_ZH, tw=True)
 print("done", SLUG)

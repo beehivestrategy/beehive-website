@@ -68,7 +68,7 @@ summ = deep.get("summary", {})
 per_lang = summ.get("per_lang", {})
 sev = summ.get("severity_counts", {})
 
-LANGS = [("en", "EN"), ("cn", "zh-CN"), ("tw", "zh-TW")]
+LANGS = [("en", "EN"), ("cn", "zh-CN"), ("tw", "zh-HK")]
 
 def sev_rows(lang_key):
     rows = ""
@@ -106,7 +106,7 @@ staging_rows = "".join(
     f'<tr><td>{i+1}</td><td><code>{html.escape(s)}</code></td>'
     f'<td><a href="https://beehive-strategy-v2.pages.dev/blog/articles/{s}/" target="_blank">EN</a></td>'
     f'<td><a href="https://beehive-strategy-v2.pages.dev/zh-cn/blog/articles/{s}/" target="_blank">zh-CN</a></td>'
-    f'<td><a href="https://beehive-strategy-v2.pages.dev/zh-tw/blog/articles/{s}/" target="_blank">zh-TW</a></td></tr>'
+    f'<td><a href="https://beehive-strategy-v2.pages.dev/zh-hk/blog/articles/{s}/" target="_blank">zh-HK</a></td></tr>'
     for i, s in enumerate(STAGING_MISSING))
 
 now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M HKT")
@@ -193,15 +193,15 @@ ol li{{margin:6px 0}}
 
 <h2>3️⃣ 三环境同步状态</h2>
 <div class="grid">
-<div class="card"><h3>dev ✅</h3><p><b>beehive-strategy-v2.pages.dev</b><br>EN/zh-CN/zh-TW 各 1,101 篇<br>sitemap 与 PROD 字节级一致（diff IDENTICAL，2,776,580 B）</p></div>
-<div class="card"><h3>PROD ✅</h3><p><b>www.beehivestrategy.com</b><br>EN/zh-CN/zh-TW 各 1,101 篇<br>含全部修复 + 08-18~09-02 新批次</p></div>
-<div class="card" style="border-left:4px solid var(--gold)"><h3>staging ⚠️</h3><p><b>beehive-strategy-v2-staging.pages.dev</b><br>EN/zh-CN/zh-TW 各 1,060 篇<br><b>缺同一批 41 slug × 3 = 123 页</b>（08-18~09-02 批次未部署）</p></div>
+<div class="card"><h3>dev ✅</h3><p><b>beehive-strategy-v2.pages.dev</b><br>EN/zh-CN/zh-HK 各 1,101 篇<br>sitemap 与 PROD 字节级一致（diff IDENTICAL，2,776,580 B）</p></div>
+<div class="card"><h3>PROD ✅</h3><p><b>www.beehivestrategy.com</b><br>EN/zh-CN/zh-HK 各 1,101 篇<br>含全部修复 + 08-18~09-02 新批次</p></div>
+<div class="card" style="border-left:4px solid var(--gold)"><h3>staging ⚠️</h3><p><b>beehive-strategy-v2-staging.pages.dev</b><br>EN/zh-CN/zh-HK 各 1,060 篇<br><b>缺同一批 41 slug × 3 = 123 页</b>（08-18~09-02 批次未部署）</p></div>
 </div>
 
 <h3>线上抽检（dev + PROD 全绿）</h3>
 <table><tr><th>样本</th><th>验证点</th><th>结果</th></tr>
-<tr><td><code>what-is-conversational-bi-chatbi-explained</code> (zh-TW)</td><td>canonical 自指向修复</td><td><span class="badge b-ok">✅ 200 / canonical 正确</span></td></tr>
-<tr><td><code>why-mcp-matters-enterprise-data-teams</code> (zh-TW)</td><td>FAQPage JSON-LD 重建（5 Q/A）</td><td><span class="badge b-ok">✅ 200 / JSON-LD×1 / H1×1</span></td></tr>
+<tr><td><code>what-is-conversational-bi-chatbi-explained</code> (zh-HK)</td><td>canonical 自指向修复</td><td><span class="badge b-ok">✅ 200 / canonical 正确</span></td></tr>
+<tr><td><code>why-mcp-matters-enterprise-data-teams</code> (zh-HK)</td><td>FAQPage JSON-LD 重建（5 Q/A）</td><td><span class="badge b-ok">✅ 200 / JSON-LD×1 / H1×1</span></td></tr>
 <tr><td><code>financial-services-ai-fraud-detection-real-time</code> (EN)</td><td>OG/Twitter 卡片补齐</td><td><span class="badge b-ok">✅ 200 / og:url 正确</span></td></tr>
 <tr><td><code>text-to-sql-accuracy-benchmark-2026</code>（新文）</td><td>新批次上线</td><td><span class="badge b-ok">✅ dev+PROD 200</span> ／ staging 404（确认落后）</td></tr>
 </table>

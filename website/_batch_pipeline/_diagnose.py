@@ -54,7 +54,7 @@ for slug in slugs:
     out = {"slug": slug}
     for lang, prefix, phrase in [("EN","blog/articles","Book a Demo"),
                                  ("zh-CN","zh-cn/blog/articles","预约演示"),
-                                 ("zh-TW","zh-tw/blog/articles","預約示範")]:
+                                 ("zh-HK","zh-hk/blog/articles","預約示範")]:
         fp = os.path.join(ROOT, prefix, slug + ".html")
         if not os.path.exists(fp):
             out[lang] = "MISSING"; continue

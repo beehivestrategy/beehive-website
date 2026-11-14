@@ -4,7 +4,7 @@ import os, re, glob, json
 from collections import defaultdict
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}
+LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}
 
 # all article html
 files = []
@@ -34,7 +34,7 @@ by_lang = defaultdict(int)
 for f in dupe:
     if "/blog/articles/" in f: by_lang["en"] += 1
     elif "/zh-cn/" in f: by_lang["cn"] += 1
-    elif "/zh-tw/" in f: by_lang["tw"] += 1
+    elif "/zh-hk/" in f: by_lang["tw"] += 1
 print("By language:", dict(by_lang))
 # sample
 for i, (f, c) in enumerate(list(dupe.items())[:10]):

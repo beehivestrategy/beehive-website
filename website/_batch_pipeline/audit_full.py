@@ -9,7 +9,7 @@ BASE = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 LANGS = [
     ("blog/articles", "en", 2500),
     ("zh-cn/blog/articles", "zh-cn", 3500),
-    ("zh-tw/blog/articles", "zh-tw", 3500),
+    ("zh-hk/blog/articles", "zh-hk", 3500),
 ]
 
 def ext(h):
@@ -95,7 +95,7 @@ for s in slugs:
         if d["empty_excerpt"]: agg[l]["empty_excerpt"] += 1
 
 print("\n=== AGGREGATE (per language) ===")
-for l in ["en","zh-cn","zh-tw"]:
+for l in ["en","zh-cn","zh-hk"]:
     a = agg[l]
     print(f"{l}: below_floor={a['below']} ok_len={a['ok_len']} blank={a['blank']} no_faq={a['no_faq']} no_jsonld={a['no_jsonld']} no_qh2={a['no_qh2']} empty_excerpt={a['empty_excerpt']}")
 
@@ -104,7 +104,7 @@ jsonld_backfill = [s for s in slugs if per[s]["en"].get("faq") and not per[s]["e
 print("\nJSON-LD backfill candidates (EN faq present, no jsonld):", len(jsonld_backfill))
 
 # Blank zh slugs
-blank_zh = [s for s in slugs if per[s]["zh-cn"].get("blank") or per[s]["zh-tw"].get("blank")]
+blank_zh = [s for s in slugs if per[s]["zh-cn"].get("blank") or per[s]["zh-hk"].get("blank")]
 print("Blank zh slugs:", blank_zh)
 
 # Save gap map + summary

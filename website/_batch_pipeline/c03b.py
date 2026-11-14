@@ -1,7 +1,7 @@
 import os, re, sys, json
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-SUBS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}
+SUBS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}
 
 def path(slug, lang):
     return os.path.join(ROOT, SUBS[lang], slug + ".html")
@@ -231,7 +231,7 @@ def fill_excerpts(html, lang):
 
 def fix_rec_hrefs(html, lang):
     """Ensure recommended-card hrefs are root-relative + language prefixed."""
-    pref = {'en': '/blog/articles/', 'cn': '/zh-cn/blog/articles/', 'tw': '/zh-tw/blog/articles/'}[lang]
+    pref = {'en': '/blog/articles/', 'cn': '/zh-cn/blog/articles/', 'tw': '/zh-hk/blog/articles/'}[lang]
     def repl(m):
         href = m.group(1)
         if href.startswith('http') or '#' in href:
@@ -293,7 +293,7 @@ def verify(slug):
         ldn = len(re.findall(r'"@type"\s*:\s*"FAQPage"', h))
         ph = {'en': 'Book a Demo', 'cn': '预约演示', 'tw': '預約示範'}[lang]
         cta = bool(re.search(r'class="article-cta-btn"[^>]*>\s*' + ph, h))
-        pref = {'en': '/blog/articles/', 'cn': '/zh-cn/blog/articles/', 'tw': '/zh-tw/blog/articles/'}[lang]
+        pref = {'en': '/blog/articles/', 'cn': '/zh-cn/blog/articles/', 'tw': '/zh-hk/blog/articles/'}[lang]
         hrefs = re.findall(r'<a href="([^"]*)" class="recommended-card">', h)
         bad = [x for x in hrefs if not x.startswith(pref)]
         empty_ex = len([1 for blk in re.findall(r'<a href="[^"]*" class="recommended-card">.*?</a>', h, re.S)
@@ -334,7 +334,7 @@ def retitle_map(html, mapping):
 
 
 def regen_tw(slug):
-    """Rebuild the zh-TW article region from zh-CN (OpenCC s2t). Keeps head/footer/cards."""
+    """Rebuild the zh-HK article region from zh-CN (OpenCC s2t). Keeps head/footer/cards."""
     cn = read(slug, 'cn')
     tw = read(slug, 'tw')
     mc = re.search(r'<article[^>]*id="article-content"[^>]*>.*?</article>', cn, re.S)

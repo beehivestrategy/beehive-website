@@ -76,7 +76,7 @@ TARGETS = {
 
 for slug, langs in TARGETS.items():
     for lang in langs:
-        sub = "blog/articles" if lang=="en" else f"{'zh-cn' if lang=='cn' else 'zh-tw'}/blog/articles"
+        sub = "blog/articles" if lang=="en" else f"{'zh-cn' if lang=='cn' else 'zh-hk'}/blog/articles"
         fn = os.path.join(BASE, sub, slug+".html")
         raw = open(fn, encoding="utf-8").read()
         head0 = raw[:raw.index("<body")]

@@ -27,7 +27,7 @@ def check(slug, lang):
     r["rec"] = len(recs)
     r["rec_bad"] = [x for x in recs if not x.startswith("/blog/articles/")
                     and not x.startswith("/zh-cn/blog/articles/")
-                    and not x.startswith("/zh-tw/blog/articles/")]
+                    and not x.startswith("/zh-hk/blog/articles/")]
     hs = h2s(h)
     r["h2"] = len(hs)
     if lang == "EN":
