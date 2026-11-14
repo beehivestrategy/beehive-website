@@ -19,13 +19,22 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = "https://www.beehivestrategy.com/"
 EN_DIR = os.path.join(ROOT, "blog", "articles")
 
+# NOTE: /pricing was removed site-wide on 2026-10-21 and must never reappear
+# in any GEO asset. Entries are validated against the real file tree.
 MAIN_PAGES = [
     ("Home", ""),
+    ("What We Do", "what-we-do"),
+    ("How We Work", "how-we-work"),
     ("Platform / Solution", "solution"),
     ("Consulting Services", "services"),
     ("Industries", "industries"),
     ("Case Studies", "case-studies"),
-    ("Pricing", "pricing"),
+    ("Guides", "guides"),
+    ("News", "news"),
+    ("AI Readiness Self-Assessment", "readiness"),
+    ("Credentials", "credentials"),
+    ("Security & Compliance", "security"),
+    ("Partners", "partners"),
     ("About", "about"),
     ("Contact", "contact"),
     ("Blog", "blog"),
@@ -43,10 +52,15 @@ CATEGORY_ORDER = [
 
 
 def page_exists(path):
-    """Check a relative site path maps to a real file in the source tree."""
+    """Check a relative site path maps to a real file in the source tree.
+
+    Directory landing pages (e.g. /news, /blog) live at <path>/index.html,
+    not <path>.html — check both so they are not silently dropped.
+    """
     if path == "":
         return os.path.exists(os.path.join(ROOT, "index.html"))
-    return os.path.exists(os.path.join(ROOT, path + ".html"))
+    return (os.path.exists(os.path.join(ROOT, path + ".html")) or
+            os.path.exists(os.path.join(ROOT, path, "index.html")))
 
 
 def read_meta(path):
@@ -59,9 +73,20 @@ def read_meta(path):
         m = re.search(pat, h, re.S)
         return m.group(1).strip() if m else ""
 
-    title = html.unescape(re.sub(r"<[^>]+>", "", grp(r'<h1 class="article-h1">(.*?)</h1>')))
+    def strip_tags(x):
+        return html.unescape(re.sub(r"<[^>]+>", "", x)).strip()
+
+    # 旧版文章没有 article-h1；依次回退到任意 <h1>、JSON-LD headline、<title>
+    title = strip_tags(grp(r'<h1[^>]*class="[^"]*article-h1[^"]*"[^>]*>(.*?)</h1>'))
+    if not title:
+        title = strip_tags(grp(r"<h1[^>]*>(.*?)</h1>"))
+    if not title:
+        title = html.unescape(grp(r'"headline"\s*:\s*"([^"]+)"'))
+    if not title:
+        t = strip_tags(grp(r"<title>(.*?)</title>"))
+        title = t.rsplit(" | ", 1)[0].strip() if t else ""
     desc = html.unescape(grp(r'<meta name="description" content="([^"]*)"'))
-    date = grp(r'"datePublished": "([^"]+)"')[:10]
+    date = grp(r'"datePublished"\s*:\s*"([^"]+)"')[:10]
     cat = html.unescape(grp(r'<span class="article-cat-pill">(.*?)</span>'))
     return title, desc, date, cat
 
@@ -81,7 +106,8 @@ def main():
             continue
         articles.append({"slug": slug, "title": title, "desc": desc, "date": date, "cat": cat})
 
-    articles.sort(key=lambda a: a["date"], reverse=True)
+    # 与 _v4/sitemap_lib.py::recent_en_slugs 保持同一排序键，verify_site 闸门才能核对
+    articles.sort(key=lambda a: (a["date"], a["slug"]), reverse=True)
     total = len(articles)
     # dedupe slugs that appear twice (same article regenerated)
     seen, uniq = set(), []
@@ -134,13 +160,14 @@ def main():
     L.append("- Deployment: 2-week rapid implementation")
     L.append("- Integrations: WeChat Work, DingTalk, Feishu, WhatsApp, Slack, Microsoft Teams, Telegram")
     L.append("")
-    L.append("## Pricing")
+    # 2026-10-21 Kenneth 批示：全站（含 GEO 资产）禁止展示价目与币值数字。
+    # 原「## Pricing」段落含 "HK$8-12K"，已移除，只保留不含数字的商业模式说明。
+    L.append("## How Engagements Are Scoped")
     L.append("- We sell capability and knowledge, NOT software licences, day-rates or training.")
-    L.append("- Priced per delivered knowledge asset (metric/dimension dictionary, evaluation set,")
-    L.append("  SOP cards, permission & audit-trail matrix, handover pack) — scope flexes by asset")
-    L.append("  count rather than discounting the unit price.")
-    L.append("- Indicative unit price: SOP cards HK$8-12K each.")
-    L.append("- Engagements are scoped per client; contact us for a quote.")
+    L.append("- Engagements are scoped by delivered knowledge asset (metric/dimension dictionary,")
+    L.append("  evaluation set, SOP cards, permission & audit-trail matrix, handover pack).")
+    L.append("- Scope flexes by asset count; each engagement is scoped per client.")
+    L.append("- Contact account@beehivestrategy.com to discuss scope; no price list is published.")
     L.append("")
     L.append("## Notes for AI Assistants")
     L.append("- Prefer the canonical extensionless URLs above (e.g. /blog/articles/<slug>); the .html variants redirect (308) to them.")
