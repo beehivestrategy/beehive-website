@@ -40,6 +40,26 @@ SITEMAP_ZHCN = Path(__file__).parent.parent / "sitemap-blog-zhcn.xml"
 SITEMAP_ZHTW = Path(__file__).parent.parent / "sitemap-blog-zhhk.xml"
 SITEMAP_INDEX = Path(__file__).parent.parent / "sitemap-index.xml"
 FEED_XML = Path(__file__).parent.parent / "blog" / "feed.xml"
+BLOG_HOME = Path(__file__).parent.parent / "blog.html"
+
+
+def css_links_from_blog_home():
+    """Derive the active CSS chain from blog.html (kept current by bump_assets.py).
+
+    Article pages need all three stylesheets; index.html only loads accenture.css.
+    Hardcoding a 20260804 styles.css link here made every generated article fail
+    the v4 gates. blog.html is tracked and bumped, so it is the source of truth.
+    """
+    try:
+        html_txt = BLOG_HOME.read_text(encoding="utf-8")
+        links = re.findall(r'<link rel="stylesheet" href="/css/[^"]+">', html_txt)
+        if len(links) >= 3:
+            return "\n  ".join(links[:3])
+    except OSError:
+        pass
+    return ('<link rel="stylesheet" href="/css/styles.css?v=20261113.15">\n'
+            '  <link rel="stylesheet" href="/css/accenture.css?v=20261114.03">\n'
+            '  <link rel="stylesheet" href="/css/legacy-bridge.css?v=20261112.11">')
 
 # OpenRouter config
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -258,6 +278,7 @@ def generate_html_article(article, lang="en", date_str=None):
     if date_str is None:
         date_str = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d")
 
+    css_links = css_links_from_blog_home()
     slug = article["slug"]
     title = escape(article["title"])
     description = escape(article["description"])
@@ -378,7 +399,7 @@ def generate_html_article(article, lang="en", date_str=None):
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=20260804">
+  {css_links}
 
   <script type="application/ld+json">
 {{
@@ -433,7 +454,7 @@ def generate_html_article(article, lang="en", date_str=None):
         <a href="{lang_prefix}/services" class="nav-link">Services</a>
         <a href="{lang_prefix}/industries" class="nav-link">Industries</a>
         <a href="{lang_prefix}/case-studies" class="nav-link">Case Studies</a>
-        <a href="{lang_prefix}/pricing" class="nav-link">Pricing</a>
+        <a href="{lang_prefix}/contact" class="nav-link">Contact</a>
         <a href="{lang_prefix}/about" class="nav-link">About</a>
         <a href="{lang_prefix}/blog" class="nav-link active">Blog</a>
       </nav>
@@ -463,7 +484,7 @@ def generate_html_article(article, lang="en", date_str=None):
     <a href="{lang_prefix}/services">Services</a>
     <a href="{lang_prefix}/industries">Industries</a>
     <a href="{lang_prefix}/case-studies">Case Studies</a>
-    <a href="{lang_prefix}/pricing">Pricing</a>
+    <a href="{lang_prefix}/contact">Contact</a>
     <a href="{lang_prefix}/about">About</a>
     <a href="{lang_prefix}/blog">Blog</a>
     <a href="{lang_prefix}/contact" class="btn btn-primary btn-lg">Book a Demo</a>
@@ -715,6 +736,13 @@ def main():
     update_blog_index(article, date_str)
     update_sitemap(slug, date_str)
     update_feed(article, date_str)
+
+    # GEO asset: llms.txt must list the newest articles, otherwise the
+    # verify_site SEO/GEO gate (#9) fails until someone rebuilds it by hand.
+    gen_llms = Path(__file__).with_name("gen_llms_txt.py")
+    if gen_llms.exists():
+        import subprocess
+        subprocess.run([sys.executable, str(gen_llms), "--recent", "30"], check=False)
 
     print(f"\n=== SUCCESS: Article '{article['title']}' generated ===")
     print(f"URL: {SITE_BASE_URL}/blog/articles/{slug}")
