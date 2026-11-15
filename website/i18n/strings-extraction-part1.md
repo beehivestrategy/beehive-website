@@ -1,5 +1,5 @@
 # COMPLETE TRANSLATABLE STRINGS EXTRACTION REPORT (Part 1 of 4)
-## Beehive Strategy Website — 3-Language Setup (EN, zh-CN, zh-TW)
+## Beehive Strategy Website — 3-Language Setup (EN, zh-CN, zh-HK)
 
 **Source directory:** `/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/`
 
@@ -49,7 +49,7 @@ All pages share the same header/nav structure. Variations:
 | 15 | `繁體中文` | ALL pages | Shared (header) — already in Chinese |
 | 16 | `EN` (lang-code for English) | ALL pages | Shared (header) |
 | 17 | `简` (lang-code for zh-CN) | ALL pages | Shared (header) |
-| 18 | `繁` (lang-code for zh-TW) | ALL pages | Shared (header) |
+| 18 | `繁` (lang-code for zh-HK) | ALL pages | Shared (header) |
 
 ### 1.4 Mobile Menu / Navigation Aria
 

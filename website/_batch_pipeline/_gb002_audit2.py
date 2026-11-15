@@ -64,10 +64,10 @@ def audit(path, lang):
     h2s = [h for h in h2s if 'Frequently Asked' not in h and '常见问题' not in h and '常見問題' not in h]
     q = [h for h in h2s if h.endswith('?') or h.endswith('？')]
 
-    want_cta = {'en': 'Book a Demo', 'zh-cn': '预约演示', 'zh-tw': '預約示範'}[lang]
+    want_cta = {'en': 'Book a Demo', 'zh-cn': '预约演示', 'zh-hk': '預約示範'}[lang]
     cta_ok = bool(re.search(r'<a href="[^"]*" class="article-cta-btn"[^>]*>\s*' + re.escape(want_cta) + r'\s*<', doc))
 
-    pfx = {'en': '/blog/articles/', 'zh-cn': 'zh-cn/blog/articles/', 'zh-tw': 'zh-tw/blog/articles/'}[lang]
+    pfx = {'en': '/blog/articles/', 'zh-cn': 'zh-cn/blog/articles/', 'zh-hk': 'zh-hk/blog/articles/'}[lang]
     hrefs = re.findall(r'<a href="([^"]*)" class="recommended-card"', doc)
     rec_ok = len(hrefs) > 0 and all(h.startswith(pfx) for h in hrefs)
     exc_ok = all(e.strip() for e in re.findall(r'<p class="recommended-card-excerpt">(.*?)</p>', doc, re.S))
@@ -91,7 +91,7 @@ def main():
     for s in slugs:
         report[s] = {}
         line = []
-        for lang, pfx in (('en', ''), ('zh-cn', 'zh-cn/'), ('zh-tw', 'zh-tw/')):
+        for lang, pfx in (('en', ''), ('zh-cn', 'zh-cn/'), ('zh-hk', 'zh-hk/')):
             p = os.path.join(ROOT, pfx, 'blog/articles', s + '.html')
             r = audit(p, lang)
             report[s][lang] = r

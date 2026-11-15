@@ -15,9 +15,9 @@ ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 LANGS = [
     ("blog/articles", "en", 2500),
     ("zh-cn/blog/articles", "zh-cn", 3500),
-    ("zh-tw/blog/articles", "zh-tw", 3500),
+    ("zh-hk/blog/articles", "zh-hk", 3500),
 ]
-CTA_PHRASE = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-tw": "預約示範"}
+CTA_PHRASE = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-hk": "預約示範"}
 
 # ---------------------------------------------------------------- io
 def read(sub, slug):
@@ -102,7 +102,7 @@ def clean_txt(s):
     s = re.sub(r"^\s*\d+\s+", "", s)   # strip duplicated leading "1 "
     return re.sub(r"\s+", " ", s).strip()
 
-FAQ_TITLE = {"en": "Frequently Asked Questions", "zh-cn": "常见问题", "zh-tw": "常見問題"}
+FAQ_TITLE = {"en": "Frequently Asked Questions", "zh-cn": "常见问题", "zh-hk": "常見問題"}
 
 def replace_faq(html, items, lang):
     """Rebuild the .faq-section body with <h3> questions. Keeps wrapper attributes."""

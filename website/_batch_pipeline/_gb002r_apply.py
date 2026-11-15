@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Apply a content batch (zh-CN derived by t2s, zh-TW term-fixed)."""
+"""Apply a content batch (zh-CN derived by t2s, zh-HK term-fixed)."""
 import sys
 sys.path.insert(0, '/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipeline')
 import _gb002r_lib as L
@@ -26,7 +26,7 @@ def run(DATA):
     for slug, d in DATA.items():
         trad_faq = d.get("ZH_FAQ_TRAD")
         trad_add = d.get("ZH_ADD_TRAD")
-        cn, tw = d.get("zh-CN", {}), d.get("zh-TW", {})
+        cn, tw = d.get("zh-CN", {}), d.get("zh-HK", {})
         data = {"EN": d["EN"]}
         if trad_faq or cn:
             faq = trad_faq or cn.get("faq")
@@ -38,7 +38,7 @@ def run(DATA):
         if trad_faq or tw:
             faq = trad_faq or tw.get("faq")
             h2 = tw.get("h2")
-            data["zh-TW"] = {"h2": [(o, twfix(n)) for o, n in h2] if h2 else None,
+            data["zh-HK"] = {"h2": [(o, twfix(n)) for o, n in h2] if h2 else None,
                              "add": twfix(trad_add) if trad_add else tw.get("add"),
                              "faq": [(twfix(q), twfix(a)) for q, a in faq] if faq else None}
         log = L.apply_slug(slug, data)

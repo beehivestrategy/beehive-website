@@ -2,7 +2,7 @@ import os, re, glob, sys
 from datetime import datetime, timedelta
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-dirs = ["blog/articles", "zh-cn/blog/articles", "zh-tw/blog/articles"]
+dirs = ["blog/articles", "zh-cn/blog/articles", "zh-hk/blog/articles"]
 cutoff = datetime.now() - timedelta(minutes=120)
 
 def cjk_count(s):

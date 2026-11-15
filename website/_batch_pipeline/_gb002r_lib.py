@@ -12,7 +12,7 @@ import re
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 LANGS = [("EN", "blog/articles/%s.html"),
          ("zh-CN", "zh-cn/blog/articles/%s.html"),
-         ("zh-TW", "zh-tw/blog/articles/%s.html")]
+         ("zh-HK", "zh-hk/blog/articles/%s.html")]
 
 CJK = re.compile(r'[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]')
 
@@ -279,7 +279,7 @@ def ensure_faq_ld(h):
 # ------------------------------------------------------------ recommended etc
 def fix_rec_hrefs(h, lang):
     pref = {"EN": "/blog/articles/", "zh-CN": "/zh-cn/blog/articles/",
-            "zh-TW": "/zh-tw/blog/articles/"}[lang]
+            "zh-HK": "/zh-hk/blog/articles/"}[lang]
 
     def rep(m):
         href = m.group(1)
@@ -385,11 +385,11 @@ def ensure_faq_section(h, qa, title):
 
 FAQ_TITLE = {"EN": "Frequently Asked Questions",
              "zh-CN": "常见问题",
-             "zh-TW": "常見問題"}
+             "zh-HK": "常見問題"}
 
 
 def apply_slug(slug, data, add_toc_entries=True):
-    """data keys: EN / zh-CN / zh-TW, each with h2, add, faq."""
+    """data keys: EN / zh-CN / zh-HK, each with h2, add, faq."""
     log = {}
     for lang, pat in LANGS:
         rel = pat % slug

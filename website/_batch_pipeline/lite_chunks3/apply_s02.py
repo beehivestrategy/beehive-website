@@ -149,7 +149,7 @@ def main():
                 tail_h2='What Are the Key Takeaways for Enterprise Teams?', cta='Book a Demo')
     patch.apply(os.path.join(ROOT, 'zh-cn/blog/articles/%s.html' % SLUG), ZH_TOC, ZH_PROSE, ZH_FAQ,
                 tail_h2='企业团队应当记住哪些关键结论？', cta='预约演示')
-    patch.apply(os.path.join(ROOT, 'zh-tw/blog/articles/%s.html' % SLUG), TW_TOC, to_tw(ZH_PROSE),
+    patch.apply(os.path.join(ROOT, 'zh-hk/blog/articles/%s.html' % SLUG), TW_TOC, to_tw(ZH_PROSE),
                 [(to_tw(q), to_tw(a)) for q, a in ZH_FAQ],
                 tail_h2=to_tw('企業團隊應當記住哪些關鍵結論？'), cta='預約示範')
 

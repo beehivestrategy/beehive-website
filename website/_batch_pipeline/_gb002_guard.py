@@ -6,7 +6,7 @@ from collections import Counter
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SLUGS = [l.strip() for l in open(os.path.join(ROOT, '_batch_pipeline/gap_batches/gbatch_002.txt'),
                                  encoding='utf-8') if l.strip()]
-LANGS = [("en", "blog/articles"), ("zh-cn", "zh-cn/blog/articles"), ("zh-tw", "zh-tw/blog/articles")]
+LANGS = [("en", "blog/articles"), ("zh-cn", "zh-cn/blog/articles"), ("zh-hk", "zh-hk/blog/articles")]
 
 problems = []
 note = []
@@ -61,7 +61,7 @@ for slug in SLUGS:
         # 5. root-relative link sanity
         for m in re.finditer(r'href="(/[^"#]*)"', raw):
             h = m.group(1)
-            if h.startswith(('/blog/', '/zh-cn/', '/zh-tw/', '/css/', '/js/', '/assets/')):
+            if h.startswith(('/blog/', '/zh-cn/', '/zh-hk/', '/css/', '/js/', '/assets/')):
                 if ' ' in h or h.endswith('/') is False and h.count('//') > 0:
                     problems.append('%s: malformed internal link %s' % (f, h))
 
@@ -82,7 +82,7 @@ for slug in SLUGS:
                 problems.append('%s: placeholder text "%s"' % (f, bad))
 
         # 8. CTA
-        phrase = {'en': 'Book a Demo', 'zh-cn': '预约演示', 'zh-tw': '預約示範'}[lang]
+        phrase = {'en': 'Book a Demo', 'zh-cn': '预约演示', 'zh-hk': '預約示範'}[lang]
         if 'article-cta-btn' not in raw or phrase not in raw:
             problems.append('%s: CTA missing' % f)
 

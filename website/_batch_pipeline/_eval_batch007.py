@@ -51,14 +51,14 @@ def analyze(path):
     cards = re.findall(r'<a[^>]*(?:class="recommended-card"[^>]*href="([^"]+)"|href="([^"]+)"[^>]*class="recommended-card")', h)
     cards = [a or b for a,b in cards]
     res["rec_cards"] = len(cards)
-    res["rec_bad_href"] = [c for c in cards if not (c.startswith('/blog/') or c.startswith('/zh-cn/') or c.startswith('/zh-tw/'))]
+    res["rec_bad_href"] = [c for c in cards if not (c.startswith('/blog/') or c.startswith('/zh-cn/') or c.startswith('/zh-hk/'))]
     return res
 
 for slug in slugs:
     paths = {
         "en": os.path.join(ROOT, f"blog/articles/{slug}.html"),
         "zh-cn": os.path.join(ROOT, f"zh-cn/blog/articles/{slug}.html"),
-        "zh-tw": os.path.join(ROOT, f"zh-tw/blog/articles/{slug}.html"),
+        "zh-hk": os.path.join(ROOT, f"zh-hk/blog/articles/{slug}.html"),
     }
     print("="*80)
     print("SLUG:", slug)

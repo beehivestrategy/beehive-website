@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""zh-CN / zh-TW: convert statement H2s to question-style H2s (TOC text synced)."""
+"""zh-CN / zh-HK: convert statement H2s to question-style H2s (TOC text synced)."""
 import sys
 sys.path.insert(0, '/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipeline')
 from _gb002_lib import apply_ops
@@ -208,4 +208,4 @@ if __name__ == '__main__':
     for slug, ren in CN.items():
         print(('cn renamed ' if apply_ops(slug, 'zh-cn', renames=ren) else 'cn noop     ') + slug)
     for slug, ren in TW.items():
-        print(('tw renamed ' if apply_ops(slug, 'zh-tw', renames=ren) else 'tw noop     ') + slug)
+        print(('tw renamed ' if apply_ops(slug, 'zh-hk', renames=ren) else 'tw noop     ') + slug)

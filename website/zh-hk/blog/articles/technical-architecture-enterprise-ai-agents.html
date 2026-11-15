@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
+    <title>企業AI代理背後的技術架構 | Beehive Strategy</title>
+    <meta name="description" content="深入解析企業AI代理的技術架構，涵蓋編排、工具使用、記憶系統和MCP. 了解蜂啟諮詢的MCP驅動平台如何改變貴公司的數據工作流程。">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://www.beehivestrategy.com/zh-hk/blog/articles/technical-architecture-enterprise-ai-agents">
+    <link href="https://www.beehivestrategy.com/blog/articles/technical-architecture-enterprise-ai-agents" hreflang="en" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/zh-cn/blog/articles/technical-architecture-enterprise-ai-agents" hreflang="zh-CN" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/zh-hk/blog/articles/technical-architecture-enterprise-ai-agents" hreflang="zh-HK" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/blog/articles/technical-architecture-enterprise-ai-agents" hreflang="x-default" rel="alternate"/>
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Beehive Strategy">
+    <meta property="og:title" content="企業AI代理背後的技術架構">
+    <meta property="og:description" content="深入解析企業AI代理的技術架構，涵蓋編排、工具使用、記憶系統和MCP. 了解蜂啟諮詢的MCP驅動平台如何改變貴公司的數據工作流程。">
+    <meta property="og:url" content="https://www.beehivestrategy.com/zh-hk/blog/articles/technical-architecture-enterprise-ai-agents">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-tw/technical-architecture-enterprise-ai-agents.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="zh_HK">
+    <meta property="article:published_time" content="2026-02-25T18:00:00+08:00">
+    <meta property="article:modified_time" content="2026-02-25T18:00:00+08:00">
+    <meta property="article:author" content="蜂啟諮詢">
+    <meta property="article:section" content="技術">
+    <meta property="article:tag" content="AI代理"><meta property="article:tag" content="AI代理"><meta property="article:tag" content="企業架構"><meta property="article:tag" content="MCP"><meta property="article:tag" content="大語言模型"><meta property="article:tag" content="Technology">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="企業AI代理背後的技術架構">
+    <meta name="twitter:description" content="深入解析企業AI代理的技術架構，涵蓋編排、工具使用、記憶系統和MCP. 了解蜂啟諮詢的MCP驅動平台如何改變貴公司的數據工作流程。">
+    <meta name="twitter:image" content="https://www.beehivestrategy.com/zh-hk/assets/blog/covers/zh-tw/technical-architecture-enterprise-ai-agents.jpg">
+    <link href="/assets/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/css/article.css?v=20261113.15" rel="stylesheet">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-hk/blog/articles/technical-architecture-enterprise-ai-agents#article", "headline": "企業AI代理背後的技術架構", "description": "深入解析企業AI代理的技術架構，涵蓋編排、工具使用、記憶系統和MCP. 了解蜂啟諮詢的MCP驅動平台如何改變貴公司的數據工作流程。", "datePublished": "2026-02-25T18:00:00+08:00", "dateModified": "2026-02-25T18:00:00+08:00", "articleSection": "技術", "keywords": "企業AI代理架構, 模型上下文協議, AI代理編排, LLM工具使用", "inLanguage": "zh-HK", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-hk/blog/articles/technical-architecture-enterprise-ai-agents"}, "image": "https://www.beehivestrategy.com/zh-hk/assets/blog/covers/zh-tw/technical-architecture-enterprise-ai-agents.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://www.beehivestrategy.com/zh-hk/"}, {"@type": "ListItem", "position": 2, "name": "文章", "item": "https://www.beehivestrategy.com/zh-hk/blog"}, {"@type": "ListItem", "position": 3, "name": "企業AI代理背後的技術架構"}]}</script>
+    
+    <link rel="stylesheet" href="/css/article-anim.css?v=20261113.15">
+  <link rel="stylesheet" href="/css/accenture.css?v=20261114.03">
+  <link rel="stylesheet" href="/css/legacy-bridge.css?v=20261112.11">
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+<div id="scroll-progress" class="scroll-progress" role="presentation"></div>
+<header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="/zh-hk/" class="logo" aria-label="蜂啟諮詢 — 回到首頁">
+        <img src="/assets/images/beehive-logo.png" alt="蜂啟諮詢 Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="主導航">
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/what-we-do" class="nav-link" aria-haspopup="true" aria-expanded="false">我們做甚麼 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--md" style="min-width: 780px; max-width: 92vw;">
+            <div class="nav-dropdown-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">從這裏開始</div>
+                <a href="/zh-hk/services" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>全部服務</span>
+                  <span class="dropdown-subtitle">我們提供的每一次交付</span>
+                </a>
+                <a href="/zh-hk/training" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>培訓</span>
+                  <span class="dropdown-subtitle">課程按形式與深度劃分</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">我們交付甚麼</div>
+                <a href="/zh-hk/conversational-ai" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>對話式 AI</span>
+                  <span class="dropdown-subtitle">提問即答，答案與證據一併呈現</span>
+                </a>
+                <a href="/zh-hk/agentic-tools" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>AI 代理工具</span>
+                  <span class="dropdown-subtitle">部署並管治代理 AI</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">我們怎樣交付</div>
+                <a href="/zh-hk/aifde" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>前沿部署工程</span>
+                  <span class="dropdown-subtitle">即時通訊原生部署，駐場交付</span>
+                </a>
+                <a href="/zh-hk/how-we-work" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>我們怎樣工作</span>
+                  <span class="dropdown-subtitle">範圍固定、兩星期完成，之後由你們自己營運</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/proof" class="nav-link" aria-haspopup="true" aria-expanded="false">我們的成果 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">交付物與實例</div>
+                <a href="/zh-hk/proof" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>你會得到甚麼</span>
+                  <span class="dropdown-subtitle">交付物、移交機制與已投入運作的系統</span>
+                </a>
+                <a href="/zh-hk/case-studies" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>交付示範</span>
+                  <span class="dropdown-subtitle">四類情境，逐項列出交付物</span>
+                </a>
+                <a href="/zh-hk/industries" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>行業</span>
+                  <span class="dropdown-subtitle">按行業的切入點</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/blog" class="nav-link" aria-haspopup="true" aria-expanded="false">洞見 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">閱讀</div>
+                <a href="/zh-hk/blog" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>部落格</span>
+                  <span class="dropdown-subtitle">關於應用型 AI 的每週信號</span>
+                </a>
+                <a href="/zh-hk/guides" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>指南</span>
+                  <span class="dropdown-subtitle">長篇操作指南</span>
+                </a>
+                <a href="/zh-hk/news" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>新聞</span>
+                  <span class="dropdown-subtitle">我們交付了甚麼</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/about" class="nav-link" aria-haspopup="true" aria-expanded="false">關於我們 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm nav-dropdown--right">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">公司</div>
+                <a href="/zh-hk/about" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>關於我們</span>
+                  <span class="dropdown-subtitle">香港，服務亞太</span>
+                </a>
+                <a href="/zh-hk/partners" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>合作夥伴</span>
+                  <span class="dropdown-subtitle">與我們同行的夥伴</span>
+                </a>
+                <a href="/zh-hk/credentials" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>資質</span>
+                  <span class="dropdown-subtitle">我們有資質做的事</span>
+                </a>
+                <a href="/zh-hk/security" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>安全</span>
+                  <span class="dropdown-subtitle">你的數據如何被保管</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="/zh-hk/contact" class="nav-link">聯絡我們</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="切換語言" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">繁</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/technical-architecture-enterprise-ai-agents" role="menuitem" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/technical-architecture-enterprise-ai-agents" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-hk/blog/articles/technical-architecture-enterprise-ai-agents" role="menuitem" class="active" data-lang="zh-hk"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/zh-hk/readiness" class="btn btn-primary">免費自評</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="切換選單" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">我們做甚麼 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">從這裏開始</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/services">全部服務<span class="dropdown-subtitle">我們提供的每一次交付</span></a>
+            <a href="/zh-hk/training">培訓<span class="dropdown-subtitle">課程按形式與深度劃分</span></a>
+          </div>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">我們交付甚麼</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/conversational-ai">對話式 AI<span class="dropdown-subtitle">提問即答，答案與證據一併呈現</span></a>
+            <a href="/zh-hk/agentic-tools">AI 代理工具<span class="dropdown-subtitle">部署並管治代理 AI</span></a>
+          </div>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">我們怎樣交付</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/aifde">前沿部署工程<span class="dropdown-subtitle">即時通訊原生部署，駐場交付</span></a>
+            <a href="/zh-hk/how-we-work">我們怎樣工作<span class="dropdown-subtitle">範圍固定、兩星期完成，之後由你們自己營運</span></a>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">我們的成果 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">交付物與實例</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/proof">你會得到甚麼<span class="dropdown-subtitle">交付物、移交機制與已投入運作的系統</span></a>
+          <a href="/zh-hk/case-studies">交付示範<span class="dropdown-subtitle">四類情境，逐項列出交付物</span></a>
+          <a href="/zh-hk/industries">行業<span class="dropdown-subtitle">按行業的切入點</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">洞見 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">閱讀</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/blog">部落格<span class="dropdown-subtitle">關於應用型 AI 的每週信號</span></a>
+          <a href="/zh-hk/guides">指南<span class="dropdown-subtitle">長篇操作指南</span></a>
+          <a href="/zh-hk/news">新聞<span class="dropdown-subtitle">我們交付了甚麼</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">關於我們 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">公司</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/about">關於我們<span class="dropdown-subtitle">香港，服務亞太</span></a>
+          <a href="/zh-hk/partners">合作夥伴<span class="dropdown-subtitle">與我們同行的夥伴</span></a>
+          <a href="/zh-hk/credentials">資質<span class="dropdown-subtitle">我們有資質做的事</span></a>
+          <a href="/zh-hk/security">安全<span class="dropdown-subtitle">你的數據如何被保管</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="/zh-hk/contact">聯絡我們</a>
+  <div class="mobile-lang-switcher">
+    <a href="/zh-hk/blog/articles/technical-architecture-enterprise-ai-agents" data-lang="en">English</a>
+    <a href="/zh-cn/blog/articles/technical-architecture-enterprise-ai-agents" data-lang="zh-cn">简体中文</a>
+    <a href="/zh-hk/blog/articles/technical-architecture-enterprise-ai-agents" data-lang="zh-hk" class="active">繁體中文</a>
+  </div>
+  <a href="/zh-hk/readiness" class="btn btn-primary btn-lg">免費自評</a>
+  </div>
+
+<main>
+
+<div class="container">
+    <section class="article-header">
+        <span class="article-cat-pill">技術</span>
+        <h1 class="article-h1">企業AI代理背後的技術架構</h1>
+        <div class="article-meta-row">
+            <div class="article-avatar" aria-hidden="true">蜂</div>
+            <div class="article-meta-text">
+                蜂啟諮詢 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 2026年2月25日 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 13 分鐘閱讀
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <div class="article-layout">
+        <article class="article-content" id="article-content">
+            <div class="toc-mobile" id="toc-mobile">
+                <button class="toc-mobile-toggle" aria-expanded="false">目錄 <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="toc-mobile-links">
+                    <a href="#生產ai代理的五層架構" class="toc-mobile-link">生產AI代理的五層架構</a>
+                    <a href="#mcp作為整合骨幹" class="toc-mobile-link">MCP作為整合骨幹</a>
+                    <a href="#如何編排多代理工作流" class="toc-mobile-link">如何編排多代理工作流？</a>
+                    <a href="#代理如何在長時任務中保持上下文" class="toc-mobile-link">代理如何在長時任務中保持上下文？</a>
+                    <a href="#架構中的安全與管治" class="toc-mobile-link">架構中的安全與管治</a>
+                    <a href="#如何評估和監控生產中的代理" class="toc-mobile-link">如何評估和監控生產中的代理？</a>
+                    <a href="#效能與可擴展性考量" class="toc-mobile-link">效能與可擴展性考量</a>
+                    <a href="#企業代理架構最常見的錯誤" class="toc-mobile-link">企業代理架構最常見的錯誤是甚麼？</a>
+                    <a href="#參考部署藍圖" class="toc-mobile-link">參考部署藍圖</a>
+                </div>
+            </div>
+<p class="article-lead">企業AI代理在2025至2026年間從示範項目走入了生產系統，但大多數架構圖仍然隱藏了最困難的部分：編排、持久記憶、受控的工具呼叫與管治。本文拆解生產級企業代理的技術架構——你真正需要的層次、模型上下文協議（MCP）如何取代臨時整合，以及當真實的企業數據與真實使用者接入後，那些悄然拖垮代理的失效模式。</p>
+<div class="article-tldr">
+<p><strong>關鍵洞察:</strong> 一個可維護的企業代理技術棧建立在五層之上——模型、記憶、工具／整合、編排與互動——並以MCP作為標準整合骨幹。採用MCP的團隊報告整合複雜度降低約70%，新數據源接入從2–3個月縮短到2–4週。真正的差異化往往不在於模型本身，而在於其周圍的架構。</p>
+</div>
+<h2 id="生產ai代理的五層架構">生產AI代理的五層架構</h2>
+        <figure class="article-figure" data-fig-slug="technical-architecture-enterprise-ai-agents">
+          <img src="/assets/blog/svg/technical-architecture-enterprise-ai-agents.svg" alt="企業AI代理背後的技術架構 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>圖：<b>企業AI代理背後的技術架構</b> 的核心脈絡一覽</figcaption>
+        </figure>
+
+<p>生產級代理系統很少因為模型弱而失敗，它們失敗是因為配套架構過於臨時拼湊。理解這套技術棧的一個清晰方式，是將其視為五個可組合的層次，每一層都有明確職責，以及各自獨立的擴展、測試與失效特徵。</p>
+<p><strong>模型層。</strong>這是推理發生的地方。實務上它很少是單一模型：一個小型路由模型負責意圖分類，一個中型模型處理抽取與格式化，只有面對模糊的規劃任務才呼叫大型模型。按任務複雜度在模型間路由是最大的成本槓桿，模型版本應像其他依賴一樣被鎖定，並透過評估門禁晉級。</p>
+<p><strong>記憶與知識層。</strong>代理既需要即時的工作上下文，也需要持久的回憶。短期狀態存在於會話中；長期知識——關於客戶的事實、過往決策、專有文件——存放在向量數據庫和結構化儲存中，按需透過檢索增強生成（RAG）呼叫。</p>
+<p><strong>工具與整合層。</strong>這是代理作用於世界的方式：查詢數據庫、呼叫API、開工單、讀檔案。模型上下文協議（MCP）伺服器是這裏的機制，用共享契約替代一次性連接器。</p>
+<p><strong>編排層。</strong>決定下一步做甚麼的大腦：規劃任務、選擇工具、根據結果分支、從錯誤中復原。它可以是一個簡單的推理循環，也可以是一個多代理監督器，而這裏正集中了大多數架構風險。</p>
+<p><strong>互動與執行時層。</strong>使用者看到的那一層——串流回應、會話管理、防護欄，以及攔截關鍵動作的「人工審批」提示。把它當作一等公民層，能讓安全與體驗問題脫離核心邏輯。</p>
+<p>顯式分層帶來的價值是關注點分離。每一層都可獨立測試、版本化與擴展；記憶層的回歸不必重新部署編排層，新增一個工具也無需改動模型層。忽視這一紀律的組織，最終會得到一個無人能除錯的單體提示詞。</p>
+<h2 id="mcp作為整合骨幹">MCP作為整合骨幹</h2>
+<p>在MCP出現之前，將代理接入企業系統意味著為每一對（代理，數據源）撰寫客製化連接器——典型的N×M整合問題。十幾個代理配上五十個後端，就是六百個需要建構與維護的客製化整合。模型上下文協議作為開放標準於2024年末提出，透過定義一套所有客戶端與伺服器都講的語言，把這個數字壓縮到N+M。</p>
+<p>MCP劃分了三種角色。宿主（host）是代理應用（例如一個研究助手）。其內部有一個MCP客戶端（client）負責管理連線。每一項外部能力由一個MCP伺服器（server）暴露——它是一個封裝了數據庫、SaaS API或檔案系統的輕量服務。通訊在本地行程上走stdio，在遠端伺服器上走Streamable HTTP；協議定義了三種原語：工具（tools，模型呼叫的動作）、資源（resources，應用管理的唯讀上下文）和提示（prompts，使用者觸發的可重用範本）。</p>
+<p>架構層面的回報是真實且可衡量的。透過去除逐一配對的整合程式碼，MCP將整合複雜度降低約70%，把新數據源接入從2–3個月縮短到2–4週。一個由500多個社羣與廠商伺服器組成的生態如今涵蓋了常見的企業系統，於是許多整合變成了設定而非編碼。但要注意：MCP標準化的是傳輸，而不是業務邏輯。你仍然需要鑑權、限流、模式與契約測試，以及為每個運行的伺服器明確所有者。</p>
+<h2 id="如何編排多代理工作流">如何編排多代理工作流？</h2>
+<p>編排是把使用者目標轉化為一連串模型與工具呼叫的決策邏輯。選擇哪種模式，取決於任務結構、延遲預算，以及該動作需要多少人工監督。</p>
+<p><strong>單代理推理循環（ReAct）。</strong>一個代理思考、呼叫工具、觀察結果，循環往復直到完成。這是最簡單的模式，也是範圍明確、邊界清晰的任務（例如「總結這張工單並給出三條後續建議」）的正確預設。</p>
+<p><strong>順序管線。</strong>當步驟確定性強時，把它們表達成固定管線，每一階段是一個函式或一個受限代理。你用靈活性換取可預測性和更易測試。</p>
+<p><strong>監督器（層級式）。</strong>一個規劃代理把目標拆解，把子任務委派給專門的工人代理，再彙總它們的輸出。這適合複雜的知識型工作——例如一個合規代理平行拉起文件閱讀器、SQL分析師與策略檢查器。監督器持有全域狀態，並在工人失敗時重新規劃。</p>
+<p><strong>平行扇出。</strong>相互獨立的子任務並發執行，結果再合併。當子任務之間無依賴且你對延遲敏感時採用它，但要留意總體token成本。</p>
+<p><strong>事件驅動。</strong>代理訂閱事件匯流排或佇列，對觸發做出反應——適合夜間報告生成或告警分診等長時間背景任務。狀態在事件之間持久化，代理是「恢復」而非「重啟」。</p>
+<p>一個常見錯誤是把問題過度拆分成太多代理。每多加一個代理，就引入一層協調開銷、更多失效點，以及更難的除錯。先用一個代理，只有當出現清晰、可衡量的收益時才拆分。LangGraph、Temporal或手寫狀態機都能承載上述任意模式；優先選擇把狀態外部化的方案，讓編排器本身保持無狀態、可水平擴展。</p>
+<h2 id="代理如何在長時任務中保持上下文">代理如何在長時任務中保持上下文？</h2>
+<p>上下文管理決定了代理是顯得聰明，還是顯得失靈。架構必須同時處理即時對話，以及跨越會話與系統的知識。</p>
+<p><strong>短期工作記憶</strong>保存當前計畫、近期對話記錄和中間結果的草稿區。由於上下文視窗有限且昂貴，成熟的系統採用滑動視窗加滾動摘要：舊的輪次被壓縮成一條持續更新的摘要而非直接丟棄，這樣代理永遠不會在執行任務中途「忘記」自己在做甚麼。</p>
+<p><strong>長期記憶</strong>跨會話持久化，分為三種類型。情景記憶（episodic）儲存過往互動（「上個季度客戶否決了這家供應商」）。語意記憶（semantic）儲存關於實體與業務的持久事實。程序記憶（procedural）捕獲可重用模式。它們通常放在向量數據庫（用於相似度搜尋）加結構化儲存（用於精確查找）。</p>
+<p><strong>檢索</strong>讓長期記憶變得可用。對知識庫做RAG，使用嵌入加混合搜尋（BM25關鍵字加向量）並接一個重排序器，只把相關片段拉進上下文。權衡是持續的：上下文太少，代理會跟丟任務；太多，你就要為分心和token買單。在每一步對代理狀態做檢查點，使它在失敗或人工交接後能恢復而非從頭開始——對任何運行超過單次請求的任務都至關重要。</p>
+<h2 id="架構中的安全與管治">架構中的安全與管治</h2>
+<p>安全不能在部署後再補，它必須是結構性的。MCP權限模型是基礎：每個伺服器和每個工具宣告它所需的scope，宿主強制執行最小權限，讓代理只能觸碰被明確授權的數據。一個唯讀分析代理理應根本無法呼叫寫入或發送工具。</p>
+<p>關鍵動作——發郵件、過帳、執行交易——必須置於人工審批門禁之後。代理提議，人類決定。每一次工具呼叫、其輸入、輸出以及最終決策，都應寫入不可竄改的稽覈日誌，既滿足內部管治，也滿足歐盟AI法案、中國個人資訊保護法（PIPL）等外部監管。密鑰與PII絕不能出現在提示詞裏；它們應待在密鑰管理器和去識別化層中，數據駐留控制也在伺服器邊界強制執行。</p>
+<p>提示詞注入是使用工具的代理面臨的最醒目風險。由於工具輸出是受攻擊者影響的文字，必須被視為不可信：把外部呼叫放在沙箱裏，按schema校驗輸出，並運行能識別指令覆寫企圖的輸入／輸出防護欄。模型風險管理同樣適用——鎖定版本、晉級前要求評估門禁、並保留回滾路徑。</p>
+<h2 id="如何評估和監控生產中的代理">如何評估和監控生產中的代理？</h2>
+        <figure class="article-figure" data-fig-slug2="technical-architecture-enterprise-ai-agents">
+          <img src="/assets/blog/svg/technical-architecture-enterprise-ai-agents.svg" alt="企業AI代理背後的技術架構 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>圖：<b>企業AI代理背後的技術架構</b> 的核心脈絡一覽</figcaption>
+        </figure>
+
+<p>無法衡量的代理，就是無法信任的代理。評估與可觀測性應從第一天就進入架構，而不是等第一次事故之後。</p>
+<p><strong>離線評估。</strong>任何變更投入運作前，先跑一套回歸套件，衡量任務成功率、對來源的依賴度（faithfulness）、正確的工具選擇，以及在邊界情形下的拒絕行為。把這些分數當成單元測試——一旦下降就阻斷發布。</p>
+<p><strong>線上追蹤。</strong>在生產中，用分散式追蹤（OpenTelemetry或LangSmith等原生工具）為每一步打點。一個使用者請求可能派生出幾十次模型與工具呼叫；沒有追蹤你就是在盲調。強勁的可觀測性通常能把生產問題定位時間縮短約60%。</p>
+<p><strong>即時指標。</strong>追蹤延遲分位、token開銷、工具錯誤率、升級到人工的比率，以及使用者滿意度。對漂移設告警：工具失敗驟增、注入嘗試、或偏離策略的回應，通常都預示著某個整合壞了或模型變了。</p>
+<p><strong>防護欄。</strong>輸入過濾器攔截不安全請求；輸出過濾器在觸達使用者或下游系統前校驗結構與策略。離線評估、線上追蹤與即時防護欄三者的組合，正是demo與可靠企業部署的分水嶺。</p>
+<h2 id="效能與可擴展性考量">效能與可擴展性考量</h2>
+<p>代理天生對延遲和成本敏感，因此架構需要刻意的效能設計，而非指望運氣。</p>
+<p><strong>快取</strong>是槓桿最高的優化。語意層快取能識別「上個季度營收」和「上一週期環比銷售額」其實是同一個問題，並直接回傳已存答案；整合層快取則儲存工具回應（一份月度報告不必每次請求都重新生成）。兩者疊加通常能把回應時間減少40–60%。</p>
+<p><strong>並發與韌性。</strong>相互獨立的工具呼叫要非同步執行，對後端做連線池，並用指數退避應對限流。模型路由讓常規工作停留在便宜模型上，把昂貴模型留給真正的推理。<strong>串流傳輸</strong>逐token、帶工具進度地渲染，讓介面即使在慢任務下也感覺靈敏。為擴展起見，保持編排器無狀態，把所有狀態外部化到記憶與事件層，從而能水平加副本。token預算與請求批次處理則給失控的成本封頂。</p>
+<h2 id="企業代理架構最常見的錯誤">企業代理架構最常見的錯誤是甚麼？</h2>
+<p>大多數失敗是架構性的，而非模型問題。反覆出現的模式包括：</p>
+<ul>
+<li><strong>沒有整合契約。</strong>投入運作的MCP伺服器如果沒有模式與契約測試，一次靜默的後端變更就會在沒有預警的情況下搞垮代理。</li>
+<li><strong>把密鑰寫進提示詞。</strong>把憑證或PII放進上下文，會把敏感數據洩露到日誌和模型服務方。</li>
+<li><strong>沒有人工門禁。</strong>讓代理在無人監督下執行不可逆動作，一個小bug就演變成事故。</li>
+<li><strong>過度工程。</strong>一個代理能做的事卻拆成十個協作代理，只會成倍增加延遲、成本與失效點。</li>
+<li><strong>沒有評估體系。</strong>沒有離線與線上評估，你既無法發現回歸，也無法向利害關係人證明可靠性。</li>
+<li><strong>忽視工具失效模式。</strong>逾時、部分結果、畸形回應必須被顯式處理，否則代理會在壞數據上默默繼續。</li>
+<li><strong>專有鎖定。</strong>把系統建在封閉的編排層上，讓未來遷移代價高昂；優先採用MCP這類開放協議。</li>
+<li><strong>把可觀測性當事後。</strong>投入運作後再補追蹤，會讓此後每一次問題定位的時間成倍增加。</li>
+</ul>
+<h2 id="參考部署藍圖">參考部署藍圖</h2>
+<p>設想一家中型金融服務公司部署一個「合規研究代理」，它透過閱讀內部制度、查詢歷史備案、並給出帶出處的答案來回答監管問題。一個合理的架構如下：</p>
+<ul>
+<li><strong>模型層：</strong>一個小型路由模型加一個大型推理模型，兩者都鎖版本並帶評估門禁。</li>
+<li><strong>記憶：</strong>用pgvector存長期知識，Redis存會話狀態，長研究任務做檢查點。</li>
+<li><strong>經MCP的工具：</strong>一個文件庫伺服器、一個唯讀SQL伺服器、一個制度日曆伺服器——各自帶最小權限scope。</li>
+<li><strong>編排：</strong>監督器模式，規劃查詢、平行扇出給閱讀器、再彙總成帶出處的答案。</li>
+<li><strong>管治：</strong>任何對外發送都要人工審批門禁；所有呼叫進稽覈日誌；PII在伺服器邊界去識別化。</li>
+</ul>
+<p>分階段推進——先用六週針對一項監管做試點，再擴展——把原先六個月的客製化建構壓縮到約六週，並把每個新數據源的接入從2–3個月縮短到2–4週。做到這一點的不是模型，而是架構。</p>
+
+            <section class="faq-section" id="faq" aria-label="常見問題">
+                <h2 class="faq-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    常見問題
+                </h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">1</span><span>MCP在AI代理架構中扮演甚麼角色？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">MCP（模型上下文協議）是一項開放標準，讓代理透過一套共享協議接入數據源與工具，而無需為每一對都寫客製化程式碼。它把N×M的整合問題壓縮成N+M：每個系統只需暴露一次MCP伺服器，每個代理講同一種客戶端語言。傳輸走stdio或Streamable HTTP，並定義了工具、資源與提示三種原語。</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">2</span><span>代理如何在長時任務中保持上下文？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">透過分層記憶。短期工作記憶保存當前計畫與近期對話，用滾動摘要保持可控；長期記憶（情景、語意、程序）存放在向量數據庫和結構化儲存中，經混合搜尋的RAG檢索。每一步都對狀態做檢查點，使代理在失敗或人工交接後能恢復而非重啟。</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">3</span><span>我應該選擇哪種編排模式？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">範圍明確的任務先用單個ReAct代理；步驟確定時用順序管線；複雜且需要規劃與委派的工作用監督器（層級式）；相互獨立的子任務用平行扇出；長時間背景任務用事件驅動。選擇依據任務耦合度、延遲預算與審批需求，沒有清晰收益時不要拆成太多代理。</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">4</span><span>需要哪些安全措施？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">透過MCP權限模型落實最小權限，讓代理只存取被授權的工具與數據；把關鍵動作置於人工審批門禁之後；把每次工具呼叫寫入不可竄改的稽覈日誌以滿足歐盟AI法案與PIPL；密鑰與PII不要進提示詞，並用schema校驗與防護欄把工具輸出當不可信來防禦提示詞注入。</div></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">5</span><span>如何評估和監控生產中的代理？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner">把離線評估套件（任務成功率、工具選擇準確率、忠實度）與線上分散式追蹤和即時指標（延遲、token成本、工具錯誤率、升級率）結合，並加輸入／輸出防護欄與漂移監控。強勁的可觀測性通常能把生產問題定位時間縮短約60%。</div></div>
+                    </div>
+                </div>
+            </section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "MCP在AI代理架構中扮演甚麼角色？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MCP（模型上下文協議）是一項開放標準，讓代理透過一套共享協議接入數據源與工具，而無需為每一對都寫客製化程式碼。它把N×M的整合問題壓縮成N+M：每個系統只需暴露一次MCP伺服器，每個代理講同一種客戶端語言。傳輸走stdio或Streamable HTTP，並定義了工具、資源與提示三種原語。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "代理如何在長時任務中保持上下文？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "透過分層記憶。短期工作記憶保存當前計畫與近期對話，用滾動摘要保持可控；長期記憶（情景、語意、程序）存放在向量數據庫和結構化儲存中，經混合搜尋的RAG檢索。每一步都對狀態做檢查點，使代理在失敗或人工交接後能恢復而非重啟。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "我應該選擇哪種編排模式？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "範圍明確的任務先用單個ReAct代理；步驟確定時用順序管線；複雜且需要規劃與委派的工作用監督器（層級式）；相互獨立的子任務用平行扇出；長時間背景任務用事件驅動。選擇依據任務耦合度、延遲預算與審批需求，沒有清晰收益時不要拆成太多代理。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "需要哪些安全措施？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "透過MCP權限模型落實最小權限，讓代理只存取被授權的工具與數據；把關鍵動作置於人工審批門禁之後；把每次工具呼叫寫入不可竄改的稽覈日誌以滿足歐盟AI法案與PIPL；密鑰與PII不要進提示詞，並用schema校驗與防護欄把工具輸出當不可信來防禦提示詞注入。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "如何評估和監控生產中的代理？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "把離線評估套件（任務成功率、工具選擇準確率、忠實度）與線上分散式追蹤和即時指標（延遲、token成本、工具錯誤率、升級率）結合，並加輸入／輸出防護欄與漂移監控。強勁的可觀測性通常能把生產問題定位時間縮短約60%。"
+      }
+    }
+  ]
+}
+</script>
+
+            <nav class="article-nav" aria-label="Article navigation">
+                <a href="https://www.beehivestrategy.com/zh-hk/blog" class="btn-back-to-blog">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                    返回全部文章
+                </a>
+            </nav>
+        </article>
+
+        <aside class="toc-sidebar" id="toc-sidebar" aria-label="Article sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-heading">目錄</div>
+                <nav class="toc-links">
+                    <a href="#生產ai代理的五層架構" class="toc-link">生產AI代理的五層架構</a>
+                    <a href="#mcp作為整合骨幹" class="toc-link">MCP作為整合骨幹</a>
+                    <a href="#如何編排多代理工作流" class="toc-link">如何編排多代理工作流？</a>
+                    <a href="#代理如何在長時任務中保持上下文" class="toc-link">代理如何在長時任務中保持上下文？</a>
+                    <a href="#架構中的安全與管治" class="toc-link">架構中的安全與管治</a>
+                    <a href="#如何評估和監控生產中的代理" class="toc-link">如何評估和監控生產中的代理？</a>
+                    <a href="#效能與可擴展性考量" class="toc-link">效能與可擴展性考量</a>
+                    <a href="#企業代理架構最常見的錯誤" class="toc-link">企業代理架構最常見的錯誤是甚麼？</a>
+                    <a href="#參考部署藍圖" class="toc-link">參考部署藍圖</a>
+                </nav>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">主題</div>
+                <div class="sidebar-tags"><span class="article-tag-pill">AI代理</span><span class="article-tag-pill">AI代理</span><span class="article-tag-pill">企業架構</span><span class="article-tag-pill">MCP</span><span class="article-tag-pill">大語言模型</span><span class="article-tag-pill">Technology</span></div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">分享本文</div>
+                <div class="sidebar-share">
+                    <button class="article-share-btn" id="share-linkedin" aria-label="Share on LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+                    <button class="article-share-btn" id="share-x" aria-label="Share on X"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.232 10.768L20 4"/></svg></button>
+                    <button class="article-share-btn" id="share-copy" aria-label="Copy link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">相關文章</div>
+                <div class="sidebar-related-list">
+                    <a href="/zh-hk/blog/articles/generative-ai-enterprise-search" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">面向企業搜索的生成式AI</h4>
+                        <span class="sidebar-related-meta">4 分鐘閱讀</span>
+                    </a>
+                    <a href="/zh-hk/blog/articles/snowflake-databricks-genie-conversational-ai" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">Snowflake、Databricks Genie與對話式AI競賽</h4>
+                        <span class="sidebar-related-meta">6 分鐘閱讀</span>
+                    </a>
+                    <a href="/zh-hk/blog/articles/vector-database-selection-enterprise-guide" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">爲企業搜索選擇向量數據庫</h4>
+                        <span class="sidebar-related-meta">7 分鐘閱讀</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<div class="container">
+    <section class="recommended-section" aria-labelledby="recommended-heading">
+        <div class="recommended-header">
+            <h2 class="recommended-title" id="recommended-heading">推薦文章</h2>
+            <a href="https://www.beehivestrategy.com/zh-hk/blog" class="recommended-view-all">查看全部 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+        </div>
+        <div class="recommended-grid">
+            <a href="/zh-hk/blog/articles/data-visualization-ai-insights" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/data-visualization-ai-insights.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">分析</span>
+                    <h3 class="recommended-card-title">把AI洞察轉化爲決策的數據可視化</h3>
+                    <p class="recommended-card-excerpt">爲甚麼正確的圖表能把AI答案變成有人行動的決策。</p>
+                    <div class="recommended-card-meta">
+                        <span>7 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年8月17日</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/zh-hk/blog/articles/data-quality-automation-from-reactive-to-proactive-part-2" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/data-quality-automation-from-reactive-to-proactive-part-2.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">技術</span>
+                    <h3 class="recommended-card-title">數據質素自動化：從被動響應到主動預防（第二部分）</h3>
+                    <p class="recommended-card-excerpt"></p>
+                    <div class="recommended-card-meta">
+                        <span>1 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年7月20日</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/zh-hk/blog/articles/cfo-guide-ai-budget-allocation" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/cfo-guide-ai-budget-allocation.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">技術</span>
+                    <h3 class="recommended-card-title">CFO人工智慧預算分配指南：2026年投資報酬最大化策略</h3>
+                    <p class="recommended-card-excerpt"></p>
+                    <div class="recommended-card-meta">
+                        <span>1 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年7月17日</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <section class="article-cta" aria-labelledby="cta-heading">
+        <div class="article-cta-card">
+            <div class="article-cta-inner">
+                <div class="article-cta-content">
+                    <div class="article-cta-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 預約個人化示範</div>
+                    <h2 class="article-cta-title" id="cta-heading">準備好改變貴公司的數據策略了嗎？</h2>
+                    <p class="article-cta-desc">了解蜂啟諮詢的對話式分析平台如何在整個營運中解鎖即時洞察——從上游數據到下游決策。</p>
+                    <div class="article-cta-actions">
+                        <a href="/zh-hk/contact" class="article-cta-btn">預約示範</a>
+                        <a href="/zh-hk/solution" class="article-cta-secondary">了解解決方案</a>
+                    </div>
+                </div>
+                <div class="article-cta-stats">
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">3x</div><div class="article-cta-stat-label">典型首年 ROI</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">78%</div><div class="article-cta-stat-label">更快解決查詢</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">92%</div><div class="article-cta-stat-label">6 個月內採用率</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">50+</div><div class="article-cta-stat-label">數據連接器</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+
+<footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/zh-hk/" class="logo" aria-label="蜂啟諮詢 — 回到首頁">
+            <img src="/assets/images/beehive-logo-white.png" alt="蜂啟諮詢 Logo" width="144" height="36" loading="lazy">
+          </a>
+          <p>我們把受管治的對話式 AI 部署進你們團隊已在用的溝通工具裏——範圍固定、兩星期完成，我們走後由你們自己人營運。</p>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="mailto:account@beehivestrategy.com" aria-label="郵箱"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>我們做甚麼</h4>
+          <ul>
+            <li><a href="/zh-hk/what-we-do">我們做甚麼</a></li>
+            <li><a href="/zh-hk/training">培訓</a></li>
+            <li><a href="/zh-hk/services">全部服務</a></li>
+            <li><a href="/zh-hk/conversational-ai">對話式 AI</a></li>
+            <li><a href="/zh-hk/aifde">前沿部署工程</a></li>
+            <li><a href="/zh-hk/agentic-tools">AI 代理工具</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>我們的成果</h4>
+          <ul>
+            <li><a href="/zh-hk/proof">你會得到甚麼</a></li>
+            <li><a href="/zh-hk/case-studies">交付示範</a></li>
+            <li><a href="/zh-hk/industries">行業</a></li>
+            <li><a href="/zh-hk/how-we-work">我們怎樣工作</a></li>
+            <li><a href="/zh-hk/blog">洞察</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>公司</h4>
+          <ul>
+            <li><a href="/zh-hk/about">關於我們</a></li>
+            <li><a href="/zh-hk/partners">合作夥伴</a></li>
+            <li><a href="/zh-hk/credentials">資質</a></li>
+            <li><a href="/zh-hk/security">安全</a></li>
+            <li><a href="/zh-hk/contact">聯絡我們</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 蜂啟諮詢有限公司（香港）版權所有</p>
+        <div class="legal">
+          <a href="/zh-hk/privacy">隱私政策</a>
+          <a href="/zh-hk/terms">服務條款</a>
+          <a href="/zh-hk/cookies">Cookie政策</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div class="toast" id="toast"></div>
+<script>window.__ARTICLE_TITLE__ = "企業AI代理背後的技術架構";</script>
+<script src="/js/article.js?v=20261113.15"></script>
+    <script src="/js/article-anim.js?v=20261113.15" defer></script>
+</body>
+</html>

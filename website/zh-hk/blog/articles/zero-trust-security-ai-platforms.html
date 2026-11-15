@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="dark" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
+    <title>AI平台的零信任架構 | Beehive Strategy</title>
+    <meta name="description" content="在AI管治的框架下，AI平台的零信任架構已經從概念走向推行。當大模型開始接觸企業數據，傳統的”邊界信任”安全模型已經失效：防火牆內並非淨土，而AI讓攻擊面變得更大、更復雜、更隱蔽。">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://www.beehivestrategy.com/zh-hk/blog/articles/zero-trust-security-ai-platforms">
+    <link href="https://www.beehivestrategy.com/blog/articles/zero-trust-security-ai-platforms" hreflang="en" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/zh-cn/blog/articles/zero-trust-security-ai-platforms" hreflang="zh-CN" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/zh-hk/blog/articles/zero-trust-security-ai-platforms" hreflang="zh-HK" rel="alternate"/>
+    <link href="https://www.beehivestrategy.com/blog/articles/zero-trust-security-ai-platforms" hreflang="x-default" rel="alternate"/>
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Beehive Strategy">
+    <meta property="og:title" content="AI平台的零信任架構">
+    <meta property="og:description" content="在AI管治的框架下，AI平台的零信任架構已經從概念走向推行。當大模型開始接觸企業數據，傳統的”邊界信任”安全模型已經失效：防火牆內並非淨土，而AI讓攻擊面變得更大、更復雜、更隱蔽。">
+    <meta property="og:url" content="https://www.beehivestrategy.com/zh-hk/blog/articles/zero-trust-security-ai-platforms">
+    <meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/covers/zh-tw/zero-trust-security-ai-platforms.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="zh_HK">
+    <meta property="article:published_time" content="2026-08-02T13:00:00+08:00">
+    <meta property="article:modified_time" content="2026-08-02T13:00:00+08:00">
+    <meta property="article:author" content="蜂啟諮詢">
+    <meta property="article:section" content="AI管治">
+    <meta property="article:tag" content="事件驅動架構"><meta property="article:tag" content="AI代理編排"><meta property="article:tag" content="企業AI"><meta property="article:tag" content="Saga模式"><meta property="article:tag" content="蜂啟諮詢">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI平台的零信任架構">
+    <meta name="twitter:description" content="在AI管治的框架下，AI平台的零信任架構已經從概念走向推行。當大模型開始接觸企業數據，傳統的”邊界信任”安全模型已經失效：防火牆內並非淨土，而AI讓攻擊面變得更大、更復雜、更隱蔽。">
+    <meta name="twitter:image" content="https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-tw/zero-trust-security-ai-platforms.jpg">
+    <link href="/assets/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/css/article.css?v=20261113.15" rel="stylesheet">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/zero-trust-security-ai-platforms#article", "headline": "AI平台的零信任架構", "description": "應用零信任原則保障企業AI安全。", "datePublished": "2026-08-02T13:00:00+08:00", "dateModified": "2026-08-02T13:00:00+08:00", "articleSection": "AI管治", "keywords": "零信任, AI安全, 存取控制, 平台安全", "inLanguage": "zh-HK", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy Limited", "url": "https://www.beehivestrategy.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.beehivestrategy.com/zh-cn/blog/articles/zero-trust-security-ai-platforms"}, "image": "https://www.beehivestrategy.com/zh-cn/assets/blog/covers/zh-tw/zero-trust-security-ai-platforms.jpg"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://www.beehivestrategy.com/zh-cn/"}, {"@type": "ListItem", "position": 2, "name": "博客", "item": "https://www.beehivestrategy.com/zh-cn/blog"}, {"@type": "ListItem", "position": 3, "name": "AI平台的零信任架構"}]}</script>
+    
+    <link rel="stylesheet" href="/css/article-anim.css?v=20261113.15">
+  <link rel="stylesheet" href="/css/accenture.css?v=20261114.03">
+  <link rel="stylesheet" href="/css/legacy-bridge.css?v=20261112.11">
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+<div id="scroll-progress" class="scroll-progress" role="presentation"></div>
+<header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="/zh-hk/" class="logo" aria-label="蜂啟諮詢 — 回到首頁">
+        <img src="/assets/images/beehive-logo.png" alt="蜂啟諮詢 Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="主導航">
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/what-we-do" class="nav-link" aria-haspopup="true" aria-expanded="false">我們做甚麼 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--md" style="min-width: 780px; max-width: 92vw;">
+            <div class="nav-dropdown-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">從這裏開始</div>
+                <a href="/zh-hk/services" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>全部服務</span>
+                  <span class="dropdown-subtitle">我們提供的每一次交付</span>
+                </a>
+                <a href="/zh-hk/training" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>培訓</span>
+                  <span class="dropdown-subtitle">課程按形式與深度劃分</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">我們交付甚麼</div>
+                <a href="/zh-hk/conversational-ai" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>對話式 AI</span>
+                  <span class="dropdown-subtitle">提問即答，答案與證據一併呈現</span>
+                </a>
+                <a href="/zh-hk/agentic-tools" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>AI 代理工具</span>
+                  <span class="dropdown-subtitle">部署並管治代理 AI</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">我們怎樣交付</div>
+                <a href="/zh-hk/aifde" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>前沿部署工程</span>
+                  <span class="dropdown-subtitle">即時通訊原生部署，駐場交付</span>
+                </a>
+                <a href="/zh-hk/how-we-work" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>我們怎樣工作</span>
+                  <span class="dropdown-subtitle">範圍固定、兩星期完成，之後由你們自己營運</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/proof" class="nav-link" aria-haspopup="true" aria-expanded="false">我們的成果 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">交付物與實例</div>
+                <a href="/zh-hk/proof" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>你會得到甚麼</span>
+                  <span class="dropdown-subtitle">交付物、移交機制與已投入運作的系統</span>
+                </a>
+                <a href="/zh-hk/case-studies" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>交付示範</span>
+                  <span class="dropdown-subtitle">四類情境，逐項列出交付物</span>
+                </a>
+                <a href="/zh-hk/industries" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>行業</span>
+                  <span class="dropdown-subtitle">按行業的切入點</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/blog" class="nav-link" aria-haspopup="true" aria-expanded="false">洞見 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">閱讀</div>
+                <a href="/zh-hk/blog" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>部落格</span>
+                  <span class="dropdown-subtitle">關於應用型 AI 的每週信號</span>
+                </a>
+                <a href="/zh-hk/guides" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>指南</span>
+                  <span class="dropdown-subtitle">長篇操作指南</span>
+                </a>
+                <a href="/zh-hk/news" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>新聞</span>
+                  <span class="dropdown-subtitle">我們交付了甚麼</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/about" class="nav-link" aria-haspopup="true" aria-expanded="false">關於我們 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm nav-dropdown--right">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">公司</div>
+                <a href="/zh-hk/about" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>關於我們</span>
+                  <span class="dropdown-subtitle">香港，服務亞太</span>
+                </a>
+                <a href="/zh-hk/partners" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>合作夥伴</span>
+                  <span class="dropdown-subtitle">與我們同行的夥伴</span>
+                </a>
+                <a href="/zh-hk/credentials" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>資質</span>
+                  <span class="dropdown-subtitle">我們有資質做的事</span>
+                </a>
+                <a href="/zh-hk/security" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>安全</span>
+                  <span class="dropdown-subtitle">你的數據如何被保管</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="/zh-hk/contact" class="nav-link">聯絡我們</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="切換語言" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">繁</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/zero-trust-security-ai-platforms" role="menuitem" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/zero-trust-security-ai-platforms" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-hk/blog/articles/zero-trust-security-ai-platforms" role="menuitem" class="active" data-lang="zh-hk"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/zh-hk/readiness" class="btn btn-primary">免費自評</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="切換選單" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">我們做甚麼 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">從這裏開始</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/services">全部服務<span class="dropdown-subtitle">我們提供的每一次交付</span></a>
+            <a href="/zh-hk/training">培訓<span class="dropdown-subtitle">課程按形式與深度劃分</span></a>
+          </div>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">我們交付甚麼</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/conversational-ai">對話式 AI<span class="dropdown-subtitle">提問即答，答案與證據一併呈現</span></a>
+            <a href="/zh-hk/agentic-tools">AI 代理工具<span class="dropdown-subtitle">部署並管治代理 AI</span></a>
+          </div>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">我們怎樣交付</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/aifde">前沿部署工程<span class="dropdown-subtitle">即時通訊原生部署，駐場交付</span></a>
+            <a href="/zh-hk/how-we-work">我們怎樣工作<span class="dropdown-subtitle">範圍固定、兩星期完成，之後由你們自己營運</span></a>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">我們的成果 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">交付物與實例</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/proof">你會得到甚麼<span class="dropdown-subtitle">交付物、移交機制與已投入運作的系統</span></a>
+          <a href="/zh-hk/case-studies">交付示範<span class="dropdown-subtitle">四類情境，逐項列出交付物</span></a>
+          <a href="/zh-hk/industries">行業<span class="dropdown-subtitle">按行業的切入點</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">洞見 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">閱讀</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/blog">部落格<span class="dropdown-subtitle">關於應用型 AI 的每週信號</span></a>
+          <a href="/zh-hk/guides">指南<span class="dropdown-subtitle">長篇操作指南</span></a>
+          <a href="/zh-hk/news">新聞<span class="dropdown-subtitle">我們交付了甚麼</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">關於我們 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">公司</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/about">關於我們<span class="dropdown-subtitle">香港，服務亞太</span></a>
+          <a href="/zh-hk/partners">合作夥伴<span class="dropdown-subtitle">與我們同行的夥伴</span></a>
+          <a href="/zh-hk/credentials">資質<span class="dropdown-subtitle">我們有資質做的事</span></a>
+          <a href="/zh-hk/security">安全<span class="dropdown-subtitle">你的數據如何被保管</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="/zh-hk/contact">聯絡我們</a>
+  <div class="mobile-lang-switcher">
+    <a href="/zh-hk/blog/articles/zero-trust-security-ai-platforms" data-lang="en">English</a>
+    <a href="/zh-cn/blog/articles/zero-trust-security-ai-platforms" data-lang="zh-cn">简体中文</a>
+    <a href="/zh-hk/blog/articles/zero-trust-security-ai-platforms" data-lang="zh-hk" class="active">繁體中文</a>
+  </div>
+  <a href="/zh-hk/readiness" class="btn btn-primary btn-lg">免費自評</a>
+  </div>
+
+<main>
+
+<div class="container">
+    <section class="article-header">
+        <span class="article-cat-pill">AI管治</span>
+        <h1 class="article-h1">AI平台的零信任架構</h1>
+        <div class="article-meta-row">
+            <div class="article-avatar" aria-hidden="true">蜂</div>
+            <div class="article-meta-text">
+                蜂啟諮詢 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 2026年8月2日 <span class="article-meta-dot" aria-hidden="true">&middot;</span> 5 分鐘閱讀
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <div class="article-layout">
+        <article class="article-content" id="article-content">            <div class="toc-mobile" id="toc-mobile">
+                <button class="toc-mobile-toggle" aria-expanded="false">目錄 <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                <div class="toc-mobile-links">
+                    <a href="#零信任對-AI-平臺而言具體意味着甚麼" class="toc-mobile-link">零信任對 AI 平臺而言，具體意味着甚麼？</a>
+                    <a href="#爲甚麼傳統的邊界控制對-AI-負載會失效" class="toc-mobile-link">爲甚麼傳統的邊界控制對 AI 負載會失效？</a>
+                    <a href="#AI-平臺帶來了哪些新的攻擊面" class="toc-mobile-link">AI 平臺帶來了哪些新的攻擊面？</a>
+                    <a href="#如何爲代理與流水線建立身份與最小權限" class="toc-mobile-link">如何爲代理與流水線建立身份與最小權限？</a>
+                    <a href="#如何保護流入和流出模型的數據" class="toc-mobile-link">如何保護流入和流出模型的數據？</a>
+                    <a href="#應該如何對-AI-平臺做分段與監控" class="toc-mobile-link">應該如何對 AI 平臺做分段與監控？</a>
+                    <a href="#如何處理供應鏈與模型來源風險" class="toc-mobile-link">如何處理供應鏈與模型來源風險？</a>
+                    <a href="#一套零信任-AI-平臺參考架構長甚麼樣" class="toc-mobile-link">一套零信任 AI 平臺參考架構長甚麼樣？</a>
+                    <a href="#如何在不拖慢交付的前提下推行零信任" class="toc-mobile-link">如何在不拖慢交付的前提下推行零信任？</a>
+                </div>
+            </div>
+
+            <p>在AI管治的框架下，AI平台的零信任架構已經從概念走向推行。當大模型開始接觸企業數據，傳統的"邊界信任"安全模型已經失效：防火牆內並非淨土，而AI讓攻擊面變得更大、更復雜、更隱蔽。</p>
+
+            <h2  id="零信任對AI平臺意味着甚麼">零信任對 AI 平臺而言，具體意味着甚麼？</h2>
+        <figure class="article-figure" data-fig-slug="zero-trust-security-ai-platforms">
+          <img src="/assets/blog/svg/zero-trust-security-ai-platforms.svg" alt="AI平台的零信任架構 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>圖：<b>AI平台的零信任架構</b> 的核心脈絡一覽</figcaption>
+        </figure>
+
+            <p>零信任的原則是：任何用戶、設備、工作負載或網絡位置預設都不可信；每一次訪問決策都要顯式做出，只授予所需的最小權限，並且以「某處已經發生了入侵」爲前提。把這一原則應用到 AI 平臺時，原則本身沒有變，但幾乎所有實現細節都變了，因爲發出訪問請求的東西不再只是人。</p>
+            <p>傳統的企業系統擁有一組有邊界的身份：員工、服務賬號，以及少量整合。AI 平臺則新增了幾類邊界時代的控制手段從未被設計去應對的東西：</p>
+            <ul>
+                <li><strong>代表用戶行事的代理。</strong>一個會讀取文檔、調用內部 API 並寫入記錄的系統，繼承了用戶的權限，卻沒有繼承用戶的判斷力。你讓它嘗試甚麼，它就會嘗試甚麼。</li>
+                <li><strong>非確定性的執行路徑。</strong>同樣的輸入，明天可能產生不同的工具調用序列。你無法預先批准一條在運行時刻才決定的路徑，因此授權必須按動作來判定，而不是按會話來判定。</li>
+                <li><strong>被當作數據對待的概率性輸出。</strong>生成的文本會以「權威」的姿態進入下游系統。消費它的任何環節，都可能依據一段沒有任何人撰寫或審閱過的內容採取行動。</li>
+                <li><strong>第三方模型端點。</strong>提示詞與檢索到的上下文會離開網絡，交由供應商處理。這是一條承載着你最敏感的已拼裝上下文的出站通道。</li>
+                <li><strong>橫跨信任域的檢索麪。</strong>一個由密級混雜的文檔構建出的向量索引，可能因爲一個無傷大雅的問題而把一段受限內容呈現出來。</li>
+            </ul>
+            <p>由此得出的運維結論是：AI 的零信任更多關乎<strong>按動作的授權、數據溯源與輸出處理</strong>，而不是網絡分段。問題從「這個請求是否來自網絡內部」轉向了「這個具體動作、針對這條具體記錄、由這個具體代理、代表這個具體用戶、在此時此刻是否被允許」。</p>
+            <p>能否把它做對，正是一個 AI 平臺能否向整個組織開放、與只能鎖在一個小試點團隊手裏之間的分界線。</p>
+
+            <h2  id="邊界控制爲何失效">爲甚麼傳統的邊界控制對 AI 負載會失效？</h2>
+            <p>邊界安全假設你能區分內部與外部，並假設需要保護的貴重資產位於某道邊界之後。在 AI 平臺中，這兩個假設都不成立。</p>
+            <p><strong>邊界消失了，但數據被拼裝起來了。</strong>檢索增強生成會刻意把來自多個來源的片段拉進同一個上下文窗口。每個來源可能各自都受到保護，但拼裝出來的提示詞卻可能比其中任何一份文檔都更敏感，因爲它把它們組合在了一起。邊界控制看到的是許多次已授權的讀取；而 AI 系統看到的是一件必須被整體定密的複合製品。</p>
+            <p><strong>授權現在要按動作判定，而不是按會話判定。</strong>一個被授權讀取文檔庫的會話，並不因此就被授權把其中內容發郵件到外部。有了代理在環裏，這個區別恰恰就是最容易被模糊掉的那一處。代理會去做任務所隱含的事，而任務隱含的範圍，往往比用戶手動去做時更廣。</p>
+            <p><strong>身份被委託並被串成鏈條。</strong>用戶問助手，助手調工具，工具調 API，API 查數據庫。到了第四跳，原始用戶的權限已經以一種幾乎沒有系統記錄的方式被傳遞了下去。沒有顯式委託令牌，每一跳都會以一個權限很寬的服務賬號身份運行。</p>
+            <p><strong>輸出本身就是一條外泄通道。</strong>摘要、翻譯和代碼生成都是正當功能，卻都能把敏感內容搬進一種看起來無害的形式裏。一個被要求「把你看到的文檔做個總結」的模型，會照做，而且做給任何提出這個要求的人。</p>
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>假設</th><th>傳統系統</th><th>AI 平臺的現實</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>信任邊界</td><td>網絡邊界</td><td>按動作、按數據元素</td></tr>
+                    <tr><td>身份</td><td>用戶或服務賬號</td><td>委託鏈：用戶、代理、工具、API</td></tr>
+                    <tr><td>執行</td><td>確定性且預先批准</td><td>由模型輸出在運行時刻決定</td></tr>
+                    <tr><td>敏感資產</td><td>數據庫或文件存儲</td><td>拼裝出的上下文與生成的輸出</td></tr>
+                    <tr><td>外泄風險</td><td>對外文件傳輸</td><td>被摘要或翻譯過的文本</td></tr>
+                </tbody>
+            </table>
+            <p>務實的解讀不是「現有控制沒用了」，而是「它們是必要的，但已不再充分」。身份、分段和監控依然極其重要，只是它們已經覆蓋不到那些屬於概率性、委託式、檢索驅動系統的失效模式。</p>
+
+            <h2  id="新的攻擊面">AI 平臺帶來了哪些新的攻擊面？</h2>
+            <p>六個攻擊面解釋了大部分新增風險，每一個都有各自對應的控制手段，把它們混爲一談會導致買錯工具。</p>
+            <ol>
+                <li><strong>提示詞注入，直接的與間接的。</strong>直接注入是用戶構造輸入來覆蓋指令。間接注入危險得多：把惡意指令放進模型代表用戶去處理的檢索文檔、網頁或郵件裏。模型無法可靠地區分「內容」與「指令」，因此緩解措施必須是結構性的——約束工具能做甚麼，而不是約束文本說了甚麼。</li>
+                <li><strong>工具與動作濫用。</strong>代理擁有的每一種能力，都能通過語言被觸達。如果一個代理能發郵件、刪記錄或轉錢，一次成功的注入就能觸發這些動作。這裏的控制關乎能力範圍、人工審批閾值和冪等性，而不是過濾。</li>
+                <li><strong>跨密級的檢索泄露。</strong>向量索引沒有原生的密級概念。若在查詢時刻不強制執行按文檔粒度的存取控制，檢索就會把請求者在源系統里根本打不開的內容呈現出來。這是 AI 平臺評估中最常見的嚴重發現。</li>
+                <li><strong>訓練與微調數據暴露。</strong>用於微調的數據可能被記憶並複述。敏感記錄未經專門決策不應進入訓練集，即便進了也應做記憶化評估。</li>
+                <li><strong>模型與依賴的供應鏈。</strong>開放權重模型、適配器、向量化模型以及圍繞它們的軟件包，全都是可執行的供應鏈。序列化格式與加載路徑中的遠程代碼執行風險是真實存在的，不是理論上的。</li>
+                <li><strong>把輸出消費當作注入載體。</strong>生成的內容經常被渲染進瀏覽器、作爲代碼執行，或送入另一個系統。請把每一個模型輸出都當作消費它的系統的不可信輸入。</li>
+            </ol>
+            <p>請注意這份清單裏缺了甚麼：模型權重本身。在實踐中，常見得多的失效發生在周圍的管道里——代理被允許做甚麼、檢索能呈現出甚麼、以及輸出最終去了哪裏。把注意力放在模型上而忽略管道的安全方案，總是會漏掉真正發生的事故。</p>
+
+            <h2  id="身份與最小權限">如何爲代理與流水線建立身份與最小權限？</h2>
+            <p>身份是一切其他控制所依賴的控制面。對 AI 平臺而言，這項工作包含四個部分。</p>
+            <p><strong>給每個代理一個可驗證的獨立身份。</strong>不要共用服務賬號。每個代理定義、每個流水線階段、每個工具連接器，都有自己的工作負載身份、自己的憑據、自己的審計軌跡和自己的吊銷路徑。當出問題時——而它一定會出問題——能夠只吊銷一個代理而不停掉整個平臺，這份價值就抵得過搭建成本。</p>
+            <p><strong>讓用戶的身份在鏈路中傳遞下去。</strong>使用短時效、限定受衆的委託令牌，而不是在第一跳就把用戶上下文替換成服務身份。令牌中應當攜帶：原始用戶是誰、他授權了甚麼、正在行動的是哪個代理，以及一個以分鐘計的過期時間。每一個下游服務都要校驗令牌，並針對「用戶加代理」的組合身份做授權，而不只是針對代理。</p>
+            <p><strong>按任務而不是按系統來界定能力。</strong>一個回答發票問題的代理需要讀發票的權限。它不需要寫權限，不需要訪問薪酬數據，也不需要發郵件。爲每個代理定義一份能力清單——哪些工具、哪些數據域、哪些動作——並在工具網關處強制執行，而不是寫在提示詞裏。</p>
+            <p><strong>把讀、寫和不可撤銷的動作分開。</strong>讀權限可以在有良好審計的前提下放寬。寫權限需要更嚴格的範圍界定，並且通常需要冪等鍵。不可逆的動作——發送對外消息、執行付款、刪除記錄——應當要求顯式的人工審批，並把請求內容、受影響的記錄和推理過程一併展示給審批人。</p>
+            <p>有兩個實現細節，其重要性遠超表面所見。第一，<strong>在工具網關處強制執行授權</strong>，這樣即使模型被攻陷或注入成功，也無法觸達從未被授予的能力。第二，<strong>讓委託令牌激進地過期</strong>；存活時間長於任務的令牌，會把一次性的範圍化權限變成一個常設權限。</p>
+
+            <h2  id="保護數據">如何保護流入和流出模型的數據？</h2>
+            <p>AI 的數據保護有三個不同的時刻，而大多數方案只處理了其中一個。</p>
+            <p><strong>入：甚麼進入了上下文。</strong>被檢索的文檔必須帶着密級一起走，而檢索必須在結果到達模型之前就按請求者的密級做過濾。請在檢索層強制執行，而不是對模型輸出做事後過濾——到那時內容已經被處理過了。當數據源橫跨多個密級時，應按密級維護獨立的索引，而不是建一個混合索引再在上面加過濾；過濾的缺陷是無聲的，而且是災難性的。</p>
+            <p><strong>處理：供應商看到了甚麼。</strong>要明確決定推理在哪裏跑。對於敏感負載，使用一個提示詞與補全結果不被留存、也不被用於訓練的部署形態；優先選擇私有或虛擬私有部署而非共享端點，並把這一決定記入風險登記冊。當提示詞必須流向第三方時，先剝離或令牌化直接標識符，並記錄發送了甚麼。</p>
+            <p><strong>出：甚麼回來了、去了哪裏。</strong>生成的輸出就是數據。對它套用與文檔相同的密級與處理規則：在渲染前掃描敏感模式，限制它可以被存儲或轉發到哪些地方，並在可行時加水印。將被渲染進瀏覽器的輸出，必須像對待任何其他不可信輸入一樣做轉義。</p>
+            <p>再補充兩項橫切實踐。<strong>把提示詞與檢索日誌當作安全遙測來保存</strong>，套用與數據庫審計日誌相同的留存期與存取控制——它們往往包含着組織內最敏感的已拼裝內容。以及<strong>爲向量定義留存立場</strong>：向量表示可以被反推到足以還原出近似原文的程度，因此它們不是匿名製品，不應被無限期留存。</p>
+
+            <h2  id="分段與監控">應該如何對 AI 平臺做分段與監控？</h2>
+            <p>分段與監控，是零信任從一份文檔變成一種運維姿態的地方。</p>
+            <p>請沿三個軸而不是一個軸做分段：</p>
+            <ul>
+                <li><strong>環境。</strong>把 AI 的開發、評估與生產環境分開，各自使用不同的憑據、不同的數據，並且開發環境中不放生產數據。評估環境尤其常被忽略，而它往往含有生產樣本。</li>
+                <li><strong>數據域。</strong>按密級和按數據域把檢索存儲分開，這樣營銷索引被攻陷也不會波及財務或人力內容。</li>
+                <li><strong>能力。</strong>把只能讀的代理與能寫的代理分開，再把兩者與能執行不可逆動作的代理分開。一個被注入攻陷的只讀代理，其爆炸半徑遠小於一個帶寫權限的代理。</li>
+            </ul>
+            <p>監控必須做相應調整，因爲失效特徵不同。傳統安全監控尋找的是異常訪問；AI 平臺監控還必須尋找<strong>已授權身份的異常行爲</strong>——某個代理突然調用一個它從未用過的工具、檢索量異常放大，或產出了觸發內容過濾器的輸出。</p>
+            <table class="data-table">
+                <thead>
+                    <tr><th>需要採集的信號</th><th>爲甚麼重要</th><th>能發現甚麼</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>帶完整參數的工具調用日誌</td><td>展示代理嘗試了甚麼，而不只是成功了甚麼</td><td>注入嘗試、能力濫用</td></tr>
+                    <tr><td>檢索查詢與返回的文檔標識</td><td>精確重建進入了上下文的內容</td><td>跨密級泄露、異常訪問</td></tr>
+                    <tr><td>每個請求的委託令牌溯源</td><td>追溯是哪個用戶與哪個代理授權了每個動作</td><td>權限串聯、身份混淆</td></tr>
+                    <tr><td>輸出去向與下游消費情況</td><td>追蹤生成內容最終落在了哪裏</td><td>通過摘要進行的靜默外泄</td></tr>
+                    <tr><td>被拒絕的動作嘗試</td><td>失敗的授權是最好的早期預警</td><td>探測行爲、過寬的代理權限</td></tr>
+                </tbody>
+            </table>
+            <p>要專門針對被拒絕的動作設置告警。一個範圍界定良好的代理，幾乎不該去嘗試它無權做的事；拒絕次數的突然上升，要麼意味着配置錯誤，要麼意味着一次注入嘗試，而兩者都值得立即關注。</p>
+
+            <h2  id="供應鏈風險">如何處理供應鏈與模型來源風險？</h2>
+        <figure class="article-figure" data-fig-slug2="zero-trust-security-ai-platforms">
+          <img src="/assets/blog/svg/zero-trust-security-ai-platforms.svg" alt="AI平台的零信任架構 — conceptual diagram" class="article-svg" loading="lazy" width="800" height="450">
+          <figcaption>圖：<b>AI平台的零信任架構</b> 的核心脈絡一覽</figcaption>
+        </figure>
+
+            <p>AI 平臺是由許多並非你建造的組件拼裝而成的：基座模型、適配器、向量化模型、代理框架，以及圍繞它們的一大棵依賴樹。每一個都是一條可執行的供應鏈。</p>
+            <ol>
+                <li><strong>維護帶有來源資訊的模型清單。</strong>對每一個在用的模型記錄：來源、版本、許可協議、已知漏洞、誰批准的、以及它被允許處理甚麼數據。沒有這份清單，你無法回答審計師「哪些模型接觸過客戶數據」的提問。</li>
+                <li><strong>鎖定版本並校驗校驗和。</strong>模型文件與適配器應像任何其他製品一樣被鎖定並校驗。未鎖定版本的模型引用，是一條等着被人利用的遠程代碼執行路徑。</li>
+                <li><strong>避免使用不安全的序列化格式。</strong>權重文件優先選擇 safetensors 而非基於 pickle 的格式，並對任何在加載過程中允許可執行內容的格式做掃描。</li>
+                <li><strong>持續掃描依賴樹。</strong>代理框架迭代很快，其傳遞依賴迭代更快。帶明確修復時限的自動化掃描是最低要求。</li>
+                <li><strong>顯式評估託管與自託管。</strong>託管端點降低運維負擔，但把風險集中到一個你必須評估的供應商身上。自託管帶來控制權，卻增加了一個你必須防守的運維面。無論選哪個都要記錄理由。</li>
+                <li><strong>在敏感數據上微調之前先做記憶化測試。</strong>金絲雀測試——插入已知的唯一字符串、訓練、再探測它是否出現——能對「模型是否複述了訓練數據」給出一個可度量的答案。</li>
+            </ol>
+            <p>有一項管治實踐很快就能回本：要求任何新的模型、適配器或代理框架都要經過一次評審，評審只問三個問題——它會處理甚麼數據、它能做甚麼、以及我們如何吊銷它。大多數有風險的新增項都栽在第三個問題上，所以它放在最後問。</p>
+
+            <h2  id="參考架構">一套零信任 AI 平臺參考架構長甚麼樣？</h2>
+            <p>把這些控制組裝起來，會得到一套分層架構。層次順序很重要：每一層都以下面那層爲前提。</p>
+            <ol>
+                <li><strong>身份與訪問。</strong>企業級身份提供方，每個代理與流水線各有工作負載身份，短時效委託令牌，以及按代理劃分的能力清單。以上一切都以這一層的正確性爲前提。</li>
+                <li><strong>網關與策略執行。</strong>單一入口點，負責認證、按動作授權、執行速率與成本上限，並路由到模型。所有流量都經過它，沒有任何請求能繞過。</li>
+                <li><strong>帶按文檔存取控制的檢索層。</strong>按密級分段的索引，在查詢時刻針對請求身份強制執行存取控制，並對查詢與返回文檔標識做完整記錄。</li>
+                <li><strong>模型服務層。</strong>被鎖定且經過校驗的模型，運行在帶有出站限制的隔離環境中，除檢索層提供的通道外，不擁有對生產數據源的隱式訪問。</li>
+                <li><strong>工具網關。</strong>每一個動作的授權點。校驗委託鏈、檢查能力清單、對不可逆動作執行審批閾值，並記錄參數。</li>
+                <li><strong>輸出處理。</strong>在生成內容被渲染或存儲之前，對其執行定密、掃描、轉義與去向控制。</li>
+                <li><strong>可觀測性與響應。</strong>把提示詞、檢索、工具和輸出日誌當作安全遙測來對待，配備針對代理異常行爲的檢測規則，以及一條經過演練的吊銷路徑。</li>
+            </ol>
+            <p>其中最重要的單一設計屬性是：<strong>工具網關是通向動作的唯一路徑</strong>。如果一個代理可以不經過它就觸達某種能力，那麼上述所有控制都能被一句足夠巧妙的提示詞繞過，而讓提示詞變得巧妙的成本極低。</p>
+            <p>同樣重要的是那條<strong>經過演練的吊銷路徑</strong>。在一次事故中，真正有用的能力不是檢測，而是在幾分鐘內、無需一次部署就能禁用某個代理、吊銷其憑據並保全其日誌。從未演練過的團隊，會在事故中才發現吊銷竟然需要一次發版。</p>
+
+            <h2  id="如何推行">如何在不拖慢交付的前提下推行零信任？</h2>
+            <p>零信任方案一旦被當成一道閘門來推行，就會失敗。六項實踐能讓安全與交付同行。</p>
+            <ol>
+                <li><strong>從資產清單開始，而不是從控制開始。</strong>列出每一個代理、模型、數據源和工具連接，以及它們能觸達甚麼數據、能做甚麼動作。大多數組織會由此發現一些自己都不知道存在的代理，而單是這份清單就能消除很大一部分風險。</li>
+                <li><strong>先交付網關。</strong>讓所有流量經過一個可強制執行的點，是槓桿最高的早期步驟，因爲一旦有了單一的施加點，此後每一項控制都變得更容易。</li>
+                <li><strong>新代理預設只讀。</strong>讓寫權限和不可逆能力成爲團隊必須申請並論證的東西，而不是預設就能拿到的東西。這把常見模式倒了過來，並消除大部分意外的過度授權。</li>
+                <li><strong>在需要之前就建好審批通道。</strong>對不可逆動作的人工在環審批，應當在第一個具備該能力的代理出現時就存在，而不是在事故之後才補上。</li>
+                <li><strong>提供一條鋪好的路。</strong>給團隊一個模板代理，其中身份、日誌、範圍化能力和審批閾值都已經接好了。團隊會繞開需要自己搭建的安全措施，卻會採用開箱即用的安全措施。</li>
+                <li><strong>每個季度演練一次事件響應。</strong>做一次桌面推演：某個代理被攻陷，必須被吊銷。第一次演練總會暴露出吊銷比預想的慢，而這正是你希望在演練中發現的東西。</li>
+            </ol>
+            <p>衡量一個方案是否奏效的標準，不是部署了多少項控制，而是這個組織能否隨着時間推移，安全地把更大的能力開放給更多的人。做得好的零信任不會縮小 AI 能做的事，它會讓擴大 AI 被允許觸及的範圍變得安全。</p>
+
+                        <section class="faq-section" id="faq" aria-label="常見問題">
+                <h2 class="faq-section-title" id="常見問題">常見問題</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="1-零信任對-ai-平臺意味着甚麼"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">1</span><span>零信任對 AI 平臺意味着甚麼？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>零信任意味着任何用戶、設備、工作負載或網絡位置預設都不可信；每次訪問決策都要顯式做出、只授予最小權限，並以「已發生入侵」爲前提。對 AI 平臺而言，實現重心從網絡分段轉向按動作的授權、數據溯源與輸出處理，因爲發出訪問請求的實體現在包括了代表用戶行事的代理，而且它們沿着非確定性的執行路徑行動。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="2-爲甚麼邊界控制對-ai-負載會失效"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">2</span><span>爲甚麼邊界控制對 AI 負載會失效？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>四個原因：檢索把多個來源的片段拼裝進同一個上下文窗口，其敏感度高於任何單一文檔；授權必須按動作判定，因爲執行路徑是在運行時刻才決定的；身份沿着用戶、代理、工具、API 的鏈條被委託傳遞；而生成的輸出本身就是一條通過摘要或翻譯實現的外泄通道。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="3-甚麼是間接提示詞注入-爲甚麼它很危險"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">3</span><span>甚麼是間接提示詞注入，爲甚麼它很危險？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>間接提示詞注入是把惡意指令放進模型代表用戶去處理的內容裏，例如檢索到的文檔、網頁或郵件。它比直接注入更危險，因爲攻擊者從不與系統直接交互，而模型也無法可靠地區分內容與指令。緩解措施必須是結構性的：約束工具能做甚麼，而不是試圖過濾文本說了甚麼。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="4-應該如何爲代理賦予身份與最小權限"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">4</span><span>應該如何爲代理賦予身份與最小權限？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>給每個代理一個可驗證的獨立工作負載身份，而不是共用服務賬號；用短時效、限定受衆的委託令牌傳遞用戶身份，令牌以分鐘計過期；爲每個代理定義覆蓋工具、數據域與動作的能力清單，並在工具網關處強制執行；把讀、寫與不可逆動作分開，對最後一類要求人工審批。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="5-如何防止檢索泄露受限內容"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">5</span><span>如何防止檢索泄露受限內容？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>在檢索時刻就強制執行存取控制，而不是對模型輸出做事後過濾，因爲到那時內容已被處理。讓每份文檔帶着密級元數據一起走，並按請求者的密級做過濾。當數據源橫跨多個密級時，應按密級維護獨立索引，而不是建混合索引——混合索引上的過濾缺陷是無聲且災難性的。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="6-向量是匿名的-可以安全留存嗎"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">6</span><span>向量是匿名的、可以安全留存嗎？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>不是。向量表示可以被反推到足以還原出近似原文的程度，因此應當被視爲與其來源具有相同密級的派生數據。請爲向量定義明確的留存立場，不要無限期保留，並把它們納入數據主體訪問與刪除流程。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="7-ai-平臺安全監控應該記錄甚麼"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">7</span><span>AI 平臺安全監控應該記錄甚麼？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>採集帶完整參數的工具調用日誌、檢索查詢及返回的文檔標識、每個請求的委託令牌溯源、輸出去向與下游消費情況，以及被拒絕的動作嘗試。然後針對已授權身份的異常行爲設置告警，例如代理突然調用從未用過的工具，或被拒絕次數突然上升。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="8-應該如何管理模型供應鏈風險"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">8</span><span>應該如何管理模型供應鏈風險？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>爲每一個在用的模型維護帶來源、許可協議與批准記錄的清單；鎖定版本並校驗校驗和；權重文件優先選擇 safetensors 而非基於 pickle 的格式；持續掃描依賴樹並設定修復時限；顯式評估託管與自託管的取捨；並在敏感數據上微調之前先做金絲雀記憶化測試。</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question-heading" style="margin:0;font-weight:inherit;font-size:inherit;line-height:inherit;" id="9-如何在不拖慢-ai-交付的前提下推行零信任"><button class="faq-question" aria-expanded="false">
+                            <span class="faq-question-text"><span class="faq-number">9</span><span>如何在不拖慢 AI 交付的前提下推行零信任？</span></span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button></h3>
+                        <div class="faq-answer" role="region"><div class="faq-answer-inner"><p>從資產清單而不是控制措施開始；先交付執行網關，讓後續控制有單一的施加點；新代理預設只讀；在需要之前就建好人工審批通道；提供一個預接好身份、日誌與權限的模板代理作爲「鋪好的路」；並每個季度演練一次代理吊銷，讓事件響應成爲被驗證過的能力。</p></div></div>
+                    </div>
+                </div>
+            </section>
+            
+            <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "零信任對 AI 平臺意味着甚麼？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "零信任意味着任何用戶、設備、工作負載或網絡位置預設都不可信；每次訪問決策都要顯式做出、只授予最小權限，並以「已發生入侵」爲前提。對 AI 平臺而言，實現重心從網絡分段轉向按動作的授權、數據溯源與輸出處理，因爲發出訪問請求的實體現在包括了代表用戶行事的代理，而且它們沿着非確定性的執行路徑行動。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "爲甚麼邊界控制對 AI 負載會失效？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "四個原因：檢索把多個來源的片段拼裝進同一個上下文窗口，其敏感度高於任何單一文檔；授權必須按動作判定，因爲執行路徑是在運行時刻才決定的；身份沿着用戶、代理、工具、API 的鏈條被委託傳遞；而生成的輸出本身就是一條通過摘要或翻譯實現的外泄通道。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "甚麼是間接提示詞注入，爲甚麼它很危險？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "間接提示詞注入是把惡意指令放進模型代表用戶去處理的內容裏，例如檢索到的文檔、網頁或郵件。它比直接注入更危險，因爲攻擊者從不與系統直接交互，而模型也無法可靠地區分內容與指令。緩解措施必須是結構性的：約束工具能做甚麼，而不是試圖過濾文本說了甚麼。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "應該如何爲代理賦予身份與最小權限？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "給每個代理一個可驗證的獨立工作負載身份，而不是共用服務賬號；用短時效、限定受衆的委託令牌傳遞用戶身份，令牌以分鐘計過期；爲每個代理定義覆蓋工具、數據域與動作的能力清單，並在工具網關處強制執行；把讀、寫與不可逆動作分開，對最後一類要求人工審批。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "如何防止檢索泄露受限內容？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "在檢索時刻就強制執行存取控制，而不是對模型輸出做事後過濾，因爲到那時內容已被處理。讓每份文檔帶着密級元數據一起走，並按請求者的密級做過濾。當數據源橫跨多個密級時，應按密級維護獨立索引，而不是建混合索引——混合索引上的過濾缺陷是無聲且災難性的。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "向量是匿名的、可以安全留存嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不是。向量表示可以被反推到足以還原出近似原文的程度，因此應當被視爲與其來源具有相同密級的派生數據。請爲向量定義明確的留存立場，不要無限期保留，並把它們納入數據主體訪問與刪除流程。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "AI 平臺安全監控應該記錄甚麼？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "採集帶完整參數的工具調用日誌、檢索查詢及返回的文檔標識、每個請求的委託令牌溯源、輸出去向與下游消費情況，以及被拒絕的動作嘗試。然後針對已授權身份的異常行爲設置告警，例如代理突然調用從未用過的工具，或被拒絕次數突然上升。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "應該如何管理模型供應鏈風險？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "爲每一個在用的模型維護帶來源、許可協議與批准記錄的清單；鎖定版本並校驗校驗和；權重文件優先選擇 safetensors 而非基於 pickle 的格式；持續掃描依賴樹並設定修復時限；顯式評估託管與自託管的取捨；並在敏感數據上微調之前先做金絲雀記憶化測試。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "如何在不拖慢 AI 交付的前提下推行零信任？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "從資產清單而不是控制措施開始；先交付執行網關，讓後續控制有單一的施加點；新代理預設只讀；在需要之前就建好人工審批通道；提供一個預接好身份、日誌與權限的模板代理作爲「鋪好的路」；並每個季度演練一次代理吊銷，讓事件響應成爲被驗證過的能力。"
+      }
+    }
+  ]
+}
+            </script>
+
+                        <nav class="article-nav" aria-label="Article navigation">
+                <a href="https://www.beehivestrategy.com/zh-cn/blog" class="btn-back-to-blog">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                    返回全部文章
+                </<nav class="toc-links">
+                    <a href="#零信任對AI平臺意味着甚麼" class="toc-link">零信任對 AI 平臺而言，具體意味着甚麼？</a>
+                    <a href="#邊界控制爲何失效" class="toc-link">爲甚麼傳統的邊界控制對 AI 負載會失效？</a>
+                    <a href="#新的攻擊面" class="toc-link">AI 平臺帶來了哪些新的攻擊面？</a>
+                    <a href="#身份與最小權限" class="toc-link">如何爲代理與流水線建立身份與最小權限？</a>
+                    <a href="#保護數據" class="toc-link">如何保護流入和流出模型的數據？</a>
+                    <a href="#分段與監控" class="toc-link">應該如何對 AI 平臺做分段與監控？</a>
+                    <a href="#供應鏈風險" class="toc-link">如何處理供應鏈與模型來源風險？</a>
+                    <a href="#參考架構" class="toc-link">一套零信任 AI 平臺參考架構長甚麼樣？</a>
+                    <a href="#如何推行" class="toc-link">如何在不拖慢交付的前提下推行零信任？</a>
+                    <a href="#常見問題" class="toc-link">常見問題</a>
+                    <a href="#1-零信任對-ai-平臺意味着甚麼" class="toc-link">1 零信任對 AI 平臺意味着甚麼？</a>
+                    <a href="#2-爲甚麼邊界控制對-ai-負載會失效" class="toc-link">2 爲甚麼邊界控制對 AI 負載會失效？</a>
+                    <a href="#3-甚麼是間接提示詞注入-爲甚麼它很危險" class="toc-link">3 甚麼是間接提示詞注入，爲甚麼它很危險？</a>
+                    <a href="#4-應該如何爲代理賦予身份與最小權限" class="toc-link">4 應該如何爲代理賦予身份與最小權限？</a>
+                    <a href="#5-如何防止檢索泄露受限內容" class="toc-link">5 如何防止檢索泄露受限內容？</a>
+                    <a href="#6-向量是匿名的-可以安全留存嗎" class="toc-link">6 向量是匿名的、可以安全留存嗎？</a>
+                    <a href="#7-ai-平臺安全監控應該記錄甚麼" class="toc-link">7 AI 平臺安全監控應該記錄甚麼？</a>
+                    <a href="#8-應該如何管理模型供應鏈風險" class="toc-link">8 應該如何管理模型供應鏈風險？</a>
+                    <a href="#9-如何在不拖慢-ai-交付的前提下推行零信任" class="toc-link">9 如何在不拖慢 AI 交付的前提下推行零信任？</a>
+                </nav>c-link">如何開始</a>
+                    <a href="#核心要點" class="toc-link">核心要點</a>
+                    <a href="#常見問題" class="toc-link">常見問題</a>
+                    <a href="#蜂啟諮詢如何幫助" class="toc-link">蜂啟諮詢如何幫助</a>
+                </nav>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">主題</div>
+                <div class="sidebar-tags"><span class="article-tag-pill">事件驅動架構</span><span class="article-tag-pill">AI代理編排</span><span class="article-tag-pill">企業AI</span><span class="article-tag-pill">Saga模式</span><span class="article-tag-pill">蜂啟諮詢</span></div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">分享本文</div>
+                <div class="sidebar-share">
+                    <button class="article-share-btn" id="share-linkedin" aria-label="Share on LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+                    <button class="article-share-btn" id="share-x" aria-label="Share on X"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.232 10.768L20 4"/></svg></button>
+                    <button class="article-share-btn" id="share-copy" aria-label="Copy link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-heading">相關文章</div>
+                <div class="sidebar-related-list">
+                    <a href="/zh-hk/blog/articles/operationalizing-ai-ethics-production" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">在生產中推行AI倫理</h4>
+                        <span class="sidebar-related-meta">3 分鐘閱讀</span>
+                    </a>
+                    <a href="/zh-hk/blog/articles/detecting-bias-ai-models-enterprise" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">檢測並緩解AI模型中的偏見</h4>
+                        <span class="sidebar-related-meta">3 分鐘閱讀</span>
+                    </a>
+                    <a href="/zh-hk/blog/articles/preventing-ai-hallucinations-enterprise" class="sidebar-related-card">
+                        <h4 class="sidebar-related-title">企業系統中預防AI幻覺</h4>
+                        <span class="sidebar-related-meta">3 分鐘閱讀</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<div class="container">
+    <section class="recommended-section" aria-labelledby="recommended-heading">
+        <div class="recommended-header">
+            <h2 class="recommended-title" id="recommended-heading">推薦文章</h2>
+            <a href="https://www.beehivestrategy.com/zh-cn/blog" class="recommended-view-all">查看全部 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+        </div>
+        <div class="recommended-grid">
+            <a href="/zh-hk/blog/articles/generative-ai-enterprise-search" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/generative-ai-enterprise-search.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">技術</span>
+                    <h3 class="recommended-card-title">面向企業搜索的生成式AI</h3>
+                    <p class="recommended-card-excerpt">把內部搜索從關鍵詞匹配變成真正的答案。</p>
+                    <div class="recommended-card-meta">
+                        <span>3 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年8月17日</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/zh-hk/blog/articles/data-visualization-ai-insights" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/data-visualization-ai-insights.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">分析</span>
+                    <h3 class="recommended-card-title">把AI洞察轉化爲決策的數據可視化</h3>
+                    <p class="recommended-card-excerpt">爲甚麼正確的圖表能把AI答案變成有人行動的決策。</p>
+                    <div class="recommended-card-meta">
+                        <span>3 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年8月17日</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/zh-hk/blog/articles/data-quality-automation-from-reactive-to-proactive-part-2" class="recommended-card">
+                <img src="/assets/blog/covers/zh-tw/data-quality-automation-from-reactive-to-proactive-part-2.jpg" alt="" class="recommended-card-image" loading="lazy">
+                <div class="recommended-card-body">
+                    <span class="recommended-card-cat">技術</span>
+                    <h3 class="recommended-card-title">數據質素自動化：從被動響應到主動預防（第二部分）</h3>
+                    <p class="recommended-card-excerpt"></p>
+                    <div class="recommended-card-meta">
+                        <span>1 分鐘閱讀</span>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>2026年7月20日</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <section class="article-cta" aria-labelledby="cta-heading">
+        <div class="article-cta-card">
+            <div class="article-cta-inner">
+                <div class="article-cta-content">
+                    <div class="article-cta-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 預約個性化演示</div>
+                    <h2 class="article-cta-title" id="cta-heading">準備好改變貴公司的數據策略了嗎？</h2>
+                    <p class="article-cta-desc">了解蜂啟諮詢的對話式分析平台如何在整個營運中解鎖實時洞察——從上游數據到下游決策。</p>
+                    <div class="article-cta-actions">
+                        <a href="/zh-hk/contact" class="article-cta-btn">預約示範</a>
+                        <a href="/zh-hk/solution" class="article-cta-secondary">了解解決方案</a>
+                    </div>
+                </div>
+                <div class="article-cta-stats">
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">3x</div><div class="article-cta-stat-label">典型首年 ROI</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">78%</div><div class="article-cta-stat-label">更快解決查詢</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">92%</div><div class="article-cta-stat-label">6 個月內採用率</div></div>
+                    <div class="article-cta-stat"><div class="article-cta-stat-value">50+</div><div class="article-cta-stat-label">數據連接器</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+
+<footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/zh-hk/" class="logo" aria-label="蜂啟諮詢 — 回到首頁">
+            <img src="/assets/images/beehive-logo-white.png" alt="蜂啟諮詢 Logo" width="144" height="36" loading="lazy">
+          </a>
+          <p>我們把受管治的對話式 AI 部署進你們團隊已在用的溝通工具裏——範圍固定、兩星期完成，我們走後由你們自己人營運。</p>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="mailto:account@beehivestrategy.com" aria-label="郵箱"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>我們做甚麼</h4>
+          <ul>
+            <li><a href="/zh-hk/what-we-do">我們做甚麼</a></li>
+            <li><a href="/zh-hk/training">培訓</a></li>
+            <li><a href="/zh-hk/services">全部服務</a></li>
+            <li><a href="/zh-hk/conversational-ai">對話式 AI</a></li>
+            <li><a href="/zh-hk/aifde">前沿部署工程</a></li>
+            <li><a href="/zh-hk/agentic-tools">AI 代理工具</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>我們的成果</h4>
+          <ul>
+            <li><a href="/zh-hk/proof">你會得到甚麼</a></li>
+            <li><a href="/zh-hk/case-studies">交付示範</a></li>
+            <li><a href="/zh-hk/industries">行業</a></li>
+            <li><a href="/zh-hk/how-we-work">我們怎樣工作</a></li>
+            <li><a href="/zh-hk/blog">洞察</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>公司</h4>
+          <ul>
+            <li><a href="/zh-hk/about">關於我們</a></li>
+            <li><a href="/zh-hk/partners">合作夥伴</a></li>
+            <li><a href="/zh-hk/credentials">資質</a></li>
+            <li><a href="/zh-hk/security">安全</a></li>
+            <li><a href="/zh-hk/contact">聯絡我們</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 蜂啟諮詢有限公司（香港）版權所有</p>
+        <div class="legal">
+          <a href="/zh-hk/privacy">隱私政策</a>
+          <a href="/zh-hk/terms">服務條款</a>
+          <a href="/zh-hk/cookies">Cookie政策</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div class="toast" id="toast"></div>
+<script>window.__ARTICLE_TITLE__ = "AI平台的零信任架構";</script>
+<script src="/js/article.js?v=20261113.15"></script>
+    <script src="/js/article-anim.js?v=20261113.15" defer></script>
+</body>
+</html>

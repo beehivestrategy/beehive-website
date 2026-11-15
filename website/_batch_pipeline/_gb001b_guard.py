@@ -7,7 +7,7 @@ BAK = os.path.join(ROOT, "_batch_pipeline/_bak_gb001b")
 SLUGS = [l.strip() for l in open(os.path.join(ROOT, "_batch_pipeline/gap_batches/gbatch_001.txt")) if l.strip()]
 LANGS = (("en", "blog/articles/%s.html", "blog_%s.html"),
          ("cn", "zh-cn/blog/articles/%s.html", "zh-cn_blog_%s.html"),
-         ("tw", "zh-tw/blog/articles/%s.html", "zh-tw_blog_%s.html"))
+         ("tw", "zh-hk/blog/articles/%s.html", "zh-hk_blog_%s.html"))
 
 def head_of(h):
     m = re.search(r'<head[^>]*>(.*?)</head>', h, re.S)
@@ -65,7 +65,7 @@ for s in SLUGS:
             if m not in hc:
                 problems.append(f"{s}/{lang}: head link removed: {m[:90]}")
         # 7. root-relative / language-prefixed links preserved (no net loss)
-        for pref in ('/css/', '/js/', '/assets/', '/blog/', '/zh-cn/', '/zh-tw/'):
+        for pref in ('/css/', '/js/', '/assets/', '/blog/', '/zh-cn/', '/zh-hk/'):
             pass
         # 8. exactly one FAQPage (only if a faq section exists)
         n = len(re.findall(r'"FAQPage"', cur))

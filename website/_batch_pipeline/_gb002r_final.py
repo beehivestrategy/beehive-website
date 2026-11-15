@@ -12,8 +12,8 @@ import _gb002r_lib as L
 
 SLUGS = [l.strip() for l in open('/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipeline/gap_batches/gbatch_002.txt') if l.strip()]
 BK = '/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipeline/_backup_gb002r'
-PREFIX = {"EN": "EN", "zh-CN": "CN", "zh-TW": "TW"}
-DEMO = {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-TW": "預約示範"}
+PREFIX = {"EN": "EN", "zh-CN": "CN", "zh-HK": "TW"}
+DEMO = {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-HK": "預約示範"}
 QEN = re.compile(r'^(how|what|why|when|which|where|who|can|do|does|is|are|should|will|has|have)\b', re.I)
 QZH = re.compile(r'(如何|甚|什|为什麼|為什麼|为何|為何|為什|怎么|怎樣|怎样|是否|哪些|哪些|多少|哪裡|哪里|該如|该如何|應該如|무)')
 

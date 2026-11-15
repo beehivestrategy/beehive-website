@@ -7,7 +7,7 @@ ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 DIRS = {
     "en": os.path.join(ROOT, "blog", "articles"),
     "cn": os.path.join(ROOT, "zh-cn", "blog", "articles"),
-    "tw": os.path.join(ROOT, "zh-tw", "blog", "articles"),
+    "tw": os.path.join(ROOT, "zh-hk", "blog", "articles"),
 }
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.S | re.I)
 
@@ -73,7 +73,7 @@ for lang in DIRS:
                 break
     report["prefix_dup"][lang] = prefixes
 
-# 2) zh-CN == zh-TW（未转繁体嫌疑）
+# 2) zh-CN == zh-HK（未转繁体嫌疑）
 for slug in data["cn"]:
     tcn = data["cn"].get(slug, {}).get("title", "")
     ttw = data["tw"].get(slug, {}).get("title", "")

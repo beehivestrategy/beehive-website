@@ -30,7 +30,7 @@ slugs = [l.strip() for l in sys.stdin if l.strip()]
 for slug in slugs:
     en = os.path.join(root, 'blog/articles/%s.html' % slug)
     zc = os.path.join(root, 'zh-cn/blog/articles/%s.html' % slug)
-    zt = os.path.join(root, 'zh-tw/blog/articles/%s.html' % slug)
+    zt = os.path.join(root, 'zh-hk/blog/articles/%s.html' % slug)
     out = [slug]
     for p, fn, label in ((en, en_words, 'EN'), (zc, cjk, 'CN'), (zt, cjk, 'TW')):
         if not os.path.exists(p):

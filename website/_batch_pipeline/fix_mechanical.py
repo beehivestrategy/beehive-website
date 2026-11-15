@@ -5,7 +5,7 @@ slugs = [l.strip() for l in open(os.path.join(ROOT, "_batch_pipeline/batches/bat
 
 langs = [("EN","blog/articles","Book a Demo"),
          ("zh-CN","zh-cn/blog/articles","预约演示"),
-         ("zh-TW","zh-tw/blog/articles","預約示範")]
+         ("zh-HK","zh-hk/blog/articles","預約示範")]
 
 def read_lead(slug, sub):
     p=os.path.join(ROOT, sub, slug+".html")

@@ -10,7 +10,7 @@ from datetime import datetime
 from collections import defaultdict
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}
+LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}
 CUTOFF = datetime(2026, 8, 27, 1, 30)
 PIPELINE = os.path.join(ROOT, "_batch_pipeline")
 STATE_PATH = os.path.join(PIPELINE, "dispatch_state.json")

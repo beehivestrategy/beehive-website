@@ -3,7 +3,7 @@
 verify_article.py — checks a single rewritten blog article against the design
 standard. Returns exit code 0 if PASS, 1 if FAIL (with reasons printed).
 
-Usage: python3 verify_article.py <path> [en|zh-cn|zh-tw]
+Usage: python3 verify_article.py <path> [en|zh-cn|zh-hk]
 """
 import re, sys, json
 
@@ -63,27 +63,27 @@ def main():
         except Exception as e:
             errors.append(f"FAQPage JSON-LD invalid: {e}")
 
-    # 6. hreflang alternates (en/zh-CN/zh-TW/x-default) — only check article heads
-    for tag in ["en", "zh-CN", "zh-TW", "x-default"]:
+    # 6. hreflang alternates (en/zh-CN/zh-HK/x-default) — only check article heads
+    for tag in ["en", "zh-CN", "zh-HK", "x-default"]:
         if f'hreflang="{tag}"' not in h:
             errors.append(f"missing hreflang {tag}")
 
     # 7. canonical correct for lang
-    if lang == "zh-tw":
-        if '/zh-tw/' not in re.search(r'rel="canonical"', h).group(0) if re.search(r'rel="canonical"', h) else True:
-            # more robust: check canonical url contains zh-tw
+    if lang == "zh-hk":
+        if '/zh-hk/' not in re.search(r'rel="canonical"', h).group(0) if re.search(r'rel="canonical"', h) else True:
+            # more robust: check canonical url contains zh-hk
             cm = re.search(r'<link[^>]*rel="canonical"[^>]*>', h)
-            if cm and '/zh-tw/' not in cm.group(0):
-                errors.append("zh-tw canonical not pointing to /zh-tw/")
+            if cm and '/zh-hk/' not in cm.group(0):
+                errors.append("zh-hk canonical not pointing to /zh-hk/")
     if lang == "zh-cn":
         cm = re.search(r'<link[^>]*rel="canonical"[^>]*>', h)
         if cm and '/zh-cn/' not in cm.group(0):
             errors.append("zh-cn canonical not pointing to /zh-cn/")
 
     # 8. og:locale for zh
-    if lang in ("zh-cn", "zh-tw"):
+    if lang in ("zh-cn", "zh-hk"):
         ol = re.search(r'og:locale"[^>]*content="([^"]+)"', h)
-        expected = "zh_CN" if lang == "zh-cn" else "zh_TW"
+        expected = "zh_CN" if lang == "zh-cn" else "zh_HK"
         if not ol or ol.group(1) != expected:
             errors.append(f"og:locale should be {expected}")
 

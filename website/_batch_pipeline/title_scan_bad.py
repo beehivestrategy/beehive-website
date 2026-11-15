@@ -3,7 +3,7 @@
 import os, re, json, unicodedata
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-DIRS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}
+DIRS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.S | re.I)
 
 def clean(t):

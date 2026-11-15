@@ -6,7 +6,7 @@ Source of truth: the 5 GSC pillar articles (what-is-data-fabric.html etc.)
 which were hand-built to the agreed standard.
 
 EN target: 2,500-3,500 words (floor 2,500), article-content body only.
-zh-CN / zh-TW target: 3,500-5,000 CJK chars (floor 3,500).
+zh-CN / zh-HK target: 3,500-5,000 CJK chars (floor 3,500).
 
 The wrapper (header nav, sidebar, footer, JSON-LD @graph, hreflang, og:*,
 lang switcher) is NEVER touched by the rewrite. Only the inner HTML of

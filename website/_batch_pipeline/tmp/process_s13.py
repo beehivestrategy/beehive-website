@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/data-ai-literacy-program-corporate.html"
 ZHCN = W + "zh-cn/blog/articles/data-ai-literacy-program-corporate.html"
-ZHTW = W + "zh-tw/blog/articles/data-ai-literacy-program-corporate.html"
+ZHTW = W + "zh-hk/blog/articles/data-ai-literacy-program-corporate.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -190,7 +190,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("企業資料與AI素養專案的核心元件是什麼？",
      "四個：按角色分層——高層、經理層、實作者層、技術層——各有課程與成功度量；基於組織自身工具與資料的動手沙箱；每季更新的課程，因為工具迭代快過任何靜態大綱；以及權重落在應用結果的度量——真實AI輔助工作、錯誤率與影子AI事件——而非結業證書。"),
@@ -276,7 +276,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="為什麼ai讓資料治理成為必修課"', 'id="如何衡量並持續改進"',
         '6320億', '託管對話式BI',
-    ], 7, "zh-TW")
+    ], 7, "zh-HK")
     assert '素養' in body_h1(s) or '資料' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

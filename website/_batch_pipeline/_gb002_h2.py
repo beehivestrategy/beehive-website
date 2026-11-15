@@ -80,7 +80,7 @@ def add_tail_section(path, sec_id, title, body_html):
 def replace_faq_list(path, items, lang="en"):
     """Replace the whole FAQ list with `items` = [(q, a_html_or_text), ...]. Keeps wrapper + h2."""
     raw = _read(path)
-    nxt = {"en": "Frequently Asked Questions", "zh-cn": "常见问题", "zh-tw": "常見問題"}
+    nxt = {"en": "Frequently Asked Questions", "zh-cn": "常见问题", "zh-hk": "常見問題"}
     blocks = []
     for i, (q, a) in enumerate(items, 1):
         blocks.append(
@@ -139,7 +139,7 @@ def rewrite_body(path, lead, sections, faq_items, lang="en"):
     return ensure_faq_section(path, faq_items, lang)
 
 
-FAQ_TITLE = {"en": "Frequently Asked Questions", "zh-cn": "常见问题", "zh-tw": "常見問題"}
+FAQ_TITLE = {"en": "Frequently Asked Questions", "zh-cn": "常见问题", "zh-hk": "常見問題"}
 
 
 def ensure_faq_section(path, items, lang="en"):

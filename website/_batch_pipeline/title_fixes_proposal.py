@@ -4,7 +4,7 @@
 Input : title_bad_list.json (88 entries, ~10 false positives kept as-is)
 Output: title_fixes_proposal.json + title_fixes_proposal.html
 Each fix: slug -> new zh-CN title (hand-translated from EN original),
-          new zh-TW title = OpenCC s2twp(zh-CN).
+          new zh-HK title = OpenCC s2twp(zh-CN).
 """
 import json, html, os
 from opencc import OpenCC
@@ -166,13 +166,13 @@ td.old{color:#c0392b;text-decoration:line-through}
 td.new{color:#1a7a4c;font-weight:600}
 .box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:14px 18px;margin:14px 0}
 ul{margin:6px 0;padding-left:20px}.warn{color:#b8860b}</style></head><body>
-<h1>📝 标题修复提案 — %d 篇 zh-CN + zh-TW</h1>
-<p>来源：title_bad_list.json（88 条低质量标题审计）→ 剔除 %d 条误报 → <b>%d 篇待改</b>。新 zh-CN 标题均从 EN 原文重译；zh-TW 用 OpenCC s2twp 自动转换；仅改标题，不动 URL/slug 与正文。</p>
+<h1>📝 标题修复提案 — %d 篇 zh-CN + zh-HK</h1>
+<p>来源：title_bad_list.json（88 条低质量标题审计）→ 剔除 %d 条误报 → <b>%d 篇待改</b>。新 zh-CN 标题均从 EN 原文重译；zh-HK 用 OpenCC s2twp 自动转换；仅改标题，不动 URL/slug 与正文。</p>
 <div class="box"><b>⚠️ 决策项 — 重发布变体对（同内容双 slug，本次标题改法为"两页同题"）：</b><ul>%s</ul>
 <span class="warn">更优解是下线其中一个重复页（301/删除），属删除类操作需另行批准；若两页都保留，则两页标题保持一致即可。</span></div>
 <div class="box"><b>误报保留（%d 篇，不改）：</b><ul>%s</ul></div>
 <h2>修复明细（%d 篇）</h2>
-<table><tr><th>#</th><th>slug</th><th>EN 原标题</th><th>zh-CN 现状</th><th>zh-CN 新标题</th><th>zh-TW 现状</th><th>zh-TW 新标题</th></tr>
+<table><tr><th>#</th><th>slug</th><th>EN 原标题</th><th>zh-CN 现状</th><th>zh-CN 新标题</th><th>zh-HK 现状</th><th>zh-HK 新标题</th></tr>
 %s</table></body></html>""" % (
         len(proposal), len(proposal), len(KEEP), len(proposal),
         var_rows, len(KEEP), keep_rows, len(proposal), "".join(rows))

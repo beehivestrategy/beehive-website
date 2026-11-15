@@ -12,8 +12,8 @@ import _gb002r_apply as A
 
 SLUGS = [l.strip() for l in open('/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipeline/gap_batches/gbatch_002.txt') if l.strip()]
 
-CTAHREF = {"EN": "/contact", "zh-CN": "/zh-cn/contact", "zh-TW": "/zh-tw/contact"}
-CTATXT = {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-TW": "預約示範"}
+CTAHREF = {"EN": "/contact", "zh-CN": "/zh-cn/contact", "zh-HK": "/zh-hk/contact"}
+CTATXT = {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-HK": "預約示範"}
 
 # ---- 1. CTA fixes -------------------------------------------------------
 n = 0
@@ -31,14 +31,14 @@ for slug in SLUGS:
             n += 1
 print("cta fixed:", n)
 
-# ---- 2. H2 retitles: zh-CN / zh-TW for batches 2-3 ----------------------
+# ---- 2. H2 retitles: zh-CN / zh-HK for batches 2-3 ----------------------
 MAPS = {}
 for D in (D1, D2, D3):
     for slug, d in D.DATA.items():
         if d.get("ZH_CN_H2"):
             MAPS.setdefault(slug, {})["zh-CN"] = d["ZH_CN_H2"]
         if d.get("ZH_TW_H2"):
-            MAPS.setdefault(slug, {})["zh-TW"] = [(o, A.twfix(x)) for o, x in d["ZH_TW_H2"]]
+            MAPS.setdefault(slug, {})["zh-HK"] = [(o, A.twfix(x)) for o, x in d["ZH_TW_H2"]]
 
 # additional EN fixes for headings that remain non-question form
 EXTRA_EN = {

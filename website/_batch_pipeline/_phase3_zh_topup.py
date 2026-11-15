@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Phase 3: top up zh-CN / zh-TW article-content to >= 3500 CJK by appending
+Phase 3: top up zh-CN / zh-HK article-content to >= 3500 CJK by appending
 genuine, topic-specific question-H2 prose INSIDE <article id="article-content">.
 Idempotent: only adds if current count < floor. Preserves <head>, footer, paths.
 """
@@ -87,7 +87,7 @@ report=[]
 for slug in SLUGS:
     cn_secs = CONTENT[slug]
     tw_secs = [(cc.convert(h2), [cc.convert(p) for p in paras]) for h2,paras in cn_secs]
-    for lang, sub, secs in [("cn","zh-cn/blog/articles", cn_secs),("tw","zh-tw/blog/articles", tw_secs)]:
+    for lang, sub, secs in [("cn","zh-cn/blog/articles", cn_secs),("tw","zh-hk/blog/articles", tw_secs)]:
         fn = os.path.join(BASE, sub, slug+".html")
         raw = open(fn, encoding="utf-8").read()
         head0 = raw[:raw.index("<body")]

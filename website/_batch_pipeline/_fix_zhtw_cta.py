@@ -3,7 +3,7 @@ ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 slugs = [l.strip() for l in open(os.path.join(ROOT,"_batch_pipeline/gap_batches/gbatch_001.txt")) if l.strip()]
 report = []
 for slug in slugs:
-    p = os.path.join(ROOT, "zh-tw/blog/articles", slug + ".html")
+    p = os.path.join(ROOT, "zh-hk/blog/articles", slug + ".html")
     if not os.path.exists(p):
         report.append(f"[MISSING] {slug}")
         continue

@@ -7,8 +7,8 @@ import re, json, sys, os
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 
-CTAS = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-tw": "預約示範"}
-PREFIX = {"en": "/blog/articles/", "zh-cn": "/zh-cn/blog/articles/", "zh-tw": "/zh-tw/blog/articles/"}
+CTAS = {"en": "Book a Demo", "zh-cn": "预约演示", "zh-hk": "預約示範"}
+PREFIX = {"en": "/blog/articles/", "zh-cn": "/zh-cn/blog/articles/", "zh-hk": "/zh-hk/blog/articles/"}
 
 def strip_tags(html):
     t = re.sub(r'<[^>]+>', ' ', html)
@@ -149,7 +149,7 @@ def populate_excerpts(html):
     return re.sub(r'<a\b[^>]*class="[^"]*recommended-card[^"]*"[^>]*>[\s\S]*?</a>', repl, html)
 
 def ensure_cta(html, lang):
-    if lang == 'zh-tw':
+    if lang == 'zh-hk':
         html = re.sub(r'(<a\b[^>]*class="article-cta-btn"[^>]*>)([\s\S]*?)(</a>)',
                       lambda m: m.group(1) + m.group(2).replace('預約演示', '預約示範') + m.group(3), html)
     return html
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     slug = sys.argv[1]
     langmap = [("en", f"blog/articles/{slug}.html"),
                ("zh-cn", f"zh-cn/blog/articles/{slug}.html"),
-               ("zh-tw", f"zh-tw/blog/articles/{slug}.html")]
+               ("zh-hk", f"zh-hk/blog/articles/{slug}.html")]
     for lang, rel in langmap:
         p = os.path.join(ROOT, rel)
         if os.path.exists(p):

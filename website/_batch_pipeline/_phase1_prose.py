@@ -310,7 +310,7 @@ for slug, items in EN.items():
 
 for slug, langs in ZH.items():
     for lg, items in langs.items():
-        sub = "zh-cn/blog/articles" if lg=="cn" else "zh-tw/blog/articles"
+        sub = "zh-cn/blog/articles" if lg=="cn" else "zh-hk/blog/articles"
         fn = os.path.join(BASE, sub, slug + ".html")
         html = open(fn, encoding="utf-8").read()
         head0 = html[:html.index("<body")]

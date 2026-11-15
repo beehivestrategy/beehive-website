@@ -14,7 +14,7 @@ for slug in slugs:
     ok = True
     for lang, pref, phrase in [("EN","blog/articles","Book a Demo"),
                                ("zh-CN","zh-cn/blog/articles","预约演示"),
-                               ("zh-TW","zh-tw/blog/articles","預約示範")]:
+                               ("zh-HK","zh-hk/blog/articles","預約示範")]:
         fp = os.path.join(ROOT, pref, slug+".html")
         t = open(fp, encoding="utf-8").read()
         n = enw(t) if lang=="EN" else cjk(t)

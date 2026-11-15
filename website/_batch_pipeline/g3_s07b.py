@@ -55,9 +55,9 @@ def build_faq_ld_zh(qas):
 
 def make_zh(en_html, lang, faq_qas):
     s = en_html
-    pre = "zh-cn" if lang == "zh-CN" else "zh-tw"
+    pre = "zh-cn" if lang == "zh-CN" else "zh-hk"
     s = s.replace('lang="en"', 'lang="%s"' % pre)
-    s = s.replace('content="en_US"', 'content="%s"' % ("zh_CN" if lang == "zh-CN" else "zh_TW"))
+    s = s.replace('content="en_US"', 'content="%s"' % ("zh_CN" if lang == "zh-CN" else "zh_HK"))
     s = s.replace('https://www.beehivestrategy.com/blog', 'https://www.beehivestrategy.com/%s/blog' % pre)
     s = s.replace('href="/blog', 'href="/%s/blog' % pre)
     for p in ('solution', 'contact', 'about', 'services', 'industries', 'case-studies', 'pricing'):
@@ -90,25 +90,25 @@ def main():
         F.save(SLUG, "EN", F.set_body(s, b))
 
     faq = dict(S.FAQ)
-    faq["zh-TW"] = [(F.S2TWP.convert(q), F.S2TWP.convert(a)) for q, a in S.FAQ["zh-CN"]]
+    faq["zh-HK"] = [(F.S2TWP.convert(q), F.S2TWP.convert(a)) for q, a in S.FAQ["zh-CN"]]
 
     en = F.load(SLUG, "EN")
     cn = make_zh(en, "zh-CN", faq["zh-CN"])
     with open(F.path(SLUG, "zh-CN"), "w", encoding="utf-8") as f:
         f.write(cn)
     tw = F.s2twp_text(cn)
-    tw = tw.replace('lang="zh-cn"', 'lang="zh-tw"').replace('content="zh_CN"', 'content="zh_TW"')
-    tw = re.sub(r'(https://www\.beehivestrategy\.com/)zh-cn/', r'\1zh-tw/', tw)
-    tw = re.sub(r'(href=")/zh-cn/', r'\1/zh-tw/', tw)
-    tw = re.sub(r'(src=")/zh-cn/', r'\1/zh-tw/', tw)
-    tw = tw.replace('/assets/blog/covers/zh-cn/', '/assets/blog/covers/zh-tw/')
-    with open(F.path(SLUG, "zh-TW"), "w", encoding="utf-8") as f:
+    tw = tw.replace('lang="zh-cn"', 'lang="zh-hk"').replace('content="zh_CN"', 'content="zh_HK"')
+    tw = re.sub(r'(https://www\.beehivestrategy\.com/)zh-cn/', r'\1zh-hk/', tw)
+    tw = re.sub(r'(href=")/zh-cn/', r'\1/zh-hk/', tw)
+    tw = re.sub(r'(src=")/zh-cn/', r'\1/zh-hk/', tw)
+    tw = tw.replace('/assets/blog/covers/zh-cn/', '/assets/blog/covers/zh-hk/')
+    with open(F.path(SLUG, "zh-HK"), "w", encoding="utf-8") as f:
         f.write(tw)
 
     before, after = F.process(SLUG, faq=faq,
                               faq_titles={"EN": "Frequently Asked Questions",
-                                          "zh-CN": "常见问题", "zh-TW": "常見問題"})
-    for lang in ("EN", "zh-CN", "zh-TW"):
+                                          "zh-CN": "常见问题", "zh-HK": "常見問題"})
+    for lang in ("EN", "zh-CN", "zh-HK"):
         print(lang, before[lang], "->", after[lang])
 
 main()

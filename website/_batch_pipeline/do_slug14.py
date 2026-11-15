@@ -231,16 +231,16 @@ h = open(zh_p, encoding='utf-8').read()
 h = h.replace('<p class="recommended-card-excerpt"></p>', '<p class="recommended-card-excerpt">从被动救火走向主动预防：企业如何用自动化把数据质量变成持续可控的能力，而不是事后诸葛亮。</p>', 1)
 open(zh_p, 'w', encoding='utf-8').write(h)
 
-# zh-TW : convert zh-CN main, preserve zh-TW head/header/footer
+# zh-HK : convert zh-CN main, preserve zh-HK head/header/footer
 zhcn = open(zh_p, encoding='utf-8').read()
 m = re.search(r'<main>.*</main>', zhcn, re.S)
 zhcn_main = m.group(0)
 tw_main = cc.convert(zhcn_main)
-tw_main = tw_main.replace('/zh-cn/', '/zh-tw/')
-tw_main = tw_main.replace('zh-cn/', 'zh-tw/')
+tw_main = tw_main.replace('/zh-cn/', '/zh-hk/')
+tw_main = tw_main.replace('zh-cn/', 'zh-hk/')
 tw_main = tw_main.replace('预约演示', '預約示範')
-zhtw = open(base + "/zh-tw/blog/articles/" + slug + ".html", encoding='utf-8').read()
-zhtw = re.sub(r'<main>.*</main>', tw_main, zhtw, flags=re.S)
-open(base + "/zh-tw/blog/articles/" + slug + ".html", 'w', encoding='utf-8').write(zhtw)
+zhhk = open(base + "/zh-hk/blog/articles/" + slug + ".html", encoding='utf-8').read()
+zhhk = re.sub(r'<main>.*</main>', tw_main, zhhk, flags=re.S)
+open(base + "/zh-hk/blog/articles/" + slug + ".html", 'w', encoding='utf-8').write(zhhk)
 
 print("slug14 done")

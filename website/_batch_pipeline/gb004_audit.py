@@ -4,7 +4,7 @@
 import re, os, sys, json, html
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = [("en", ""), ("zh-CN", "zh-cn/"), ("zh-TW", "zh-tw/")]
+LANGS = [("en", ""), ("zh-CN", "zh-cn/"), ("zh-HK", "zh-hk/")]
 
 CJK = re.compile(r'[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]')
 

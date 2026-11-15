@@ -13,7 +13,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(BASE)
 PAIRS = os.path.join(os.path.dirname(os.path.dirname(BASE)), "gsc_out", "variant_pairs_enriched.json")
 
-LANG_DIR = {"en": "", "cn": "zh-cn/", "tw": "zh-tw/"}
+LANG_DIR = {"en": "", "cn": "zh-cn/", "tw": "zh-hk/"}
 def art_path(lang, slug):
     return os.path.join(SITE, LANG_DIR[lang], "blog", "articles", slug + ".html")
 

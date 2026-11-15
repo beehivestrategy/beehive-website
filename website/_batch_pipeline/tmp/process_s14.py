@@ -10,7 +10,7 @@ W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 S = "cross-functional-ai-teams-structure-and-governance-a-2026-update"
 EN = W + "blog/articles/" + S + ".html"
 ZHCN = W + "zh-cn/blog/articles/" + S + ".html"
-ZHTW = W + "zh-tw/blog/articles/" + S + ".html"
+ZHTW = W + "zh-hk/blog/articles/" + S + ".html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -195,7 +195,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("AI專案應該由IT、資料還是業務部門主導？",
      "沒有任何單一職能應該獨佔主導權。交付歸屬權屬於跨職能產品團隊——業務、資料、工程與設計共用一張路線圖；而一個精簡的中心職能提供平台、標準與護欄。兩者必須分開：制定標準的團隊不能同時是交付功能的團隊，否則標準會悄悄變成可選項。"),
@@ -289,7 +289,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="2026年跨職能ai團隊的格局是什麼樣的"', 'id="接下來應該怎麼做"',
         '採納率高出三倍', '蜂啟諮詢',
-    ], 8, "zh-TW")
+    ], 8, "zh-HK")
     assert '跨職能' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

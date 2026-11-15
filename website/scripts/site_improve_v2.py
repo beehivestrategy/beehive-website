@@ -29,7 +29,7 @@ import os, re, sys, json, argparse, random, hashlib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCALES = {'en': 'blog/articles', 'zh-cn': 'zh-cn/blog/articles',
-           'zh-tw': 'zh-tw/blog/articles'}
+           'zh-hk': 'zh-hk/blog/articles'}
 TEAL = '#2B9E8B'; GOLD = '#d4a843'; INK = '#0e2a3b'; AQUA = '#6cc4b4'
 SLATE = '#5b7083'; MIST = '#e8eef0'
 
@@ -222,7 +222,7 @@ def localize(html, loc, self_url=''):
         if href.startswith('/' + loc + '/'):
             return mm.group(0)
         # strip any OTHER locale prefix -> base path
-        mm2 = re.match(r'^/(zh-cn|zh-tw)(/.*)$', href)
+        mm2 = re.match(r'^/(zh-cn|zh-hk)(/.*)$', href)
         base = mm2.group(2) if mm2 else href
         cand = '/' + loc + base
         if cand == self_url:
@@ -359,7 +359,7 @@ def fig_caption(title, locale):
     t = clean(title)
     if locale == 'zh-cn':
         return f'图：<b>{t}</b> 的核心脉络一览'
-    if locale == 'zh-tw':
+    if locale == 'zh-hk':
         return f'圖：<b>{t}</b> 的核心脈絡一覽'
     return f'Figure — the shape of <b>{t.lower()}</b>'
 

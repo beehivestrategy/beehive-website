@@ -23,7 +23,7 @@ def slugify_en(t):
 
 
 def path_for(slug, lang):
-    pfx = {'en': '', 'zh-cn': 'zh-cn/', 'zh-tw': 'zh-tw/'}[lang]
+    pfx = {'en': '', 'zh-cn': 'zh-cn/', 'zh-hk': 'zh-hk/'}[lang]
     return os.path.join(ROOT, pfx, 'blog/articles', slug + '.html')
 
 

@@ -20,7 +20,7 @@ rsync -a --delete --delete-excluded \
   --exclude='gsc_mirror_audit_report.txt' \
   --exclude='url_defects.json' \
   --exclude='zh-quality-followup-2026-09-01.txt' \
-  --exclude='wechat-*-preview.html' \
+  --exclude='wechat*preview*.html' \
   --exclude='weixin-drafts-full.png.jpg' \
   --exclude='gen-batch.py' \
   --exclude='gen-what-is.py' \

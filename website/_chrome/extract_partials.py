@@ -4,7 +4,7 @@ extract_partials.py — 从三语 fde 模板抽取 chrome 块到 _chrome/_partia
 作为 build_chrome.py 的单一事实源。仅在模板设计变更时运行。
 
 输出:
-  _chrome/_partials/{en,zh-cn,zh-tw}/{header,footer,mobile}.html
+  _chrome/_partials/{en,zh-cn,zh-hk}/{header,footer,mobile}.html
 """
 import os
 import re
@@ -12,7 +12,7 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 OUT = os.path.join(HERE, "_partials")
-TEMPLATES = {"en": "fde.html", "zh-cn": "zh-cn/fde.html", "zh-tw": "zh-tw/fde.html"}
+TEMPLATES = {"en": "fde.html", "zh-cn": "zh-cn/fde.html", "zh-hk": "zh-hk/fde.html"}
 
 
 def read(p):

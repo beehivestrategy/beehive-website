@@ -25,11 +25,11 @@ def dedupe(html):
 
 report = []
 for slug in slugs:
-    for pre in ["zh-tw/blog/articles/"]:  # only tw needs dedupe per measure
+    for pre in ["zh-hk/blog/articles/"]:  # only tw needs dedupe per measure
         p = os.path.join(base, pre+slug+".html")
         h = open(p, encoding='utf-8').read()
         h, deduped = dedupe(h)
-        # CTA fix for zh-TW
+        # CTA fix for zh-HK
         cta_fixed = False
         if 'class="article-cta-btn">預約演示</a>' in h:
             h = h.replace('class="article-cta-btn">預約演示</a>', 'class="article-cta-btn">預約示範</a>')

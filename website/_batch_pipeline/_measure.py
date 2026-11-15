@@ -34,7 +34,7 @@ def jsonld_body(t):
 
 for slug in slugs:
     row = {"slug": slug}
-    for lang, prefix in [("EN","blog/articles"), ("zh-CN","zh-cn/blog/articles"), ("zh-TW","zh-tw/blog/articles")]:
+    for lang, prefix in [("EN","blog/articles"), ("zh-CN","zh-cn/blog/articles"), ("zh-HK","zh-hk/blog/articles")]:
         fp = os.path.join(ROOT, prefix, slug + ".html")
         if not os.path.exists(fp):
             row[lang] = "MISSING"

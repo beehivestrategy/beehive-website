@@ -11,9 +11,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _gb001_s2t import s2tw  # noqa: E402
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = [("EN", "blog/articles"), ("zh-CN", "zh-cn/blog/articles"), ("zh-TW", "zh-tw/blog/articles")]
-PREFIX = {"EN": "/blog/articles", "zh-CN": "/zh-cn/blog/articles", "zh-TW": "/zh-tw/blog/articles"}
-PHRASE = {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-TW": "預約示範"}
+LANGS = [("EN", "blog/articles"), ("zh-CN", "zh-cn/blog/articles"), ("zh-HK", "zh-hk/blog/articles")]
+PREFIX = {"EN": "/blog/articles", "zh-CN": "/zh-cn/blog/articles", "zh-HK": "/zh-hk/blog/articles"}
+PHRASE = {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-HK": "預約示範"}
 CJK = re.compile(r'[\u4e00-\u9fff\u3400-\u4dbf]')
 
 
@@ -246,7 +246,7 @@ def convert_text_nodes(h, fn):
 
 
 def sync_zh_tw(slug):
-    """Rebuild the zh-TW article body from the zh-CN body (OpenCC s2tw) and
+    """Rebuild the zh-HK article body from the zh-CN body (OpenCC s2tw) and
     regenerate the desktop TOC. Head, footer, share buttons and the sections
     outside <article> are untouched."""
     cn = read(slug, LANGS[1][1])
@@ -307,7 +307,7 @@ def replace_faq(raw, pairs):
 FAQ_SECTION_TPL = {
     "EN": ('Frequently Asked Questions', 'Frequently Asked Questions'),
     "zh-CN": ('常见问题', '常见问题'),
-    "zh-TW": ('常見問題', '常見問題'),
+    "zh-HK": ('常見問題', '常見問題'),
 }
 
 

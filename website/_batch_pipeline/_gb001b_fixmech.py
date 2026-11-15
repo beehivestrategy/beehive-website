@@ -2,7 +2,7 @@
 """Mechanical pass over gbatch_001 files:
  1. <button class="faq-question"> -> <h3 class="faq-question">  (and </button> -> </h3>)
  2. strip duplicated leading ordinal inside the question text span
- 3. zh-TW: CTA phrase 預約演示 -> 預約示範 (only inside the article-cta-btn anchor)
+ 3. zh-HK: CTA phrase 預約演示 -> 預約示範 (only inside the article-cta-btn anchor)
  4. ensure EXACTLY ONE FAQPage JSON-LD, Q/A verbatim-matched to on-page FAQ
     - if one exists in <head>: update in place
     - else: insert in BODY immediately after the FAQ section
@@ -14,7 +14,7 @@ ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 SLUGS = [l.strip() for l in open(os.path.join(ROOT, "_batch_pipeline/gap_batches/gbatch_001.txt")) if l.strip()]
 LANGS = (("en", "blog/articles/%s.html"),
          ("cn", "zh-cn/blog/articles/%s.html"),
-         ("tw", "zh-tw/blog/articles/%s.html"))
+         ("tw", "zh-hk/blog/articles/%s.html"))
 
 def faq_span(html):
     """Return (start, end) char offsets of the <section class='faq-section'>...</section> block."""
@@ -101,7 +101,7 @@ for slug in SLUGS:
         if h2 != h:
             h = h2; notes.append("dedup-num")
 
-        # ---- 3. zh-TW CTA phrase ----
+        # ---- 3. zh-HK CTA phrase ----
         if lang == "tw":
             def ctarep(m):
                 inner = m.group(2)

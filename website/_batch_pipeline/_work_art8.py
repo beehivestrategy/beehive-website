@@ -91,23 +91,23 @@ cn_jsonld = faq_jsonld(cn_faq)
 cn_inner = cn_extra + "\n" + cn_faq_html + "\n" + cn_jsonld + "\n"
 tw_inner = cc.convert(cn_inner)
 
-for lang, inner in (("zh-cn", cn_inner), ("zh-tw", tw_inner)):
+for lang, inner in (("zh-cn", cn_inner), ("zh-hk", tw_inner)):
     p = os.path.join(ROOT, "%s/blog/articles/%s.html"%(lang, slug))
     hh = open(p, encoding='utf-8').read()
     mm = re.search(r'(<p class="article-lead">.*?)(<nav class="article-nav")', hh, re.S)
     hh = hh[:mm.start(1)] + inner + hh[mm.end(1):]
     # fix tw CTA phrase
-    if lang == "zh-tw":
+    if lang == "zh-hk":
         hh = hh.replace('article-cta-btn">預約演示', 'article-cta-btn">預約示範')
     open(p,'w',encoding='utf-8').write(hh)
     print(lang, "written")
 
 # verify
-for lang, pat in (("en","blog/articles/%s.html"),("zh-cn","zh-cn/blog/articles/%s.html"),("zh-tw","zh-tw/blog/articles/%s.html")):
+for lang, pat in (("en","blog/articles/%s.html"),("zh-cn","zh-cn/blog/articles/%s.html"),("zh-hk","zh-hk/blog/articles/%s.html")):
     p = os.path.join(ROOT, pat%slug)
     hh = open(p, encoding='utf-8').read()
     b = re.search(r'<article class="article-content" id="article-content">(.*?)</article>', hh, re.S).group(1)
     if lang=="en":
         print(lang,"words=",len(re.findall(r"[A-Za-z0-9']+", b)),"faq=",b.count('faq-item'),"jsonld=", 'FAQPage' in hh,"css=",hh.count('article.css?v=20260826'),"js=",hh.count('article.js?v=20260826'),"footer=",hh.count('footer class="footer"'))
     else:
-        print(lang,"cjk=",len(re.findall(r'[\u4e00-\u9fff]', b)),"faq=",b.count('faq-item'),"jsonld=", 'FAQPage' in hh,"css=",hh.count('article.css?v=20260826'),"footer=",hh.count('footer class="footer"'),"cta=", ('預約示範' in hh if lang=='zh-tw' else '预约演示' in hh))
+        print(lang,"cjk=",len(re.findall(r'[\u4e00-\u9fff]', b)),"faq=",b.count('faq-item'),"jsonld=", 'FAQPage' in hh,"css=",hh.count('article.css?v=20260826'),"footer=",hh.count('footer class="footer"'),"cta=", ('預約示範' in hh if lang=='zh-hk' else '预约演示' in hh))

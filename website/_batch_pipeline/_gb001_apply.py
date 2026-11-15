@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Apply a standardisation spec to one slug across en / zh-CN / zh-TW.
+"""Apply a standardisation spec to one slug across en / zh-CN / zh-HK.
 
 spec = {
   "renames": {h2_id: new_title_text},          # optional
@@ -58,9 +58,9 @@ def apply(slug, lang, spec, do_sections=True, do_faq=True):
     return before, after, notes
 
 
-def report(slug, en, zhcn, zhtw):
+def report(slug, en, zhcn, zhhk):
     out = [slug]
-    for lang, spec in (("en", en), ("zh-CN", zhcn), ("zh-TW", zhtw)):
+    for lang, spec in (("en", en), ("zh-CN", zhcn), ("zh-HK", zhhk)):
         b, a, notes = apply(slug, lang, spec,
                             do_sections=bool(spec.get("sections")),
                             do_faq=bool(spec.get("faq")))

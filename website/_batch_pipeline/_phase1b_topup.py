@@ -167,7 +167,7 @@ open(fn, "w", encoding="utf-8").write(new)
 print("EN explainable rebuilt:", enw(new[new.index('<article class="article-content" id="article-content">'):new.rindex('</article>')]))
 
 # zh explainable
-for lg, sub in [("cn","zh-cn/blog/articles"),("tw","zh-tw/blog/articles")]:
+for lg, sub in [("cn","zh-cn/blog/articles"),("tw","zh-hk/blog/articles")]:
     fn = os.path.join(BASE, sub, "explainable-ai-in-analytics-making-black-boxes-transparent-a-2026-update.html")
     html = open(fn, encoding="utf-8").read()
     head0 = html[:html.index("<body")]
@@ -181,7 +181,7 @@ for lg, sub in [("cn","zh-cn/blog/articles"),("tw","zh-tw/blog/articles")]:
 # zh topups
 for slug, langs in ZH_TOPUP.items():
     for lg, block in langs.items():
-        sub = "zh-cn/blog/articles" if lg=="cn" else "zh-tw/blog/articles"
+        sub = "zh-cn/blog/articles" if lg=="cn" else "zh-hk/blog/articles"
         fn = os.path.join(BASE, sub, slug + ".html")
         html = open(fn, encoding="utf-8").read()
         head0 = html[:html.index("<body")]

@@ -24,7 +24,7 @@ def ins(html, block):
 def cjk(s): return len(re.findall(r'[\u3400-\u9fff\uf900-\ufaff]', s))
 for slug, langs in ZH.items():
     for lg, p in langs.items():
-        sub = "zh-cn/blog/articles" if lg=="cn" else "zh-tw/blog/articles"
+        sub = "zh-cn/blog/articles" if lg=="cn" else "zh-hk/blog/articles"
         fn = os.path.join(BASE, sub, slug + ".html")
         html = open(fn, encoding="utf-8").read()
         head0 = html[:html.index("<body")]

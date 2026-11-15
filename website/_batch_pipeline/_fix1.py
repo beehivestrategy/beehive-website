@@ -106,7 +106,7 @@ def replace_or_add_faq_ld(html, new_json, has_faq_section):
     return html, False
 
 def fix_recommended(html, lang):
-    prefix = {'en':'', 'zh-CN':'zh-cn', 'zh-TW':'zh-tw'}[lang]
+    prefix = {'en':'', 'zh-CN':'zh-cn', 'zh-HK':'zh-hk'}[lang]
     base = ('/' + prefix + '/blog/articles/') if prefix else '/blog/articles/'
     def repl_href(m):
         tag = m.group(0)
@@ -115,7 +115,7 @@ def fix_recommended(html, lang):
         href = hm.group(1)
         new = href
         if lang == 'en':
-            if href.startswith('/zh-cn/blog/articles/') or href.startswith('/zh-tw/blog/articles/'):
+            if href.startswith('/zh-cn/blog/articles/') or href.startswith('/zh-hk/blog/articles/'):
                 new = base + href.split('/blog/articles/')[-1]
             elif href.startswith('/blog/articles/'):
                 new = href
@@ -124,7 +124,7 @@ def fix_recommended(html, lang):
         else:
             if href.startswith('/blog/articles/'):
                 new = base + href[len('/blog/articles/'):]
-            elif href.startswith(('/zh-cn/blog/articles/','/zh-tw/blog/articles/')):
+            elif href.startswith(('/zh-cn/blog/articles/','/zh-hk/blog/articles/')):
                 new = base + href.split('/blog/articles/')[-1]
             elif not href.startswith('/'):
                 new = base + href

@@ -1,0 +1,1512 @@
+
+<!DOCTYPE html>
+<html lang="zh-HK" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MFSTHW7');</script>
+<!-- End Google Tag Manager -->
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>MCP 整合指南 | 模型上下文協議</title>
+  <meta name="description" content="Enterprise guide to Model Context Protocol (MCP): architecture, security, deployment steps, and use cases for connecting AI agents to your data sources.">
+  <meta name="keywords" content="MCP, Model Context Protocol, MCP integration, MCP server, MCP architecture, enterprise AI integration, conversational BI, AI data protocol, MCP deployment, MCP security">
+  <meta name="author" content="Beehive Strategy Limited">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
+  <meta name="bingbot" content="index, follow">
+
+  <link rel="canonical" href="https://www.beehivestrategy.com/zh-HK/mcp-integration-guide">
+  <link rel="alternate" hreflang="en" href="https://www.beehivestrategy.com/zh-HK/mcp-integration-guide">
+  <link rel="alternate" hreflang="x-default" href="https://www.beehivestrategy.com/zh-HK/mcp-integration-guide">
+
+  <meta name="geo.region" content="CN-GD">
+  <meta name="geo.placename" content="Shenzhen, Guangdong, China">
+  <meta name="geo.position" content="22.5431;114.0579">
+  <meta name="ICBM" content="22.5431, 114.0579">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Beehive Strategy">
+  <meta property="og:title" content="MCP Integration Guide | Model Context Protocol — Beehive Strategy">
+  <meta property="og:description" content="Enterprise guide to Model Context Protocol (MCP): architecture, security, deployment steps, and use cases for connecting AI agents to your data sources.">
+  <meta property="og:url" content="https://www.beehivestrategy.com/zh-HK/mcp-integration-guide">
+  <meta property="og:image" content="https://www.beehivestrategy.com/assets/images/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Complete MCP Integration Guide">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <meta property="article:published_time" content="2026-01-15T09:00:00+08:00">
+  <meta property="article:modified_time" content="2026-07-25T09:00:00+08:00">
+  <meta property="article:author" content="Beehive Strategy">
+  <meta property="article:section" content="Guides">
+  <meta property="article:tag" content="MCP">
+  <meta property="article:tag" content="Model Context Protocol">
+  <meta property="article:tag" content="Enterprise AI">
+  <meta property="article:tag" content="AI Integration">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@beehivestrategy">
+  <meta name="twitter:creator" content="@beehivestrategy">
+  <meta name="twitter:title" content="MCP Integration Guide: The Complete Model Context Protocol Reference">
+  <meta name="twitter:description" content="Enterprise guide to Model Context Protocol (MCP): architecture, security, deployment steps, and use cases for connecting AI agents to your data sources.">
+  <meta name="twitter:image" content="https://www.beehivestrategy.com/assets/images/og-image.png">
+
+  <meta name="theme-color" content="#0a0e0d">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png?v=20261107.6">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png?v=20261107.6">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png?v=20261107.6">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261107.6">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css?v=20261113.15">
+  <link rel="stylesheet" href="/css/accenture.css?v=20261114.03">
+  <link rel="stylesheet" href="/css/legacy-bridge.css?v=20261112.11">
+  <link rel="alternate" type="application/rss+xml" title="Beehive Strategy Blog RSS Feed" href="https://www.beehivestrategy.com/blog/feed.xml">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "The Complete MCP Integration Guide: Model Context Protocol for Enterprise Leaders",
+    "description": "The complete enterprise guide to Model Context Protocol (MCP): architecture, security, deployment steps, use cases, and comparison with REST APIs, GraphQL, and custom integrations.",
+    "datePublished": "2026-01-15T09:00:00+08:00",
+    "dateModified": "2026-07-25T09:00:00+08:00",
+    "wordCount": "2800",
+    "articleSection": "Guides",
+    "keywords": "MCP, Model Context Protocol, MCP integration, MCP server, MCP architecture, enterprise AI integration, conversational BI",
+    "inLanguage":"zh-HK",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.beehivestrategy.com/zh-HK/mcp-integration-guide"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Beehive Strategy",
+      "url": "https://www.beehivestrategy.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Beehive Strategy Limited",
+      "url": "https://www.beehivestrategy.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.beehivestrategy.com/assets/images/beehive-logo.png",
+        "width": 144,
+        "height": 36
+      }
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://www.beehivestrategy.com/assets/images/og-image.png",
+      "width": 1200,
+      "height": 630
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.beehivestrategy.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Guides",
+        "item": "https://www.beehivestrategy.com/guides"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "MCP Integration Guide",
+        "item": "https://www.beehivestrategy.com/zh-HK/mcp-integration-guide"
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is MCP?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Model Context Protocol (MCP) is an open standard introduced by Anthropic in November 2024 that enables AI assistants to securely connect to external data sources, tools, and APIs through a universal protocol. It replaces fragmented point-to-point integrations with a single, standardised communication layer based on JSON-RPC 2.0."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does MCP work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MCP works through three components: an MCP Client (embedded in the AI assistant), an MCP Server (a lightweight connector to a data source or tool), and the MCP Protocol (a JSON-RPC 2.0 communication layer). The client discovers available tools, resources, and prompts from the server, then invokes them as needed to answer user queries."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is MCP secure?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. MCP supports OAuth 2.0 authentication, role-based access control (RBAC), permission scoping, and full audit logging. When deployed through an enterprise MCP Gateway like Beehive Strategy's, it complies with PIPL, GDPR, and ISO 27001 requirements. All data transmission is encrypted and access is governed at the resource level."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does MCP deployment take?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Quick Start MCP deployment with 3 data sources can go live in 2 weeks. A full Professional deployment with 10+ data sources, custom semantic models, and multi-agent workflows typically takes 6-8 weeks. Deployment time depends on the number of data sources and the complexity of governance requirements."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What data sources does MCP support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MCP supports any data source that has a connector built for it. Common supported sources include MySQL, PostgreSQL, SQL Server, Oracle, Snowflake, BigQuery, Redshift, Salesforce, SAP, HubSpot, Slack, GitHub, plus Chinese business tools like WeChat Work, DingTalk, Feishu, and Alipay. Custom MCP servers can be built for proprietary systems."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is MCP different from APIs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Traditional APIs require custom integration code for each data source and are not designed for AI consumption. MCP provides a single universal protocol that any AI assistant can use to discover and invoke tools dynamically. This eliminates per-source integration work and makes data sources immediately usable by any MCP-compatible AI model."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can MCP work with existing BI tools?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. MCP's semantic layer acts as a governed metrics layer that existing BI tools such as Tableau, Power BI, and Metabase can query alongside the conversational interface. Teams can continue using dashboards while also accessing the same governed metrics through natural language conversations in IM platforms."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+  <!-- HEADER -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <div id="scroll-progress" class="scroll-progress" role="presentation"></div>
+<header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="/zh-hk/" class="logo" aria-label="蜂啟諮詢 — 回到首頁">
+        <img src="/assets/images/beehive-logo.png" alt="蜂啟諮詢 Logo" width="144" height="36" loading="eager">
+      </a>
+      <nav class="nav-desktop" role="navigation" aria-label="主導航">
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/what-we-do" class="nav-link" aria-haspopup="true" aria-expanded="false">我們做甚麼 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--md" style="min-width: 780px; max-width: 92vw;">
+            <div class="nav-dropdown-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">從這裏開始</div>
+                <a href="/zh-hk/services" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>全部服務</span>
+                  <span class="dropdown-subtitle">我們提供的每一次交付</span>
+                </a>
+                <a href="/zh-hk/training" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>培訓</span>
+                  <span class="dropdown-subtitle">課程按形式與深度劃分</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">我們交付甚麼</div>
+                <a href="/zh-hk/conversational-ai" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>對話式 AI</span>
+                  <span class="dropdown-subtitle">提問即答，答案與證據一併呈現</span>
+                </a>
+                <a href="/zh-hk/agentic-tools" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>AI 代理工具</span>
+                  <span class="dropdown-subtitle">部署並管治代理 AI</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">我們怎樣交付</div>
+                <a href="/zh-hk/aifde" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>前沿部署工程</span>
+                  <span class="dropdown-subtitle">即時通訊原生部署，駐場交付</span>
+                </a>
+                <a href="/zh-hk/how-we-work" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>我們怎樣工作</span>
+                  <span class="dropdown-subtitle">範圍固定、兩星期完成，之後由你們自己營運</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/proof" class="nav-link" aria-haspopup="true" aria-expanded="false">我們的成果 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">交付物與實例</div>
+                <a href="/zh-hk/proof" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>你會得到甚麼</span>
+                  <span class="dropdown-subtitle">交付物、移交機制與已投入運作的系統</span>
+                </a>
+                <a href="/zh-hk/case-studies" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>交付示範</span>
+                  <span class="dropdown-subtitle">四類情境，逐項列出交付物</span>
+                </a>
+                <a href="/zh-hk/industries" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>行業</span>
+                  <span class="dropdown-subtitle">按行業的切入點</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/blog" class="nav-link" aria-haspopup="true" aria-expanded="false">洞見 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">閱讀</div>
+                <a href="/zh-hk/blog" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>部落格</span>
+                  <span class="dropdown-subtitle">關於應用型 AI 的每週信號</span>
+                </a>
+                <a href="/zh-hk/guides" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>指南</span>
+                  <span class="dropdown-subtitle">長篇操作指南</span>
+                </a>
+                <a href="/zh-hk/news" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>新聞</span>
+                  <span class="dropdown-subtitle">我們交付了甚麼</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/zh-hk/about" class="nav-link" aria-haspopup="true" aria-expanded="false">關於我們 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm nav-dropdown--right">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">公司</div>
+                <a href="/zh-hk/about" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>關於我們</span>
+                  <span class="dropdown-subtitle">香港，服務亞太</span>
+                </a>
+                <a href="/zh-hk/partners" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>合作夥伴</span>
+                  <span class="dropdown-subtitle">與我們同行的夥伴</span>
+                </a>
+                <a href="/zh-hk/credentials" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>資質</span>
+                  <span class="dropdown-subtitle">我們有資質做的事</span>
+                </a>
+                <a href="/zh-hk/security" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>安全</span>
+                  <span class="dropdown-subtitle">你的數據如何被保管</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="/zh-hk/contact" class="nav-link">聯絡我們</a>
+      </nav>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="切換語言" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">繁</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/aifde" role="menuitem" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/aifde" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-hk/aifde" role="menuitem" class="active" data-lang="zh-hk"><span>繁體中文</span><span class="lang-code">繁</span></a>
+        </div>
+        </div>
+        <a href="/zh-hk/readiness" class="btn btn-primary">免費自評</a>
+      </div>
+      <div class="nav-mobile">
+        <button class="hamburger" id="hamburger" aria-label="切換選單" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">我們做甚麼 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">從這裏開始</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/services">全部服務<span class="dropdown-subtitle">我們提供的每一次交付</span></a>
+            <a href="/zh-hk/training">培訓<span class="dropdown-subtitle">課程按形式與深度劃分</span></a>
+          </div>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">我們交付甚麼</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/conversational-ai">對話式 AI<span class="dropdown-subtitle">提問即答，答案與證據一併呈現</span></a>
+            <a href="/zh-hk/agentic-tools">AI 代理工具<span class="dropdown-subtitle">部署並管治代理 AI</span></a>
+          </div>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">我們怎樣交付</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/zh-hk/aifde">前沿部署工程<span class="dropdown-subtitle">即時通訊原生部署，駐場交付</span></a>
+            <a href="/zh-hk/how-we-work">我們怎樣工作<span class="dropdown-subtitle">範圍固定、兩星期完成，之後由你們自己營運</span></a>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">我們的成果 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">交付物與實例</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/proof">你會得到甚麼<span class="dropdown-subtitle">交付物、移交機制與已投入運作的系統</span></a>
+          <a href="/zh-hk/case-studies">交付示範<span class="dropdown-subtitle">四類情境，逐項列出交付物</span></a>
+          <a href="/zh-hk/industries">行業<span class="dropdown-subtitle">按行業的切入點</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">洞見 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">閱讀</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/blog">部落格<span class="dropdown-subtitle">關於應用型 AI 的每週信號</span></a>
+          <a href="/zh-hk/guides">指南<span class="dropdown-subtitle">長篇操作指南</span></a>
+          <a href="/zh-hk/news">新聞<span class="dropdown-subtitle">我們交付了甚麼</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">關於我們 <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">公司</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/zh-hk/about">關於我們<span class="dropdown-subtitle">香港，服務亞太</span></a>
+          <a href="/zh-hk/partners">合作夥伴<span class="dropdown-subtitle">與我們同行的夥伴</span></a>
+          <a href="/zh-hk/credentials">資質<span class="dropdown-subtitle">我們有資質做的事</span></a>
+          <a href="/zh-hk/security">安全<span class="dropdown-subtitle">你的數據如何被保管</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="/zh-hk/contact">聯絡我們</a>
+  <div class="mobile-lang-switcher">
+    <a href="/zh-hk/aifde" data-lang="en">English</a>
+    <a href="/zh-cn/aifde" data-lang="zh-cn">简体中文</a>
+    <a href="/zh-hk/aifde" data-lang="zh-hk" class="active">繁體中文</a>
+  </div>
+  <a href="/zh-hk/readiness" class="btn btn-primary btn-lg">免費自評</a>
+  </div>
+
+  <main role="main">
+
+  
+
+  <!-- PAGE HERO -->
+  <section class="page-hero" aria-label="MCP Integration Guide">
+    <div class="page-hero-bg" aria-hidden="true">
+      <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 30% 20%, rgba(15,98,254, 0.15), transparent), radial-gradient(ellipse 50% 40% at 75% 30%, rgba(69,137,255, 0.08), transparent), radial-gradient(ellipse 60% 50% at 50% 70%, rgba(0,67,206, 0.06), transparent);"></div>
+    </div>
+    <div class="page-hero-content">
+      <div class="hero-badge reveal" style="margin-bottom: var(--space-6);">
+        <span class="dot" aria-hidden="true"></span>
+        <span>綜合指南</span>
+      </div>
+      <h1 class="reveal">完整版 <span class="text-gradient">MCP 整合指南</span></h1>
+      <p class="reveal reveal-delay-1">企業決策者需要了解的 Model Context Protocol（模型上下文協議）全部內容 &mdash; 從架構到部署。</p>
+    </div>
+  </section>
+
+
+  <!-- KEY TAKEAWAYS -->
+  <section class="section" aria-label="Key takeaways">
+    <div class="container">
+      <div class="key-takeaways reveal">
+        <div class="key-takeaways-header">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <h2>核心要點</h2>
+        </div>
+        <ol class="key-takeaways-list">
+          <li><strong>MCP 是一項開放標準</strong> 由 Anthropic 於 2024 年 11 月提出，讓 AI 助手透過單一通用協議安全接入外部數據來源、工具與 API。</li>
+          <li><strong>採用正在加速</strong>：SDK 月下載量超 9700 萬次、MCP 服務端超 10,000 個、GitHub 星標超 81,000 個（截至 2026 年；來源：Anthropic MCP 登錄檔與 GitHub 指標）。</li>
+          <li><strong>MCP 由三個元件構成</strong>：MCP 客戶端（AI 助手）、MCP 服務端（數據聯結器）與 MCP 協議（JSON-RPC 2.0 通訊層）。</li>
+          <li><strong>企業級部署需 2&ndash;8週</strong>，而傳統 BI 整合需要 6&ndash;12 個月（來源：Beehive Strategy 部署數據，2026 年）。</li>
+          <li><strong>MCP 不繫結廠商</strong>：它可與 Claude、GPT、DeepSeek、Qwen 以及任何實現客戶端規範的 LLM 協同工作。</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: WHAT IS MCP -->
+  <section class="section section-alt" aria-label="What is MCP">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 1 節 &middot; 定義</span>
+        <h2>甚麼是 MCP？</h2>
+        <p>面向企業決策者與架構師的 Model Context Protocol（模型上下文協議）權威解讀。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p class="guide-lead"><strong>Model Context Protocol（MCP，模型上下文協議，一種讓 AI 安全接入企業數據的開放標準）由 Anthropic 於 2024 年 11 月推出，它使 AI 助手能夠透過一套通用協議安全接入外部數據來源、工具與 API。</strong> 它取代了過去點對點整合的碎片化格局 &mdash; 即每個 AI 模型都要為每個數據來源單獨訂造聯結器 &mdash; 代之以單一的標準化通訊層，任何 AI 助手都能借此動態發現並呼叫工具。</p>
+
+        <p>在 MCP 出現之前，要把 AI 助手接入企業數據來源，必須為每套系統單獨開發整合：處理認證、轉換查詢、格式化響應、管理錯誤。一家擁有 10 個數據來源和 3 個 AI 模型的公司，最多需要 30 套獨立整合。MCP 把這種複雜性收斂為一套協議，使任何相容 MCP 的客戶端都能與任何相容 MCP 的服務端通訊，無需訂造粘合程式碼。</p>
+
+        <blockquote class="guide-quote">
+          <p>&ldquo;MCP 是一項開放協議，它規範了應用向 LLM 提供上下文的方式。可以把 MCP 理解為 AI 應用的 USB-C 介面：它為 AI 模型連線不同的數據來源與工具提供了統一方式。&rdquo;</p>
+          <cite>&mdash; Anthropic，MCP 規範（modelcontextprotocol.io）</cite>
+        </blockquote>
+
+        <h3>MCP 關鍵數據（2026 年）</h3>
+        <p>MCP 生態自 2024 年底公開發布以來增長迅速。以下數據反映截至 2026 年年中的企業與開發者採用情況：</p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">97M+</div>
+            <div class="stat-label">SDK 月下載量</div>
+            <div class="stat-source">來源：PyPI 與 npm 登錄檔數據，2026 年</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">10,000+</div>
+            <div class="stat-label">公開 MCP 服務端數量</div>
+            <div class="stat-source">來源：Anthropic MCP 登錄檔，2026 年</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">81,000+</div>
+            <div class="stat-label">MCP 相關項目的 GitHub 星標數</div>
+            <div class="stat-source">來源：GitHub 倉庫指標，2026 年</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">40%</div>
+            <div class="stat-label">到 2026 年已採用 AI 代理的企業比例</div>
+            <div class="stat-source">來源：Gartner，2025 年</div>
+          </div>
+        </div>
+
+        <h3>MCP 發展簡史</h3>
+        <p>Anthropic 於 2024 年 11 月 25 日以 MIT 許可的開源項目形式釋出了 Model Context Protocol 規範。其目標是解決 LLM 能力足以作用於企業數據後出現的一個問題：每一套整合都是訂造的、脆弱的，並且鎖定在特定模型上。不到半年，該協議已被 Cursor、Windsurf、Zed 等主流開發工具採用，並出現了面向數據庫、SaaS 平臺與開發者工具的服務端實現。到 2026 年，MCP 已成為 AI 連線數據的事實標準，活躍的社群每週都在貢獻新的服務端與客戶端庫。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: HOW MCP WORKS -->
+  <section class="section" aria-label="How MCP works">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 2 節 &middot; 技術</span>
+        <h2>MCP 如何工作</h2>
+        <p>配套每一次 MCP 連線的三元件架構與 JSON-RPC 2.0 協議。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p>MCP 透過三個元件之間的清晰職責劃分來運作。理解這三個角色，對任何規劃企業級 MCP 部署的人都至關重要。</p>
+
+        <div class="component-grid">
+          <div class="component-card">
+            <div class="component-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <h3>MCP 客戶端</h3>
+            <p>發起請求的 AI 助手或應用。客戶端通常內嵌在由 LLM 驅動的工具中，例如 Claude Desktop、Cursor 或企業 AI 代理平臺。客戶端先發現可用的工具與資源，再按需呼叫它們來回答使用者提問。</p>
+          </div>
+          <div class="component-card">
+            <div class="component-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+            <h3>MCP 服務端</h3>
+            <p>透過 MCP 協議暴露某個數據來源或工具的輕量程式。服務端對外宣告自身能力 &mdash; 工具、資源與提示詞 &mdash; 並處理來自任何 MCP 客戶端的請求。一個服務端可以封裝一個 PostgreSQL 數據庫、一個 Slack 工作區，或一套訂造的內部 API。</p>
+          </div>
+          <div class="component-card">
+            <div class="component-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></div>
+            <h3>MCP 協議</h3>
+            <p>客戶端與服務端之間的通訊層。該協議基於 JSON-RPC 2.0 構建，定義了用於能力發現、工具呼叫、資源讀取與提示詞管理的標準方法集。傳輸方式包括 stdio（本地）與 HTTP + SSE（遠端）。</p>
+          </div>
+        </div>
+
+        <h3>JSON-RPC 2.0 傳輸</h3>
+        <p>每條 MCP 訊息都是一個 JSON-RPC 2.0 物件。這一設計選擇有三方面意義：無狀態、與程式語言無關，且大多數後端開發者已經熟悉。客戶端傳送帶有方法名與引數的請求物件；服務端返回帶有結果或錯誤的響應物件。同時還支援通知（單向訊息），用於流式返回與進度更新。</p>
+
+        <p>協議定義了服務端可暴露的四類原語：</p>
+        <ol class="guide-list">
+          <li><strong>工具</strong> &mdash; AI 可呼叫的可執行函式，例如 <code>run_sql_query</code> 或 <code>send_slack_message</code>。工具帶有型別化的輸入結構，並返回結構化結果。</li>
+          <li><strong>資源</strong> &mdash; AI 可讀取的數據，例如數據庫表結構、配置檔案或日誌流。資源透過 URI 標識。</li>
+          <li><strong>提示詞</strong> &mdash; 預定義的模板，用於引導 AI 在特定任務中的行為，例如帶引數化輸入的「summarise this table」提示詞。</li>
+          <li><strong>發現</strong> &mdash; 客戶端透過握手瞭解服務端提供哪些工具、資源與提示詞，無需事先硬編碼任何內容。</li>
+        </ol>
+
+        <h3>MCP 服務端基礎示例</h3>
+        <p>以下 Python 程式碼片段展示瞭如何構建一個僅暴露單個工具的極簡 MCP 服務端。示例使用 Anthropic 官方 MCP Python SDK：</p>
+        <pre class="code-block"><code># A minimal MCP server that exposes one tool
+from mcp.server.fastmcp import FastMCP
+
+# Initialise the server
+mcp = FastMCP("enterprise-analytics")
+
+# Register a tool the AI assistant can call
+@mcp.tool()
+def get_revenue_by_region(region: str, quarter: str) -> dict:
+    """返回指定區域與季度的總營收。
+
+    Args:
+        region: 銷售區域（例如 'east'、'west'、'north'）
+        quarter: 財季（例如 'Q1'、'Q2'、'Q3'、'Q4'）
+    """
+    # 在生產環境中，此處會透過語意層查詢數據倉儲
+    # 並應用 RBAC 許可權控制
+    return {
+        "region": region,
+        "quarter": quarter,
+        "total_revenue": 1_245_000,
+        "currency": "CNY",
+        "source": "semantic_layer.v2"
+    }
+
+# 透過 stdio 傳輸方式啟動服務端
+if __name__ == "__main__":
+    mcp.run(transport="stdio")</code></pre>
+        <p class="code-caption">該服務端註冊到 MCP 客戶端後，任何已連線的 AI 助手都能發現 <code>get_revenue_by_region</code> 工具，並在使用者提出營收相關問題時呼叫它 &mdash; 客戶端無需任何訂造整合程式碼。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: MCP ARCHITECTURE LAYERS -->
+  <section class="section section-alt bg-hex-drift" aria-label="MCP architecture layers">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 3 節 &middot; 架構</span>
+        <h2>MCP 架構分層</h2>
+        <p>企業級 MCP 部署如何以四層結構交付受管治的對話式智慧。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p>生產級 MCP 部署遠不止一個服務端。企業通常會實施四層疊加架構，每層解決一類不同的問題。正是這種分層架構，把玩具級演示與能夠透過安全審計、服務數千名使用者的正式部署區分開來。</p>
+
+        <div class="arch-layers">
+          <div class="arch-layer-item reveal">
+            <div class="arch-layer-num">第 1 層</div>
+            <h3>數據連線層</h3>
+            <p>基礎層。MCP 服務端封裝各個數據來源 &mdash; MySQL、PostgreSQL、Snowflake、BigQuery、Salesforce、SAP、REST API &mdash; 並透過標準協議對外暴露。該層負責認證、連線池、查詢執行與結果格式化。在 Beehive Strategy 的部署中，該層包含 50+ 個預置聯結器以及一套訂造聯結器開發框架。</p>
+          </div>
+          <div class="arch-layer-item reveal reveal-delay-1">
+            <div class="arch-layer-num">第 2 層</div>
+            <h3>語意層（受管治的指標）</h3>
+            <p>位於連線層之上，把業務術語對映到技術數據結構。當使用者問「上季度各區域的毛利率是多少？」，語意層知道需要哪些表、哪些欄位、哪些關聯與計算 &mdash; 並執行行級安全與指標定義等管治規則。正是這一層讓 MCP 的答案可信：每個指標都有唯一且受管治的定義。</p>
+          </div>
+          <div class="arch-layer-item reveal reveal-delay-2">
+            <div class="arch-layer-num">第 3 層</div>
+            <h3>AI 代理層</h3>
+            <p>由 LLM 驅動的代理接收自然語言提問，藉助語意層判斷需要哪些數據，呼叫 MCP 工具取數，並以自然語言配合自動生成的圖表返回結果。代理可以按領域劃分（銷售、財務、供應鏈），並組合成多代理工作流以處理複雜任務。</p>
+          </div>
+          <div class="arch-layer-item reveal reveal-delay-3">
+            <div class="arch-layer-num">第 4 層</div>
+            <h3>安全 &amp; 管治層</h3>
+            <p>橫跨各層的切面層，負責認證（OAuth 2.0）、授權（RBAC）、審計日誌、個人資訊脫敏，以及 PIPL、GDPR 等法規的合規。每一層的每一次請求都要經過這一管治封裝，確保訪問始終經過認證、授權且可追溯。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: MCP VS TRADITIONAL INTEGRATION -->
+  <section class="section" aria-label="MCP vs traditional integration">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 4 節 &middot; 對比</span>
+        <h2>MCP 與傳統整合方式對比</h2>
+        <p>MCP 與 REST API、GraphQL 及訂造整合在企業 AI 所關注的關鍵維度上的對比。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p>MCP 並不是把 AI 助手接入數據的唯一方式，但它是唯一專為 AI 使用而設計的方式。下表按企業架構師選擇整合策略時評估的維度，將 MCP 與三種最常見的替代方案進行比較。</p>
+
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th scope="col">對比維度</th>
+                <th scope="col">MCP</th>
+                <th scope="col">REST API</th>
+                <th scope="col">GraphQL</th>
+                <th scope="col">訂造整合</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>單個數據來源的開發週期</strong></td>
+                <td>數小時至數天（使用預置服務端）</td>
+                <td>每個端點數天至數星期</td>
+                <td>數星期（結構設計與解析器開發）</td>
+                <td>每個數據來源數星期至數月</td>
+              </tr>
+              <tr>
+                <td><strong>維護負擔</strong></td>
+                <td>低 &mdash; 協議標準化</td>
+                <td>高 &mdash; 各端點獨立演進</td>
+                <td>中 &mdash; 需進行結構版本管理</td>
+                <td>極高 &mdash; 每個數據來源都有訂造程式碼</td>
+              </tr>
+              <tr>
+                <td><strong>AI 相容性</strong></td>
+                <td>原生支援 &mdash; 專為 LLM 發現而設計</td>
+                <td>低 &mdash; 每個模型都需訂造封裝</td>
+                <td>低 &mdash; 並非為 AI 使用而設計</td>
+                <td>無 &mdash; 每個模型都要完全重建</td>
+              </tr>
+              <tr>
+                <td><strong>安全模型</strong></td>
+                <td>內建 OAuth 2.0、RBAC 與許可權範圍控制</td>
+                <td>按端點各自實現，往往不一致</td>
+                <td>查詢級別，管治複雜</td>
+                <td>臨時方案，因整合而異</td>
+              </tr>
+              <tr>
+                <td><strong>可擴充套件性</strong></td>
+                <td>線性擴充套件 &mdash; 新增服務端無需改動客戶端</td>
+                <td>線性擴充套件，但需改動客戶端</td>
+                <td>線性擴充套件，但結構變更會傳導</td>
+                <td>每接入一個新數據來源都是一個新項目</td>
+              </tr>
+              <tr>
+                <td><strong>廠商鎖定</strong></td>
+                <td>無 &mdash; 開放標準，不繫結模型</td>
+                <td>本身不存在</td>
+                <td>本身不存在</td>
+                <td>高 &mdash; 訂造程式碼不可移植</td>
+              </tr>
+              <tr>
+                <td><strong>能力發現</strong></td>
+                <td>自動 &mdash; 客戶端可自省服務端</td>
+                <td>手動 &mdash; 需逐個端點查閱文件</td>
+                <td>部分 &mdash; 支援自省但對 AI 不友好</td>
+                <td>無 &mdash; 開發者必須完全掌握細節</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>MCP 的決定性優勢在於 <strong>自動發現能力</strong> 與 <strong>不繫結模型的設計</strong>的結合。使用 REST 或 GraphQL 時，每新增一個數據來源或更換 AI 模型，開發者都必須編寫並維護新的整合程式碼。而使用 MCP，新的服務端對所有已連線客戶端立即可用；新的 AI 模型在接入首日即可使用全部現有服務端。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: ENTERPRISE MCP DEPLOYMENT STEPS -->
+  <section class="section section-alt bg-dot-matrix" aria-label="Enterprise MCP deployment steps">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 5 節 &middot; 部署</span>
+        <h2>企業級 MCP 部署步驟</h2>
+        <p>把 MCP 從評估推向生產的五步框架。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p>在企業環境中部署 MCP，與在本地跑一個演示服務端有本質區別。以下五步框架基於 Beehive Strategy 的部署方法論，並在零售、金融、製造與專業服務領域的數十個企業項目中打磨完善。</p>
+
+        <div class="deployment-steps">
+          <div class="deployment-step reveal">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h3>盤點數據來源與使用情境</h3>
+              <p>首先梳理團隊查詢最頻繁的數據來源，以及目前耗時最久才能回答的業務問題。為首期部署優先挑選 3&ndash;5 個高價值數據來源。常見的起點包括主數據倉儲、CRM 與 ERP 系統。把具體使用情境 &mdash; 「銷售管道健康度」「各區域庫存週轉率」「月度現金消耗」 &mdash; 記錄下來，它們將定義項目的成功標準。</p>
+            </div>
+          </div>
+          <div class="deployment-step reveal reveal-delay-1">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h3>設計語意層與管治規則</h3>
+              <p>在接入任何 AI 之前，先定義受管治的指標字典。在貴司，「營收」指甚麼 &mdash; 已簽約、已確認還是已回款？誰有權檢視薪酬數據？語意層把這些定義與許可權固化下來，使每個 AI 答案都一致、受管治且可審計。這一步通常需要 1&ndash;2週，是決定系統長期可信度的首要因素。</p>
+            </div>
+          </div>
+          <div class="deployment-step reveal reveal-delay-2">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h3>構建並部署 MCP 服務端</h3>
+              <p>為標準數據來源（MySQL、Snowflake、Salesforce）部署預置 MCP 服務端，併為自有系統開發訂造服務端。每個服務端將其工具、資源與提示詞註冊到 MCP 閘道器，由閘道器統一處理認證、路由與日誌。在 Beehive Strategy 的部署中，該步驟依託 50+ 個預置聯結器，首期數據來源通常 3&ndash;5 天即可完成。</p>
+            </div>
+          </div>
+          <div class="deployment-step reveal reveal-delay-3">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h3>接入 AI 代理並測試</h3>
+              <p>將一個或多個 AI 代理接入 MCP 閘道器，並開展結構化測試。測試需覆蓋準確性（代理返回的數字是否正確？）、管治（是否遵守 RBAC 邊界？）與效能（響應延遲是否可接受？）。同時驗證語意層在面對同一問題的不同問法時，能否給出一致的答案。</p>
+            </div>
+          </div>
+          <div class="deployment-step reveal reveal-delay-4">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <h3>投入運作生產並配套監控</h3>
+              <p>透過團隊已在使用的即時通訊工具 &mdash; 釘釘、飛書或 Microsoft Teams，向真實使用者開放。對每一次提問、每一次工具呼叫、每一次響應都埋點監控。建立查詢量、延遲、錯誤率與使用者採用度的儀表板。建立回饋循環，使語意層缺口與代理錯誤能在數天內被發現並修正，而不是拖上數月。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: MCP SECURITY & COMPLIANCE -->
+  <section class="section" aria-label="MCP security and compliance">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 6 節 &middot; 安全</span>
+        <h2>MCP 安全 &amp; 合規</h2>
+        <p>讓 MCP 能夠安全承載企業數據的安全控制 &mdash; 從認證到審計。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p>安全是企業在評估 MCP 時最常提出的顧慮。協議本身在設計時已考慮安全，但生產級安全取決於 MCP 閘道器的具體實現。以下四項控制對任何企業級部署都是不可或缺的。</p>
+
+        <div class="security-grid-pillar">
+          <div class="security-pillar-card reveal">
+            <div class="security-pillar-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <h3>OAuth 2.0 認證</h3>
+            <p>MCP 以 OAuth 2.0 為主要認證機制。每次客戶端連線都需要有效令牌，且令牌的作用範圍限定在特定服務端與操作上。這意味著，一個被授權查詢銷售數據庫的使用者，不會自動獲得 HR 數據的訪問許可權。企業級部署應將 OAuth 與既有身份提供商（Okta、Azure AD 或國內身份服務商）對接，實現單點登入。</p>
+          </div>
+          <div class="security-pillar-card reveal reveal-delay-1">
+            <div class="security-pillar-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+            <h3>RBAC 與許可權範圍控制</h3>
+            <p>基於角色的存取控制確保使用者只能看到其被授權訪問的數據。語意層在查詢時執行行級與列級許可權 &mdash; 區域經理只能看到本區域的數據，即使他與全球高管提出的是同一個問題。許可權在管治層一次性定義，並在每一次 AI 互動中一致執行。</p>
+          </div>
+          <div class="security-pillar-card reveal reveal-delay-2">
+            <div class="security-pillar-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <h3>PIPL 與 GDPR 合規</h3>
+            <p>對於在中國內地或歐盟營運的機構，數據隱私法規不是可選項。MCP 部署必須支援在語意層進行個人資訊脫敏、數據駐留控制（把數據限定在特定司法轄區內）以及同意管理。Beehive Strategy 的 MCP 閘道器在設計上符合中國《個人資訊保護法》（PIPL）與歐盟 GDPR 的要求，對敏感工作負載還可選擇本地化或私有云部署。</p>
+          </div>
+          <div class="security-pillar-card reveal reveal-delay-3">
+            <div class="security-pillar-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+            <h3>審計追蹤與日誌</h3>
+            <p>每一次提問、每一次工具呼叫、每一次數據訪問、每一次配置變更，都會連同完整上下文被記錄：誰問的、問了甚麼、呼叫了哪些工具、返回了哪些數據、發生在何時。這些審計軌跡既滿足合規要求，也為事件調查提供取證數據。日誌具備防篡改特性，並可流式接入 SIEM 系統以實現實時告警。</p>
+          </div>
+        </div>
+
+        <blockquote class="guide-quote">
+          <p>&ldquo;到 2026 年，40% 的企業將在至少一個業務職能中採用 AI 代理 &mdash; 而決定部署成敗的首要因素，是這些代理所訪問數據的安全與管治 &mdash; 而非 AI 模型本身。&rdquo;</p>
+          <cite>&mdash; Gartner，《Predicts 2026：AI 代理與工作的未來》</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: COMMON MCP USE CASES -->
+  <section class="section section-alt" aria-label="Common MCP use cases">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 7 節 &middot; 應用情境</span>
+        <h2>MCP 常見應用情境</h2>
+        <p>企業中投資回報最高的四類 MCP 應用。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p>MCP 是一種通用協議，但在實踐中，企業部署的情境高度集中在以下四類。這些應用中，自然語言取數、受管治的指標與即時通訊原生交付三者結合，帶來的投資回報最為清晰。</p>
+
+        <div class="usecase-grid">
+          <div class="usecase-card reveal">
+            <div class="usecase-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <h3>對話式 BI</h3>
+            <p>旗艦情境。高管與一線管理者用自然語言提出數據問題 &mdash; 「為甚麼第三季度東區營收下滑？」 &mdash; 並即時獲得帶自動生成圖表的答案，結果直接推送到釘釘或飛書等即時通訊工具中。無需寫 SQL，無需儀表板，也無需等待數據團隊。</p>
+          </div>
+          <div class="usecase-card reveal reveal-delay-1">
+            <div class="usecase-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <h3>自動化報表</h3>
+            <p>用按計劃執行的 AI 代理取代手工報表製作：代理透過 MCP 取數、套用語意層的受管治定義，並按計劃把格式化報表投遞到指定渠道。月度結賬包、每週銷售摘要、每日營運儀表板都可以自動生成。</p>
+          </div>
+          <div class="usecase-card reveal reveal-delay-2">
+            <div class="usecase-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+            <h3>跨系統數據查詢</h3>
+            <p>MCP 的多服務端架構讓單個 AI 代理能在一次對話中查詢多套系統。使用者可以問「把 CRM 中過去 90 天未在 ERP 下單的客戶找出來」 &mdash; 代理會編排跨兩個服務端的呼叫，並透過語意層完成結果關聯。</p>
+          </div>
+          <div class="usecase-card reveal reveal-delay-3">
+            <div class="usecase-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+            <h3>AI 代理工作流</h3>
+            <p>多步驟業務流程 &mdash; 例如「分析本月供應連結串列現，找出前三大瓶頸，並起草一份整改備忘錄」 &mdash; 可以編碼為代理工作流，把多次 MCP 工具呼叫串聯起來。這些工作流自主執行，並把成品交付給相關干係人。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 8: MCP ECOSYSTEM & TOOLS -->
+  <section class="section" aria-label="MCP ecosystem and tools">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 8 節 &middot; 生態</span>
+        <h2>MCP 生態 &amp; 工具</h2>
+        <p>2026 年構成 MCP 全景的 SDK、服務端與平臺。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p>MCP 生態已迅速成熟。截至 2026 年，它涵蓋多種語言的官方 SDK、數以千計的社群服務端，以及把 MCP 打包為可投產部署的企業級平臺。理解生態有助於企業判斷哪些要自建、哪些可複用、哪些應採購。</p>
+
+        <div class="ecosystem-grid">
+          <div class="ecosystem-card reveal">
+            <h3>Anthropic MCP SDK</h3>
+            <p class="ecosystem-tag">官方 &middot; 開源</p>
+            <p>由 Anthropic 維護的參考實現。提供 Python 與 TypeScript 版本，並有 Go、Rust、Java 的社群移植。SDK 負責處理 JSON-RPC 2.0 分幀、傳輸管理與能力協商，讓開發者專注於編寫工具邏輯。它是任何訂造 MCP 服務端的推薦起點。</p>
+          </div>
+          <div class="ecosystem-card reveal reveal-delay-1">
+            <h3>社群 MCP 服務端</h3>
+            <p class="ecosystem-tag">社群 &middot; 10,000+ 個服務端</p>
+            <p>開放的 MCP 服務端登錄檔，覆蓋數據庫（MySQL、PostgreSQL、MongoDB、Redis）、SaaS 平臺（Salesforce、HubSpot、Slack、GitHub、Notion）、開發者工具（Git、Docker、Kubernetes）以及中國本土企業工具（釘釘、飛書等）。多數服務端採用 MIT 許可，幾分鐘即可完成部署。</p>
+          </div>
+          <div class="ecosystem-card reveal reveal-delay-2">
+            <h3>Beehive Strategy MCP 閘道器</h3>
+            <p class="ecosystem-tag">企業級 &middot; 可投產</p>
+            <p>一套生產級 MCP 平臺，補齊企業所需的各層能力：受管治的語意層、50+ 個預置聯結器、RBAC 與審計日誌、PIPL/GDPR 合規控制，以及透過釘釘、飛書等即時通訊工具的原生交付。閘道器既可作為託管雲服務，也可為有數據駐留要求的機構提供私有化部署。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9: GETTING STARTED -->
+  <section class="section section-alt" aria-label="Getting started with MCP">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">第 9 節 &middot; 下一步</span>
+        <h2>如何開始使用 MCP</h2>
+        <p>如何在兩星期內從評估走向一個真實執行的 MCP 部署。</p>
+      </div>
+      <div class="guide-content reveal reveal-delay-1">
+        <p>如果貴司已準備部署 MCP，最快的路徑是 Quick Start（快速啟動）服務。Beehive Strategy 的 Quick Start 方案可交付一個包含 3 個數據來源、已配置語意層與即時通訊原生交付的可用 MCP 部署，週期為 <strong>2週</strong>。服務內容包括：</p>
+
+        <ol class="guide-list">
+          <li><strong>第 1週 &mdash; 評估與設計：</strong> 盤點數據來源，定義語意模型，配置管治規則，並確定首期部署中價值最高的 3 個使用情境。</li>
+          <li><strong>第 2週 &mdash; 構建與投入運作：</strong> 部署 MCP 服務端，接入 AI 代理層，與貴司的即時通訊平臺（釘釘或飛書）接通，並用真實業務問題在真實數據上進行使用者驗收測試。</li>
+        </ol>
+
+        <p>到第 2週結束時，貴司團隊就能在他們日常使用的聊天工具中用自然語言提問 &mdash; 並即時獲得受管治、可審計的答案。此後，可按需逐步擴充套件更多數據來源、更多代理與更高階的工作流。</p>
+
+        <div class="cta-inline reveal reveal-delay-2">
+          <div class="cta-inline-content">
+            <h3>準備好在企業中部署 MCP 了嗎？</h3>
+            <p>預約與我們的 MCP 架構師免費交流。我們將評估貴司的數據現狀、給出部署方案建議，並用與貴司結構相近的數據做一場實時演示。</p>
+          </div>
+          <a href="/contact" class="btn btn-primary btn-lg">預約演示</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-section faq-canon" aria-label="Frequently Asked Questions">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="label">問題</span>
+        <h2>常見問題</h2>
+        <p>關於模型上下文協議最常見問題的直接解答。</p>
+      </div>
+      <div class="faq-list reveal reveal-delay-1">
+        <details>
+          <summary>甚麼是 MCP？</summary>
+          <p>模型上下文協議（MCP）是 Anthropic 於 2024 年 11 月推出的一項開放標準，它使 AI 助手能夠透過一套通用協議安全接入外部數據來源、工具與 API。它以基於 JSON-RPC 2.0 的單一標準化通訊層，取代了碎片化的點對點整合。任何相容 MCP 的客戶端都能發現並呼叫任何相容 MCP 的服務端上的工具，無需訂造整合程式碼。</p>
+        </details>
+        <details>
+          <summary>MCP 如何工作？</summary>
+          <p>MCP 由三個元件構成：MCP 客戶端（內嵌於 AI 助手）、MCP 服務端（連線數據來源或工具的輕量聯結器）以及 MCP 協議（JSON-RPC 2.0 通訊層）。客戶端先從服務端發現可用的工具、資源與提示詞，再按需呼叫它們來回答使用者提問。傳輸方式包括用於本地連線的 stdio，以及用於遠端連線的 HTTP 與 Server-Sent Events。</p>
+        </details>
+        <details>
+          <summary>MCP 安全嗎？</summary>
+          <p>安全。MCP 支援 OAuth 2.0 認證、基於角色的存取控制（RBAC）、許可權範圍控制與完整審計日誌。透過 Beehive Strategy 這類企業級 MCP 閘道器部署時，可滿足 PIPL、GDPR 與 ISO 27001 的要求。所有數據傳輸均加密，訪問在資源級別受管治，每一次查詢都會留痕以供審計與合規之用。</p>
+        </details>
+        <details>
+          <summary>MCP 部署需要多長時間？</summary>
+          <p>包含 3 個數據來源的 Quick Start 部署可在 2星期內投入運作。包含 10 個以上數據來源、訂造語意模型與多代理工作流的完整專業版部署，通常需要 6&ndash;8週。部署週期主要取決於需要接入的數據來源數量，以及管治與語意層需求的複雜程度。</p>
+        </details>
+        <details>
+          <summary>MCP 支援哪些數據來源？</summary>
+          <p>只要某個數據來源有對應的聯結器，MCP 就能支援。常見的數據來源包括 MySQL、PostgreSQL、SQL Server、Oracle、Snowflake、BigQuery、Redshift、Salesforce、SAP、HubSpot、Slack、GitHub、Notion，以及釘釘、飛書、支付寶等中國本土企業工具。對於自有或訂造系統，使用官方 SDK 幾天即可開發一個新的 MCP 服務端。</p>
+        </details>
+        <details>
+          <summary>MCP 與 API 有何不同？</summary>
+          <p>傳統 API（REST、GraphQL）對每個數據來源都需要訂造整合程式碼，且並非為 AI 使用而設計 &mdash; 必須顯式教 AI 模型如何呼叫每個端點。MCP 提供一套通用協議，任何 AI 助手都能借此動態發現並呼叫工具，無需按數據來源做整合工作。這意味著新數據來源對所有已接入的 AI 模型立即可用，更換 AI 模型也不需要重構數據管道。</p>
+        </details>
+        <details>
+          <summary>MCP 能與現有 BI 工具配合使用嗎？</summary>
+          <p>可以。MCP 的語意層本身就是一個受管治的指標層，Tableau、Power BI、Metabase 等現有 BI 工具可以與對話式介面一起查詢它。團隊可以繼續使用既有儀表板，同時透過即時通訊工具中的自然語言對話訪問同一套受管治指標。這種雙通道模式既保護了既有投入，又把數據訪問許可權擴充套件到了非技術使用者。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="section" aria-label="Get started">
+    <div class="container">
+      <div class="cta-banner reveal">
+        <div class="cta-banner-content">
+          <h3>準備好把數據變成對話了嗎？</h3>
+          <p>預約演示，看看 MCP 驅動的平臺如何用貴司自己的數據執行 &mdash; 2星期內即可投入運作。</p>
+        </div>
+        <a href="/contact" class="btn btn-primary btn-lg">預約演示</a>
+      </div>
+    </div>
+  </section>
+
+
+  </main>
+
+<style>
+/* Guide-specific styles */
+.guide-content {
+  max-width: 820px;
+  margin: 0 auto;
+  font-size: var(--text-lg);
+  line-height: 1.75;
+  color: var(--color-text-secondary, rgba(232,237,233,0.8));
+}
+.guide-content p {
+  margin-bottom: var(--space-5);
+}
+.guide-content h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text-primary, #e8ede9);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-4);
+}
+.guide-lead {
+  font-size: var(--text-xl);
+  line-height: 1.7;
+  color: var(--color-text-primary, #e8ede9);
+  font-weight: 400;
+}
+.guide-list {
+  margin: var(--space-4) 0 var(--space-6);
+  padding-left: var(--space-6);
+}
+.guide-list li {
+  margin-bottom: var(--space-3);
+  line-height: 1.7;
+}
+.guide-list li strong {
+  color: var(--color-text-primary, #e8ede9);
+}
+
+/* Key Takeaways */
+.key-takeaways {
+  max-width: 820px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(15,98,254, 0.08), rgba(0,67,206, 0.04));
+  border: 1px solid rgba(15,98,254, 0.2);
+  border-radius: var(--radius-2xl, 16px);
+  padding: var(--space-8);
+}
+.key-takeaways-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  color: var(--color-primary-light, #4589FF);
+}
+.key-takeaways-header h2 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text-primary, #e8ede9);
+  margin: 0;
+}
+.key-takeaways-list {
+  margin: 0;
+  padding-left: var(--space-6);
+  counter-reset: takeaways;
+}
+.key-takeaways-list li {
+  margin-bottom: var(--space-3);
+  line-height: 1.6;
+  color: var(--color-text-secondary, rgba(232,237,233,0.8));
+}
+.key-takeaways-list li strong {
+  color: var(--color-text-primary, #e8ede9);
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
+}
+.stat-card {
+  background: rgba(232,237,233,0.03);
+  border: 1px solid var(--color-border, rgba(232,237,233,0.1));
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-5);
+  text-align: center;
+}
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-primary-light, #4589FF);
+  line-height: 1.1;
+  margin-bottom: var(--space-2);
+}
+.stat-label {
+  font-size: var(--text-base);
+  color: var(--color-text-primary, #e8ede9);
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+.stat-source {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted, rgba(232,237,233,0.4));
+  font-style: italic;
+}
+
+/* Blockquote */
+.guide-quote {
+  border-left: 3px solid var(--color-primary, #0F62FE);
+  padding: var(--space-5) var(--space-6);
+  margin: var(--space-6) 0;
+  background: rgba(15,98,254, 0.04);
+  border-radius: 0 var(--radius-lg, 12px) var(--radius-lg, 12px) 0;
+}
+.guide-quote p {
+  font-size: var(--text-lg);
+  font-style: italic;
+  color: var(--color-text-primary, #e8ede9);
+  margin-bottom: var(--space-3);
+  line-height: 1.6;
+}
+.guide-quote cite {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted, rgba(232,237,233,0.5));
+  font-style: normal;
+}
+
+/* Component grid */
+.component-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-6) 0;
+}
+.component-card {
+  background: rgba(232,237,233,0.03);
+  border: 1px solid var(--color-border, rgba(232,237,233,0.1));
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--space-6);
+}
+.component-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg, 12px);
+  background: rgba(15,98,254, 0.1);
+  border: 1px solid rgba(15,98,254, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-light, #4589FF);
+  margin-bottom: var(--space-4);
+}
+.component-card h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text-primary, #e8ede9);
+  margin-bottom: var(--space-3);
+}
+.component-card p {
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--color-text-secondary, rgba(232,237,233,0.7));
+  margin: 0;
+}
+
+/* Code block */
+.code-block {
+  background: #0d1311;
+  border: 1px solid var(--color-border, rgba(232,237,233,0.1));
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-5);
+  margin: var(--space-5) 0;
+  overflow-x: auto;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: #c8d3cc;
+}
+.code-block code {
+  font-family: inherit;
+  white-space: pre;
+}
+.code-caption {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted, rgba(232,237,233,0.5));
+  font-style: italic;
+  margin-top: calc(-1 * var(--space-3));
+  margin-bottom: var(--space-5);
+}
+
+/* Architecture layers */
+.arch-layers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
+}
+.arch-layer-item {
+  background: rgba(232,237,233,0.03);
+  border: 1px solid var(--color-border, rgba(232,237,233,0.1));
+  border-left: 3px solid var(--color-primary, #0F62FE);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-5) var(--space-6);
+}
+.arch-layer-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: var(--text-xs);
+  color: var(--color-primary-light, #4589FF);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-2);
+}
+.arch-layer-item h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+}
+.arch-layer-item p {
+  margin-bottom: 0;
+  font-size: var(--text-base);
+}
+
+/* Comparison table */
+.table-wrapper {
+  overflow-x: auto;
+  margin: var(--space-6) 0;
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--color-border, rgba(232,237,233,0.1));
+}
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  min-width: 640px;
+}
+.comparison-table th,
+.comparison-table td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border, rgba(232,237,233,0.08));
+  vertical-align: top;
+  line-height: 1.5;
+}
+.comparison-table thead th {
+  background: rgba(15,98,254, 0.08);
+  color: var(--color-text-primary, #e8ede9);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.comparison-table tbody tr:hover {
+  background: rgba(232,237,233,0.02);
+}
+.comparison-table td:first-child {
+  color: var(--color-text-primary, #e8ede9);
+  font-weight: 500;
+}
+.comparison-table th:first-child {
+  width: 22%;
+}
+
+/* Deployment steps */
+.deployment-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin: var(--space-6) 0;
+}
+.deployment-step {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+.deployment-step .step-num {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary, #0F62FE), var(--color-primary-dark, #1a7a6a));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+.deployment-step .step-body {
+  flex: 1;
+  padding-top: var(--space-1);
+}
+.deployment-step .step-body h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-lg);
+}
+.deployment-step .step-body p {
+  font-size: var(--text-base);
+  margin-bottom: 0;
+}
+
+/* Security grid */
+.security-grid-pillar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-6) 0;
+}
+.security-pillar-card {
+  background: rgba(232,237,233,0.03);
+  border: 1px solid var(--color-border, rgba(232,237,233,0.1));
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--space-6);
+}
+.security-pillar-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg, 12px);
+  background: rgba(0,67,206, 0.1);
+  border: 1px solid rgba(0,67,206, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent, #0043CE);
+  margin-bottom: var(--space-4);
+}
+.security-pillar-card h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text-primary, #e8ede9);
+  margin-bottom: var(--space-3);
+}
+.security-pillar-card p {
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--color-text-secondary, rgba(232,237,233,0.7));
+  margin: 0;
+}
+
+/* Use case grid */
+.usecase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-6) 0;
+}
+.usecase-card {
+  background: rgba(232,237,233,0.03);
+  border: 1px solid var(--color-border, rgba(232,237,233,0.1));
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--space-6);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.usecase-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(15,98,254, 0.3);
+}
+.usecase-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg, 12px);
+  background: rgba(15,98,254, 0.1);
+  border: 1px solid rgba(15,98,254, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-light, #4589FF);
+  margin-bottom: var(--space-4);
+}
+.usecase-card h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text-primary, #e8ede9);
+  margin-bottom: var(--space-3);
+}
+.usecase-card p {
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--color-text-secondary, rgba(232,237,233,0.7));
+  margin: 0;
+}
+
+/* Ecosystem grid */
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-6) 0;
+}
+.ecosystem-card {
+  background: rgba(232,237,233,0.03);
+  border: 1px solid var(--color-border, rgba(232,237,233,0.1));
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--space-6);
+}
+.ecosystem-card h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text-primary, #e8ede9);
+  margin-bottom: var(--space-2);
+}
+.ecosystem-tag {
+  display: inline-block;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: var(--text-xs);
+  color: var(--color-primary-light, #4589FF);
+  background: rgba(15,98,254, 0.08);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full, 999px);
+  margin-bottom: var(--space-4);
+}
+.ecosystem-card p {
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--color-text-secondary, rgba(232,237,233,0.7));
+  margin: 0;
+}
+
+/* Inline CTA */
+.cta-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  background: linear-gradient(135deg, rgba(15,98,254, 0.1), rgba(0,67,206, 0.05));
+  border: 1px solid rgba(15,98,254, 0.2);
+  border-radius: var(--radius-2xl, 16px);
+  padding: var(--space-8);
+  margin-top: var(--space-8);
+  flex-wrap: wrap;
+}
+.cta-inline-content {
+  flex: 1;
+  min-width: 280px;
+}
+.cta-inline-content h3 {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--text-xl);
+  color: var(--color-text-primary, #e8ede9);
+}
+.cta-inline-content p {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary, rgba(232,237,233,0.7));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cta-inline {
+    flex-direction: column;
+    text-align: center;
+  }
+  .deployment-step {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .deployment-step .step-num {
+    width: 40px;
+    height: 40px;
+    font-size: var(--text-base);
+  }
+  .guide-content {
+    font-size: var(--text-base);
+  }
+  .guide-lead {
+    font-size: var(--text-lg);
+  }
+}
+</style>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/zh-hk/" class="logo" aria-label="Beehive Strategy Home">
+            <img src="/assets/images/beehive-logo-white.png" alt="Beehive Strategy Logo" width="144" height="36" loading="lazy">
+          </a>
+          <p>企業 AI &amp; 數據分析諮詢。我們交付 AI 驅動的對話式智慧，改變企業與數據互動的方式。</p>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="/cdn-cgi/l/email-protection#432220202c362d37032126262b2a3526303731223726243a6d202c2e" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>我們做甚麼</h4>
+          <ul>
+            <li><a href="/zh-hk/what-we-do">我們做甚麼</a></li>
+            <li><a href="/zh-hk/training">培訓</a></li>
+            <li><a href="/zh-hk/services">全部服務</a></li>
+            <li><a href="/zh-hk/conversational-ai">對話式 AI</a></li>
+            <li><a href="/zh-hk/aifde">前沿部署工程</a></li>
+            <li><a href="/zh-hk/agentic-tools">AI 代理工具</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>我們的工作</h4>
+          <ul>
+            <li><a href="/zh-hk/proof">我們已建成的系統</a></li>
+            <li><a href="/zh-hk/case-studies">交付示範</a></li>
+            <li><a href="/zh-hk/industries">行業</a></li>
+            <li><a href="/zh-hk/how-we-work">我們如何工作</a></li>
+            <li><a href="/zh-hk/blog">洞察</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>公司</h4>
+          <ul>
+            <li><a href="/zh-hk/about">關於我們</a></li>
+            <li><a href="/zh-hk/partners">合作夥伴</a></li>
+            <li><a href="/zh-hk/credentials">資質</a></li>
+            <li><a href="/zh-hk/security">安全</a></li>
+            <li><a href="/zh-hk/contact">聯絡我們</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Beehive Strategy Limited 版權所有。</p>
+        <div class="legal">
+          <a href="/zh-hk/privacy">隱私政策</a>
+          <a href="/zh-hk/terms">服務條款</a>
+          <a href="/zh-hk/cookies">Cookie 政策</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/main.js?v=20261113.15" defer></script>
+</body>
+</html>

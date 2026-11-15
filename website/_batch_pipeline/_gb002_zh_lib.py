@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply Simplified-Chinese sections to zh-CN and their Traditional equivalents to zh-TW."""
+"""Apply Simplified-Chinese sections to zh-CN and their Traditional equivalents to zh-HK."""
 import sys
 sys.path.insert(0, '/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipeline')
 from _gb002_lib import apply_ops
@@ -17,5 +17,5 @@ def apply_zh(slug, marker_cn, sections):
     else:
         before_tw = CC.convert(marker_cn)
     tw_sections = [(CC.convert(h), CC.convert(b)) for h, b in sections]
-    c2 = apply_ops(slug, 'zh-tw', inserts=tw_sections, before=before_tw)
+    c2 = apply_ops(slug, 'zh-hk', inserts=tw_sections, before=before_tw)
     return c1, c2

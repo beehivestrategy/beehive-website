@@ -9,7 +9,7 @@ ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 LANGS = {
     "en":    ("blog/articles",      "en",    "Book a Demo", "Frequently Asked Questions", "Recommended Articles"),
     "zh-CN": ("zh-cn/blog/articles","zh-CN", "预约演示",    "常见问题",                   "推荐阅读"),
-    "zh-TW": ("zh-tw/blog/articles","zh-TW", "預約示範",    "常見問題",                   "推薦閱讀"),
+    "zh-HK": ("zh-hk/blog/articles","zh-HK", "預約示範",    "常見問題",                   "推薦閱讀"),
 }
 
 def path(slug, lang):
@@ -61,7 +61,7 @@ def retitle_toc(h, hid, newtext):
 
 def _norm_cjk(s):
     """Normalise an id for fuzzy matching: convert to traditional so that zh-CN and
-    zh-TW ids (which are often inconsistent mixtures) compare equal."""
+    zh-HK ids (which are often inconsistent mixtures) compare equal."""
     try:
         import opencc
         return opencc.OpenCC('s2twp').convert(s)
@@ -78,7 +78,7 @@ def resolve_h2_id(h, hid):
     for i in ids:
         if _norm_cjk(i) == target:
             return i
-    # last resort: near-identical ids (zh-CN / zh-TW files often differ by one
+    # last resort: near-identical ids (zh-CN / zh-HK files often differ by one
     # character, e.g. 战略 vs 策略)
     import difflib
     near = difflib.get_close_matches(target, [_norm_cjk(i) for i in ids], n=1, cutoff=0.75)
@@ -173,7 +173,7 @@ CHEVRON = ('<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="cur
 def build_faq(qa, lang, section_attrs='class="faq-section" id="faq"', title=None):
     if title is None:
         title = LANGS[lang][3]
-    aria = {'en': 'Frequently Asked Questions', 'zh-CN': '常见问题', 'zh-TW': '常見問題'}[lang]
+    aria = {'en': 'Frequently Asked Questions', 'zh-CN': '常见问题', 'zh-HK': '常見問題'}[lang]
     if 'aria-label' not in section_attrs:
         section_attrs = f'class="faq-section" id="faq" aria-label="{aria}"'
     items = []
@@ -263,7 +263,7 @@ def ensure_cta(h, lang):
     return h[:m.start(2)] + phrase + h[m.end(2):], True
 
 # ---------- recommended hrefs ----------
-PREFIX = {"en": "/blog/articles/", "zh-CN": "/zh-cn/blog/articles/", "zh-TW": "/zh-tw/blog/articles/"}
+PREFIX = {"en": "/blog/articles/", "zh-CN": "/zh-cn/blog/articles/", "zh-HK": "/zh-hk/blog/articles/"}
 
 def fix_recommended(h, lang):
     pre = PREFIX[lang]

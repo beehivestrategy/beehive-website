@@ -110,6 +110,6 @@ ZHTW = T.spec_s2tw(ZHCN)
 
 if __name__ == "__main__":
     dedupe_en_heading(SLUG)
-    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-TW", ZHTW)):
+    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-HK", ZHTW)):
         b, a, n = apply(SLUG, lang, spec)
         print(f"{SLUG} {lang}: {b} -> {a}  [{', '.join(n)}]")

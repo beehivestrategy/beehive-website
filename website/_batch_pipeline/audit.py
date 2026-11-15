@@ -24,7 +24,7 @@ def strip_tags(html):
 
 def audit(slug):
     out = []
-    for lang, prefix in [('EN', 'blog'), ('CN', 'zh-cn/blog'), ('TW', 'zh-tw/blog')]:
+    for lang, prefix in [('EN', 'blog'), ('CN', 'zh-cn/blog'), ('TW', 'zh-hk/blog')]:
         p = os.path.join(ROOT, prefix, 'articles', slug + '.html')
         if not os.path.exists(p):
             out.append(f'{lang}: MISSING'); continue
@@ -51,7 +51,7 @@ def audit(slug):
         ld_count = len(re.findall(r'"@type"\s*:\s*"FAQPage"', full))
         # recommended hrefs
         recs = re.findall(r'<a class="recommended-card"[^>]*href="([^"]*)"', full)
-        exp = {'EN': '/blog/articles/', 'CN': '/zh-cn/blog/articles/', 'TW': '/zh-tw/blog/articles/'}[lang]
+        exp = {'EN': '/blog/articles/', 'CN': '/zh-cn/blog/articles/', 'TW': '/zh-hk/blog/articles/'}[lang]
         bad_rec = [r for r in recs if not r.startswith(exp)]
         cta_ok = 'article-cta-btn' in full
         phrase = {'EN': 'Book a Demo', 'CN': '预约演示', 'TW': '預約示範'}[lang]

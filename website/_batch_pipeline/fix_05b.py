@@ -18,12 +18,12 @@ EXTRA='''
 <p>这些实践在合规评审中迅速显现价值。把它们作为平台能力交付——可被每个智能体复用——而非按用例重复构建，正是平台模式在速度与安全性上双双胜出的原因，也让企业能更快地采用新模型能力。</p>
 '''
 
-for lang,pre in [("zh-cn","zh-cn/blog/articles/"),("zh-tw","zh-tw/blog/articles/")]:
+for lang,pre in [("zh-cn","zh-cn/blog/articles/"),("zh-hk","zh-hk/blog/articles/")]:
     p=os.path.join(ROOT,pre+SLUG+".html")
     t=open(p,encoding='utf-8').read()
-    html = s2tw(EXTRA) if lang=="zh-tw" else EXTRA
+    html = s2tw(EXTRA) if lang=="zh-hk" else EXTRA
     t=insert_expand(t, html)
-    if lang=="zh-tw":
+    if lang=="zh-hk":
         t=t.replace('預約演示','預約示範')
     open(p,'w',encoding='utf-8').write(t)
 print("done 05b")

@@ -24,7 +24,7 @@ def process(rel, dry=False):
     d0 = len(re.findall(r'<div\b', src)) - len(re.findall(r'</div>', src))
     counter = {'mobile': 0, 'ui': 0}
 
-    tw = rel.startswith('zh-tw')
+    tw = rel.startswith('zh-hk')
     common = patch.COMMON_TW if tw else patch.COMMON_CN
     cfg = patch.TW_FILES.get(rel) if tw else patch.CN.get(rel)
     hmap = dict(common)
