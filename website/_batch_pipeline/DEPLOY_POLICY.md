@@ -17,6 +17,7 @@
 - ⚠️ Cloudflare API 列 Pages 项目时**不要带 `per_page` 参数**（会返回 400 `8000024 Invalid list options`）。
 - 剩余人工项：Cloudflare Dashboard `Security → Bots → AI Crawl Control → Bots = DISABLED`（GEO 放行 AI 爬虫）。
 - 🔴 后续任何 PROD 部署仍须 Kenneth 逐字说 `DEPLOY-PROD`；自动化通知、沉默或推测均不等于授权。
+- 🔴 **三语同步铁律（Kenneth 2026-11-16：「when ever we update we update all 3 languages」）**：任何页面 / 内容更新必须**同批覆盖 EN / zh-CN / zh-HK**，只改一语视为未完成。部署前必跑 `python3 _v4/verify_site.py` —— Gate 10 从磁盘派生公开页注册表、比对三语 `<main>` 结构签名，并用 `git diff` 硬拦「本次更新只动了一语」；历史漂移登记在 `TRILINGUAL_LEGACY_EXEMPT` 并逐页清零。补齐工具 `_v4/trilingual_apply.py`。跨午夜更新后须重建 `sitemap*.xml` + `llms.txt`（否则 lastmod 被判陈旧）。
 
 ## The rule (no exceptions)
 
