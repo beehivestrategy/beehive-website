@@ -1,17 +1,22 @@
 # Deploy Policy — beehivestrategy.com (HARD RULE)
 
-> **Last updated: 2026-11-15** | Status: git + CI 路径已验证；⚠️ 当前被 CI 凭据阻塞
+> **Last updated: 2026-11-15 23:24 HKT** | Status: **PROD 已上线**，git + CI 路径全绿
 
-## 🔴 当前状态（2026-11-15 实测，优先级高于下文一切描述）
+## ✅ 当前状态（2026-11-15 23:24 HKT 实测，优先级高于下文一切描述）
 
-- **本文件是部署流程的唯一权威**：`git push origin main` → `.github/workflows/deploy-cloudflare.yml` → Cloudflare Pages `beehive-strategy-v2`（dev）。
+- **本文件是部署流程的唯一权威**：`git push origin <branch>` → `.github/workflows/deploy-cloudflare.yml` → 对应 Cloudflare Pages 项目（`main`=dev / `staging`=staging / `prod`=PROD）。
   Obsidian《Website Deployment — Cloudflare Pages (SSOT)》2026-09-24 版曾写「没有 deploy workflow / push 不会部署」，**该说法已实测证伪并于 2026-11-15 校正**；`~/.workbuddy-ai/skills/beehive-cloudflare-deploy/SKILL.md` 同样已校正。
-- `main` 内容已就位：`085bd8a09`，`verify_v4` 27/27、`verify_site` 3,673 页 ALL PASS（含新增 SEO/GEO 闸门）。
-- **唯一阻塞**：workflow 引用 `secrets.CLOUDFLARE_API_TOKEN`，仓库实测只有 `CLOUDFLARE_ACCOUNT_ID` / `DEVTO_API_KEY` / `OPENROUTER_API_KEY`。run `43603297094` 因 wrangler `In a non-interactive environment, it's necessary to set a CLOUDFLARE_API_TOKEN` 失败。
-- 本机 `~/.workbuddy/cloudflare_api_token` active 但 **DNS-only**（`/user`、`/accounts`、`/pages/projects`、`wrangler pages deploy` 全 403）；本机 wrangler OAuth 已过期；故**不能直接本机上传绕过**。
-- 修复：Cloudflare Dashboard → My Profile → API Tokens → 给现有 token 加 `Account → Cloudflare Pages : Edit`，或新建同权限 token 并写入 `CLOUDFLARE_API_TOKEN` secret，然后 `gh run rerun 43603297094`。**写 GitHub secret 属于写账号，须 Kenneth 逐字授权。**
+- **2026-11-15 Kenneth 逐字授权 `DEPLOY-PROD`**，按硬规则 `main → staging → prod` 完成晋升：
+  - staging `705c543c8`（run `43729439940` SUCCESS）→ prod `39d937b83`（run `43729600832` SUCCESS）
+  - PROD deployment **`71c3370d-d3c7-4fe7-a1cd-81f10316355c`** / commit `39d937b83d` / 2026-11-15T15:24Z
+  - 线上 `https://www.beehivestrategy.com` = `accenture.css?v=20261114.03`，与 dev 首页 SHA 完全一致；三语 / 核心页 / SEO 端点全 200；sitemap 3,665 URLs；`/pricing` 301→`/contact`
+- **回滚基线**：deployment `2fdc7154-dd3b-4691-b61d-62b2e0453d51`（commit `6c5246e539`，2026-10-04，`styles.css?v=20260830`）；本地备份分支 `backup/pre-prod-deploy-20261115` → `77353ca45`。
+- **CI 凭据已修复**：repo secret `CLOUDFLARE_API_TOKEN` 已写入（共 4 个 secret）；Cloudflare token `WorkBuddy Cloudflare Token` 权限 = `Account.Cloudflare Pages : Edit + Zone.DNS`，token 值未变（`/user/tokens/verify` active、`/accounts/…/pages/projects` 200）。
+- 部署前门禁：`verify_v4` **27/27**、`verify_site` **3,676 页 ALL PASS**（含 SEO/GEO 闸门 #9）。
 - CI 部署目录是 **`website/`**；`website_deploy_clean/`（未纳入 git、401 MB、停留在 2026-10-15）已弃用，**不得作为部署源**。
-- 🔴 PROD 仍需 Kenneth 逐字说 `DEPLOY-PROD`；`staging` / `prod` 分支本轮完全未碰。
+- ⚠️ Cloudflare API 列 Pages 项目时**不要带 `per_page` 参数**（会返回 400 `8000024 Invalid list options`）。
+- 剩余人工项：Cloudflare Dashboard `Security → Bots → AI Crawl Control → Bots = DISABLED`（GEO 放行 AI 爬虫）。
+- 🔴 后续任何 PROD 部署仍须 Kenneth 逐字说 `DEPLOY-PROD`；自动化通知、沉默或推测均不等于授权。
 
 ## The rule (no exceptions)
 
