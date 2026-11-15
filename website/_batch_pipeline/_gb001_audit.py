@@ -38,7 +38,7 @@ def cta(html):
 
 for s in SLUGS:
     row=[s]
-    for lang,sub,phrase in (("EN","blog/articles","Book a Demo"),("zh-CN","zh-cn/blog/articles","预约演示"),("zh-TW","zh-tw/blog/articles","預約示範")):
+    for lang,sub,phrase in (("EN","blog/articles","Book a Demo"),("zh-CN","zh-cn/blog/articles","预约演示"),("zh-HK","zh-hk/blog/articles","預約示範")):
         p=os.path.join(ROOT,sub,s+".html")
         if not os.path.exists(p):
             row.append(f"{lang}:MISSING"); continue

@@ -8,9 +8,9 @@ import os, re, json
 from collections import defaultdict
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}
+LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}
 SITE = "https://www.beehivestrategy.com"
-LANGDIR = {"en": "en", "cn": "zh-cn", "tw": "zh-tw"}
+LANGDIR = {"en": "en", "cn": "zh-cn", "tw": "zh-hk"}
 
 def read(p):
     try: return open(p, encoding="utf-8").read()
@@ -32,7 +32,7 @@ def get_title(head):
     return m.group(1).strip() if m else ""
 
 def self_url(slug, lang):
-    pre = "/zh-cn" if lang=="cn" else "/zh-tw" if lang=="tw" else ""
+    pre = "/zh-cn" if lang=="cn" else "/zh-hk" if lang=="tw" else ""
     return f"{SITE}{pre}/blog/articles/{slug}"
 def cover_url(slug, lang):
     return f"{SITE}/assets/blog/covers/{LANGDIR[lang]}/{slug}.jpg"

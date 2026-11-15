@@ -160,7 +160,7 @@ if __name__ == "__main__":
     dry = '--dry' in sys.argv
     targets = [a for a in sys.argv[1:] if not a.startswith('--')]
     for slug in targets:
-        for rel in ("blog/articles", "zh-cn/blog/articles", "zh-tw/blog/articles"):
+        for rel in ("blog/articles", "zh-cn/blog/articles", "zh-hk/blog/articles"):
             p = os.path.join(ROOT, rel, slug + ".html")
             if not os.path.exists(p):
                 print("MISSING", p)

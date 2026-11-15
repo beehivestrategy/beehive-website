@@ -161,6 +161,6 @@ H2FIX = {
 }
 
 process(SLUG, H2FIX, adds={"EN": EN_ADD, "CN": CN_ADD, "TW": TW_ADD},
-        cta_fix={"TW": ('<a href="/zh-tw/contact" class="article-cta-btn">預約演示</a>',
-                        '<a href="/zh-tw/contact" class="article-cta-btn">預約示範</a>')},
+        cta_fix={"TW": ('<a href="/zh-hk/contact" class="article-cta-btn">預約演示</a>',
+                        '<a href="/zh-hk/contact" class="article-cta-btn">預約示範</a>')},
         tag=SLUG[:24])

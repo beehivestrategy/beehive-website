@@ -7,7 +7,7 @@ import os, glob, json
 from datetime import datetime
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}
+LANGS = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}
 CUTOFF = datetime(2026, 8, 27, 1, 30)  # fleet start; files modified after this = processed
 
 def mt(p):

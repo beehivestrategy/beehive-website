@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Batch part 4: final zh-CN/zh-TW top-ups for 5 slugs still <3500 CJK.
+"""Batch part 4: final zh-CN/zh-HK top-ups for 5 slugs still <3500 CJK.
 One H2 each. Idempotent via unique ids. Never touches head/footer/links."""
 import os, re
 from opencc import OpenCC
@@ -62,7 +62,7 @@ def faq_items(s):
 log=[]
 for slug, cn_block in ZH_TOPUP4.items():
     tw_block = cc.convert(cn_block)
-    for (lang, sub, anchor) in [('zh-CN','zh-cn',ZH_FAQ_ANCHOR_CN),('zh-TW','zh-tw',ZH_FAQ_ANCHOR_TW)]:
+    for (lang, sub, anchor) in [('zh-CN','zh-cn',ZH_FAQ_ANCHOR_CN),('zh-HK','zh-hk',ZH_FAQ_ANCHOR_TW)]:
         p = os.path.join(ROOT, sub+"/blog/articles", slug + ".html")
         s = open(p, encoding='utf-8').read()
         blk = cn_block if lang=='zh-CN' else tw_block
@@ -85,7 +85,7 @@ any_below=False
 for slug in slugs:
     for path, lang in [("blog/articles/%s.html"%slug,'EN'),
                       ("zh-cn/blog/articles/%s.html"%slug,'zh-CN'),
-                      ("zh-tw/blog/articles/%s.html"%slug,'zh-TW')]:
+                      ("zh-hk/blog/articles/%s.html"%slug,'zh-HK')]:
         s=open(os.path.join(ROOT,path),encoding='utf-8').read()
         a=article(s); w=word_count(a) if lang=='EN' else cjk_count(a)
         ok = (w>=2500) if lang=='EN' else (w>=3500)

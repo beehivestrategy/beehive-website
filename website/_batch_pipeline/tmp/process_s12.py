@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/professional-services-ai-resource-allocation.html"
 ZHCN = W + "zh-cn/blog/articles/professional-services-ai-resource-allocation.html"
-ZHTW = W + "zh-tw/blog/articles/professional-services-ai-resource-allocation.html"
+ZHTW = W + "zh-hk/blog/articles/professional-services-ai-resource-allocation.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -191,7 +191,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("AI如何改善專業服務公司的資源分配？",
      "把排程從每月一次的練習變成持續的優化問題。AI按技能、可用性、利用率歷史與發展目標把人匹配到專案——利用率提升數個百分點，找到合適人選的時間大幅縮短。它攻擊的基線很大：麥肯錫發現知識工作者約20%的時間用於搜尋資訊，IDC的研究把損失算在每人每天約2.5小時。"),
@@ -280,7 +280,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="2025年ai如何改變專業服務"', 'id="如何衡量成功並展示投資回報"',
         '8500萬', '託管對話式BI',
-    ], 7, "zh-TW")
+    ], 7, "zh-HK")
     assert '資源' in body_h1(s) or '專業服務' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

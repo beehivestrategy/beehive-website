@@ -24,7 +24,7 @@ def main():
     failures = []
     for slug in slugs:
         row = {"slug": slug}
-        for lang, prefix in [("en", ""), ("zh-CN", "zh-cn/"), ("zh-TW", "zh-tw/")]:
+        for lang, prefix in [("en", ""), ("zh-CN", "zh-cn/"), ("zh-HK", "zh-hk/")]:
             path = os.path.join(ROOT, prefix + "blog/articles/" + slug + ".html")
             row[lang] = {}
             if not os.path.exists(path):
@@ -98,7 +98,7 @@ def main():
     # Print concise validation
     print("SLUG | ENw | zhCN-cjk | zhTW-cjk | FAQ(h3/ld) | CTA | undef | recbad | css/js v")
     for r in rows:
-        en = r["en"]; cn = r["zh-CN"]; tw = r["zh-TW"]
+        en = r["en"]; cn = r["zh-CN"]; tw = r["zh-HK"]
         flag = ""
         if en["words"] < 2500: flag += " EN<2500"
         if cn["cjk"] < 3500: flag += " CN<3500"
@@ -107,7 +107,7 @@ def main():
         if en["undefined"] or cn["undefined"] or tw["undefined"]: flag += " UNDEF!"
         if en["rec_bad"] or cn["rec_bad"] or tw["rec_bad"]: flag += " REC!"
         if not (en["cssv"] and cn["cssv"] and tw["cssv"] and en["jsv"] and cn["jsv"] and tw["jsv"]): flag += " VER!"
-        if tw["html_lang"] != "zh-tw": flag += " TWlang!"
+        if tw["html_lang"] != "zh-hk": flag += " TWlang!"
         if not (tw["faq_ld"] == 1 and tw["faq_ld_body"]): flag += " TWLD!"
         print(f"{r['slug'][:38]:38} | {en['words']:5} | {cn['cjk']:5} | {tw['cjk']:5} | "
               f"{en['faq_h3']}/{en['faq_ld']} {cn['faq_h3']}/{cn['faq_ld']} {tw['faq_h3']}/{tw['faq_ld']} | "

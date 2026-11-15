@@ -38,13 +38,13 @@ def info(h):
         "cta": h.count('article-cta-btn'),
         "rec": len(re.findall(r'<a [^>]*class="recommended-card"', h)),
         "recbad": [a for a in re.findall(r'<a href="([^"]*)"[^>]*class="recommended-card"', h)
-                   if not a.startswith('/blog/articles/') and not a.startswith('/zh-cn/blog/') and not a.startswith('/zh-tw/blog/')],
+                   if not a.startswith('/blog/articles/') and not a.startswith('/zh-cn/blog/') and not a.startswith('/zh-hk/blog/')],
         "h2q": len(re.findall(r'<h2[^>]*>', body(h))),
     }
 
 for slug in [l.strip() for l in open(sys.argv[1]) if l.strip()]:
     out = {"slug": slug}
-    for lang, pref in (("EN",""), ("CN","zh-cn/"), ("TW","zh-tw/")):
+    for lang, pref in (("EN",""), ("CN","zh-cn/"), ("TW","zh-hk/")):
         p = os.path.join(ROOT, pref + "blog/articles/" + slug + ".html")
         if not os.path.exists(p):
             out[lang] = "MISSING"; continue

@@ -59,7 +59,7 @@ TW = [
 
 total = 0
 for s in SLUGS:
-    for lang, pairs in (("zh-CN", CN), ("zh-TW", TW)):
+    for lang, pairs in (("zh-CN", CN), ("zh-HK", TW)):
         h = L.read(s, lang)
         m = re.search(r'(<article class="article-content" id="article-content">)(.*?)(</article>)', h, re.S)
         if not m:

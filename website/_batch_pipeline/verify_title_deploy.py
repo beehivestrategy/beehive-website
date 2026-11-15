@@ -30,7 +30,7 @@ for item in sample:
         url = f"{BASE}/zh-cn/blog/articles/{slug}.html"
         expect = item["new_cn"]
     else:
-        url = f"{BASE}/zh-tw/blog/articles/{slug}.html"
+        url = f"{BASE}/zh-hk/blog/articles/{slug}.html"
         expect = item["new_tw"]
     try:
         req = urllib.request.Request(url + BUSTER, headers=UA)

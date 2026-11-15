@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/state-enterprise-llm-deployment-china.html"
 ZHCN = W + "zh-cn/blog/articles/state-enterprise-llm-deployment-china.html"
-ZHTW = W + "zh-tw/blog/articles/state-enterprise-llm-deployment-china.html"
+ZHTW = W + "zh-hk/blog/articles/state-enterprise-llm-deployment-china.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -201,7 +201,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("中國國企的大模型部署現況如何？",
      "部署已從試點走向全面鋪開。國資委2024年2月的「AI+」專項行動要求中央國企構建行業專用AI能力，並在2027年前落地營運部署。超過300個國產大模型——百度的文心、阿里通義千問、騰訊混元、華為盤古——已在網信辦備案，IDC預測到2027年中國AI支出將超過380億美元。主導用例是文檔智能、知識管理、客戶服務、營運優化與合規。"),
@@ -287,7 +287,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="國企ai轉型的規模"', 'id="mcp如何實現國產平台整合"',
         'id="如何在不犧牲資料主權的前提下部署大模型"', '380億', '託管對話式BI',
-    ], 7, "zh-TW")
+    ], 7, "zh-HK")
     assert '國企' in body_h1(s) or '部署' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

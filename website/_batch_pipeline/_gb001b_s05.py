@@ -113,7 +113,7 @@ if __name__ == "__main__":
     open(cn, "w", encoding="utf-8").write(h)
     print("CN body + FAQ done")
 
-    # zh-TW (convert)
+    # zh-HK (convert)
     tw = path_of(SLUG, "tw")
     h = open(tw, encoding="utf-8").read()
     assert h.count(NAV) == 1, h.count(NAV)

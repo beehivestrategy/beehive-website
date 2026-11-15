@@ -8,7 +8,7 @@ import _gb001_lib as L
 ROOT = L.ROOT
 BK = os.path.join(ROOT, "_batch_pipeline/_backup_gb001run")
 SLUGS = [l.strip() for l in open(os.path.join(ROOT, "_batch_pipeline/gap_batches/gbatch_001.txt")) if l.strip()]
-PREF = {"en": "blog_articles", "zh-CN": "zh-cn_blog_articles", "zh-TW": "zh-tw_blog_articles"}
+PREF = {"en": "blog_articles", "zh-CN": "zh-cn_blog_articles", "zh-HK": "zh-hk_blog_articles"}
 
 
 def region(h, tag):
@@ -35,7 +35,7 @@ def norm(s):
 
 bad = 0
 for s in SLUGS:
-    for lang in ("en", "zh-CN", "zh-TW"):
+    for lang in ("en", "zh-CN", "zh-HK"):
         cur = L.read(s, lang)
         old = open(os.path.join(BK, f"{PREF[lang]}__{s}.html"), encoding="utf-8").read()
         probs = []

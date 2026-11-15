@@ -110,7 +110,7 @@ def main():
         b = re.sub(r'(<h2 id="[^"]+">)' + re.escape(old) + r'(</h2>)', r'\g<1>' + new + r'\g<2>', b, count=1)
     F.save(SLUG, "zh-CN", F.set_body(s, b))
 
-    s = F.load(SLUG, "zh-TW")
+    s = F.load(SLUG, "zh-HK")
     b = F.get_body(s)
     ren_tw = {
         "Framework for Strategic Decision-Making": "決策框架應該如何設計？",
@@ -123,11 +123,11 @@ def main():
     }
     for old, new in ren_tw.items():
         b = re.sub(r'(<h2 id="[^"]+">)' + re.escape(old) + r'(</h2>)', r'\g<1>' + F.S2TWP.convert(new) + r'\g<2>', b, count=1)
-    F.save(SLUG, "zh-TW", F.set_body(s, b))
+    F.save(SLUG, "zh-HK", F.set_body(s, b))
 
     before, after = F.process(SLUG, faq=FAQ,
-                              faq_titles={"EN": "Frequently Asked Questions", "zh-CN": "常见问题", "zh-TW": "常見問題"})
-    for lang in ("EN", "zh-CN", "zh-TW"):
+                              faq_titles={"EN": "Frequently Asked Questions", "zh-CN": "常见问题", "zh-HK": "常見問題"})
+    for lang in ("EN", "zh-CN", "zh-HK"):
         print(lang, "before", before[lang], "after", after[lang])
 
 main()

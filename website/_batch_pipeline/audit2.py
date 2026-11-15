@@ -57,7 +57,7 @@ def audit(path, lang):
 
     # --- recs ---
     recs = re.findall(r'<a class="recommended-card"[^>]*href="([^"]*)"', s)
-    exp = {'EN': '/blog/articles/', 'CN': '/zh-cn/blog/articles/', 'TW': '/zh-tw/blog/articles/'}[lang]
+    exp = {'EN': '/blog/articles/', 'CN': '/zh-cn/blog/articles/', 'TW': '/zh-hk/blog/articles/'}[lang]
     bad = [r for r in recs if not r.startswith(exp)]
 
     phrase = {'EN': 'Book a Demo', 'CN': '预约演示', 'TW': '預約示範'}[lang]
@@ -72,7 +72,7 @@ def audit(path, lang):
 if __name__ == '__main__':
     for slug in [l.strip() for l in open(sys.argv[1]) if l.strip()]:
         print('==== ' + slug)
-        for lang, pre in (('EN', ''), ('CN', 'zh-cn/'), ('TW', 'zh-tw/')):
+        for lang, pre in (('EN', ''), ('CN', 'zh-cn/'), ('TW', 'zh-hk/')):
             p = os.path.join(ROOT, pre + 'blog/articles', slug + '.html')
             if not os.path.exists(p):
                 print(f'  {lang}: MISSING'); continue

@@ -4,7 +4,7 @@ import sys, re
 sys.path.insert(0, '/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/_batch_pipeline')
 import _gb001_lib as L
 slug = sys.argv[1]
-for lang in ("en", "zh-CN", "zh-TW"):
+for lang in ("en", "zh-CN", "zh-HK"):
     h = L.read(slug, lang)
     b = L.body_of(h)
     m = re.search(r'<article class="article-content" id="article-content">', h)

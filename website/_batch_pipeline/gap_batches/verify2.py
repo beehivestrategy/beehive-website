@@ -33,7 +33,7 @@ def check_file(path):
 
 print(f"{'slug':52} {'lang':5} {'enw':>5} {'cjk':>5} {'faqQ':>4} {'h3':>3} {'fp':>3} {'cta':>10} flags")
 for slug in slugs:
-    for lang, prefix in [("en",""), ("zh-CN","zh-cn/"), ("zh-TW","zh-tw/")]:
+    for lang, prefix in [("en",""), ("zh-CN","zh-cn/"), ("zh-HK","zh-hk/")]:
         p = os.path.join(ROOT, prefix+"blog/articles/"+slug+".html")
         if not os.path.exists(p):
             print(f"{slug:52} {lang:5} MISSING"); continue

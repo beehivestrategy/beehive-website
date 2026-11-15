@@ -173,11 +173,11 @@ ZHCN = {"lead": ZHCN_LEAD, "replace": ZHCN_REPLACE, "renames": ZHCN_RENAMES,
           "数据质量自动化：从被动响应走向主动治理。",
           "CFO指南：AI预算应如何在业务单元之间分配。"]}
 
-# ------------------------------------------------------------------ zh-TW (converted)
+# ------------------------------------------------------------------ zh-HK (converted)
 import _gb001_s2t as T
 ZHTW = T.spec_s2tw(ZHCN)
 
 if __name__ == "__main__":
-    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-TW", ZHTW)):
+    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-HK", ZHTW)):
         b, a, n = apply(SLUG, lang, spec)
         print(f"{SLUG} {lang}: {b} -> {a}  [{', '.join(n)}]")

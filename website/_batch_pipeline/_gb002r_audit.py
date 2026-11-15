@@ -12,7 +12,7 @@ SLUGS = [l.strip() for l in open(os.path.join(ROOT, "_batch_pipeline/gap_batches
 LANGS = [
     ("EN", "blog/articles/%s.html"),
     ("zh-CN", "zh-cn/blog/articles/%s.html"),
-    ("zh-TW", "zh-tw/blog/articles/%s.html"),
+    ("zh-HK", "zh-hk/blog/articles/%s.html"),
 ]
 
 CJK = re.compile(r'[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\u3040-\u30ff]')
@@ -71,7 +71,7 @@ def metrics(path):
             ld_ok = True
     # CTA
     cta = 'article-cta-btn' in b
-    phrase = {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-TW": "預約示範"}
+    phrase = {"EN": "Book a Demo", "zh-CN": "预约演示", "zh-HK": "預約示範"}
     # H2s
     h2s = [re.sub(r'<[^>]+>', '', x).strip() for x in re.findall(r'<h2[^>]*>(.*?)</h2>', scope, re.S | re.I)]
     return {

@@ -114,7 +114,7 @@
 
   /* ---- locale-consistency safety net (internal links) ---- */
   var loc = (document.documentElement.getAttribute('lang') || '').toLowerCase();
-  if (loc === 'zh-cn' || loc === 'zh-tw') {
+  if (loc === 'zh-cn' || loc === 'zh-hk') {
     var safe = /^\/(blog\/articles|contact|solution|fde|services|about|blog)\/?/;
     Array.prototype.slice.call(document.querySelectorAll('a[href^="/"]'))
       .forEach(function (a) {

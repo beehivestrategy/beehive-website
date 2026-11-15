@@ -74,7 +74,7 @@ ul{{margin:8px 0;padding-left:20px}}li{{margin:4px 0}}
 code{{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:13px}}
 </style></head><body><div class="wrap">
 <h1>Beehive Blog Fleet — GEO Audit &amp; Non-Destructive Repair</h1>
-<p class="sub">Status snapshot · 2026-09-02 · 1,061 articles × 3 languages (EN / zh-CN / zh-TW)</p>
+<p class="sub">Status snapshot · 2026-09-02 · 1,061 articles × 3 languages (EN / zh-CN / zh-HK)</p>
 
 <div class="card">
   <h2><span class="dot" style="background:var(--ok)"></span>1 · GEO Baseline Compliance (gaps_audit)</h2>
@@ -89,11 +89,11 @@ code{{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:13px}}
   <div class="kpi">
     <div><b>{per['en']['clean']}</b><span>EN clean files</span></div>
     <div><b>{per['cn']['clean']}</b><span>zh-CN clean files</span></div>
-    <div><b>{per['tw']['clean']}</b><span>zh-TW clean files</span></div>
+    <div><b>{per['tw']['clean']}</b><span>zh-HK clean files</span></div>
     <div><b>3,183</b><span>total files audited</span></div>
   </div>
   <p class="foot">"Clean" = zero structural/semantic issues detected. Remaining issues below are content-generation / irreversible class — awaiting approval.</p>
-  <table style="margin-top:10px"><thead><tr><th>Issue (residual)</th><th>EN</th><th>zh-CN</th><th>zh-TW</th></tr></thead>
+  <table style="margin-top:10px"><thead><tr><th>Issue (residual)</th><th>EN</th><th>zh-CN</th><th>zh-HK</th></tr></thead>
   <tbody>{sev_rows}</tbody></table>
   <p class="foot">Site-level duplicates: H1 dup {dup_h1['en']}/{dup_h1['cn']}/{dup_h1['tw']} · Title dup {dup_title['en']}/{dup_title['cn']}/{dup_title['tw']} · Desc dup {dup_desc['en']}/{dup_desc['cn']}/{dup_desc['tw']}.</p>
 </div>
@@ -108,7 +108,7 @@ code{{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:13px}}
   </div>
   <p class="foot"><span class="ok">✅ ZERO REGRESSION</span> on re-run: canonical_wrong / og_missing / tw_missing / faqpage_jsonld_multiple all 0, jsonld_invalid=0.<br>
   Conservative skips (false-positive / unparsed FAQ variant): <b>{len(rep['skipped'])}</b>. Distinct files changed: <b>{distinct_files}</b> · attribute-level edits: <b>{attr_edits}</b>.</p>
-  <p class="foot">On-disk spot-check: <code>blog/articles/what-is-conversational-bi-chatbi-explained.html</code> — canonical &amp; og:url now point to correct self-URL; hreflang zh-TW correct.</p>
+  <p class="foot">On-disk spot-check: <code>blog/articles/what-is-conversational-bi-chatbi-explained.html</code> — canonical &amp; og:url now point to correct self-URL; hreflang zh-HK correct.</p>
 </div>
 
 <div class="card">

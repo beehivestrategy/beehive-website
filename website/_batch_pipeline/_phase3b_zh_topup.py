@@ -35,7 +35,7 @@ def build_sections(cn_sections):
 report=[]
 for slug, cn_secs in EXTRA.items():
     tw_secs = [(cc.convert(h2), [cc.convert(p) for p in paras]) for h2,paras in cn_secs]
-    for lang, sub, secs in [("cn","zh-cn/blog/articles", cn_secs),("tw","zh-tw/blog/articles", tw_secs)]:
+    for lang, sub, secs in [("cn","zh-cn/blog/articles", cn_secs),("tw","zh-hk/blog/articles", tw_secs)]:
         fn = os.path.join(BASE, sub, slug+".html")
         raw = open(fn, encoding="utf-8").read()
         head0 = raw[:raw.index("<body")]

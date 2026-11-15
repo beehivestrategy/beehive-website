@@ -11,12 +11,12 @@ CHEV = '<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="current
 L = {
     "en": dict(faq_title="Frequently Asked Questions", toc="Table of Contents", prefix="/blog/articles/"),
     "cn": dict(faq_title="常见问题", toc="目录", prefix="/zh-cn/blog/articles/"),
-    "tw": dict(faq_title="常見問題", toc="目錄", prefix="/zh-tw/blog/articles/"),
+    "tw": dict(faq_title="常見問題", toc="目錄", prefix="/zh-hk/blog/articles/"),
 }
 
 
 def path_for(lang, slug):
-    return os.path.join(ROOT, {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}[lang], slug + ".html")
+    return os.path.join(ROOT, {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}[lang], slug + ".html")
 
 
 def read(p):
@@ -176,7 +176,7 @@ def replace_body(h, lang, prose, faq_pairs=None, add_ld_if_missing=True):
 def fix_recommended(h, lang):
     """Root-relative + language-prefixed hrefs; real titles; filled excerpts."""
     pref = L[lang]["prefix"]
-    subdir = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-tw/blog/articles"}[lang]
+    subdir = {"en": "blog/articles", "cn": "zh-cn/blog/articles", "tw": "zh-hk/blog/articles"}[lang]
 
     def card(m):
         block = m.group(0)

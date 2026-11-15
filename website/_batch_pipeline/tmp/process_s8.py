@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/cross-border-ai-compliance-strategy.html"
 ZHCN = W + "zh-cn/blog/articles/cross-border-ai-compliance-strategy.html"
-ZHTW = W + "zh-tw/blog/articles/cross-border-ai-compliance-strategy.html"
+ZHTW = W + "zh-hk/blog/articles/cross-border-ai-compliance-strategy.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -189,7 +189,7 @@ def process_cn():
     save(ZHCN, s)
     print("CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("跨國企業在2026年需要遵守哪些AI規則？",
      "至少三個法域：歐盟AI法案——對不可接受風險系統的禁令自2025年2月適用，通用AI透明度義務於2025年8月到來，大部分義務自2026年8月適用；中國的PIPL、《資料安全法》（2025年修訂）與生成式AI標識辦法的組合；美國行業性與州級規則的拼圖，以NIST AI RMF為自願參照。具體義務取決於系統在哪裡開發、部署、訓練和使用——是接觸點而非總部所在地決定適用規則。"),
@@ -288,7 +288,7 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         'id="理解當前格局"', 'id="哪些規則適用於你的ai系統"', 'id="如何在多法域間保持統一營運模型"',
         '3500萬歐元', '託管對話層',
-    ], 9, "zh-TW")
+    ], 9, "zh-HK")
     assert '合規' in body_h1(s)
     save(ZHTW, s)
     print("TW done")

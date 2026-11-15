@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Fix zh-TW canonical + og:url that wrongly point to /zh-cn/ instead of /zh-tw/.
+"""Fix zh-HK canonical + og:url that wrongly point to /zh-cn/ instead of /zh-hk/.
 Surgical: only the canonical <link> and og:url <meta>, never hreflang, never body.
 Backs up each file before editing.
 """
 import os, re, shutil, sys
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
-TWDIR = os.path.join(ROOT, "zh-tw/blog/articles")
-BAK = os.path.join(ROOT, "_batch_pipeline/_bak_zhtw_canonical")
+TWDIR = os.path.join(ROOT, "zh-hk/blog/articles")
+BAK = os.path.join(ROOT, "_batch_pipeline/_bak_zhhk_canonical")
 os.makedirs(BAK, exist_ok=True)
 
 canon_re = re.compile(r'(<link\b[^>]*\brel="canonical"[^>]*\bhref=")([^"]*?)(/zh-cn/)(blog/articles/[^"]*)(")', re.I)
@@ -24,13 +24,13 @@ for fn in sorted(os.listdir(TWDIR)):
     if "/zh-cn/" not in h:
         continue
     new = h
-    new = canon_re.sub(r'\1\2/zh-tw/\4\5', new)
-    new = og_re.sub(r'\1\2/zh-tw/\4\5', new)
+    new = canon_re.sub(r'\1\2/zh-hk/\4\5', new)
+    new = og_re.sub(r'\1\2/zh-hk/\4\5', new)
     if new == h:
         skipped += 1
         continue
     # sanity: ensure we did not accidentally rewrite hreflang
-    assert 'hreflang="zh-TW"' not in new or ('/zh-tw/' in new), "hreflang would be broken"
+    assert 'hreflang="zh-HK"' not in new or ('/zh-hk/' in new), "hreflang would be broken"
     shutil.copy2(p, os.path.join(BAK, fn))
     open(p, "w", encoding="utf-8").write(new)
     fixed += 1

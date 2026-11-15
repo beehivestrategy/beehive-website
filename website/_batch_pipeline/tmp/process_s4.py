@@ -8,7 +8,7 @@ from common import (load, save, rep1, re_dl, build_faq_list, build_jsonld,
 W = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website/"
 EN = W + "blog/articles/business-case-real-time-analytics-logistics.html"
 ZHCN = W + "zh-cn/blog/articles/business-case-real-time-analytics-logistics.html"
-ZHTW = W + "zh-tw/blog/articles/business-case-real-time-analytics-logistics.html"
+ZHTW = W + "zh-hk/blog/articles/business-case-real-time-analytics-logistics.html"
 
 # ---------------- EN ----------------
 EN_FAQ = [
@@ -153,7 +153,7 @@ def process_cn():
     save(ZHCN, s)
     print("zh-CN done")
 
-# ---------------- zh-TW ----------------
+# ---------------- zh-HK ----------------
 TW_FAQ = [
     ("物流企業為什麼需要即時分析，而不是繼續依賴批量報表？",
      "批量報表的問題是滯後：貨件在邊境延誤的時刻最值錢——那是備選路線還能保住交付窗口的唯一時刻，而日末報告發現問題時的補救成本已經產生。即時分析把異常發現時間從小時級壓縮到分鐘級，直接減少加急運費、違約金和冷鏈損失這些物流最大的可避免成本池。"),
@@ -232,11 +232,11 @@ def process_tw():
         '?v=20260901', '預約示範', '"@type": "FAQPage"',
         '物流即時分析需要怎樣的技術架構', '為什麼中國物流企業能更快實現即時分析的價值',
         'id="規模化推廣的關鍵成功因素-2"', 'id="規模化推廣的關鍵成功因素"',
-    ], 8, "zh-TW")
+    ], 8, "zh-HK")
     assert s.count('id="規模化推廣的關鍵成功因素"') + s.count('id="規模化推廣的關鍵成功因素-2"') == 2, "tw duplicate id check"
     assert s[:s.index('</head>')].count('FAQPage') == 0, "tw head FAQPage present"
     save(ZHTW, s)
-    print("zh-TW done")
+    print("zh-HK done")
 
 if __name__ == "__main__":
     process_en()

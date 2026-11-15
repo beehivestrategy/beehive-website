@@ -55,7 +55,7 @@ def main():
     stats = {}
     for slug in SLUGS:
         stats[slug] = {}
-        for lang in ('en', 'zh-cn', 'zh-tw'):
+        for lang in ('en', 'zh-cn', 'zh-hk'):
             p = path_for(slug, lang)
             doc = open(p, encoding='utf-8').read()
             faq = extract_faq(doc)

@@ -196,11 +196,11 @@ ZHCN = {"lead": ZHCN_LEAD, "replace": ZHCN_REPLACE, "renames": ZHCN_RENAMES,
           "为什么2026年的数据战略需要一个专门的AI智能体层。",
           "向量数据库在企业搜索中的应用：2026年实用指南。"]}
 
-# ------------------------------------------------------------------ zh-TW (converted)
+# ------------------------------------------------------------------ zh-HK (converted)
 import _gb001_s2t as T
 ZHTW = T.spec_s2tw(ZHCN)
 
 if __name__ == "__main__":
-    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-TW", ZHTW)):
+    for lang, spec in (("en", EN), ("zh-CN", ZHCN), ("zh-HK", ZHTW)):
         b, a, n = apply(SLUG, lang, spec)
         print(f"{SLUG} {lang}: {b} -> {a}  [{', '.join(n)}]")

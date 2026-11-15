@@ -54,11 +54,11 @@ you must produce TWO files: the rewritten EN article and its zh-CN translation.
 6. **zh-CN translation:** produce `website/zh-cn/blog/articles/<slug>.html`.
    Translate the FULL rewritten EN body to natural, professional Simplified
    Chinese (3,500–5,000 CJK chars). Preserve the EXACT same `<head>` structure as
-   the existing zh-cn file (canonical /zh-cn/, hreflang alternates en/zh-CN/zh-TW/
+   the existing zh-cn file (canonical /zh-cn/, hreflang alternates en/zh-CN/zh-HK/
    x-default, og:locale zh_CN, og:url /zh-cn/, lang="zh-CN"). Only replace the
    body. Keep FAQ JSON-LD with `"inLanguage":"zh-CN"`.
 
-7. **Do NOT create zh-TW files** (a separate script generates them via OpenCC).
+7. **Do NOT create zh-HK files** (a separate script generates them via OpenCC).
 
 8. **No placeholder text** (no "Lorem", "TODO", "coming soon", "待补充").
 

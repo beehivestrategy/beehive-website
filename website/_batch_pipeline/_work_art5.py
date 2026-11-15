@@ -17,7 +17,7 @@ cn_append = '''
 
 tw_append = cc.convert(cn_append)
 
-for lang, ap in (("zh-cn", cn_append), ("zh-tw", tw_append)):
+for lang, ap in (("zh-cn", cn_append), ("zh-hk", tw_append)):
     p = os.path.join(ROOT, "%s/blog/articles/%s.html"%(lang, slug))
     h = open(p, encoding='utf-8').read()
     if '<section class="faq-section"' not in h:
@@ -27,7 +27,7 @@ for lang, ap in (("zh-cn", cn_append), ("zh-tw", tw_append)):
     open(p, 'w', encoding='utf-8').write(h)
     print("wrote", p)
 
-for lang, ap in (("zh-cn", cn_append), ("zh-tw", tw_append)):
+for lang, ap in (("zh-cn", cn_append), ("zh-hk", tw_append)):
     p = os.path.join(ROOT, "%s/blog/articles/%s.html"%(lang, slug))
     h = open(p, encoding='utf-8').read()
     b = re.search(r'<article class="article-content" id="article-content">(.*?)</article>', h, re.S).group(1)

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Repair half-translated zh-CN / zh-TW article titles.
+"""Repair half-translated zh-CN / zh-HK article titles.
 
 Bug: a word-substitution pass left titles like
   "From SQL to 自然语言: The 演进 of 数据 Queries"
 i.e. English scaffolding with a few Chinese words swapped in.
 
 Fix: replace with proper human-quality zh-CN titles (below), convert to
-zh-TW with OpenCC (s2twp), and update every place the title appears in the
+zh-HK with OpenCC (s2twp), and update every place the title appears in the
 document: <title>, <h1>, og:title, twitter:title.
 
 Idempotent: reruns are no-ops once titles are correct.
@@ -68,7 +68,7 @@ def main():
         from opencc import OpenCC
         # MUST match the site's own generator (generate_zh_tw.py uses 's2t').
         # s2twp would convert 数据 -> 資料, which contradicts the existing
-        # zh-TW bodies that use 數據. Consistency beats locale purity here.
+        # zh-HK bodies that use 數據. Consistency beats locale purity here.
         cc = OpenCC("s2t")
     except Exception as e:
         print("OpenCC unavailable:", e)
@@ -80,7 +80,7 @@ def main():
 
     for slug, cn_title in CN_TITLES.items():
         tw_title = cc.convert(cn_title)
-        for sub, new_title in (("zh-cn", cn_title), ("zh-tw", tw_title)):
+        for sub, new_title in (("zh-cn", cn_title), ("zh-hk", tw_title)):
             p = os.path.join(ROOT, sub, "blog/articles", slug + ".html")
             if not os.path.exists(p):
                 skipped.append(p)
@@ -103,9 +103,9 @@ def main():
                 print(f"      NEW: {new_title}")
 
     # ---- PASS 2 -------------------------------------------------------
-    # Generic sweep: any zh-TW title that is still half-translated but whose
-    # zh-CN counterpart is already clean -> derive zh-TW from zh-CN via s2t.
-    # Catches slugs where only the zh-TW file went stale.
+    # Generic sweep: any zh-HK title that is still half-translated but whose
+    # zh-CN counterpart is already clean -> derive zh-HK from zh-CN via s2t.
+    # Catches slugs where only the zh-HK file went stale.
     import glob
     FILLER = re.compile(r"\b(?:the|of|for|to|and|in|from|with|a|an|is|are|how|why|what)\b", re.I)
 
@@ -114,7 +114,7 @@ def main():
         return cjk > 0 and len(FILLER.findall(t)) >= 2
 
     p2_files = 0
-    for p in sorted(glob.glob(os.path.join(ROOT, "zh-tw/blog/articles/*.html"))):
+    for p in sorted(glob.glob(os.path.join(ROOT, "zh-hk/blog/articles/*.html"))):
         slug = os.path.basename(p)[:-5]
         html = open(p, encoding="utf-8").read()
         old = get_h1_raw(html)
@@ -134,11 +134,11 @@ def main():
             p2_files += 1
             total_files += 1
             total_repl += n
-            print(f"{'[dry] ' if dry else ''}[pass2] zh-tw/{slug}: {n}x")
+            print(f"{'[dry] ' if dry else ''}[pass2] zh-hk/{slug}: {n}x")
             print(f"      OLD: {old}")
             print(f"      NEW: {new_title}")
 
-    print(f"\npass2 (zh-TW derived from clean zh-CN): {p2_files} files")
+    print(f"\npass2 (zh-HK derived from clean zh-CN): {p2_files} files")
     print(f"{'[DRY RUN] ' if dry else ''}files updated: {total_files}, total replacements: {total_repl}")
     if skipped:
         print("skipped:", len(skipped))

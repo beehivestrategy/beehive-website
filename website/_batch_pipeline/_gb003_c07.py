@@ -100,13 +100,13 @@ ZH_FAQ = [
 
 
 def run():
-    b = {lg: stats(SLUG, lg) for lg in ('en', 'zh-cn', 'zh-tw')}
+    b = {lg: stats(SLUG, lg) for lg in ('en', 'zh-cn', 'zh-hk')}
     process(SLUG, 'en', h2_renames=EN_RENAMES, inserts=EN_INSERTS, faq=EN_FAQ, drop_body_faq=True)
     ZH_FAQ_CN = [(_T2S.convert(q), _T2S.convert(a)) for q, a in ZH_FAQ]
     process(SLUG, 'zh-cn', h2_renames=ZH_RENAMES, faq=ZH_FAQ_CN)
-    process(SLUG, 'zh-tw', h2_renames=TW_RENAMES, faq=[(s2tw(q), s2tw(a)) for q, a in ZH_FAQ_CN],
+    process(SLUG, 'zh-hk', h2_renames=TW_RENAMES, faq=[(s2tw(q), s2tw(a)) for q, a in ZH_FAQ_CN],
             drop_body_faq=True)
-    for lg in ('en', 'zh-cn', 'zh-tw'):
+    for lg in ('en', 'zh-cn', 'zh-hk'):
         print(lg, b[lg], '->', stats(SLUG, lg))
 
 

@@ -32,7 +32,7 @@ def cjk_count(s):
 
 results=[]
 for slug in slugs:
-    for lang, sub in [("EN","blog/articles"), ("zh-CN","zh-cn/blog/articles"), ("zh-TW","zh-tw/blog/articles")]:
+    for lang, sub in [("EN","blog/articles"), ("zh-CN","zh-cn/blog/articles"), ("zh-HK","zh-hk/blog/articles")]:
         path=os.path.join(ROOT, sub, slug+".html")
         if not os.path.exists(path):
             results.append((slug,lang,"MISSING",0,0,0,False,False,False,0))
@@ -70,7 +70,7 @@ for slug in slugs:
         rec_cards = re.findall(r'<a class="recommended-card" href="([^"]*)"', html)
         wrong_href=0
         for h in rec_cards:
-            prefix = {"EN":"/blog/articles/","zh-CN":"/zh-cn/blog/articles/","zh-TW":"/zh-tw/blog/articles/"}[lang]
+            prefix = {"EN":"/blog/articles/","zh-CN":"/zh-cn/blog/articles/","zh-HK":"/zh-hk/blog/articles/"}[lang]
             if not h.startswith(prefix):
                 wrong_href+=1
         empty_excerpt = len(re.findall(r'<p class="recommended-card-excerpt">\s*</p>', html))

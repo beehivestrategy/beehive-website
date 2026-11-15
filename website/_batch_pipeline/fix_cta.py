@@ -4,7 +4,7 @@ ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 slugs = [l.strip() for l in open(os.path.join(ROOT, "_batch_pipeline/batches/batch_005.txt")) if l.strip()]
 langs = [("EN","blog/articles","Book a Demo"),
          ("zh-CN","zh-cn/blog/articles","预约演示"),
-         ("zh-TW","zh-tw/blog/articles","預約示範")]
+         ("zh-HK","zh-hk/blog/articles","預約示範")]
 
 changed=[]
 for slug in slugs:

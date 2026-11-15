@@ -420,6 +420,90 @@
     DOM.revealElements.forEach(el => observer.observe(el));
   }
 
+  // ——— JS entrance fallback for engines without scroll timelines (2026-11-13) ———
+  // Textures and scroll-linked motion live in accenture.css section 20 and need
+  // no scripting, which is what covers the ~3,400 article pages that load only
+  // article.js. This JS path runs solely on Safari / Firefox, where
+  // animation-timeline: view() is unsupported, and adds a one-shot entrance.
+  // KEEP IN SYNC with the :not(:where(...)) exclusion list in accenture.css
+  // section 20.1. verify_site.py fails if the two lists ever diverge.
+  const TEX_SKIP = ('ed-hero ed-section--band ed-section--alt ed-hive-bg offer-hero '
+    + 'viz-pattern-grid viz-pattern-diag viz-pattern-rings bl-hero bl-f-visual '
+    + 'bl-featured-sec bl-pulse page-hero bg-hex-drift bg-dot-matrix bg-aurora '
+    + 'bg-data-stream bg-glow-pulse').split(' ');
+
+  function initScrollEntranceMotion() {
+    // Chrome / Edge already animate continuously with animation-timeline:
+    // view(). Adding JS transitions there would fight the CSS transform.
+    if (window.CSS && CSS.supports && CSS.supports('animation-timeline', 'view()')) return;
+    if (CONFIG.prefersReducedMotion || !('IntersectionObserver' in window)) return;
+
+    const main = document.querySelector('main');
+    if (!main) return;
+
+    // Only top-level bands. Sections nested inside another section are left
+    // alone so a page never stacks three motion layers the way the old home
+    // hero did.
+    const bands = [];
+    Array.prototype.forEach.call(main.querySelectorAll('section'), function (s) {
+      if (s.parentElement && s.parentElement.closest('section')) return;
+      for (let i = 0; i < TEX_SKIP.length; i++) {
+        if (s.classList.contains(TEX_SKIP[i])) return;
+      }
+      if (s.getAttribute('style') && /background/i.test(s.getAttribute('style'))) return;
+      bands.push(s);
+    });
+
+    const DIRS = ['up', 'left', 'right', 'zoom', 'rise', 'fade'];
+    const MAX_BLOCKS = 48;   // the 1,100-card blog index must not register 1,100 observers
+    const PER_BAND = 6;
+    const NO_ANIMATE = /^(?:SCRIPT|STYLE|NOSCRIPT|IFRAME|SVG|NAV)$/;
+    const observed = [];
+    let motionCount = 0;
+
+    bands.forEach(function (band) {
+      if (motionCount >= MAX_BLOCKS) return;
+      let taken = 0;
+      Array.prototype.forEach.call(band.children, function (kid) {
+        if (taken >= PER_BAND || motionCount >= MAX_BLOCKS) return;
+        if (NO_ANIMATE.test(kid.tagName)) return;
+        // A band usually starts with one wrapper (.container / .bl-wrap).
+        // Animate its direct children so headings, grids and figures move
+        // as units rather than sliding the whole band.
+        const list = (kid.tagName === 'DIV' && kid.children.length)
+          ? Array.prototype.slice.call(kid.children) : [kid];
+        list.forEach(function (el) {
+          if (taken >= PER_BAND || motionCount >= MAX_BLOCKS) return;
+          if (NO_ANIMATE.test(el.tagName)) return;
+          if (el.classList.contains('reveal') || el.querySelector('.reveal')) return;
+          if (el.closest('.blog-grid, .pag-hidden, .ed-carousel-track, .ed-dash')) return;
+          if (el.querySelector('input, select, textarea, button')) return;
+          if (el.offsetHeight < 24) return;
+          el.classList.add('ed-motion');
+          el.setAttribute('data-mo', DIRS[(motionCount + taken) % DIRS.length]);
+          el.style.setProperty('--mo-i', String(taken % 5));
+          observed.push(el);
+          taken++;
+          motionCount++;
+        });
+      });
+    });
+
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-inview');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0, rootMargin: '0px 0px 140px 0px' });
+    observed.forEach(function (el) { io.observe(el); });
+
+    // Failsafe: an observer that never fires must not leave content hidden.
+    setTimeout(function () {
+      observed.forEach(function (el) { el.classList.add('is-inview'); });
+    }, 4000);
+  }
+
   // ——— Counter Animation (Enhanced) ———
   function initCounterAnimation() {
     // Support both data-target and data-counter attributes
@@ -433,6 +517,8 @@
       const isFloat = raw && raw.includes('.');
       const suffix = el.dataset.suffix || '';
       const prefix = el.dataset.prefix || '';
+      // 历史页面的单位后缀是 <span>（如 <span>Months</span>），需保留该节点
+      const suffixSpan = el.querySelector('span');
       const duration = parseInt(el.dataset.duration, 10) || 2000;
       const start = performance.now();
 
@@ -441,7 +527,22 @@
         const progress = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 4);
         const current = isFloat ? (eased * target).toFixed(1) : Math.round(eased * target);
-        el.textContent = prefix + current + suffix;
+
+        // 历史页面常把后缀写成 <span>Months</span> / <span>%</span>，
+        // 直接赋值 el.textContent 会把它一起抹掉（旧站遗留缺陷）。
+        // 若存在子 span，则只更新它前面的文本节点，保留后缀标记。
+        if (suffixSpan) {
+          const txt = prefix + current;
+          if (el.__leadNode && el.__leadNode.parentNode === el) {
+            el.__leadNode.nodeValue = txt;
+          } else {
+            while (el.firstChild && el.firstChild !== suffixSpan) el.removeChild(el.firstChild);
+            el.__leadNode = document.createTextNode(txt);
+            el.insertBefore(el.__leadNode, suffixSpan);
+          }
+        } else {
+          el.textContent = prefix + current + suffix;
+        }
 
         if (progress < 1) {
           requestAnimationFrame(update);
@@ -976,8 +1077,8 @@
     if (path.indexOf('/zh-cn/') !== -1) {
       currentLang = 'zh-cn';
       currentLabel = '简';
-    } else if (path.indexOf('/zh-tw/') !== -1) {
-      currentLang = 'zh-tw';
+    } else if (path.indexOf('/zh-hk/') !== -1) {
+      currentLang = 'zh-hk';
       currentLabel = '繁';
     }
 
@@ -995,20 +1096,20 @@
 
     // Build alternate paths (always use clean URLs, no .html extension)
     const isZhCn = path.indexOf('/zh-cn/') === 0;
-    const isZhTw = path.indexOf('/zh-tw/') === 0;
-    let basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-tw/, '') : path);
+    const isZhTw = path.indexOf('/zh-hk/') === 0;
+    let basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-hk/, '') : path);
     // Normalize: strip .html, ensure trailing slash for index
     if (basePath === '' || basePath === '/') basePath = '/';
     else if (basePath === '/index') basePath = '/';
     const enPath = basePath;
     const zhCnPath = '/zh-cn' + basePath;
-    const zhTwPath = '/zh-tw' + basePath;
+    const zhTwPath = '/zh-hk' + basePath;
 
     dropdownLinks.forEach(link => {
       const dl = link.getAttribute('data-lang');
       if (dl === 'en') link.setAttribute('href', enPath);
       else if (dl === 'zh-cn') link.setAttribute('href', zhCnPath);
-      else if (dl === 'zh-tw') link.setAttribute('href', zhTwPath);
+      else if (dl === 'zh-hk') link.setAttribute('href', zhTwPath);
     });
 
     // Toggle dropdown
@@ -1072,6 +1173,9 @@
     // (blog index has 1,100+ cards / ~220k px) idle never arrives, leaving the
     // whole page invisible for many seconds.
     try { initScrollReveal(); } catch(e) {}
+    // Entrance fallback for engines without CSS scroll timelines. Must not be
+    // deferred: a late .ed-motion class would make visible content blink.
+    try { initScrollEntranceMotion(); } catch(e) {}
     
     // Defer non-critical visual enhancements to improve INP
     // Use requestIdleCallback if available, otherwise setTimeout

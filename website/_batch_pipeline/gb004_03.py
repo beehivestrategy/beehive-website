@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """gb004_03 — ai-powered-scenario-planning-enterprise-strategy
 EN: full rewrite (>=2500 words, question H2s, h3 FAQ, body JSON-LD).
-zh-CN / zh-TW: patch in place (convert H2s to questions, replace FAQ with
+zh-CN / zh-HK: patch in place (convert H2s to questions, replace FAQ with
 standard <h3> block + body FAQPage JSON-LD), preserving existing long body.
 """
 import os, sys
@@ -71,7 +71,7 @@ EN = {
     "faq_h2": "Frequently Asked Questions",
 }
 
-# zh FAQ (simplified); aligned with EN FAQ. zh-TW derived via OpenCC.
+# zh FAQ (simplified); aligned with EN FAQ. zh-HK derived via OpenCC.
 ZH_FAQ = [
     ("AI如何改善传统情景规划？",
      "AI处理数千种变量组合，识别非显而易见的相关性，并随条件变化实时更新情景，覆盖的风险因素远超任何人工团队。"),
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     paths = {
         "en": os.path.join(ROOT, "blog/articles", SLUG + ".html"),
         "zh-cn": os.path.join(ROOT, "zh-cn/blog/articles", SLUG + ".html"),
-        "zh-tw": os.path.join(ROOT, "zh-tw/blog/articles", SLUG + ".html"),
+        "zh-hk": os.path.join(ROOT, "zh-hk/blog/articles", SLUG + ".html"),
     }
     # EN: full rewrite
     en_inner = render_inner(EN)
@@ -109,9 +109,9 @@ if __name__ == "__main__":
 
     # zh-CN patch
     zh_cjk = patch_lang(paths["zh-cn"], H2_CN, ZH_FAQ, "常见问题")
-    # zh-TW patch
+    # zh-HK patch
     tw_faq = [(CC.convert(q), CC.convert(a)) for q, a in ZH_FAQ]
-    tw_cjk = patch_lang(paths["zh-tw"], H2_TW, tw_faq, "常見問題")
+    tw_cjk = patch_lang(paths["zh-hk"], H2_TW, tw_faq, "常見問題")
 
     rep = {
         "slug": SLUG,

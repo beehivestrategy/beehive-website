@@ -22,10 +22,10 @@ Use the Read tool, then the Edit tool. **NEVER rewrite an entire file with Write
 
 ## STANDARD TO APPLY
 - **EN body >= 2500 English words.** Expand with genuinely useful content (deeper explanation, examples, mini case snippets, numbered steps, comparison tables). Keep existing intro → question-H2 → FAQ → recommended → CTA structure. EN H2s must be questions ending with `?`.
-- **zh-CN / zh-TW:** if current CJK inside the article `< 3500`, expand to `>= 3500` CJK in the correct script (zh-CN = Simplified, zh-TW = Traditional — proper OpenCC-style conversion, not phrase swaps). zh H2s must be questions (如何/什么是/为什么/怎么/是否/怎样…？).
+- **zh-CN / zh-HK:** if current CJK inside the article `< 3500`, expand to `>= 3500` CJK in the correct script (zh-CN = Simplified, zh-HK = Traditional — proper OpenCC-style conversion, not phrase swaps). zh H2s must be questions (如何/什么是/为什么/怎么/是否/怎样…？).
 - **FAQ:** If a file already has a `faq-section` with `>=3` `faq-item` pairs AND a matching FAQPage JSON-LD in `<head>`, **do NOT modify the FAQ or its JSON-LD** — only expand the body. If a file lacks a FAQ section (faq count 0) or has `<3`, ADD/complete one before the `<nav class="article-nav">` block with `>=3` question/answer pairs, using the site's existing faq markup pattern (copy it from a sibling file that has it). Then ensure a matching FAQPage JSON-LD exists — add it immediately after the FAQ section's closing `</section>` if missing. The JSON-LD `mainEntity` `name` values must exactly match the FAQ questions.
-- **CTA phrase:** EN file must contain `Book a Demo` in the `.article-cta-btn`; zh-CN `预约演示`; zh-TW `預約示範`. If missing, add the phrase into the CTA button text (preserve surrounding CTA markup).
-- **Internal links:** all internal article links must be root-relative + language-prefixed: EN `/blog/articles/...`, zh-CN `/zh-cn/blog/articles/...`, zh-TW `/zh-tw/blog/articles/...`. Fix any `blog/articles/...` (no leading slash) or wrong-language prefixes. Populate any empty `<p class="recommended-card-excerpt"></p>` with a 1-sentence summary. Leave external `https://` links and `/css`, `/js`, `/assets` links untouched.
+- **CTA phrase:** EN file must contain `Book a Demo` in the `.article-cta-btn`; zh-CN `预约演示`; zh-HK `預約示範`. If missing, add the phrase into the CTA button text (preserve surrounding CTA markup).
+- **Internal links:** all internal article links must be root-relative + language-prefixed: EN `/blog/articles/...`, zh-CN `/zh-cn/blog/articles/...`, zh-HK `/zh-hk/blog/articles/...`. Fix any `blog/articles/...` (no leading slash) or wrong-language prefixes. Populate any empty `<p class="recommended-card-excerpt"></p>` with a 1-sentence summary. Leave external `https://` links and `/css`, `/js`, `/assets` links untouched.
 
 ## VALIDATION (run via Bash python after edits)
 - EN words inside article-content (`[A-Za-z0-9']+`) `>= 2500`.
@@ -35,6 +35,6 @@ Use the Read tool, then the Edit tool. **NEVER rewrite an entire file with Write
 - `article.css?v=20260826` and `article.js?v=20260826` tags still present; footer/header/share markup unchanged (grep confirms presence).
 
 ## REPORT (<=200 words)
-Covering your assigned slugs: for each slug list EN words before/after, zh-CN CJK before/after, zh-TW CJK before/after, FAQ count, JSON-LD added y/n, any failure. Do NOT paste article content. Read `_batch_pipeline/before_metrics.json` for the "before" numbers.
+Covering your assigned slugs: for each slug list EN words before/after, zh-CN CJK before/after, zh-HK CJK before/after, FAQ count, JSON-LD added y/n, any failure. Do NOT paste article content. Read `_batch_pipeline/before_metrics.json` for the "before" numbers.
 
 Work autonomously; do not ask questions. If a file is missing, report it as a failure.

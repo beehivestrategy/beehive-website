@@ -13,7 +13,7 @@ Source of truth = 三语 fde 模板（与首页 index.html 同一设计）。
   python3 website/_chrome/chrome_audit.py            # 全站审计，exit 0=绿 1=有 drift
   python3 website/_chrome/chrome_audit.py blog/     # 只审计子路径
 KNOWN 白名单：结构性特殊页（wechat 预览、training/opc）+ 已报备观察项
-（zh-cn.html / zh-tw.html hub 未本地化）——打印为 KNOWN，不影响 exit code。
+（zh-cn.html / zh-hk.html hub 未本地化）——打印为 KNOWN，不影响 exit code。
 """
 import os
 import re
@@ -21,14 +21,14 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-TEMPLATES = {"en": "fde.html", "zh-cn": "zh-cn/fde.html", "zh-tw": "zh-tw/fde.html"}
+TEMPLATES = {"en": "fde.html", "zh-cn": "zh-cn/fde.html", "zh-hk": "zh-hk/fde.html"}
 EXCLUDE_DIRS = ("_batch_pipeline", "node_modules", ".git", "beehive-homepage-draft",
                 "beehive-homepage", "seo-audit-report", "seo-audit-summary",
                 "templates", "_chrome")
 KNOWN_PREFIXES = ("wechat-preview", "wechat-draft-preview",
                   "wechat-article-draft-preview", "training/opc/")
 KNOWN_PAGES = {"zh-cn.html": "hub header 未本地化（EN 链接）— 观察项",
-               "zh-tw.html": "hub header 未本地化 — 观察项"}
+               "zh-hk.html": "hub header 未本地化 — 观察项"}
 
 
 def read(p):
@@ -60,7 +60,7 @@ def mobile_menu(s):
 def norm(x):
     if x is None:
         return None
-    x = re.sub(r'(<a\s[^>]*?href=")[^"]*("[^>]*?data-lang="(?:en|zh-cn|zh-tw)")',
+    x = re.sub(r'(<a\s[^>]*?href=")[^"]*("[^>]*?data-lang="(?:en|zh-cn|zh-hk)")',
                r"\1X\2", x)
     x = x.replace('class="nav-link active"', 'class="nav-link"')
     x = re.sub(r"/cdn-cgi/l/email-protection#[0-9a-f]+", "EMAILPROT", x)
@@ -71,8 +71,8 @@ def norm(x):
 def lang_of(rel):
     if rel.startswith("zh-cn/"):
         return "zh-cn"
-    if rel.startswith("zh-tw/"):
-        return "zh-tw"
+    if rel.startswith("zh-hk/"):
+        return "zh-hk"
     return "en"
 
 

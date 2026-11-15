@@ -15,9 +15,9 @@ COMMON_TW = {
     'Technology': '技術',
 }
 
-# ---------- FAQ content for the 8 zh-tw files ----------
+# ---------- FAQ content for the 8 zh-hk files ----------
 FAQ = {
-'zh-tw/blog/articles/ai-agent-memory-persistence-patterns.html': [
+'zh-hk/blog/articles/ai-agent-memory-persistence-patterns.html': [
  ("長期運行的AI智能體為什麼需要獨立的記憶層？",
   "若每次對話都從零開始，智能體無法累積業務語境，也難以承接跨週期的任務。本文指出，2025年企業架構的競爭焦點已從單次回答品質轉向持續性能力；採用標準化MCP協議的組織整合時間減少47%，正是因為記憶與資料存取被收斂到可治理的單一層級。"),
  ("記憶持久化在生產環境最容易踩到哪些坑？",
@@ -27,7 +27,7 @@ FAQ = {
  ("該如何為記憶層的投資設定回報預期？",
   "建議以分階段驗證取代一次性上線：先在高價值、低風險的用例中確認記憶帶來的決策改善，再逐步擴大範圍。文中指出，領先行業的AI投資回本期已從24個月縮短至14個月；把持續優化視為長期旅程的企業，成功率比同業平均高出3.2倍。"),
 ],
-'zh-tw/blog/articles/ai-agent-orchestration-patterns-production.html': [
+'zh-hk/blog/articles/ai-agent-orchestration-patterns-production.html': [
  ("生產環境的編排與概念驗證有什麼本質差別？",
   "概念驗證只需證明單一路徑可行，生產編排則要同時處理失敗重試、權限邊界與可觀測性。本文指出，2025年最成功的企業採用分階段部署模型，先全面評估現有能力，再以有針對性的試點產生可衡量結果，之後才擴展到更廣泛的企業架構用例。"),
  ("為什麼編排在2025年成為企業AI的關鍵瓶頸？",
@@ -37,7 +37,7 @@ FAQ = {
  ("編排失效時的風險該如何控制？",
   "應把治理前置到架構設計，而非事後補救。文中指出，設立專責治理團隊的組織回報監管發現少55%、新市場合規時間快40%；同時建議為每個編排環節預留可隨時介入的開關，並以定期能力評估機制追蹤最佳實務的變化。"),
 ],
-'zh-tw/blog/articles/ai-agent-safety-guardrails-production.html': [
+'zh-hk/blog/articles/ai-agent-safety-guardrails-production.html': [
  ("防護欄與傳統應用安全控制有何不同？",
   "傳統控制防的是可預期的輸入，防護欄要處理的是模型自主產生的不確定行為。本文建議把安全視為架構設計的一部分：事先定義整合邊界的組織，回報的整合問題少45%、上市時間快30%，明顯優於上線後才補強的做法。"),
  ("上線前最少需要建立哪些防護機制？",
@@ -47,7 +47,7 @@ FAQ = {
  ("防護規則上線後該如何持續維運？",
   "應建立定期的能力評估機制，持續追蹤業界最佳實務與威脅型態的變化，並依業務需求調整策略方向。文中指出，把治理視為持續旅程而非一次性專案的企業，長期成功率比同業平均高出3.2倍，證明反覆迭代比靜態規則可靠。"),
 ],
-'zh-tw/blog/articles/ai-agent-testing-strategies-enterprise.html': [
+'zh-hk/blog/articles/ai-agent-testing-strategies-enterprise.html': [
  ("智能體為什麼不能用傳統軟體測試方法驗收？",
   "傳統測試假設相同輸入會得到相同輸出，智能體的回應則帶有變異性。本文建議改以分階段部署模型驗證：先全面評估現有能力，再以有針對性的試點產生可衡量結果，之後才擴展到更廣泛的企業架構用例，讓可靠性在真實場景中逐步被證明。"),
  ("測試應該覆蓋到哪些層面才算完整？",
@@ -57,7 +57,7 @@ FAQ = {
  ("測試投入要多久才能看到回報？",
   "建議以高價值、低風險的用例先行，累積可衡量的改善後再擴大範圍。文中指出，領先行業的AI投資回本期已從24個月縮短至14個月；而把可靠性建設視為持續旅程的企業，長期成功率比同業平均高出3.2倍。"),
 ],
-'zh-tw/blog/articles/ai-agentic-workflows-automation-platform.html': [
+'zh-hk/blog/articles/ai-agentic-workflows-automation-platform.html': [
  ("智能體工作流與傳統流程自動化有什麼本質差異？",
   "傳統自動化依賴事先寫死的規則，智能體工作流能依據上下文自行決定下一步。本文指出，2025年最有效的部署並非全面替換既有流程，而是先深刻理解現有工作方式，再以洞察增強人類決策，形成系統與領域專家互補的協作關係。"),
  ("從單一智能體擴展到多智能體協同時會遇到什麼？",
@@ -67,7 +67,7 @@ FAQ = {
  ("平台建好後如何維持長期價值？",
   "應建立定期的能力評估機制，追蹤最佳實務並隨業務變化調整方向。文中指出，把自動化建設視為持續旅程而非一次性專案的企業，長期成功率比同業平均高出3.2倍；領先行業的AI投資回本期也已從24個月縮短至14個月。"),
 ],
-'zh-tw/blog/articles/ai-budgeting-2026-fiscal-year-planning.html': [
+'zh-hk/blog/articles/ai-budgeting-2026-fiscal-year-planning.html': [
  ("2026財年AI預算該從試點還是平台開始分配？",
   "數據給出明確訊號：72%的企業至少有一個AI試點在生產環境運行，但只有23%擴展到單一部門之外。預算重點應從「再多幾個試點」轉向讓既有試點跨出單一部門，否則投入會持續卡在驗證階段，難以形成規模效應。"),
  ("AI預算該由IT部門還是業務單位主導？",
@@ -77,7 +77,7 @@ FAQ = {
  ("2026財年該把多少預算留給資料基礎？",
   "建議優先於應用層。經驗顯示，在啟動AI計畫前先投資強大資料基礎的組織，表現始終優於同時並行建置資料品質與AI能力的組織。此外應保留治理預算：設有專責治理團隊者回報監管發現少55%、新市場合規時間快40%。"),
 ],
-'zh-tw/blog/articles/ai-copyright-global-policies-august-2025.html': [
+'zh-hk/blog/articles/ai-copyright-global-policies-august-2025.html': [
  ("企業現在最該追蹤哪些AI版權法域的變化？",
   "截至2025年8月，監管格局在多個法域同步推進：東盟的新框架、美國各州陸續成文的規定，以及更新的歐盟AI法案實施指南，都需要全球合規團隊持續關注。建議以法域為單位指派責任人，而非等法規生效才啟動評估。"),
  ("跨法域營運時，合規架構該怎麼設計？",
@@ -87,7 +87,7 @@ FAQ = {
  ("合規投入如何轉化為可衡量的商業價值？",
   "合規不只是成本。研究顯示，設有專責AI治理職能的組織，價值實現速度比把職責分散在IT部門者快2.8倍；而把治理視為持續旅程的企業，長期成功率比同業平均高出3.2倍，顯示治理成熟度與商業回報高度相關。"),
 ],
-'zh-tw/blog/articles/ai-ethics-board-setup-corporate-governance.html': [
+'zh-hk/blog/articles/ai-ethics-board-setup-corporate-governance.html': [
  ("AI倫理委員會該由哪些成員組成才有效？",
   "建議橫跨法務、風險、資料與業務單位，並由C級主管擔任召集人。針對50個企業部署的分析顯示，成功最強的預測因素不是技術選型或預算規模，而是高階主管支持與跨職能治理的一致程度；由C級主管積極推動的公司價值實現速度快3.2倍。"),
  ("倫理委員會與既有治理機制該如何分工？",
@@ -266,18 +266,18 @@ add(A+'why-data-strategy-needs-ai-agent-layer-2026.html',
          'How the AI Agent Layer Works in Practice': 'AI智能体层在实践中如何运作？',
          'Building Your AI Agent Layer: A Roadmap': '构建AI智能体层的路线图？'})
 
-# zh-tw per-file
+# zh-hk per-file
 TW_FILES = {}
 for rel in FAQ:
     TW_FILES[rel] = {'h': {}, 'toc': {}, 'tags': {}}
-TW_FILES['zh-tw/blog/articles/ai-agent-memory-persistence-patterns.html']['tags'] = {'data integration': '資料整合'}
-TW_FILES['zh-tw/blog/articles/ai-agent-orchestration-patterns-production.html']['tags'] = {'data integration': '資料整合'}
-TW_FILES['zh-tw/blog/articles/ai-agent-safety-guardrails-production.html']['tags'] = {'data integration': '資料整合'}
-TW_FILES['zh-tw/blog/articles/ai-agent-testing-strategies-enterprise.html']['tags'] = {'data integration': '資料整合'}
-TW_FILES['zh-tw/blog/articles/ai-agentic-workflows-automation-platform.html']['tags'] = {'data integration': '資料整合'}
-TW_FILES['zh-tw/blog/articles/ai-budgeting-2026-fiscal-year-planning.html']['tags'] = {'AI ROI': 'AI投資回報'}
-TW_FILES['zh-tw/blog/articles/ai-copyright-global-policies-august-2025.html']['tags'] = {'regulation': '法規'}
-TW_FILES['zh-tw/blog/articles/ai-ethics-board-setup-corporate-governance.html']['tags'] = {'AI ROI': 'AI投資回報'}
+TW_FILES['zh-hk/blog/articles/ai-agent-memory-persistence-patterns.html']['tags'] = {'data integration': '資料整合'}
+TW_FILES['zh-hk/blog/articles/ai-agent-orchestration-patterns-production.html']['tags'] = {'data integration': '資料整合'}
+TW_FILES['zh-hk/blog/articles/ai-agent-safety-guardrails-production.html']['tags'] = {'data integration': '資料整合'}
+TW_FILES['zh-hk/blog/articles/ai-agent-testing-strategies-enterprise.html']['tags'] = {'data integration': '資料整合'}
+TW_FILES['zh-hk/blog/articles/ai-agentic-workflows-automation-platform.html']['tags'] = {'data integration': '資料整合'}
+TW_FILES['zh-hk/blog/articles/ai-budgeting-2026-fiscal-year-planning.html']['tags'] = {'AI ROI': 'AI投資回報'}
+TW_FILES['zh-hk/blog/articles/ai-copyright-global-policies-august-2025.html']['tags'] = {'regulation': '法規'}
+TW_FILES['zh-hk/blog/articles/ai-ethics-board-setup-corporate-governance.html']['tags'] = {'AI ROI': 'AI投資回報'}
 
 # ---------- replacement helpers ----------
 def sub_text(src, pattern, mapping, group=1):
@@ -371,7 +371,7 @@ def process(rel, dry=False):
     d0 = len(re.findall(r'<div\b', src)) - len(re.findall(r'</div>', src))
     counter = {'h': 0, 'toc': 0, 'tag': 0, 'cat': 0, 'faq': 0}
 
-    tw = rel.startswith('zh-tw')
+    tw = rel.startswith('zh-hk')
     common = COMMON_TW if tw else COMMON_CN
     cfg = TW_FILES.get(rel) if tw else CN.get(rel)
 

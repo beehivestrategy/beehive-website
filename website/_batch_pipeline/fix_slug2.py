@@ -5,7 +5,7 @@ slug = "enterprise-ai-adoption-trends-2026-what-data-reveals"
 files = {
     "en": f"blog/articles/{slug}.html",
     "cn": f"zh-cn/blog/articles/{slug}.html",
-    "tw": f"zh-tw/blog/articles/{slug}.html",
+    "tw": f"zh-hk/blog/articles/{slug}.html",
 }
 
 def dedupe(html):
@@ -23,12 +23,12 @@ for lang, rel in files.items():
     changed = (h2 != h)
     if changed:
         open(p, 'w', encoding='utf-8').write(h2)
-    # zh-TW CTA phrase fix (target article-cta-btn only)
+    # zh-HK CTA phrase fix (target article-cta-btn only)
     if lang == 'tw':
         if 'class="article-cta-btn">預約演示</a>' in h2:
             h2 = h2.replace('class="article-cta-btn">預約演示</a>', 'class="article-cta-btn">預約示範</a>')
             open(p, 'w', encoding='utf-8').write(h2)
-            print("zh-TW CTA fixed to 預約示範")
+            print("zh-HK CTA fixed to 預約示範")
     # report
     cjk = len(re.findall(r'[\u4e00-\u9fff\u3400-\u4dbf]', h2))
     faq = h2.count('faq-question-h3')

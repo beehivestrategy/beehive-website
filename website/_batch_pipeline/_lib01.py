@@ -3,7 +3,7 @@ import re, os, json
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
 
 def path(slug, lang):
-    pref = {"EN": "", "CN": "zh-cn/", "TW": "zh-tw/"}[lang]
+    pref = {"EN": "", "CN": "zh-cn/", "TW": "zh-hk/"}[lang]
     return os.path.join(ROOT, pref + "blog/articles/" + slug + ".html")
 
 def load(slug, lang):
@@ -88,7 +88,7 @@ def fix_rec_hrefs(html):
         if not href.startswith('/'):
             href = '/' + href
         return m.group(0).replace('href="%s"' % m.group(1), 'href="%s"' % href)
-    return re.sub(r'<a href="((?:blog|zh-cn|zh-tw)[^"]*)"([^>]*class="recommended-card")', repl, html)
+    return re.sub(r'<a href="((?:blog|zh-cn|zh-hk)[^"]*)"([^>]*class="recommended-card")', repl, html)
 
 def faq_after_ld(html, qa):
     """Insert FAQPage ld+json right after faq section's closing </section>."""

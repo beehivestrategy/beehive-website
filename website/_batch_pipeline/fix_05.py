@@ -102,5 +102,5 @@ CTA_ZH='''
 # EN already >=2500; just wrap FAQ, convert H2s, add CTA
 process(os.path.join(ROOT,"blog/articles/"+SLUG+".html"), h2map=EN_H2, cta=CTA_EN, do_wrap=True)
 process(os.path.join(ROOT,"zh-cn/blog/articles/"+SLUG+".html"), expand=ZH_EXPAND, h2map=ZH_H2, cta=CTA_ZH, do_wrap=True)
-process(os.path.join(ROOT,"zh-tw/blog/articles/"+SLUG+".html"), expand=ZH_EXPAND, h2map=ZH_H2, cta=CTA_ZH, do_wrap=True, tw=True)
+process(os.path.join(ROOT,"zh-hk/blog/articles/"+SLUG+".html"), expand=ZH_EXPAND, h2map=ZH_H2, cta=CTA_ZH, do_wrap=True, tw=True)
 print("done", SLUG)

@@ -66,13 +66,13 @@ if 'faq-question-h3' not in h[:e]:
     open(zh_p, 'w', encoding='utf-8').write(h)
     print("zh-CN: FAQ added")
 
-# zh-TW
-zhtw_p = base + "/zh-tw/blog/articles/" + slug + ".html"
-h = open(zhtw_p, encoding='utf-8').read()
+# zh-HK
+zhhk_p = base + "/zh-hk/blog/articles/" + slug + ".html"
+h = open(zhhk_p, encoding='utf-8').read()
 e = h.find('<nav class="article-nav"')
 if 'faq-question-h3' not in h[:e]:
-    h = h[:e] + "\n" + build_faq(head_faq_items(zhtw_p), "常見問題") + "\n" + h[e:]
-    open(zhtw_p, 'w', encoding='utf-8').write(h)
-    print("zh-TW: FAQ added")
+    h = h[:e] + "\n" + build_faq(head_faq_items(zhhk_p), "常見問題") + "\n" + h[e:]
+    open(zhhk_p, 'w', encoding='utf-8').write(h)
+    print("zh-HK: FAQ added")
 
 print("slug15 done")

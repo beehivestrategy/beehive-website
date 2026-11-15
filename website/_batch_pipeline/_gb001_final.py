@@ -7,14 +7,14 @@ import _gb001_lib as L
 
 ROOT = L.ROOT
 SLUGS = [l.strip() for l in open(os.path.join(ROOT, "_batch_pipeline/gap_batches/gbatch_001.txt")) if l.strip()]
-PHRASE = {"en": "Book a Demo", "zh-CN": "预约演示", "zh-TW": "預約示範"}
-PREFIX = {"en": "/blog/articles/", "zh-CN": "/zh-cn/blog/articles/", "zh-TW": "/zh-tw/blog/articles/"}
+PHRASE = {"en": "Book a Demo", "zh-CN": "预约演示", "zh-HK": "預約示範"}
+PREFIX = {"en": "/blog/articles/", "zh-CN": "/zh-cn/blog/articles/", "zh-HK": "/zh-hk/blog/articles/"}
 BAD = ["Lorem", "TODO", "TBD", "coming soon", "占位", "待补充", "{{", "lorem ipsum"]
 
 fails = []
 for s in SLUGS:
     row = [s]
-    for lang in ("en", "zh-CN", "zh-TW"):
+    for lang in ("en", "zh-CN", "zh-HK"):
         h = L.read(s, lang)
         problems = []
         # 1 length

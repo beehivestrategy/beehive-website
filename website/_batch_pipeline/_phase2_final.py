@@ -201,7 +201,7 @@ def faq_count(html):
 report = []
 for slug in SLUGS:
     topic = slug_to_title(slug)
-    for lang, sub in [("en","blog/articles"),("cn","zh-cn/blog/articles"),("tw","zh-tw/blog/articles")]:
+    for lang, sub in [("en","blog/articles"),("cn","zh-cn/blog/articles"),("tw","zh-hk/blog/articles")]:
         fn = os.path.join(BASE, sub, slug+".html")
         raw = open(fn, encoding="utf-8").read()
         head0 = raw[:raw.index("<body")]

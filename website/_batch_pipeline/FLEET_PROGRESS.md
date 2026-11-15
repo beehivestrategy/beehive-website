@@ -3,7 +3,7 @@
 ## Last updated: 2026-08-30 01:10 HKT
 
 ### True content-audit state (audit_content.py, fresh run)
-- Per-language at standard: EN **446/1061**, zh-CN **697/1061**, zh-TW **697/1061**.
+- Per-language at standard: EN **446/1061**, zh-CN **697/1061**, zh-HK **697/1061**.
 - **Slugs fully at standard (all 3 langs): 399/1061** (1061 − 662 gaps).
 - **Slugs NOT fully at standard: 662** → split into **45 gap batches** (gbatch_001..045, 15 slugs each) in `gap_batches/`.
 - Dominant gap: EN length (608 EN len_fail vs 364 zh).
@@ -16,7 +16,7 @@
 - **default bucket walled until 2026-08-30 02:52 HKT** (resets soon — the main engine).
 
 ### Free hardening DONE (no LLM quota)
-- **zh-TW canonical fix: 178 files** had `<link rel="canonical">` + `og:url` pointing to `/zh-cn/` instead of `/zh-tw/` → all corrected to self-canonical `/zh-tw/` (hreflang alternates left intact). Verified 0 remaining mismatches across all 3 langs.
+- **zh-HK canonical fix: 178 files** had `<link rel="canonical">` + `og:url` pointing to `/zh-cn/` instead of `/zh-hk/` → all corrected to self-canonical `/zh-hk/` (hreflang alternates left intact). Verified 0 remaining mismatches across all 3 langs.
 - **JSON-LD dedupe: 289 redundant blocks removed** — rewrite agents had been adding BODY copies on top of pre-existing HEAD copies (duplicate FAQPage JSON-LD). Now exactly ONE per file; 0 need manual review. NOTE: dedupe keeps the HEAD copy when both exist — head/boby placement is acceptable for SEO (JSON-LD valid anywhere), but FINALIZE's `backfill_jsonld.py` should be allowed to normalize to BODY if desired.
 - `backfill_jsonld.py` (FINALIZE) regenerates all JSON-LD from on-page FAQ.
 
@@ -36,7 +36,7 @@
 - `SUBAGENT_BRIEF_STANDARD.md` — agent instructions + guardrails (single source of truth).
 - `audit_content.py` — compliance audit (source of truth).
 - `dedupe_jsonld.py` / `backfill_jsonld.py` / `scan_dupe.py` — JSON-LD hygiene.
-- `fix_zhtw_canonical.py` — canonical/og:url correction (already run, 178 files).
+- `fix_zhhk_canonical.py` — canonical/og:url correction (already run, 178 files).
 - `gap_batches/gbatch_NNN.txt` — current 666-gap batch list (regenerated 01:10).
 - Root generators in `website/`: generate_blog_index_all.py, generate_blog_shadows.py, generate_sitemap_full.py.
 - Deploy: `cd website && npx wrangler@4 pages deploy . --project-name beehive-strategy --commit-dirty`

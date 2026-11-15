@@ -17,7 +17,7 @@ def _blocks(bs):
 
 
 def apply_spec(slug, specs, verbose=True):
-    """specs: {'EN': {...}, 'zh-CN': {...}, 'zh-TW': {...}}"""
+    """specs: {'EN': {...}, 'zh-CN': {...}, 'zh-HK': {...}}"""
     report = {}
     for lang, d in LANGS:
         sp = specs.get(lang)
@@ -82,7 +82,7 @@ def apply_spec(slug, specs, verbose=True):
 
 
 def zh_from_cn(cn_spec):
-    """Derive a zh-TW spec from a zh-CN spec (headings + prose + FAQ)."""
+    """Derive a zh-HK spec from a zh-CN spec (headings + prose + FAQ)."""
     out = {}
     for k, v in cn_spec.items():
         if k == "rename":

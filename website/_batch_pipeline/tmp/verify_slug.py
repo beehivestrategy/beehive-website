@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Reusable safety verifier: usage: python3 verify_slug.py <slug>  (checks EN/zh-CN/zh-TW)"""
+"""Reusable safety verifier: usage: python3 verify_slug.py <slug>  (checks EN/zh-CN/zh-HK)"""
 import re, io, sys
 
 ROOT = "/Users/kennethkwok/Beehive Strategy/0 - New Beehive/website"
@@ -7,7 +7,7 @@ slug = sys.argv[1]
 files = {
     "EN":   f"{ROOT}/blog/articles/{slug}.html",
     "zhCN": f"{ROOT}/zh-cn/blog/articles/{slug}.html",
-    "zhTW": f"{ROOT}/zh-tw/blog/articles/{slug}.html",
+    "zhTW": f"{ROOT}/zh-hk/blog/articles/{slug}.html",
 }
 ok = True
 for tag, f in files.items():
@@ -32,10 +32,10 @@ for tag, f in files.items():
     ]
     if tag == "EN":
         res.append(("CTA Book a Demo", 'class="article-cta-btn">Book a Demo' in s))
-        res.append(("lang links", '/zh-cn/blog/articles/%s' % slug in s and '/zh-tw/blog/articles/%s' % slug in s))
+        res.append(("lang links", '/zh-cn/blog/articles/%s' % slug in s and '/zh-hk/blog/articles/%s' % slug in s))
     elif tag == "zhCN":
         res.append(("CTA 预约演示", 'class="article-cta-btn">预约演示' in s))
-        res.append(("lang links", ('/blog/articles/%s' % slug) in s and ('/zh-tw/blog/articles/%s' % slug) in s))
+        res.append(("lang links", ('/blog/articles/%s' % slug) in s and ('/zh-hk/blog/articles/%s' % slug) in s))
     else:
         res.append(("CTA 預約示範", 'class="article-cta-btn">預約示範' in s))
         res.append(("lang links", ('/blog/articles/%s' % slug) in s and ('/zh-cn/blog/articles/%s' % slug) in s))

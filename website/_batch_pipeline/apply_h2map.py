@@ -7,7 +7,7 @@ spec = importlib.util.spec_from_file_location("fs", os.path.join(ROOT, "_batch_p
 fs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(fs)
 
-LANGS = [("EN", "blog/articles"), ("zh-CN", "zh-cn/blog/articles"), ("zh-TW", "zh-tw/blog/articles")]
+LANGS = [("EN", "blog/articles"), ("zh-CN", "zh-cn/blog/articles"), ("zh-HK", "zh-hk/blog/articles")]
 slugs = [l.strip() for l in open(os.path.join(ROOT, "_batch_pipeline/gap_batches/gbatch_003.txt")) if l.strip()]
 mp = json.load(open(os.path.join(ROOT, "_batch_pipeline/h2map_gb003.json"), encoding="utf-8"))
 
