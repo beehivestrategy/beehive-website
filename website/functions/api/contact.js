@@ -1,26 +1,21 @@
 // Cloudflare Pages Function — website contact form, real online delivery.
 // Route: POST /api/contact
 //
-// Delivery backend: Cloudflare Email Service REST API (kept inside the existing
-// Cloudflare account — no third-party mail vendor, nothing stored on the site).
-//
-// Required Pages secret (set on each of dev / staging / prod):
-//   EMAIL_API_TOKEN  Cloudflare API token with Account > Email Sending: Edit
+// Delivery backend: FormSubmit free AJAX endpoint. No vendor account, no API
+// key, no Pages secret required. The destination alias below was activated for
+// account@beehivestrategy.com on 2026-11-16; the alias hides the real mailbox
+// from page source and from bots.
 //
 // Optional bindings:
-//   EMAIL_ACCOUNT_ID   Cloudflare account id (defaults to the Beehive account)
-//   CONTACT_TO_EMAIL   default account@beehivestrategy.com
-//   CONTACT_FROM_EMAIL default noreply@beehivestrategy.com (domain must be
-//                      onboarded in Cloudflare Email Service)
-//   CONTACT_FROM_NAME  default "Beehive Strategy"
+//   CONTACT_FORM_ALIAS   override the FormSubmit alias
+//   CONTACT_SITE_ORIGIN  override the Referer origin sent to FormSubmit
 //
-// Note: visitor auto-receipts are intentionally NOT sent. Sending to arbitrary
-// recipient addresses requires Workers Paid; the on-page confirmation covers it.
+// Note: visitor auto-receipts are intentionally not sent. The on-page
+// confirmation covers that, and FormSubmit autoresponses are unavailable on
+// AJAX submissions anyway.
 
-const DEFAULT_ACCOUNT_ID = '537289925c54a4fb0beef535ae0a6158';
-const DEFAULT_TO = 'account@beehivestrategy.com';
-const DEFAULT_FROM_EMAIL = 'noreply@beehivestrategy.com';
-const DEFAULT_FROM_NAME = 'Beehive Strategy';
+const DEFAULT_ALIAS = '114b9ba47196273827dca2508099c239';
+const DEFAULT_SITE_ORIGIN = 'https://www.beehivestrategy.com';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function json(o, status = 200, extra = {}) {
@@ -35,67 +30,48 @@ function clean(value, max) {
   return (value == null ? '' : String(value)).trim().slice(0, max);
 }
 
-async function sendEmail(env, opts) {
-  const token = clean(env.EMAIL_API_TOKEN, 400);
-  if (!token) throw new Error('EMAIL_API_TOKEN not configured');
-
-  const account = clean(env.EMAIL_ACCOUNT_ID, 64) || DEFAULT_ACCOUNT_ID;
-  const endpoint = 'https://api.cloudflare.com/client/v4/accounts/' +
-                   account + '/email/sending/send';
+async function deliver(request, env, lead, subject) {
+  const alias = clean(env.CONTACT_FORM_ALIAS, 120) || DEFAULT_ALIAS;
+  const origin = clean(env.CONTACT_SITE_ORIGIN, 200) || DEFAULT_SITE_ORIGIN;
+  const endpoint = 'https://formsubmit.co/ajax/' + encodeURIComponent(alias);
 
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: {
-      'Authorization': 'Bearer ' + token,
       'content-type': 'application/json',
-      'User-Agent': 'BeehiveContact/2.0',
+      'accept': 'application/json',
+      // FormSubmit rejects requests without a web-page Referer. In a Worker
+      // there is no browser Referer, so supply the canonical site origin.
+      'referer': origin.replace(/\/+$/, '') + '/contact',
+      'origin': origin,
+      'User-Agent': 'BeehiveContact/3.0',
     },
     body: JSON.stringify({
-      to: opts.to,
-      from: { address: opts.from, name: opts.fromName },
-      reply_to: opts.replyTo,
-      subject: opts.subject,
-      text: opts.text,
+      name: lead.name,
+      company: lead.company,
+      email: lead.email,
+      topic: lead.topic,
+      lang: lead.lang,
+      message: lead.message,
+      id: lead.id,
+      time: lead.ts,
+      _replyto: lead.email,
+      _subject: subject,
     }),
   });
 
   let body = {};
   try { body = await res.json(); } catch (_) { /* keep empty */ }
-  if (!res.ok || body.success === false) {
-    const detail = (body.errors || []).map(function (e) {
-      return e.code + ': ' + e.message;
-    }).join('; ');
-    throw new Error('email service ' + res.status + ' ' +
-                    (detail || res.statusText || 'request failed'));
+  const ok = res.ok && (body.success === true || body.success === 'true');
+  if (!ok) {
+    throw new Error('formsubmit ' + res.status + ' ' +
+                    (body.message || body.error || res.statusText || 'request failed'));
   }
   return body;
 }
 
-function noticeText(lead) {
-  const head = {
-    en: 'New website enquiry (Beehive Strategy)',
-    'zh-cn': '网站新咨询（蜂启咨询）',
-    'zh-hk': '網站新諮詢（蜂啟諮詢）',
-  }[lead.lang] || 'New website enquiry (Beehive Strategy)';
-  const tail = {
-    en: '\n\nReply directly to this email to reach the sender.',
-    'zh-cn': '\n\n直接回复此邮件即可联系发件人。',
-    'zh-hk': '\n\n直接回覆此郵件即可聯絡發件人。',
-  }[lead.lang] || '\n\nReply directly to this email to reach the sender.';
-  return [
-    head,
-    '',
-    'ID:      ' + lead.id,
-    'Time:    ' + lead.ts,
-    'Name:    ' + lead.name,
-    'Company: ' + lead.company,
-    'Email:   ' + lead.email,
-    'Topic:   ' + lead.topic,
-    'Lang:    ' + lead.lang,
-    '',
-    lead.message,
-    tail,
-  ].join('\n');
+function noticeSubject(lead) {
+  return '[' + lead.id + '] Website enquiry: ' + lead.topic + ' — ' + lead.company;
 }
 
 export async function onRequestPost({ request, env }) {
@@ -137,14 +113,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     try {
-      await sendEmail(E, {
-        to: clean(E.CONTACT_TO_EMAIL, 160) || DEFAULT_TO,
-        from: clean(E.CONTACT_FROM_EMAIL, 160) || DEFAULT_FROM_EMAIL,
-        fromName: clean(E.CONTACT_FROM_NAME, 120) || DEFAULT_FROM_NAME,
-        replyTo: lead.email,
-        subject: '[' + lead.id + '] Website enquiry: ' + lead.topic + ' — ' + lead.company,
-        text: noticeText(lead),
-      });
+      await deliver(request, E, lead, noticeSubject(lead));
     } catch (e) {
       console.error('contact delivery failed:', e.message);
       return json({ ok: false, error: 'delivery failed' }, 500);
