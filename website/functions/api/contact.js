@@ -116,7 +116,8 @@ export async function onRequestPost({ request, env }) {
       await deliver(request, E, lead, noticeSubject(lead));
     } catch (e) {
       console.error('contact delivery failed:', e.message);
-      return json({ ok: false, error: 'delivery failed' }, 500);
+      return json({ ok: false, error: 'delivery failed',
+                    detail: String(e.message || '').slice(0, 200) }, 500);
     }
 
     return json({ ok: true, id: lead.id });
