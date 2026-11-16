@@ -1,17 +1,23 @@
 // Cloudflare Pages Function — website contact form, real online delivery.
 // Route: POST /api/contact
 //
-// Design notes:
-//   * No KV / no database. The enquiry is delivered as email only, nothing is
-//     stored on the site (this matches the privacy wording on /contact).
-//   * The notification to our inbox is REQUIRED: if delivery fails the caller
-//     gets a 500 and the UI shows an error, so a "sent" confirmation is honest.
-//   * The visitor acknowledgement is best-effort and never blocks the result.
-//   * Optional bindings (set as Pages secrets on each project):
-//       CONTACT_TO_EMAIL   default account@beehivestrategy.com
-//       CONTACT_FROM_EMAIL default noreply@beehivestrategy.com
-//       CONTACT_FROM_NAME  default "Beehive Strategy"
+// Delivery backend: Cloudflare Email Service REST API (kept inside the existing
+// Cloudflare account — no third-party mail vendor, nothing stored on the site).
+//
+// Required Pages secret (set on each of dev / staging / prod):
+//   EMAIL_API_TOKEN  Cloudflare API token with Account > Email Sending: Edit
+//
+// Optional bindings:
+//   EMAIL_ACCOUNT_ID   Cloudflare account id (defaults to the Beehive account)
+//   CONTACT_TO_EMAIL   default account@beehivestrategy.com
+//   CONTACT_FROM_EMAIL default noreply@beehivestrategy.com (domain must be
+//                      onboarded in Cloudflare Email Service)
+//   CONTACT_FROM_NAME  default "Beehive Strategy"
+//
+// Note: visitor auto-receipts are intentionally NOT sent. Sending to arbitrary
+// recipient addresses requires Workers Paid; the on-page confirmation covers it.
 
+const DEFAULT_ACCOUNT_ID = '537289925c54a4fb0beef535ae0a6158';
 const DEFAULT_TO = 'account@beehivestrategy.com';
 const DEFAULT_FROM_EMAIL = 'noreply@beehivestrategy.com';
 const DEFAULT_FROM_NAME = 'Beehive Strategy';
@@ -29,30 +35,53 @@ function clean(value, max) {
   return (value == null ? '' : String(value)).trim().slice(0, max);
 }
 
-async function mailchannels(msg) {
-  const res = await fetch('https://api.mailchannels.net/tx/v1/send', {
+async function sendEmail(env, opts) {
+  const token = clean(env.EMAIL_API_TOKEN, 400);
+  if (!token) throw new Error('EMAIL_API_TOKEN not configured');
+
+  const account = clean(env.EMAIL_ACCOUNT_ID, 64) || DEFAULT_ACCOUNT_ID;
+  const endpoint = 'https://api.cloudflare.com/client/v4/accounts/' +
+                   account + '/email/sending/send';
+
+  const res = await fetch(endpoint, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'User-Agent': 'BeehiveContact/1.0' },
-    body: JSON.stringify(msg),
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'content-type': 'application/json',
+      'User-Agent': 'BeehiveContact/2.0',
+    },
+    body: JSON.stringify({
+      to: opts.to,
+      from: { address: opts.from, name: opts.fromName },
+      reply_to: opts.replyTo,
+      subject: opts.subject,
+      text: opts.text,
+    }),
   });
-  if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error('mailchannels ' + res.status + ' ' + text.slice(0, 160));
+
+  let body = {};
+  try { body = await res.json(); } catch (_) { /* keep empty */ }
+  if (!res.ok || body.success === false) {
+    const detail = (body.errors || []).map(function (e) {
+      return e.code + ': ' + e.message;
+    }).join('; ');
+    throw new Error('email service ' + res.status + ' ' +
+                    (detail || res.statusText || 'request failed'));
   }
-  return res;
+  return body;
 }
 
-function noticeText(lead, lang) {
+function noticeText(lead) {
   const head = {
     en: 'New website enquiry (Beehive Strategy)',
     'zh-cn': '网站新咨询（蜂启咨询）',
     'zh-hk': '網站新諮詢（蜂啟諮詢）',
-  }[lang] || 'New website enquiry (Beehive Strategy)';
+  }[lead.lang] || 'New website enquiry (Beehive Strategy)';
   const tail = {
     en: '\n\nReply directly to this email to reach the sender.',
     'zh-cn': '\n\n直接回复此邮件即可联系发件人。',
     'zh-hk': '\n\n直接回覆此郵件即可聯絡發件人。',
-  }[lang] || '\n\nReply directly to this email to reach the sender.';
+  }[lead.lang] || '\n\nReply directly to this email to reach the sender.';
   return [
     head,
     '',
@@ -67,45 +96,6 @@ function noticeText(lead, lang) {
     lead.message,
     tail,
   ].join('\n');
-}
-
-function receiptText(lead) {
-  const body = {
-    en: [
-      'Thanks for reaching out to Beehive Strategy.',
-      '',
-      'We received your enquiry ("' + lead.topic + '") and will reply within one business day.',
-      '',
-      'Quick reminder of what you sent:',
-      lead.message,
-      '',
-      '— Beehive Strategy',
-      'account@beehivestrategy.com | https://www.beehivestrategy.com',
-    ].join('\n'),
-    'zh-cn': [
-      '感谢联系蜂启咨询。',
-      '',
-      '我们已收到你的咨询（' + lead.topic + '），会在一个工作日内回复。',
-      '',
-      '你提交的内容：',
-      lead.message,
-      '',
-      '—— 蜂启咨询',
-      'account@beehivestrategy.com | https://www.beehivestrategy.com',
-    ].join('\n'),
-    'zh-hk': [
-      '感謝聯絡蜂啟諮詢。',
-      '',
-      '我們已收到你的諮詢（' + lead.topic + '），會在一個工作日內回覆。',
-      '',
-      '你提交的內容：',
-      lead.message,
-      '',
-      '—— 蜂啟諮詢',
-      'account@beehivestrategy.com | https://www.beehivestrategy.com',
-    ].join('\n'),
-  };
-  return body[lead.lang] || body.en;
 }
 
 export async function onRequestPost({ request, env }) {
@@ -139,7 +129,6 @@ export async function onRequestPost({ request, env }) {
         ? clean(data.lang, 10) : 'en',
     };
 
-    // Minimum validation — required fields and a believable email.
     if (!lead.name || !lead.email || !lead.message || !EMAIL_RE.test(lead.email)) {
       return json({ ok: false, error: 'invalid fields' }, 400);
     }
@@ -147,40 +136,18 @@ export async function onRequestPost({ request, env }) {
       return json({ ok: false, error: 'message too short' }, 400);
     }
 
-    const to = clean(E.CONTACT_TO_EMAIL, 160) || DEFAULT_TO;
-    const from = {
-      email: clean(E.CONTACT_FROM_EMAIL, 160) || DEFAULT_FROM_EMAIL,
-      name: clean(E.CONTACT_FROM_NAME, 120) || DEFAULT_FROM_NAME,
-    };
-
     try {
-      await mailchannels({
-        personalizations: [{ to: [{ email: to }] }],
-        from,
-        reply_to: { email: lead.email, name: lead.name },
+      await sendEmail(E, {
+        to: clean(E.CONTACT_TO_EMAIL, 160) || DEFAULT_TO,
+        from: clean(E.CONTACT_FROM_EMAIL, 160) || DEFAULT_FROM_EMAIL,
+        fromName: clean(E.CONTACT_FROM_NAME, 120) || DEFAULT_FROM_NAME,
+        replyTo: lead.email,
         subject: '[' + lead.id + '] Website enquiry: ' + lead.topic + ' — ' + lead.company,
-        content: [{ type: 'text/plain', value: noticeText(lead, lead.lang) }],
+        text: noticeText(lead),
       });
     } catch (e) {
-      console.error('contact notice delivery failed:', e.message);
+      console.error('contact delivery failed:', e.message);
       return json({ ok: false, error: 'delivery failed' }, 500);
-    }
-
-    // Receipt is a courtesy: never turn a successfully delivered lead into an error.
-    try {
-      await mailchannels({
-        personalizations: [{ to: [{ email: lead.email, name: lead.name }] }],
-        from,
-        reply_to: { email: to, name: from.name },
-        subject: {
-          en: 'We received your enquiry — Beehive Strategy',
-          'zh-cn': '我们已收到你的咨询 — 蜂启咨询',
-          'zh-hk': '我們已收到你的諮詢 — 蜂啟諮詢',
-        }[lead.lang] || 'We received your enquiry — Beehive Strategy',
-        content: [{ type: 'text/plain', value: receiptText(lead) }],
-      });
-    } catch (e) {
-      console.error('contact receipt delivery failed:', e.message);
     }
 
     return json({ ok: true, id: lead.id });
