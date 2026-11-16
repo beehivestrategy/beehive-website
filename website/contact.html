@@ -895,12 +895,16 @@
   <script src="/js/main.js?v=20261113.15" defer></script>
 
   <script>
-  /* Contact enquiry: real online delivery through /api/contact (MailChannels). */
+  /* Contact enquiry: real online delivery via FormSubmit AJAX (free, no backend
+     account required). The request goes straight from the visitor's browser so
+     delivery uses the visitor's own IP — Cloudflare Worker egress IPs are
+     rate-limited by FormSubmit (HTTP 429), which is why we do not proxy here. */
   (function () {
     var form = document.getElementById('enquiry-form');
     if (!form) return;
     var status = document.getElementById('enquiry-status');
     var btn = form.querySelector('button[type="submit"]');
+    var ENDPOINT = 'https://formsubmit.co/ajax/114b9ba47196273827dca2508099c239';
     var MSG = {
       sending: 'Sending your enquiry…',
       ok: 'Message sent. We’ll reply within one business day.',
@@ -908,26 +912,32 @@
     };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (status) status.textContent = MSG.sending;
-      if (btn) btn.disabled = true;
       var d = new FormData(form);
       function val(k) { return (d.get(k) || '').toString().trim(); }
+      // Honeypot: humans never fill this hidden field. Silently succeed for bots.
+      if (val('website')) { form.reset(); return; }
+      if (status) status.textContent = MSG.sending;
+      if (btn) btn.disabled = true;
+      var ref = 'ct_' + Date.now();
       var payload = {
         name: val('name'),
-        company: val('company'),
+        company: val('company') || '-',
         email: val('email'),
-        topic: val('topic'),
+        topic: val('topic') || 'General enquiry',
         message: val('message'),
-        website: val('website'),
-        lang: 'en'
+        lang: 'en',
+        id: ref,
+        time: new Date().toISOString(),
+        _replyto: val('email'),
+        _subject: '[' + ref + '] Website enquiry: ' + (val('topic') || 'General enquiry') + ' — ' + (val('company') || '-')
       };
-      fetch('/api/contact', {
+      fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json', 'accept': 'application/json' },
         body: JSON.stringify(payload)
       }).then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (j) {
-          return { ok: r.ok && !!j.ok, status: r.status };
+          return { ok: r.ok && (j.success === true || j.success === 'true'), status: r.status };
         });
       }).then(function (res) {
         if (!res.ok) throw new Error('http ' + res.status);
