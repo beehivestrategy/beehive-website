@@ -446,6 +446,10 @@
         </div>
         <div class="ct-grid">
           <form class="ct-form" id="enquiry-form">
+            <div class="ct-hp" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+              <label for="ct-website">Website</label>
+              <input id="ct-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
             <div class="ct-field">
               <label class="ct-label" for="ct-name">你的姓名</label>
               <input class="ct-input" id="ct-name" name="name" type="text" autocomplete="name" placeholder="陈珍" required>
@@ -474,8 +478,8 @@
               <label class="ct-label" for="ct-message">到底卡在哪里？</label>
               <textarea class="ct-textarea" id="ct-message" name="message" placeholder="停住的试点、没人负责的环节，或刚变的规则……" required></textarea>
             </div>
-            <p class="ct-hint">此表单会在你的邮件应用中生成一封发给<a href="mailto:account@beehivestrategy.com">account@beehivestrategy.com</a>的邮件。发送前你可以编辑内容；本站不存储任何咨询数据。</p>
-            <div class="ct-submit"><button class="btn btn-primary btn-lg" type="submit">生成我的咨询邮件</button></div>
+            <p class="ct-hint">此表单会直接把咨询发送给我们的团队，无需打开邮件应用。我们会在一个工作日内回复，且不在本站存储你的资料。</p>
+            <div class="ct-submit"><button class="btn btn-primary btn-lg" type="submit">发送我的咨询</button></div>
             <p class="ct-status" id="enquiry-status" role="status" aria-live="polite"></p>
           </form>
           <aside class="ct-channels" aria-label="其他联系方式">
@@ -866,30 +870,49 @@
   <script src="/js/main.js?v=20261113.15" defer></script>
 
   <script>
-  /* Contact enquiry: prepare a mailto draft. Static site, no backend, nothing stored. */
+  /* Contact enquiry: real online delivery through /api/contact (MailChannels). */
   (function () {
     var form = document.getElementById('enquiry-form');
     if (!form) return;
+    var status = document.getElementById('enquiry-status');
+    var btn = form.querySelector('button[type="submit"]');
+    var MSG = {
+      sending: '正在发送咨询……',
+      ok: '已发送，我们会在一个工作日内回复。',
+      fail: '发送失败，请改发邮件至 account@beehivestrategy.com。'
+    };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (status) status.textContent = MSG.sending;
+      if (btn) btn.disabled = true;
       var d = new FormData(form);
       function val(k) { return (d.get(k) || '').toString().trim(); }
-      var subject = '蜂启咨询咨询：' + (val('topic') || '一般咨询') +
-                    (val('company') ? ' - ' + val('company') : '');
-      var body = [
-        '姓名：' + val('name'),
-        '公司：' + val('company'),
-        '邮箱：' + val('email'),
-        '咨询类型：' + val('topic'),
-        '',
-        val('message'),
-        '',
-        '发送自 beehivestrategy.com/contact'
-      ].join('\n');
-      var status = document.getElementById('enquiry-status');
-      if (status) status.textContent = '正在用你的邮件应用打开已准备好的邮件……';
-      window.location.href = 'mailto:account@beehivestrategy.com?subject=' +
-        encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      var payload = {
+        name: val('name'),
+        company: val('company'),
+        email: val('email'),
+        topic: val('topic'),
+        message: val('message'),
+        website: val('website'),
+        lang: 'zh-cn'
+      };
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          return { ok: r.ok && !!j.ok, status: r.status };
+        });
+      }).then(function (res) {
+        if (!res.ok) throw new Error('http ' + res.status);
+        if (status) status.textContent = MSG.ok;
+        form.reset();
+      }).catch(function () {
+        if (status) status.textContent = MSG.fail;
+      }).then(function () {
+        if (btn) btn.disabled = false;
+      });
     });
   })();
   </script>
