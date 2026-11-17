@@ -59,4 +59,12 @@ jobs:
           # finds nothing. Fix = run from website/ so website/functions is seen.
           wranglerVersion: '4.162.0'
           workingDirectory: website
-          command: pages deploy . --project-name=${{ steps.t.outputs.project }} --branch ${{ github.ref_name }}
+          # 2026-11-18: Cloudflare production_branch = `main` for ALL THREE
+          # projects (verified via Pages API). Using `${{ github.ref_name }}`
+          # here makes a `prod` push land as a PREVIEW deploy, so the custom
+          # domain www.beehivestrategy.com keeps serving the old production
+          # branch. The git branch selects the PROJECT (see Resolve target
+          # project); `--branch main` must stay fixed so each deploy becomes
+          # that project's production deployment. See DEPLOY_POLICY.md §"CF
+          # reality".
+          command: pages deploy . --project-name=${{ steps.t.outputs.project }} --branch main
