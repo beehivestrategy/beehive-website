@@ -40,6 +40,8 @@ Promotion order is **main → staging → prod**. `prod` only ever receives a me
 > Direct-Upload with **production branch = `main`**. Routing is by **project name**,
 > not git branch — every deploy uses `wrangler pages deploy . --project-name <X>
 > --branch main`. The git branch only selects *which project* the CI deploys to.
+>
+> 🔴 **2026-11-18 regression**: `--branch ${{ github.ref_name }}` was briefly used, which sent the `prod` push to a **preview** deployment (`b5c4b8f1…`, env `preview`) while `www.beehivestrategy.com` kept serving the old production branch. Fixed by restoring the literal `--branch main`. Never bind `--branch` to a git branch name.
 
 ## How it is enforced (3 layers)
 
