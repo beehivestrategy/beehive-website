@@ -3936,38 +3936,26 @@ main > section:nth-of-type(8n+8), main > div:nth-of-type(8n+8) > section { --tex
 .bl-page .bl-hero .bl-glance.reveal,
 .bl-page .bl-hero .bl-stats.reveal { opacity: 1; transform: none; }
 
-/* Archive cards: the generated cover bakes the article title into the image,
-   and the card already prints the same title underneath. Replace the image
-   with a pure editorial band (hairline grid + blue rule + arc) so the title
-   appears exactly once. */
+/* Archive cards (2026-11-19): each article now has its own text-free abstract
+   cover (assets/blog/cards/<slug>.jpg, deterministic per slug). No title is
+   baked in, so restoring the <img> gives every card a distinct visual without
+   repeating the headline printed in the card body. The old one-size-fits-all
+   CSS arc band is removed. */
 .bl-page .bl-archive .blog-card-image {
   position: relative;
-  height: 84px;
+  height: 112px;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
 }
-.bl-page .bl-archive .blog-card-image img { display: none; }
-.bl-page .bl-archive .blog-card-image::before {
-  content: "";
-  position: absolute;
-  right: -58px;
-  top: -108px;
-  width: 232px;
-  height: 232px;
-  border: 1px solid var(--accent-line);
-  border-radius: 50%;
-  background: var(--accent-wash);
+.bl-page .bl-archive .blog-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
-.bl-page .bl-archive .blog-card-image::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--accent);
-}
-.bl-page .bl-archive .blog-card-category { left: 4px; }
+.bl-page .bl-archive .blog-card-category { left: 0; }
 
 /* Square off the remaining rounded surfaces to the shared editorial system. */
 .bl-page .bl-chart,
