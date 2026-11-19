@@ -225,6 +225,14 @@ h1, h2, h3, h4 {
 .lang-switcher-dropdown a { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; font-size: 0.875rem; color: var(--text-2); }
 .lang-switcher-dropdown a:hover { background: var(--bg-2); color: var(--text); }
 .lang-switcher-dropdown a.active { color: var(--text); font-weight: 700; }
+/* Legacy nav markup (~550 landing/article pages) uses .lang-dropdown instead
+   of .lang-switcher-dropdown and a button without #lang-switcher-btn. Mirror
+   the same hidden/absolute/open behaviour so it no longer renders inline. */
+.lang-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 178px; padding: 6px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-panel); opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s; z-index: 1001; }
+.lang-switcher.open .lang-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+.lang-dropdown a { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; font-size: 0.875rem; color: var(--text-2); }
+.lang-dropdown a:hover { background: var(--bg-2); color: var(--text); }
+.lang-dropdown a.active { color: var(--text); font-weight: 700; }
 .lang-code { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.06em; }
 
 .nav-mobile { display: none; }
@@ -3484,6 +3492,94 @@ body.hw-page .ed-head { margin-bottom: clamp(1.75rem, 3vw, 2.75rem); }
 .bl-page .bl-pagination .blog-loadmore:hover { background: var(--accent-wash); }
 .bl-page .bl-empty { margin: 2rem 0; padding: 1.2rem; text-align: center; font-size: 0.9rem; color: var(--text-2); background: var(--surface-2); border: 1px dashed var(--border-2); border-radius: var(--radius); }
 
+/* -- 19.7b blog cards: editorial restyle (2026-11-18) --------------------- */
+/* Keep the .blog-card hooks so the archive filter/load-more JS and all six
+   index pages stay untouched; only the visual language changes. */
+.bl-page .blog-card {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+  transition: border-color .18s ease, background .18s ease;
+}
+.bl-page .blog-card.reveal { opacity: 1; transform: none; }
+.bl-page .blog-card:hover {
+  border-color: var(--accent);
+  background: var(--surface-2);
+  box-shadow: none;
+  transform: none;
+}
+.bl-page .blog-card-link { display: flex; flex-direction: column; height: 100%; }
+.bl-page .blog-card-image {
+  position: relative;
+  height: auto;
+  padding: 0;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.bl-page .blog-card-image img {
+  position: static;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 600 / 315;
+  object-fit: cover;
+  filter: saturate(.94);
+  transition: transform .3s ease;
+}
+.bl-page .blog-card:hover .blog-card-image img { transform: scale(1.02); }
+.bl-page .blog-card-category {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: .34rem .6rem;
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  backdrop-filter: none;
+}
+.bl-page .blog-card-body { display: flex; flex: 1; flex-direction: column; padding: 1rem 1.05rem 1.05rem; }
+.bl-page .blog-card-meta {
+  gap: .5rem;
+  margin-bottom: .55rem;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--text-3);
+}
+.bl-page .blog-card-dot { color: var(--border-2); }
+.bl-page .blog-card-title {
+  margin: 0 0 .5rem;
+  font-size: 1.02rem;
+  font-weight: 650;
+  line-height: 1.34;
+  letter-spacing: -.01em;
+  color: var(--text);
+}
+.bl-page .blog-card:hover .blog-card-title { color: var(--accent); }
+.bl-page .blog-card-excerpt {
+  margin: 0 0 .9rem;
+  font-size: .82rem;
+  line-height: 1.55;
+  color: var(--text-2);
+  -webkit-line-clamp: 2;
+}
+.bl-page .blog-card-footer { margin-top: auto; padding-top: .7rem; border-top: 1px solid var(--border); }
+.bl-page .blog-card-author { display: none; }
+.bl-page .blog-card-readmore {
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--accent);
+}
+
 /* -- 19.8 responsive ------------------------------------------------------- */
 @media (max-width: 1000px) {
   .bl-page .bl-hero-grid { grid-template-columns: minmax(0, 1fr); }
@@ -3772,3 +3868,203 @@ main > section:nth-of-type(8n+8), main > div:nth-of-type(8n+8) > section { --tex
   .edi-flow { gap: 0.7rem; }
 }
 /* =================== END §21 EDITORIAL PAGE SYSTEM =================== */
+
+/* ==========================================================================
+   §22 GUIDES + NEWS — LIGHT EDITORIAL RESTYLE (2026-11-18)
+   Scope: body.bl-page only (guides.html + news/index.html, three languages).
+   Reuses bl-* tokens from §19. Hero is bl-hero markup; remaining ed-*/edi-*
+   sections are restyled here to the same light, hairline-grid language.
+   ========================================================================== */
+
+/* New hero: light ground + faint grid (bl-hero base already covers this) */
+.bl-page .bl-hero { border-bottom: 1px solid var(--border); }
+.bl-page .bl-hero .bl-eyebrow.reveal,
+.bl-page .bl-hero h1.reveal,
+.bl-page .bl-hero .bl-hero-lead.reveal,
+.bl-page .bl-hero .bl-actions.reveal,
+.bl-page .bl-hero .edi-tags.reveal { opacity: 1; transform: none; }
+.bl-page .bl-hero h1 { margin-top: 0.6rem; }
+.bl-page .bl-hero .edi-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.4rem; }
+.bl-page .bl-hero .edi-tag { display: inline-block; padding: 0.32rem 0.62rem; border: 1px solid var(--border-2); border-radius: 0; background: var(--surface); font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em; color: var(--accent); text-transform: uppercase; }
+
+/* Glance panel: square, hairline, no rounded card/shadow */
+.bl-page .bl-glance { border-radius: 0; box-shadow: none; background: var(--surface); border: 1px solid var(--border-2); }
+.bl-page .bl-glance h3 { margin: 0.7rem 0 1rem; font-size: 1.12rem; color: var(--text); letter-spacing: -0.015em; }
+.bl-page .bl-facts { list-style: none; margin: 0; padding: 0; }
+.bl-page .bl-facts li { padding: 0.6rem 0; border-top: 1px solid var(--border); }
+.bl-page .bl-facts li span { display: block; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); }
+.bl-page .bl-facts li strong { display: block; margin-top: 0.22rem; font-size: 0.86rem; font-weight: 400; line-height: 1.5; color: var(--text-2); }
+.bl-page .bl-glance-latest { margin-top: 0.4rem; }
+
+/* Stat strip: inherit bl-stat grid; remove old band dividers */
+.bl-page .bl-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: clamp(1.8rem, 3.5vw, 3rem); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.bl-page .bl-stats .edi-stat { padding: 1.1rem 1rem 1.2rem 0; border-right: 1px solid var(--border); }
+.bl-page .bl-stats .edi-stat:last-child { border-right: 0; }
+.bl-page .bl-stats .edi-stat-num { font-family: var(--font-mono); font-size: 1.7rem; font-weight: 700; line-height: 1.05; color: var(--text); }
+.bl-page .bl-stats .edi-stat-label { font-size: 0.76rem; line-height: 1.45; color: var(--text-3); }
+
+/* Sections: light ground, remove the dotted radial pattern on alt sections */
+.bl-page .ed-section--alt { background: var(--surface-2); }
+.bl-page .ed-section--alt::before { background-image: linear-gradient(to right, var(--bl-grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--bl-grid-line) 1px, transparent 1px); background-size: 44px 44px; border-radius: 0; }
+.bl-page .edi-head { max-width: 46rem; margin-bottom: clamp(1.5rem, 3vw, 2.2rem); }
+.bl-page .edi-head h2 { font-size: var(--fs-h2); line-height: 1.14; letter-spacing: -0.025em; }
+
+/* Rows: editorial hairline, no boxed feel */
+.bl-page .edi-rows { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.bl-page .edi-row { border-top: 1px solid var(--border-2); }
+.bl-page .edi-row-num { letter-spacing: 0.12em; }
+.bl-page .edi-row h3 a { color: var(--text); text-decoration: none; }
+.bl-page .edi-row h3 a:hover { color: var(--accent); }
+
+/* Flow: square nodes, thin arrows */
+.bl-page .edi-flow-node { border-radius: 0; background: var(--surface); border: 1px solid var(--border); }
+
+/* FAQ + note: light, hairline */
+.bl-page .edi-note { background: var(--accent-wash); border-radius: 0; }
+
+/* CTA band stays blue (consistent with the rest of the site) */
+
+@media (max-width: 900px) {
+  .bl-page .edi-rows { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 700px) {
+  .bl-page .bl-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bl-page .bl-stats .edi-stat:nth-child(2) { border-right: 0; }
+  .bl-page .bl-stats .edi-stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+}
+/* ============ END §22 GUIDES + NEWS LIGHT EDITORIAL ============ */
+
+/* ==========================================================================
+   §23 BLOG INDEX REDO — 2026-11-18
+   Scope: body.bl-page (blog index, six files / three languages).
+   Keeps every .blog-card / filter / pagination hook. Visual only.
+   ========================================================================== */
+
+/* Reveal content must be visible in captured/static rendering. */
+.bl-page .bl-hero .bl-glance.reveal,
+.bl-page .bl-hero .bl-stats.reveal { opacity: 1; transform: none; }
+
+/* Archive cards (2026-11-19): each article now has its own text-free abstract
+   cover (assets/blog/cards/<slug>.jpg, deterministic per slug). No title is
+   baked in, so restoring the <img> gives every card a distinct visual without
+   repeating the headline printed in the card body. The old one-size-fits-all
+   CSS arc band is removed. */
+.bl-page .bl-archive .blog-card-image {
+  position: relative;
+  height: 112px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.bl-page .bl-archive .blog-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.bl-page .bl-archive .blog-card-category { left: 0; }
+
+/* Square off the remaining rounded surfaces to the shared editorial system. */
+.bl-page .bl-chart,
+.bl-page .bl-path-card,
+.bl-page .bl-featured,
+.bl-page .bl-explore-grid .blog-sidebar-block,
+.bl-page .bl-archive-count,
+.bl-page .bl-search,
+.bl-page .bl-sort .blog-month-filter,
+.bl-page .blog-category-btn,
+.bl-page .bl-topic-toggle,
+.bl-page .bl-pagination .blog-loadmore,
+.bl-page .bl-empty,
+.bl-page .bl-explore-grid .blog-tag,
+.bl-page .bl-f-cat,
+.bl-page .bl-f-cta {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Compact the card body now that the visual band is shallower. */
+.bl-page .bl-archive .blog-card-body { padding: 0.95rem 1rem 1.05rem; }
+.bl-page .bl-archive .blog-card-title { font-size: 0.98rem; }
+
+@media (max-width: 900px) {
+  .bl-page .bl-charts { grid-template-columns: minmax(0, 1fr); }
+  .bl-page .bl-path-cards { grid-template-columns: minmax(0, 1fr); }
+}
+/* ============ END §23 BLOG INDEX REDO ============ */
+
+/* ==========================================================================
+   §24 BLOG HERO — DISTINCT EDITORIAL VISUAL (2026-11-19)
+   Only .bl-hero-visual inside the blog hero. A quiet "archive plate": a faint
+   plotting grid with three stacked sheets and one blue rule. No new colour
+   tokens, no image files, no rounded surfaces. Scoped so guides/news are
+   untouched and the glance panel is never overlapped.
+   ========================================================================== */
+.bl-page .bl-hero-left .bl-hero-visual {
+  position: relative;
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+  height: clamp(150px, 15vw, 208px);
+  max-width: 30rem;
+  overflow: hidden;
+}
+/* Ground: two hairline axes + dotted plotting field. */
+.bl-page .bl-hero-visual-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 0%, #000 62%, transparent 100%);
+}
+/* Stack of article sheets, offset like a dealt archive. */
+.bl-page .bl-hero-visual-stack {
+  position: absolute;
+  left: clamp(0.5rem, 2vw, 1.4rem);
+  top: 0.9rem;
+  width: clamp(112px, 12vw, 150px);
+  height: clamp(104px, 11vw, 132px);
+}
+.bl-page .bl-hero-paper {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--border-2);
+  background: var(--surface);
+}
+.bl-page .bl-hero-paper--back  { transform: translate(18px, -12px) rotate(6deg);  background: var(--surface-2); }
+.bl-page .bl-hero-paper--mid   { transform: translate(9px, -6px) rotate(3deg); }
+.bl-page .bl-hero-paper--front { padding: 0.9rem 0.85rem; box-shadow: 0 6px 18px rgba(16, 24, 40, 0.05); }
+/* Rule + dot: a mini article record, language-neutral. */
+.bl-page .bl-hero-paper-bar {
+  display: block;
+  height: 6px;
+  margin-bottom: 0.55rem;
+  background: var(--border-2);
+}
+.bl-page .bl-hero-paper-bar--short { width: 58%; background: var(--accent-line); }
+.bl-page .bl-hero-paper-dot {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.85rem;
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+}
+.bl-page .bl-hero-visual-caption {
+  position: absolute;
+  left: 0;
+  bottom: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+@media (max-width: 700px) {
+  .bl-page .bl-hero-left .bl-hero-visual { height: 132px; }
+  .bl-page .bl-hero-visual-stack { transform: scale(0.82); transform-origin: left top; }
+}
+/* ============ END §24 BLOG HERO VISUAL ============ */
