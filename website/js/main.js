@@ -33,7 +33,9 @@
     faqItems: document.querySelectorAll('.faq-item'),
     navLinks: document.querySelectorAll('.nav-link, .mobile-menu a'),
     langSwitcher: document.getElementById('lang-switcher'),
-    langSwitcherBtn: document.getElementById('lang-switcher-btn')
+    // Legacy landing-page nav (~550 pages) omits the button id; fall back to
+    // the class so the switcher still initialises instead of bailing out.
+    langSwitcherBtn: document.getElementById('lang-switcher-btn') || document.querySelector('.lang-switcher .lang-switcher-btn')
   };
 
   // ——— Utilities ———
@@ -1086,7 +1088,8 @@
     if (label) label.textContent = currentLabel;
 
     // Mark active item in dropdown
-    const dropdownLinks = switcher.querySelectorAll('.lang-switcher-dropdown a');
+    // Both nav generations: modern .lang-switcher-dropdown and legacy .lang-dropdown.
+    const dropdownLinks = switcher.querySelectorAll('.lang-switcher-dropdown a, .lang-dropdown a');
     dropdownLinks.forEach(link => {
       link.classList.remove('active');
       if (link.getAttribute('data-lang') === currentLang) {
