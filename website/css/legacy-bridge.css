@@ -447,3 +447,80 @@ main li { margin: 0 0 0.45em; }
 .last-updated { color: var(--color-text-secondary); }
 .related-reading li::before { color: var(--color-primary); }
 .related-reading a:hover { color: var(--color-primary); }
+
+/* ================================================================
+   13. ARTICLE MASTHEAD v5  (2026-11-20, Kenneth: "better blog design")
+   ---------------------------------------------------------------
+   Old: dark baked-text cover (title printed in image) + centred H1
+        => duplicate title, clashed with the light editorial theme.
+   New: light conceptual-diagram cover (same diagram as index card +
+        body figure), left-aligned editorial masthead, title shown once.
+   Cover JPG content replaced by scripts/render_covers_v5.js; this block
+   only restyles. Scoped to article pages via .article-hero presence is
+   impossible in CSS, but all selectors below are article-only classes.
+   ================================================================ */
+.article-hero {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  line-height: 1;
+  border: 1px solid var(--border, #DFE5F5);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 34px rgba(15, 98, 254, .10);
+  background: var(--surface, #fff);
+  margin-bottom: 0;
+}
+.article-hero img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  display: block;
+  background: var(--surface-2, #F7F9FE);
+}
+.article-header {
+  text-align: left;
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  padding: 1.9rem 0 2.5rem;
+  position: relative;
+}
+.article-header::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 64px; height: 4px;
+  background: var(--accent, #0F62FE);
+}
+.article-cat-pill {
+  background: transparent;
+  color: var(--accent, #0F62FE);
+  padding: 0;
+  border-color: transparent;
+  border-radius: 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.article-cat-pill::after {
+  content: "  /  ARTICLE";
+  color: var(--text-3, #8B94A8);
+}
+html[lang="zh-CN"] .article-cat-pill::after,
+html[lang="zh-HK"] .article-cat-pill::after { content: "  /  文章"; }
+.article-h1 {
+  font-size: clamp(2rem, 4.4vw, 3.05rem);
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  margin: 1rem 0 1.3rem;
+  max-width: 22ch;
+  font-weight: 700;
+}
+.article-meta-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: .8rem;
+}
+.article-avatar { width: 34px; height: 34px; }
