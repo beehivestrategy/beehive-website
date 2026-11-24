@@ -38,7 +38,13 @@ EXCLUDE_DIRS = ("_batch_pipeline", "node_modules", ".git", "beehive-homepage-dra
                 "templates", "_chrome")
 KNOWN_PREFIXES = ("wechat-preview", "wechat-draft-preview",
                   "wechat-article-draft-preview", "training/opc/")
-KNOWN_PAGES = {"zh-cn.html", "zh-hk.html"}
+# index / solution 是 verify_site Gate 10 的历史豁免页（三语 <main> 仍漂移）。
+# 一旦改动它们（含 locale 变体），闸门会把整页视为 touched 并硬失败。
+# 因此 chrome 重建必须跳过这 6 个文件；其移动语言链接由 main.js 运行时兜底。
+KNOWN_PAGES = {"zh-cn.html", "zh-hk.html",
+               "index.html", "solution.html",
+               "zh-cn/index.html", "zh-cn/solution.html",
+               "zh-hk/index.html", "zh-hk/solution.html"}
 
 
 # ---------- helpers (self-contained; no import from gitignored dirs) ----------
@@ -87,7 +93,8 @@ def self_url(rel):
     if base == "index":
         return "/"
     if base.endswith("/index"):
-        return "/" + base[:-len("/index")] + "/"
+        # 站内 canonical / sitemap 用无尾斜杠的 /blog、/news（根 / 除外）。
+        return "/" + base[:-len("/index")]
     return "/" + base
 
 
@@ -212,14 +219,22 @@ def main():
         out = raw
         changed = False
         m = re.search(r"<header[\s\S]*?</header>", out)
-        if m and norm(m.group(0)) != norm(tpl_header):
+        # norm() 刻意忽略 data-lang href，若只按 norm 比较，语言链接错了也不会重写。
+        # header/mobile 必须与「本页渲染结果」逐字比对；footer 保留 norm 比对（email hash）。
+        if m and m.group(0) != new_header:
             out = out[:m.start()] + new_header + out[m.end():]
             changed = True
         i = out.find('<div class="mobile-menu"')
         if i != -1:
             cur = out[i:find_div_span(out, i)]
-            if norm(cur) != norm(tpl_mobile):
+            if cur != new_mobile:
                 out = out[:i] + new_mobile + out[find_div_span(out, i):]
+                changed = True
+        else:
+            # 少数旧页有 header 但没有移动菜单（news 等）：补上同一套 chrome。
+            hm = re.search(r"</header>", out)
+            if hm:
+                out = out[:hm.end()] + "\n" + new_mobile + out[hm.end():]
                 changed = True
         m = re.search(r"<footer[\s\S]*?</footer>", out)
         if m and norm(m.group(0)) != norm(tpl_footer):

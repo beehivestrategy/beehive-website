@@ -644,3 +644,56 @@ html[lang="zh-HK"] .article-cat-pill::after { content: "  /  文章"; }
   display: flex; align-items: center; justify-content: center;
 }
 .bl-page .bl-f-svg { display: block; width: min(100%, 440px); max-width: 440px; margin: 0 auto; }
+
+/* -- 14.9 v7: drop the dashboard tail, keep one slim browse strip ---------- */
+/* Kenneth 2026-11-20: after the archive, "Explore by topic / What is actually
+   in here / One archive, three reading paths" reads like a dashboard, not a
+   publication. Remove the two internal-facing sections and compact the topic
+   entry points into one quiet band. Zero HTML change -> trilingual signature
+   and Gate 10 stay untouched. */
+.bl-page .bl-pulse,
+.bl-page .bl-paths { display: none; }
+
+.bl-page .bl-explore {
+  padding: clamp(1.5rem, 2.5vw, 2.3rem) 0;
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+}
+.bl-page .bl-explore .bl-head { margin-bottom: 1rem; }
+.bl-page .bl-explore .bl-head h2 {
+  margin: .3rem 0 .35rem;
+  font-size: clamp(1.4rem, 2.1vw, 1.9rem);
+}
+.bl-page .bl-explore .bl-head p { margin: 0; max-width: 46rem; }
+
+/* keep only the topic links (2) and the subscribe card (4) */
+.bl-page .bl-explore-grid > .blog-sidebar-block:nth-child(1),
+.bl-page .bl-explore-grid > .blog-sidebar-block:nth-child(3) { display: none; }
+.bl-page .bl-explore-grid {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+}
+.bl-page .bl-explore-grid > .blog-sidebar-block { padding: 1rem 1.15rem; }
+.bl-page .bl-explore-grid .blog-sidebar-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 1.1rem;
+  row-gap: .1rem;
+}
+.bl-page .bl-explore-grid .blog-sidebar-list li { padding: .18rem 0; }
+.bl-page .bl-explore-grid .blog-sidebar-cta { min-width: 15rem; }
+.bl-page .bl-explore-grid .blog-sidebar-cta h3 { margin-bottom: .35rem; }
+.bl-page .bl-explore-grid .blog-sidebar-cta p { display: none; }
+.bl-page .bl-explore-grid .blog-sidebar-cta .btn {
+  margin-top: .65rem;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .bl-page .bl-explore-grid { grid-template-columns: minmax(0, 1fr); }
+  .bl-page .bl-explore-grid .blog-sidebar-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .bl-page .bl-explore-grid .blog-sidebar-list { grid-template-columns: minmax(0, 1fr); }
+}
