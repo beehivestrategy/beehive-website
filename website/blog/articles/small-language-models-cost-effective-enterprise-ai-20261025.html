@@ -1,223 +1,474 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  <title>Small Language Models: Cost-Effective Enterprise AI | Beehive Strategy</title>
-  <meta name="description" content="Discover how small language models deliver enterprise AI value at a fraction of the cost of LLMs. Practical deployment strategies for leaders.">
-  <meta name="keywords" content="small language models, enterprise AI, cost optimisation, AI strategy, model deployment, SLM vs LLM">
-  <meta name="author" content="Beehive Strategy Limited">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-
-  <link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
-  <link rel="alternate" hreflang="en" href="https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
-  <link rel="alternate" hreflang="zh-CN" href="https://www.beehivestrategy.com/zh-cn/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
-  <link rel="alternate" hreflang="zh-TW" href="https://www.beehivestrategy.com/zh-tw/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
-  <link rel="alternate" hreflang="x-default" href="https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
-
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Beehive Strategy">
-  <meta property="og:title" content="Small Language Models: Cost-Effective Enterprise AI">
-  <meta property="og:description" content="Discover how small language models deliver enterprise AI value at a fraction of the cost of LLMs. Practical deployment strategies for leaders.">
-  <meta property="og:url" content="https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
-  <meta property="og:locale" content="en_US">
-  <meta property="article:published_time" content="2026-10-25T09:00:00+08:00">
-  <meta property="article:author" content="Beehive Strategy">
-  <meta property="article:section" content="AI Strategy">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@beehivestrategy">
-  <meta name="twitter:title" content="Small Language Models: Cost-Effective Enterprise AI">
-  <meta name="twitter:description" content="Discover how small language models deliver enterprise AI value at a fraction of the cost of LLMs. Practical deployment strategies for leaders.">
-
-  <link rel="alternate" type="application/rss+xml" title="Beehive Strategy Blog RSS Feed" href="https://www.beehivestrategy.com/blog/feed.xml">
-
-  <meta name="theme-color" content="#0a0e0d">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=20261119.01">
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "BlogPosting",
-      "headline": "Small Language Models: Cost-Effective Enterprise AI",
-      "description": "Discover how small language models deliver enterprise AI value at a fraction of the cost of LLMs. Practical deployment strategies for leaders.",
-      "datePublished": "2026-10-25T09:00:00+08:00",
-      "dateModified": "2026-10-25T09:00:00+08:00",
-      "articleSection": "AI Strategy",
-      "keywords": "small language models, enterprise AI, cost optimisation, AI strategy, model deployment, SLM vs LLM",
-      "inLanguage": "en",
-      "author": {
-        "@type": "Person",
-        "name": "Kenneth Kwok",
-        "url": "https://www.beehivestrategy.com/about",
-        "jobTitle": "Founder & CEO"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Beehive Strategy Limited",
-        "url": "https://www.beehivestrategy.com"
-      },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025"
-      }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/" },
-        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.beehivestrategy.com/blog/" },
-        { "@type": "ListItem", "position": 3, "name": "Small Language Models: Cost-Effective Enterprise AI", "item": "https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025" }
-      ]
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-      {
-            "@type": "Question",
-            "name": "What is the minimum viable team to operationalise SLMs in production?",
-            "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "A lean team of three roles suffices for initial production: an ML engineer fluent in fine-tuning and quantisation pipelines, a platform engineer owning Kubernetes/GGPU infrastructure and observability, and a domain SME curating evaluation data. As portfolio scales, add an MLOps specialist for CI/CD automation and a governance lead for compliance tracking."
-            }
-      },
-      {
-            "@type": "Question",
-            "name": "How do we decide between fine-tuning an SLM versus RAG with an LLM for knowledge-intensive tasks?",
-            "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Choose fine-tuned SLMs when: query patterns are stable, latency budgets are tight (<200ms), and data residency forbids external API calls. Choose RAG with an LLM when: knowledge base updates daily, query diversity is high, and you need citation traceability. Hybrid architectures — SLM for routing and frequent queries, LLM+RAG for long-tail — often deliver the best cost/quality frontier."
-            }
-      },
-      {
-            "@type": "Question",
-            "name": "Are there hidden costs that make SLMs less economical than they appear?",
-            "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Fine-tuning compute, while one-off, requires GPU-hours and ML expertise. Ongoing evaluation set maintenance, drift monitoring, and periodic re-training add operational overhead. However, these costs are predictable and amortise rapidly at scale — typically breaking even within 3–6 months versus per-token LLM API fees for workloads exceeding 50K requests/day."
-            }
-      }
-]
-    }
-  ]
-}
-  </script>
-  <link rel="stylesheet" href="/css/accenture.css?v=20261118.06">
-  <link rel="stylesheet" href="/css/legacy-bridge.css?v=20261112.11">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building the Operating Model for Conversational BI Success | Beehive Strategy</title>
+<link rel="stylesheet" href="/css/accenture.css?v=20261118.06">
+<link rel="stylesheet" href="/css/legacy-bridge.css?v=20261120.03">
+<link rel="stylesheet" href="/css/article-layout.css?v=20261123.01">
+<meta name="description" content="A practical guide for enterprise leaders on structuring teams, defining new roles, and adapting workflows to integrate and scale conversational BI and data agents effectively.">
+<link rel="canonical" href="https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
+<link rel="alternate" hreflang="en" href="https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
+<link rel="alternate" hreflang="zh-cn" href="https://www.beehivestrategy.com/zh-cn/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
+<link rel="alternate" hreflang="zh-hk" href="https://www.beehivestrategy.com/zh-hk/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
+<link rel="alternate" hreflang="x-default" href="https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building the Operating Model for Conversational BI Success">
+<meta property="og:description" content="A practical guide for enterprise leaders on structuring teams, defining new roles, and adapting workflows to integrate and scale conversational BI and data agents effectively.">
+<meta property="og:url" content="https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025">
+<meta property="og:image" content="https://www.beehivestrategy.com/assets/blog/social/en/small-language-models-cost-effective-enterprise-ai-20261025.jpg?v=20261123.01">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Building the Operating Model for Conversational BI Success">
+<meta name="twitter:description" content="A practical guide for enterprise leaders on structuring teams, defining new roles, and adapting workflows to integrate and scale conversational BI and data agents effectively.">
+<meta name="twitter:image" content="https://www.beehivestrategy.com/assets/blog/social/en/small-language-models-cost-effective-enterprise-ai-20261025.jpg?v=20261123.01">
+<meta property="article:author" content="Beehive Strategy">
+<meta property="article:published_time" content="2026-10-25">
+<meta property="article:modified_time" content="2026-11-23">
+<meta name="keywords" content="conversational BI operating model, data agent team structure, BI product management, scaling conversational AI, data governance framework, BI Ops pod, measuring BI adoption">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Building the Operating Model for Conversational BI Success", "description": "A practical guide for enterprise leaders on structuring teams, defining new roles, and adapting workflows to integrate and scale conversational BI and data agents effectively.", "mainEntityOfPage": "https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025", "author": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "publisher": {"@type": "Organization", "name": "Beehive Strategy", "url": "https://www.beehivestrategy.com"}, "image": "https://www.beehivestrategy.com/assets/blog/social/en/small-language-models-cost-effective-enterprise-ai-20261025.jpg?v=20261123.01", "datePublished": "2026-10-25", "dateModified": "2026-11-23", "inLanguage": "en", "wordCount": 2801}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.beehivestrategy.com/"}, {"@type": "ListItem", "position": 2, "name": "Insights", "item": "https://www.beehivestrategy.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Building the Operating Model for Conversational BI Success", "item": "https://www.beehivestrategy.com/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025"}]}, {"@type": "HowTo", "name": "The Conversational BI Product Lifecycle", "description": "Success requires a dedicated, cross-functional 'BI Ops' pod integrating data engineering, science, and product ownership. This team operates under a product management model, not a project-based one, with a charter focused on adoption, query quality, and business value. The operating model must be explicitly designed for continuous iteration, trust, and governance.", "step": [{"@type": "HowToStep", "position": 1, "name": "Discover", "text": "Identify high-value use cases and business dialects for initial agent training and onboarding."}, {"@type": "HowToStep", "position": 2, "name": "Train", "text": "Curate semantic models, build the knowledge graph, and tune natural language understanding."}, {"@type": "HowToStep", "position": 3, "name": "Operate", "text": "Manage daily interactions, provide Tier 2 support, and monitor platform health metrics."}, {"@type": "HowToStep", "position": 4, "name": "Learn", "text": "Analyse query logs and user feedback to identify gaps and opportunities for improvement."}, {"@type": "HowToStep", "position": 5, "name": "Iterate", "text": "Retrain models, expand data domains, and refine responses based on learnings."}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where should the BI Ops pod sit within the organisation?", "acceptedAnswer": {"@type": "Answer", "text": "The pod should reside within the central data or IT function but have strong embedded links to business units. This ensures technical cohesion while maintaining business focus. A dotted line to a strategy or operations function can help align priorities."}}, {"@type": "Question", "name": "How do we calculate the return on investment for this team?", "acceptedAnswer": {"@type": "Answer", "text": "Calculate the time savings for business users (faster insights) and data teams (deflected requests). Quantify the value of accelerated decision-making. The ROI is the sum of these efficiency gains and the value of improved strategic outcomes."}}, {"@type": "Question", "name": "What is the biggest risk to this operating model?", "acceptedAnswer": {"@type": "Answer", "text": "The largest risk is treating the platform as a project, leading to under-investment in the ongoing training and support it requires. This results in stagnation, low adoption, and eventual decline in the quality of interactions and user trust."}}, {"@type": "Question", "name": "How do we handle incorrect or 'hallucinated' answers?", "acceptedAnswer": {"@type": "Answer", "text": "Implement a seamless feedback loop where users can flag errors. The BI Ops pod must review these daily to retrain the model. Transparent communication about the agent's certified domains helps manage expectations and reduce off-topic queries."}}, {"@type": "Question", "name": "Can we start with a part-time team?", "acceptedAnswer": {"@type": "Answer", "text": "A pilot can begin with part-time assignments, but scaling requires dedicated full-time roles. The continuous nature of model training, user support, and platform evolution demands focused attention to achieve and maintain high performance."}}, {"@type": "Question", "name": "How does this model work with our existing BI tools?", "acceptedAnswer": {"@type": "Answer", "text": "The data agent should sit atop your existing data stack, querying your gold-layer data models. It complements traditional dashboards by handling ad-hoc, conversational queries, not replacing curated reports for tracked key performance indicators."}}]}]}</script>
 </head>
-<body>
-  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-  <header class="header" id="header" role="banner">
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFSTHW7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+<div id="scroll-progress" class="scroll-progress" role="presentation"></div>
+<div id="scroll-progress" class="scroll-progress" role="presentation"></div>
+<div id="scroll-progress" class="scroll-progress" role="presentation"></div>
+<header class="header" id="header" role="banner">
     <div class="header-inner">
       <a href="/" class="logo" aria-label="Beehive Strategy Home">
         <img src="/assets/images/beehive-logo.png" alt="Beehive Strategy Logo" width="144" height="36" loading="eager">
       </a>
       <nav class="nav-desktop" role="navigation" aria-label="Main navigation">
-        <a href="/solution" class="nav-link">Solution</a>
-        <a href="/services" class="nav-link">Services</a>
-        <a href="/industries" class="nav-link">Industries</a>
-        <a href="/case-studies" class="nav-link">Case Studies</a>
+        <div class="nav-item-dropdown">
+          <a href="/what-we-do" class="nav-link" aria-haspopup="true" aria-expanded="false">What we do <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--md" style="min-width: 780px; max-width: 92vw;">
+            <div class="nav-dropdown-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Start here</div>
+                <a href="/services" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>All services</span>
+                  <span class="dropdown-subtitle">Every engagement we offer</span>
+                </a>
+                <a href="/training" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>Training</span>
+                  <span class="dropdown-subtitle">Formats and depth, described up front</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">What we build</div>
+                <a href="/conversational-ai" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>Conversational AI</span>
+                  <span class="dropdown-subtitle">Ask a question, see the answer and the evidence</span>
+                </a>
+                <a href="/agentic-tools" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>Agentic Tools</span>
+                  <span class="dropdown-subtitle">Deploy and govern agentic AI</span>
+                </a>
+              </div>
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">How we deliver</div>
+                <a href="/aifde" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>Forward Deployed Engineering</span>
+                  <span class="dropdown-subtitle">IM-native deployment, embedded</span>
+                </a>
+                <a href="/how-we-work" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>How we work</span>
+                  <span class="dropdown-subtitle">Fixed scope, two weeks, then you own it</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/proof" class="nav-link" aria-haspopup="true" aria-expanded="false">Our work <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">What we deliver</div>
+                <a href="/proof" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>What you receive</span>
+                  <span class="dropdown-subtitle">Deliverables, handover and systems already live</span>
+                </a>
+                <a href="/case-studies" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Delivery in practice</span>
+                  <span class="dropdown-subtitle">Four situations, with the deliverables for each</span>
+                </a>
+                <a href="/industries" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 014-10z"/></svg>Industries</span>
+                  <span class="dropdown-subtitle">Sector-specific starting points</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/blog" class="nav-link" aria-haspopup="true" aria-expanded="false">Insights <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Read</div>
+                <a href="/blog" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Blog</span>
+                  <span class="dropdown-subtitle">Weekly signals on applied AI</span>
+                </a>
+                <a href="/guides" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Guides</span>
+                  <span class="dropdown-subtitle">Long-form how-to</span>
+                </a>
+                <a href="/news" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>News</span>
+                  <span class="dropdown-subtitle">What we shipped</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item-dropdown">
+          <a href="/about" class="nav-link" aria-haspopup="true" aria-expanded="false">About <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown nav-dropdown--sm nav-dropdown--right">
+            <div class="nav-dropdown-grid cols-1">
+              <div class="nav-dropdown-group">
+                <div class="nav-dropdown-group-label">Company</div>
+                <a href="/about" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>About us</span>
+                  <span class="dropdown-subtitle">Hong Kong, serving APAC</span>
+                </a>
+                <a href="/partners" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Partners</span>
+                  <span class="dropdown-subtitle">Who we build alongside</span>
+                </a>
+                <a href="/credentials" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Credentials</span>
+                  <span class="dropdown-subtitle">What we are qualified to do</span>
+                </a>
+                <a href="/security" class="nav-dropdown-link">
+                  <span class="dropdown-title"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Security</span>
+                  <span class="dropdown-subtitle">How your data is held</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
         <a href="/contact" class="nav-link">Contact</a>
-        <a href="/about" class="nav-link">About</a>
-        <a href="/blog" class="nav-link active">Blog</a>
       </nav>
       <div class="nav-cta">
         <div class="lang-switcher" id="lang-switcher">
-          <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
-            <span>EN</span>
-          </button>
-          <div class="lang-switcher-dropdown" role="menu">
-            <a href="/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025" role="menuitem" class="active" data-lang="en"><span>English</span></a>
-            <a href="/zh-cn/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025" role="menuitem" class="" data-lang="zh-cn"><span>简体中文</span></a>
-            <a href="/zh-tw/blog/articles/small-language-models-cost-effective-enterprise-ai-20261025" role="menuitem" class="" data-lang="zh-tw"><span>繁體中文</span></a>
-          </div>
+        <button class="lang-switcher-btn" id="lang-switcher-btn" aria-label="Switch language" aria-expanded="false">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span id="current-lang-label">EN</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="lang-switcher-dropdown" role="menu">
+          <a href="/blog/articles/ai-roi-measurement-framework-enterprise-2026" role="menuitem" class="active" data-lang="en"><span>English</span><span class="lang-code">EN</span></a>
+          <a href="/zh-cn/blog/articles/ai-roi-measurement-framework-enterprise-2026" role="menuitem" data-lang="zh-cn"><span>简体中文</span><span class="lang-code">简</span></a>
+          <a href="/zh-hk/blog/articles/ai-roi-measurement-framework-enterprise-2026" role="menuitem" data-lang="zh-hk"><span>繁體中文</span><span class="lang-code">繁</span></a>
         </div>
-        <a href="/contact" class="btn btn-primary">Book a Demo</a>
+        </div>
+        <a href="/readiness" class="btn btn-primary">Free audit</a>
       </div>
       <div class="nav-mobile">
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
   </header>
 
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-    <a href="/solution">Solution</a>
-    <a href="/services">Services</a>
-    <a href="/industries">Industries</a>
-    <a href="/case-studies">Case Studies</a>
-    <a href="/contact">Contact</a>
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
-    <a href="/contact" class="btn btn-primary btn-lg">Book a Demo</a>
-  </div>
 
-  <main role="main">
-    <article class="article">
-      <div class="container">
-        <div class="article-content">
-          <p class="article-lead">Enterprise AI budgets are under scrutiny. While large language models dominate headlines, a quiet revolution in small language models (SLMs) is delivering comparable results for targeted tasks at a fraction of the compute cost. Forward-thinking leaders are already shifting workloads — here is how to evaluate the opportunity for your organisation.</p>
-          <div class="article-tldr"><strong>Key Statistics:</strong> SLMs can reduce inference costs by 60–90% versus LLMs for domain-specific tasks (Hugging Face, 2025); 72% of enterprises piloting SLMs report faster time-to-production (Gartner, 2024).</div>
-          
-          <h2>Why Small Language Models Matter Now</h2>
-          <p>The narrative around enterprise AI has been dominated by parameter counts — billions, then hundreds of billions, now trillions. Yet for the majority of business use cases, from contract clause extraction to internal knowledge retrieval, models in the 1–10 billion parameter range consistently match or exceed the performance of their massive counterparts when fine-tuned on proprietary data.</p><p>Three converging forces make this the inflection point for SLM adoption. First, inference economics: a 7B parameter model can run on a single A10G GPU or even high-end CPU instances, slashing per-token costs by an order of magnitude. Second, data sovereignty: smaller models are feasible to deploy within private clouds or on-premises, keeping sensitive IP inside your security perimeter. Third, latency: sub-100ms response times become routine, enabling real-time copilot experiences that users actually adopt.</p><p>The strategic implication is clear: organisations that treat model size as a proxy for capability will over-invest in infrastructure and under-deliver on ROI. The winning playbook matches model architecture to task complexity — reserving frontier LLMs for genuine reasoning workloads while deploying SLMs for the high-volume, well-defined tasks that constitute 80% of enterprise AI demand.</p>
-
-          <h2>Evaluating SLMs for Your Enterprise Use Cases</h2>
-          <p>Not every workload suits a small model. The evaluation framework below separates high-fit from low-fit scenarios, grounded in production patterns observed across financial services, healthcare, and manufacturing clients.</p><h3>High-fit SLM workloads</h3><ul><li><strong>Structured extraction:</strong> Invoice parsing, contract metadata, clinical coding — where output schema is fixed and training data is abundant.</li><li><strong>Classification and routing:</strong> Ticket triage, sentiment tagging, compliance flagging — deterministic labels, low ambiguity.</li><li><strong>Domain-specific QA:</strong> Internal policy lookup, product specification queries — retrievable ground truth, bounded knowledge base.</li><li><strong>Code generation for internal frameworks:</strong> Boilerplate, migration scripts, test scaffolding — constrained vocabulary, repetitive patterns.</li></ul><h3>Low-fit SLM workloads</h3><ul><li><strong>Open-ended reasoning:</strong> Strategy synthesis, novel problem solving, creative ideation — requires broad world knowledge and multi-step inference.</li><li><strong>Multi-lingual nuance:</strong> Legal translation, cultural localisation — subtle semantics often lost below 30B parameters.</li><li><strong>Few-shot generalisation:</strong> Tasks with scarce labelled data where in-context learning from a massive model outperforms fine-tuning a small one.</li></ul><p>Actionable next step: run a two-week 'model bake-off' on a representative dataset. Compare a fine-tuned 7B model (e.g., Llama-3.1-8B, Phi-3.5-mini, or Nemotron-3-8B) against your current LLM endpoint using task-specific metrics — F1 for extraction, accuracy for classification, BLEU/ROUGE for generation. Factor in total cost of ownership including fine-tuning compute, hosting, and SLA requirements. The data will justify the migration business case.</p>
-
-          <h2>Deployment Strategies for Production-Grade SLMs</h2>
-          <p>Moving from notebook to production exposes gaps in observability, scaling, and governance that differ from LLM deployments. The following patterns have proven effective across regulated and non-regulated environments.</p><h3>1. Containerised model serving with dynamic batching</h3><p>Deploy SLMs using vLLM, TensorRT-LLM, or TGI (Text Generation Inference) behind a Kubernetes service. Enable continuous batching to maximise GPU utilisation — critical when running multiple model variants (base, fine-tuned, quantised) on shared infrastructure. Target 80%+ GPU utilisation; anything lower signals over-provisioning.</p><h3>2. Quantisation without quality regression</h3><p>Apply 4-bit AWQ or GPTQ quantisation as standard. Validate against a golden evaluation set covering edge cases — negation, numerical reasoning, out-of-distribution inputs. In our engagements, 95% of fine-tuned SLMs retain >99% of FP16 quality at 4-bit, cutting memory footprint by 4× and enabling consumer-grade GPU deployment.</p><h3>3. Router-based model cascades</h3><p>Implement a lightweight classifier (even a distilled BERT) that routes incoming requests: simple lookups → 1B model; standard tasks → 7B model; complex reasoning → 70B+ LLM. This cascade architecture optimises cost per request while maintaining quality ceilings. One financial services client reduced blended inference cost by 73% with zero degradation on benchmark tasks.</p><h3>4. Observability tailored to SLMs</h3><p>Instrument token-level latency, KV-cache hit rates, and refusal rates. SLMs exhibit higher refusal rates on out-of-scope prompts — track this as a leading indicator of prompt drift. Set alerts on P99 latency >500ms and refusal rate >15% to trigger model retraining or router recalibration.</p>
-
-          <h2>Governance, Security and Compliance Considerations</h2>
-          <p>SLMs simplify compliance but do not eliminate governance obligations. The reduced attack surface — smaller model weights, fewer dependencies, on-prem viability — is a genuine advantage, yet three risks demand explicit controls.</p><h3>Model provenance and supply chain</h3><p>Adopt a model bill of materials (MBOM) for every deployed SLM: base model licence, training data provenance, fine-tuning dataset lineage, quantisation method, and evaluation results. Open-weight models (Llama, Phi, Gemma) carry permissive licences but may include restrictions on commercial use or model distillation. Document compliance before production.</p><h3>Data leakage through fine-tuning</h3><p>Fine-tuning on proprietary data embeds that knowledge into model weights. If the model is later shared — even internally — sensitive patterns can be extracted via membership inference or model inversion attacks. Mitigate by: (a) differential privacy during fine-tuning, (b) strict access controls on model artefacts, (c) synthetic data generation for high-risk domains (PII, trade secrets).</p><h3>Regulatory alignment</h3><p>EU AI Act classification hinges on intended use, not model size. An SLM deployed for credit scoring remains high-risk; one deployed for internal document summarisation may be minimal risk. Maintain a use-case register linking each SLM deployment to its risk tier, conformity assessment status, and human oversight requirements. This register becomes your evidence pack for auditors.</p><blockquote><p><strong>Practical tip:</strong> Establish an 'SLM review board' with representatives from security, legal, data science, and the business unit. Monthly reviews of new deployments, drift metrics, and incident logs keep governance lightweight but auditable.</p></blockquote>
-
-          
-          <div class="faq-item">
-            <h3 class="faq-question">What is the minimum viable team to operationalise SLMs in production?</h3>
-            <p class="faq-answer">A lean team of three roles suffices for initial production: an ML engineer fluent in fine-tuning and quantisation pipelines, a platform engineer owning Kubernetes/GGPU infrastructure and observability, and a domain SME curating evaluation data. As portfolio scales, add an MLOps specialist for CI/CD automation and a governance lead for compliance tracking.</p>
-          </div>
-          <div class="faq-item">
-            <h3 class="faq-question">How do we decide between fine-tuning an SLM versus RAG with an LLM for knowledge-intensive tasks?</h3>
-            <p class="faq-answer">Choose fine-tuned SLMs when: query patterns are stable, latency budgets are tight (&lt;200ms), and data residency forbids external API calls. Choose RAG with an LLM when: knowledge base updates daily, query diversity is high, and you need citation traceability. Hybrid architectures — SLM for routing and frequent queries, LLM+RAG for long-tail — often deliver the best cost/quality frontier.</p>
-          </div>
-          <div class="faq-item">
-            <h3 class="faq-question">Are there hidden costs that make SLMs less economical than they appear?</h3>
-            <p class="faq-answer">Yes. Fine-tuning compute, while one-off, requires GPU-hours and ML expertise. Ongoing evaluation set maintenance, drift monitoring, and periodic re-training add operational overhead. However, these costs are predictable and amortise rapidly at scale — typically breaking even within 3–6 months versus per-token LLM API fees for workloads exceeding 50K requests/day.</p>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">What we do <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">Start here</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/services">All services<span class="dropdown-subtitle">Every engagement we offer</span></a>
+            <a href="/training">Training<span class="dropdown-subtitle">Formats and depth, described up front</span></a>
           </div>
         </div>
-
-        <footer class="article-footer">
-          <div class="article-tags">
-      <span class="article-tag">small language models</span>
-      <span class="article-tag">enterprise AI</span>
-      <span class="article-tag">cost optimisation</span>
-      <span class="article-tag">AI strategy</span>
-      <span class="article-tag">model deployment</span>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">What we build</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/conversational-ai">Conversational AI<span class="dropdown-subtitle">Ask a question, see the answer and the evidence</span></a>
+            <a href="/agentic-tools">Agentic Tools<span class="dropdown-subtitle">Deploy and govern agentic AI</span></a>
           </div>
-          <nav class="article-nav">
-            <a href="/blog" class="btn btn-secondary">&larr; Back to All Articles</a>
-          </nav>
-        </footer>
+        </div>
+        <div class="mobile-submenu-group">
+          <div class="mobile-submenu-group-label">How we deliver</div>
+          <div class="mobile-submenu-group-links">
+            <a href="/aifde">Forward Deployed Engineering<span class="dropdown-subtitle">IM-native deployment, embedded</span></a>
+            <a href="/how-we-work">How we work<span class="dropdown-subtitle">Fixed scope, two weeks, then you own it</span></a>
+          </div>
+        </div>
       </div>
-    </article>
-  </main>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">Our work <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">What we deliver</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/proof">What you receive<span class="dropdown-subtitle">Deliverables, handover and systems already live</span></a>
+          <a href="/case-studies">Delivery in practice<span class="dropdown-subtitle">Four situations, with the deliverables for each</span></a>
+          <a href="/industries">Industries<span class="dropdown-subtitle">Sector-specific starting points</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">Insights <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Read</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/blog">Blog<span class="dropdown-subtitle">Weekly signals on applied AI</span></a>
+          <a href="/guides">Guides<span class="dropdown-subtitle">Long-form how-to</span></a>
+          <a href="/news">News<span class="dropdown-subtitle">What we shipped</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-submenu">
+    <button class="mobile-submenu-toggle" aria-expanded="false">About <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="mobile-submenu-links">
+      <div class="mobile-submenu-group">
+        <div class="mobile-submenu-group-label">Company</div>
+        <div class="mobile-submenu-group-links">
+          <a href="/about">About us<span class="dropdown-subtitle">Hong Kong, serving APAC</span></a>
+          <a href="/partners">Partners<span class="dropdown-subtitle">Who we build alongside</span></a>
+          <a href="/credentials">Credentials<span class="dropdown-subtitle">What we are qualified to do</span></a>
+          <a href="/security">Security<span class="dropdown-subtitle">How your data is held</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="/contact">Contact</a>
+  <div class="mobile-lang-switcher">
+    <a href="/blog/articles/ai-roi-measurement-framework-enterprise-2026" data-lang="en" class="active">English</a>
+    <a href="/zh-cn/blog/articles/ai-roi-measurement-framework-enterprise-2026" data-lang="zh-cn">简体中文</a>
+    <a href="/zh-hk/blog/articles/ai-roi-measurement-framework-enterprise-2026" data-lang="zh-hk">繁體中文</a>
+  </div>
+  <a href="/readiness" class="btn btn-primary btn-lg">Free audit</a>
+  </div>
 
-  <footer class="site-footer">
+
+
+
+
+<main role="main" class="ar-page">
+  <div class="ar-wrap">
+    <nav class="ar-eyebrow" aria-label="Section"><a href="/blog">Insights</a><span class="ar-sep">/</span><span>Delivery</span></nav>
+    <header class="ar-masthead">
+      <span class="ar-kicker">Delivery · Operating Model</span>
+      <h1 class="ar-title">Building the Operating Model for Conversational BI Success</h1>
+      <div class="ar-meta"><span class="ar-avatar">BS</span><span class="ar-author">Beehive Strategy</span>
+        <span class="ar-dot">·</span><time datetime="2026-10-25">25 Oct 2026</time>
+        <span class="ar-dot">·</span><span>2,801 words</span>
+        <span class="ar-dot">·</span><span>13 min read</span></div>
+      <div class="ar-share" aria-label="Share">
+        <span class="ar-share-label">Share</span><a id="share-linkedin" href="#">LinkedIn</a><a id="share-x" href="#">X</a><a id="share-whatsapp" href="#">WhatsApp</a><a id="share-facebook" href="#">Facebook</a><button id="share-copy" type="button" data-copy-msg="Link copied to clipboard!">Copy link</button></div>
+    </header>
+    <div class="ar-grid">
+      <aside class="ar-rail">
+        <nav class="ar-toc" aria-label="In this article"><span class="ar-toc-label">In this article</span>
+          <a href="#the-core-team-assembling-your-bi-ops-pod"><span>01</span>The Core Team: Assembling Your &#x27;BI Ops&#x27; Pod</a>
+          <a href="#defining-the-new-roles-and-responsibilities"><span>02</span>Defining the New Roles and Responsibilities</a>
+          <a href="#shifting-from-project-delivery-to-product-management"><span>03</span>Shifting from Project Delivery to Product Management</a>
+          <a href="#designing-the-interaction-and-support-model"><span>04</span>Designing the Interaction and Support Model</a>
+          <a href="#establishing-governance-for-scale-and-trust"><span>05</span>Establishing Governance for Scale and Trust</a>
+          <a href="#integrating-with-existing-data-and-analytics-functions"><span>06</span>Integrating with Existing Data and Analytics Functions</a>
+          <a href="#measuring-what-matters-adoption-and-impact"><span>07</span>Measuring What Matters: Adoption and Impact</a>
+          <a href="#the-90-day-roadmap-to-operationalise-your-agent"><span>08</span>The 90-Day Roadmap to Operationalise Your Agent</a>
+        </nav>
+        <a class="ar-rail-cta" href="/readiness">Not sure where you stand? Measure your AI readiness in 5 minutes →</a>
+      </aside>
+      <article class="ar-body">
+
+<div class="ar-answer"><span class="ar-answer-tag">In short · answer first</span><p>Success requires a dedicated, cross-functional &#x27;BI Ops&#x27; pod integrating data engineering, science, and product ownership. This team operates under a product management model, not a project-based one, with a charter focused on adoption, query quality, and business value. The operating model must be explicitly designed for continuous iteration, trust, and governance.</p></div>
+
+<div class="ar-takeaways"><span class="ar-takeaways-tag">Key takeaways</span><ul>
+    <li>Establish a dedicated &#x27;BI Ops&#x27; pod with four core roles</li>
+    <li>Adopt a product management lifecycle over project delivery</li>
+    <li>Implement a three-tier governance model for safe scaling</li>
+    <li>Measure success through adoption and query-to-insight ratio</li>
+  </ul></div>
+<figure class="ar-figure"><img src="/assets/blog/svg/en/small-language-models-cost-effective-enterprise-ai-20261025.svg?v=20261123.01" alt="The Conversational BI Product Lifecycle" loading="lazy"><figcaption>Content diagram derived from the workflow described in this article.</figcaption></figure>
+
+<section class="ar-visual" id="workflow" aria-label="Workflow · Process chart"><div class="ar-visual-hd"><span>Workflow · Process chart</span><h3>The Conversational BI Product Lifecycle</h3></div><div class="ar-visual-bd"><div class="ar-flow">
+      <div class="ar-flow-step"><b>01 / STEP</b><strong>Discover</strong><p>Identify high-value use cases and business dialects for initial agent training and onboarding.</p></div>
+      <div class="ar-flow-step"><b>02 / STEP</b><strong>Train</strong><p>Curate semantic models, build the knowledge graph, and tune natural language understanding.</p></div>
+      <div class="ar-flow-step"><b>03 / STEP</b><strong>Operate</strong><p>Manage daily interactions, provide Tier 2 support, and monitor platform health metrics.</p></div>
+      <div class="ar-flow-step"><b>04 / STEP</b><strong>Learn</strong><p>Analyse query logs and user feedback to identify gaps and opportunities for improvement.</p></div>
+      <div class="ar-flow-step"><b>05 / STEP</b><strong>Iterate</strong><p>Retrain models, expand data domains, and refine responses based on learnings.</p></div>
+    </div></div></section>
+
+<h2 id="the-core-team-assembling-your-bi-ops-pod">The Core Team: Assembling Your &#x27;BI Ops&#x27; Pod</h2>
+<p>The foundational unit for conversational BI is a dedicated, cross-functional &#x27;BI Ops&#x27; pod. This is not a temporary project team but a permanent product team responsible for the platform&#x27;s lifecycle. Its core mandate is to ensure the data agent delivers reliable, actionable insights and drives widespread adoption across the business, moving beyond a simple support function to become a central intelligence capability.</p>
+<p>This pod requires four distinct roles. The Product Owner defines the roadmap and champions business value. The Data Agent Trainer, often a data scientist, curates semantic models and tunes natural language understanding. The Data Engineer ensures robust pipelines and platform integration. Finally, the Governance Lead establishes guardrails and monitors compliance. This structure ensures coverage across technical, functional, and strategic domains.</p>
+<p>Resist the temptation to simply assign these duties to existing data or IT teams. The cognitive load of managing a conversational interface—interpreting ambiguous queries, tracking hallucination rates, and continuously training models—is a full-time discipline. Under-resourcing this pod is the primary reason conversational BI initiatives fail to move beyond a limited pilot phase and achieve enterprise scale.</p>
+
+
+<section class="ar-visual" aria-label="Chart · Illustrative model"><div class="ar-visual-hd"><span>Chart · Illustrative model</span><h3>Reported time spent by data teams on routine requests</h3></div><div class="ar-visual-bd"><p class="ar-visual-note">Illustrative model — replace each value with your own measured baseline before using it in a business case.</p><div class="ar-bars">
+      <div class="ar-bar-row"><span>Data validation</span><div class="ar-bar-track"><div class="ar-bar-fill" style="width:100%"></div></div><b>35%</b></div>
+      <div class="ar-bar-row"><span>Report generation</span><div class="ar-bar-track"><div class="ar-bar-fill" style="width:86%"></div></div><b>30%</b></div>
+      <div class="ar-bar-row"><span>Ad-hoc queries</span><div class="ar-bar-track"><div class="ar-bar-fill" style="width:71%"></div></div><b>25%</b></div>
+      <div class="ar-bar-row"><span>Data preparation</span><div class="ar-bar-track"><div class="ar-bar-fill" style="width:29%"></div></div><b>10%</b></div>
+    </div></div></section>
+<h2 id="defining-the-new-roles-and-responsibilities">Defining the New Roles and Responsibilities</h2>
+<p>The Product Owner for a data agent operates differently from a traditional BI product owner. Their key performance indicators shift from report delivery deadlines to business user adoption rates and the &#x27;query-to-insight&#x27; ratio. They must deeply understand various business dialects to prioritise which data domains and vocabularies the agent will master first, ensuring initial wins build credibility.</p>
+<p>The Data Agent Trainer is a specialised hybrid role, combining data modelling, linguistics, and data science. They are responsible for the agent&#x27;s knowledge graph—mapping business terminology to technical assets—and for conducting continuous performance reviews. Their primary output is an improved comprehension score, reducing the frequency of misunderstood queries and refining the agent&#x27;s response quality over time.</p>
+<p>The Governance Lead’s focus is on permissible ambiguity. They define the decision rules for which queries can be answered autonomously versus those requiring human review. This involves creating a tiered access model where sensitive financial data might have stricter interaction protocols than operational metrics. Their artefact is a living governance framework that balances speed of insight with necessary control.</p>
+<p>A critical, often-overlooked artefact is the Agent Capability Matrix. This living document, owned by the Product Manager, explicitly defines the boundaries of the agent’s knowledge and the ownership of each data domain. For example, it states: &#x27;The agent can provide YoY sales growth calculations for the EMEA region, owned by the Sales Ops team. It cannot forecast future sales or access unreleased product roadmaps.&#x27; This matrix becomes the single source of truth for user expectations and prevents scope creep. It should be version-controlled and published on the company’s internal wiki, with a clear change management process requiring sign-off from all data domain owners for any expansion of capabilities.</p>
+
+<h2 id="shifting-from-project-delivery-to-product-management">Shifting from Project Delivery to Product Management</h2>
+<p>Conversational BI platforms cannot be managed as projects with a defined end date. They are living products that evolve with the business. The operating model must therefore adopt an agile, product-centric lifecycle. This means continuous iteration based on user feedback, regular model retraining cycles, and a rolling quarterly roadmap aligned to strategic business objectives, not one-off deliverables.</p>
+<p>The core rituals of this model include weekly ‘query reviews’ where the team analyses a sample of failed or ambiguous interactions to identify training gaps. Fortnightly prioritisation sessions focus on integrating new data sources or business units based on value potential. This cyclical process ensures the platform adapts and grows in direct response to actual user behaviour and needs.</p>
+<p>Funding must also transition from project-based capital expenditure to ongoing operational expenditure. This recognises the platform as a permanent, evolving capability. The business case is justified through metrics like reduced time-to-insight for decision-makers and the deflection of routine data requests from central analytics teams, freeing them for higher-value strategic analysis.</p>
+<p>The product management mindset necessitates a new set of artefacts focused on user value, not just technical delivery. The Product Manager should maintain a public-facing Agent Backlog, prioritised based on user impact scores and adoption metrics. For instance, a feature allowing users to &#x27;export the conversation to a PowerPoint slide&#x27; might be prioritized over a technical upgrade if user feedback indicates high demand. Furthermore, the team must adopt a lightweight Business Case template for any significant new capability. This one-page document should outline the expected benefit (e.g., &#x27;reduce time spent on manual report generation by 15 hours per week&#x27;), required investment, and key success metrics, ensuring development effort is always aligned with tangible business outcomes.</p>
+
+
+<section class="ar-visual" aria-label="Matrix · Decision aid"><div class="ar-visual-hd"><span>Matrix · Decision aid</span><h3>Query routing decision matrix</h3></div><div class="ar-visual-bd"><table class="ar-matrix"><thead><tr><th>Query type</th><th>Data sensitivity</th><th>Model confidence</th><th>Action</th></tr></thead><tbody><tr><td>Fact-based</td><td>Low</td><td>High</td><td>Autonomous answer</td></tr>
+<tr><td>Diagnostic</td><td>Medium</td><td>Medium</td><td>Answer with source citation</td></tr>
+<tr><td>Predictive</td><td>High</td><td>Low</td><td>Escalate to data scientist</td></tr>
+<tr><td>New join</td><td>Any</td><td>Any</td><td>Route to product backlog</td></tr>
+</tbody></table></div></section>
+<h2 id="designing-the-interaction-and-support-model">Designing the Interaction and Support Model</h2>
+<p>A clear support model is critical for user trust. Implement a three-tier interaction framework. Tier 1: the agent answers queries autonomously within its certified domain. Tier 2: complex or novel queries are escalated to a human-in-the-loop within the BI Ops pod for immediate resolution and subsequent model training. Tier 3: requests for new data sources are routed to the product backlog.</p>
+<p>Publish explicit service level objectives for each tier. For instance, aim for 80% of queries resolved autonomously in under ten seconds. Define a target of under four hours for a Tier 2 human response. This transparency sets realistic expectations and provides measurable goals for the pod&#x27;s performance, building confidence among business users in the reliability of the service.</p>
+<p>Establish a dedicated channel, such as a Teams group or service portal, for Tier 2 and 3 interactions. This prevents support requests from fragmenting across email and personal messages, ensuring all feedback is captured systematically. This channel also doubles as a rich source of training data and a transparent public record of the team&#x27;s work and the platform&#x27;s capabilities.</p>
+<p>To manage the influx of user feedback efficiently, implement a tiered support model with clear decision rules. Tier 1 support, handled by a dedicated chatbot or helpdesk, resolves common &#x27;how-to&#x27; questions using a curated knowledge base of prompt examples. Queries that cannot be resolved in under two minutes are escalated as a Tier 2 ticket to the BI Ops pod. A weekly &#x27;Voice of the Customer&#x27; review meeting is then held to analyse these tickets. The decision rule is simple: if the same underlying user need appears in three distinct tickets, it triggers the creation of a new backlog item for the product team to develop a native agent capability, turning support overhead into a product improvement engine.</p>
+
+<h2 id="establishing-governance-for-scale-and-trust">Establishing Governance for Scale and Trust</h2>
+<p>Governance for conversational BI is not about saying &#x27;no&#x27;; it is about enabling safe &#x27;yeses&#x27;. The framework should be built on three pillars: data provenance, query auditing, and response validation. Every agent response must be traceable to its underlying source data, and a full audit log of all user queries must be maintained for compliance, quality review, and usage analytics.</p>
+<p>Implement automated validation rules to mitigate risk. For example, any query containing the term &#x27;customer revenue&#x27; should be automatically routed to a pre-vetted calculation. Any attempt to join certain high-risk data tables might trigger a mandatory review by the Governance Lead. These automated guardrails allow the agent to operate freely within a well-defined and safe playground.</p>
+<p>Create a representative governance council with members from legal, risk, and business units. This council does not approve individual queries but ratifies the overarching policy rules and access tiers proposed by the BI Ops pod. This ensures the operating model is aligned with enterprise risk tolerance and empowers the pod to move quickly within agreed boundaries.</p>
+<p>Governance must be operationalized through automated guardrails, not just manual reviews. Implement a policy-as-code framework where data access rules are defined in version-controlled configuration files. For example, a rule might state: &#x27;Any query accessing the &#x27;employee_salary&#x27; table requires the user to be in the &#x27;HR_Business_Partner&#x27; Okta group and triggers an automatic anonymization script.&#x27; These rules are deployed and enforced directly by the conversational BI platform, creating a scalable and auditable control environment. Additionally, all agent interactions should be automatically logged in an immutable audit trail, capturing the original prompt, data sources queried, and response given. This log is essential for periodic compliance audits and forensic analysis in case of a suspected security incident.</p>
+
+<h2 id="integrating-with-existing-data-and-analytics-functions">Integrating with Existing Data and Analytics Functions</h2>
+<p>The BI Ops pod must not operate as an island. Its success depends on deep integration with the central data engineering and analytics teams. The pod acts as the voice of the business user, translating their needs into requirements for the data platform team. It relies on the central team to provide clean, modelled, and reliable data assets in the gold layer.</p>
+<p>Formalise this integration through a dotted-line reporting structure or shared objectives. For example, the Data Engineer in the pod should participate in the central data team&#x27;s sprint planning. The value of the conversational BI platform becomes a shared key performance indicator for both teams, incentivising collaboration and ensuring priority is given to pipelines that feed the agent.</p>
+<p>This model ultimately elevates the central data team. By deflecting thousands of routine &#x27;what is this number&#x27; queries, the data agent frees data analysts and scientists to focus on deep diagnostic analysis, predictive modelling, and strategic initiatives. The data agent handles the known questions, allowing experts to explore the unknown, thus maximising the return on your entire data talent investment.</p>
+<p>A formal Data Contract is essential for integration. The BI Ops pod does not own data; it consumes it. Therefore, it must establish contracts with the central Analytics Engineering team, who own the semantic layer. This contract specifies service-level objectives (SLOs) for data freshness, availability, and schema change notifications. For instance, the contract may mandate that any breaking change to a core table used by the agent (e.g., renaming a column) requires a 14-day advance notice to the pod. In return, the pod provides the analytics team with a quarterly report on the top 50 most queried tables and metrics, enabling them to prioritise performance optimisations where they will have the greatest impact on the conversational user experience.</p>
+
+<h2 id="measuring-what-matters-adoption-and-impact">Measuring What Matters: Adoption and Impact</h2>
+<p>Move beyond vanity metrics like total queries. Focus on adoption rate, measured by the percentage of the target business unit using the agent weekly. Track the &#x27;query-to-insight&#x27; ratio: the percentage of queries that yield a valid, understood result without requiring escalation. A low ratio indicates training gaps or data coverage issues that the pod must address.</p>
+<p>Measure business impact through time-to-insight. Conduct baseline surveys to establish how long it typically takes a user to get an answer via traditional methods like emailing an analyst. Track the reduction in this time achieved through the agent. This directly correlates to improved decision velocity and operational efficiency, providing a clear return on investment story.</p>
+<p>Monitor the health of the platform itself. Key technical metrics include the hallucination rate (incorrect responses), the fallback rate (escalations to Tier 2), and model accuracy. Review these metrics weekly in the pod&#x27;s stand-up. A rising fallback rate is a leading indicator that the agent&#x27;s training is lagging behind the evolving needs of the business.</p>
+<p>Beyond adoption, measure the agent&#x27;s business impact through a dedicated Impact Dashboard. This dashboard should track proxy metrics for efficiency gains, such as the &#x27;Time-to-Insight&#x27; ratio—comparing the median time for a user to receive an answer from the agent versus the old process of requesting a report from a data analyst. Furthermore, track the &#x27;Deflection Rate&#x27; for the data team, measuring the percentage of repetitive, low-complexity queries now handled by the agent that would have previously resulted in a Jira ticket for an analyst. This concrete data justifies continued investment and helps quantify the agent&#x27;s ROI in terms of freed-up analyst capacity, which can be redirected toward more strategic, complex analysis.</p>
+
+<h2 id="the-90-day-roadmap-to-operationalise-your-agent">The 90-Day Roadmap to Operationalise Your Agent</h2>
+<p>The first 30 days should focus on foundation and pilot. Form the core pod, select a pilot use case with a friendly business unit, and onboard the first certified data domain. The goal is to achieve a small win—getting a specific user group to rely on the agent for a defined set of queries—to build internal credibility and demonstrate value.</p>
+<p>Days 31-60 are for refining and scaling. Incorporate feedback from the pilot to improve the model. Formalise the support and governance workflows documented in this article. Begin onboarding a second, more complex business unit or data domain. Start systematically tracking the key performance indicators outlined in the previous section to establish a performance baseline.</p>
+<p>By days 61-90, shift to optimisation and expansion. The operating model should be running smoothly. Focus on increasing the autonomous resolution rate and broadening adoption. Present a business case to secure ongoing operational expenditure funding based on the initial results. Begin socialising the platform roadmap to build demand and prepare the organisation for wider enterprise rollout.</p>
+<p>Weeks 7-9: Pilot and Refine. Onboard a pilot group of 15-20 power users from a single business unit. Their key deliverable is to complete a structured feedback cycle, testing all core use cases. The BI Ops pod’s focus shifts to intensive monitoring: tracking error rates, session length, and user satisfaction scores (e.g., via a simple post-interaction star rating). Hold daily stand-ups with the pilot group for the first week to triage issues immediately. The critical artefact from this phase is the &#x27;Go/No-Go&#x27; checklist for full rollout, based on achieving pre-defined metrics: e.g., a 95% success rate on core queries and a 4/5 average satisfaction score. This data-driven gate ensures you only scale what is proven to work.</p>
+
+<section class="ar-visual" aria-label="Chart · Illustrative mix"><div class="ar-visual-hd"><span>Chart · Illustrative mix</span><h3>Composition of a core BI Ops pod</h3></div><div class="ar-visual-bd"><p class="ar-visual-note">Illustrative split only — substitute your own measured baseline before reuse.</p><div class="ar-donut-wrap"><div class="ar-donut" style="background:conic-gradient(#0F62FE 0.0% 25.0%, #0043CE 25.0% 50.0%, #8FB0FF 50.0% 75.0%, #C9D9FF 75.0% 100.0%)" role="img" aria-label="Composition of a core BI Ops pod"></div><div class="ar-legend">
+        <div><i style="background:#0F62FE"></i>Product Owner <b>25%</b></div>
+        <div><i style="background:#0043CE"></i>Data Agent Trainer <b>25%</b></div>
+        <div><i style="background:#8FB0FF"></i>Data Engineer <b>25%</b></div>
+        <div><i style="background:#C9D9FF"></i>Governance Lead <b>25%</b></div>
+      </div></div></div></section>
+
+<section class="ar-visual" aria-label="Graph · Illustrative trend"><div class="ar-visual-hd"><span>Graph · Illustrative trend</span><h3>Target quarterly growth in autonomous resolution rate</h3></div><div class="ar-visual-bd"><p class="ar-visual-note">Illustrative pattern showing how evidence quality matures; not a measured result.</p><div class="ar-trend"><svg viewBox="0 0 600 220" role="img" aria-label="Target quarterly growth in autonomous resolution rate"><line x1="40" y1="50" x2="580" y2="50" stroke="var(--border, #DFE5F5)"/><line x1="40" y1="115" x2="580" y2="115" stroke="var(--border, #DFE5F5)"/><line x1="40" y1="180" x2="580" y2="180" stroke="var(--border, #DFE5F5)"/><polyline points="50,119 217,88 383,65 550,50" fill="none" stroke="var(--accent, #0F62FE)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="119" r="4" fill="var(--accent, #0F62FE)"/><circle cx="217" cy="88" r="4" fill="var(--accent, #0F62FE)"/><circle cx="383" cy="65" r="4" fill="var(--accent, #0F62FE)"/><circle cx="550" cy="50" r="4" fill="var(--accent, #0F62FE)"/><text x="50" y="205" text-anchor="middle" font-size="11" fill="var(--text-3, #8B94A8)">Q1</text><text x="217" y="205" text-anchor="middle" font-size="11" fill="var(--text-3, #8B94A8)">Q2</text><text x="383" y="205" text-anchor="middle" font-size="11" fill="var(--text-3, #8B94A8)">Q3</text><text x="550" y="205" text-anchor="middle" font-size="11" fill="var(--text-3, #8B94A8)">Q4</text><text x="50" y="107" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-strong, #0043CE)">40</text><text x="217" y="76" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-strong, #0043CE)">60</text><text x="383" y="53" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-strong, #0043CE)">75</text><text x="550" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-strong, #0043CE)">85</text></svg></div></div></section>
+
+<section class="ar-visual" aria-label="Process chart · 90-day rollout"><div class="ar-visual-hd"><span>Process chart · 90-day rollout</span><h3>First 90-day operationalisation plan</h3></div><div class="ar-visual-bd"><div class="ar-roadmap">
+      <div class="ar-phase"><b>DAYS 1-30</b><h4>Pilot</h4><p>Form pod, select a pilot use case, and onboard first data domain.</p></div>
+      <div class="ar-phase"><b>DAYS 31-60</b><h4>Refine</h4><p>Formalise workflows, begin scaling to a second business unit.</p></div>
+      <div class="ar-phase"><b>DAYS 61-90</b><h4>Optimise</h4><p>Focus on increasing resolution rate and building business case.</p></div>
+    </div></div></section>
+
+<div class="ar-lead-inline"><span class="ar-lead-label">From reading to doing</span><h3>Want this applied to your own data and delivery model?</h3><p>Fixed scope, two weeks, and your team owns the result after we leave.</p><a class="ar-btn" href="/contact">Book a scoping call</a><a class="ar-link-inline" href="/readiness">Or check your AI readiness →</a></div>
+
+<section class="ar-faq" id="frequently-asked-questions"><h2>Frequently asked questions</h2>
+<div class="faq-item"><button class="faq-question" aria-expanded="false"><span class="faq-question-text"><span class="faq-number">1</span><span>Where should the BI Ops pod sit within the organisation?</span></span></button><div class="faq-answer" role="region"><div class="faq-answer-inner">The pod should reside within the central data or IT function but have strong embedded links to business units. This ensures technical cohesion while maintaining business focus. A dotted line to a strategy or operations function can help align priorities.</div></div></div>
+<div class="faq-item"><button class="faq-question" aria-expanded="false"><span class="faq-question-text"><span class="faq-number">2</span><span>How do we calculate the return on investment for this team?</span></span></button><div class="faq-answer" role="region"><div class="faq-answer-inner">Calculate the time savings for business users (faster insights) and data teams (deflected requests). Quantify the value of accelerated decision-making. The ROI is the sum of these efficiency gains and the value of improved strategic outcomes.</div></div></div>
+<div class="faq-item"><button class="faq-question" aria-expanded="false"><span class="faq-question-text"><span class="faq-number">3</span><span>What is the biggest risk to this operating model?</span></span></button><div class="faq-answer" role="region"><div class="faq-answer-inner">The largest risk is treating the platform as a project, leading to under-investment in the ongoing training and support it requires. This results in stagnation, low adoption, and eventual decline in the quality of interactions and user trust.</div></div></div>
+<div class="faq-item"><button class="faq-question" aria-expanded="false"><span class="faq-question-text"><span class="faq-number">4</span><span>How do we handle incorrect or &#x27;hallucinated&#x27; answers?</span></span></button><div class="faq-answer" role="region"><div class="faq-answer-inner">Implement a seamless feedback loop where users can flag errors. The BI Ops pod must review these daily to retrain the model. Transparent communication about the agent&#x27;s certified domains helps manage expectations and reduce off-topic queries.</div></div></div>
+<div class="faq-item"><button class="faq-question" aria-expanded="false"><span class="faq-question-text"><span class="faq-number">5</span><span>Can we start with a part-time team?</span></span></button><div class="faq-answer" role="region"><div class="faq-answer-inner">A pilot can begin with part-time assignments, but scaling requires dedicated full-time roles. The continuous nature of model training, user support, and platform evolution demands focused attention to achieve and maintain high performance.</div></div></div>
+<div class="faq-item"><button class="faq-question" aria-expanded="false"><span class="faq-question-text"><span class="faq-number">6</span><span>How does this model work with our existing BI tools?</span></span></button><div class="faq-answer" role="region"><div class="faq-answer-inner">The data agent should sit atop your existing data stack, querying your gold-layer data models. It complements traditional dashboards by handling ad-hoc, conversational queries, not replacing curated reports for tracked key performance indicators.</div></div></div>
+</section>
+
+<section class="ar-lead-end"><h3>Three ways to move forward</h3><div class="ar-paths">
+<a class="ar-path" href="/readiness"><span class="ar-path-num">01 / SELF-SERVE</span><h4>Measure your readiness</h4><p>A 24-question self-assessment across six dimensions. No sign-up required to see your result.</p><span class="ar-path-go">Start the assessment →</span></a>
+<a class="ar-path" href="/proof"><span class="ar-path-num">02 / EVIDENCE</span><h4>See what you receive</h4><p>Deliverables, handover and systems already live, so you can judge fit before a call.</p><span class="ar-path-go">Explore deliverables →</span></a>
+<a class="ar-path" href="/contact"><span class="ar-path-num">03 / TALK</span><h4>Discuss your use case</h4><p>Tell us the decision you want to speed up. We will scope a two-week pilot around it.</p><span class="ar-path-go">Get in touch →</span></a>
+</div></section>
+
+<section class="ar-related" id="related-articles"><h3>Related reading</h3><div class="ar-related-grid">
+<a href="/blog/articles/2025-in-review-enterprise-ai-pilot-to-production"><img src="/assets/blog/social/en/2025-in-review-enterprise-ai-pilot-to-production.jpg?v=20261123.01" alt="2025 in Review: The Year Enterprise AI Went from Pilot" loading="lazy"><span>2025 in Review: The Year Enterprise AI Went from Pilot</span></a>
+<a href="/blog/articles/2025-year-review-enterprise-ai-transformation"><img src="/assets/blog/social/en/2025-year-review-enterprise-ai-transformation.jpg?v=20261123.01" alt="2025 Year in Review: Enterprise AI Transformation" loading="lazy"><span>2025 Year in Review: Enterprise AI Transformation</span></a>
+<a href="/blog/articles/2026-ai-budget-planning-enterprise-guide-nov2025"><img src="/assets/blog/social/en/2026-ai-budget-planning-enterprise-guide-nov2025.jpg?v=20261123.01" alt="2026 AI Budget Planning: Enterprise Guide" loading="lazy"><span>2026 AI Budget Planning: Enterprise Guide</span></a>
+</div></section>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+
+<footer class="footer" role="contentinfo">
     <div class="container">
-      <p>&copy; 2026 Beehive Strategy Limited. All rights reserved.</p>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo" aria-label="Beehive Strategy Home">
+            <img src="/assets/images/beehive-logo-white.png" alt="Beehive Strategy Logo" width="144" height="36" loading="lazy">
+          </a>
+          <p>We deploy governed conversational AI inside the messaging tools you already use — fixed scope, two weeks, and your team owns it after we leave.</p>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="/cdn-cgi/l/email-protection#432220202c362d37032126262b2a3526303731223726243a6d202c2e" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>What we do</h4>
+          <ul>
+            <li><a href="/what-we-do">What we do</a></li>
+            <li><a href="/training">Training</a></li>
+            <li><a href="/services">All services</a></li>
+            <li><a href="/conversational-ai">Conversational AI</a></li>
+            <li><a href="/aifde">Forward Deployed Engineering</a></li>
+            <li><a href="/agentic-tools">Agentic Tools</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Our work</h4>
+          <ul>
+            <li><a href="/proof">What you receive</a></li>
+            <li><a href="/case-studies">Delivery in practice</a></li>
+            <li><a href="/industries">Industries</a></li>
+            <li><a href="/how-we-work">How we work</a></li>
+            <li><a href="/blog">Insights</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/about">About us</a></li>
+            <li><a href="/partners">Partners</a></li>
+            <li><a href="/credentials">Credentials</a></li>
+            <li><a href="/security">Security</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Beehive Strategy Limited All rights reserved.</p>
+        <div class="legal">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/cookies">Cookie Policy</a>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <script src="/js/main.js?v=20261119.01"></script>
+
+<div class="toast" id="toast"></div>
+<script>window.__ARTICLE_TITLE__ = "Measuring AI ROI: A Comprehensive Framework for Enterprise Investments in 2026";</script>
+<script src="/js/article.js?v=20261120.03"></script>
+    <script src="/js/article-anim.js?v=20261120.03" defer></script>
+<script src="/js/article-layout.js?v=20261123.01"></script>
 </body>
 </html>

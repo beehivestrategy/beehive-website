@@ -1066,7 +1066,6 @@
     const switcher = DOM.langSwitcher;
     const btn = DOM.langSwitcherBtn;
     const label = document.getElementById('current-lang-label');
-    if (!switcher || !btn) return;
 
     // Auto-detect current language from URL path
     // Strip .html extension for clean URL normalization
@@ -1087,6 +1086,30 @@
     // Update button label
     if (label) label.textContent = currentLabel;
 
+    // Build alternate paths (always use clean URLs, no .html extension)
+    const isZhCn = path.indexOf('/zh-cn/') === 0;
+    const isZhTw = path.indexOf('/zh-hk/') === 0;
+    let basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-hk/, '') : path);
+    // Normalize: root index -> /, nested index -> /blog (matches canonical/sitemap).
+    if (basePath === '' || basePath === '/') basePath = '/';
+    else if (basePath === '/index') basePath = '/';
+    else if (basePath.endsWith('/index')) basePath = basePath.slice(0, -6);
+    const enPath = basePath;
+    const zhCnPath = '/zh-cn' + basePath;
+    const zhTwPath = '/zh-hk' + basePath;
+    const altHref = { en: enPath, 'zh-cn': zhCnPath, 'zh-hk': zhTwPath };
+
+    // Mobile menu language switcher: same derived URLs, same active state.
+    // This also covers the trilingual legacy-exempt pages that chrome builder skips.
+    document.querySelectorAll('.mobile-lang-switcher a[data-lang]').forEach(link => {
+      const dl = link.getAttribute('data-lang');
+      link.classList.remove('active');
+      if (dl === currentLang) link.classList.add('active');
+      if (altHref[dl]) link.setAttribute('href', altHref[dl]);
+    });
+
+    if (!switcher || !btn) return;
+
     // Mark active item in dropdown
     // Both nav generations: modern .lang-switcher-dropdown and legacy .lang-dropdown.
     const dropdownLinks = switcher.querySelectorAll('.lang-switcher-dropdown a, .lang-dropdown a');
@@ -1095,24 +1118,8 @@
       if (link.getAttribute('data-lang') === currentLang) {
         link.classList.add('active');
       }
-    });
-
-    // Build alternate paths (always use clean URLs, no .html extension)
-    const isZhCn = path.indexOf('/zh-cn/') === 0;
-    const isZhTw = path.indexOf('/zh-hk/') === 0;
-    let basePath = isZhCn ? path.replace(/^\/zh-cn/, '') : (isZhTw ? path.replace(/^\/zh-hk/, '') : path);
-    // Normalize: strip .html, ensure trailing slash for index
-    if (basePath === '' || basePath === '/') basePath = '/';
-    else if (basePath === '/index') basePath = '/';
-    const enPath = basePath;
-    const zhCnPath = '/zh-cn' + basePath;
-    const zhTwPath = '/zh-hk' + basePath;
-
-    dropdownLinks.forEach(link => {
       const dl = link.getAttribute('data-lang');
-      if (dl === 'en') link.setAttribute('href', enPath);
-      else if (dl === 'zh-cn') link.setAttribute('href', zhCnPath);
-      else if (dl === 'zh-hk') link.setAttribute('href', zhTwPath);
+      if (altHref[dl]) link.setAttribute('href', altHref[dl]);
     });
 
     // Toggle dropdown
