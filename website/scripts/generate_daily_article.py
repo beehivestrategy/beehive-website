@@ -527,41 +527,28 @@ def generate_html_article(article, lang="en", date_str=None):
 
 
 def update_blog_index(article, date_str):
-    """Add new article card to the blog index page."""
-    if not BLOG_INDEX.exists():
-        print(f"WARNING: Blog index not found at {BLOG_INDEX}")
+    """Add the new article to the REAL blog index pages (EN / zh-CN / zh-HK).
+
+    2026-11-25 fix: the old implementation wrote a v3-format card into
+    website/blog.html (the legacy root page) while looking for a
+    `blog-cards` container that the live index does not have. The live
+    /blog/ pages are blog/index.html, zh-cn/blog/index.html and
+    zh-hk/blog/index.html, which use a `blog-grid` container and v7 card
+    markup. Result: daily articles were published but never showed up in
+    the index. Delegate to backfill_daily_index.py, which is idempotent,
+    covers all three languages and uses the approved v7 card markup.
+    """
+    import subprocess
+    import sys
+    backfill = Path(__file__).with_name("backfill_daily_index.py")
+    if not backfill.exists():
+        print(f"WARNING: backfill script not found at {backfill}")
         return
-
-    html = BLOG_INDEX.read_text(encoding="utf-8")
-    slug = article["slug"]
-    title = escape(article["title"])
-    description = escape(article["description"])
-    category = escape(article.get("category", "AI Strategy"))
-
-    # Create article card HTML
-    card_html = f"""
-    <article class="blog-card" data-date="{date_str}" data-category="{category.lower()}">
-      <a href="/blog/articles/{slug}" class="blog-card-link">
-        <div class="blog-card-content">
-          <span class="blog-card-category">{category}</span>
-          <h3 class="blog-card-title">{title}</h3>
-          <p class="blog-card-excerpt">{description}</p>
-          <time class="blog-card-date" datetime="{date_str}T{PUBLISH_TIME}">{date_str}</time>
-        </div>
-      </a>
-    </article>"""
-
-    # Insert after the first article card (newest first)
-    # Look for the blog-cards container
-    pattern = r'(<div[^>]*class="[^"]*blog-cards[^"]*"[^>]*>)'
-    match = re.search(pattern, html)
-    if match:
-        insert_pos = match.end()
-        html = html[:insert_pos] + "\n" + card_html + html[insert_pos:]
-        BLOG_INDEX.write_text(html, encoding="utf-8")
-        print(f"  Added article card to blog index")
-    else:
-        print(f"  WARNING: Could not find blog-cards container in index")
+    result = subprocess.run([sys.executable, str(backfill), "--apply"],
+                            check=False, capture_output=True, text=True)
+    print(result.stdout.strip())
+    if result.returncode != 0:
+        print(f"WARNING: backfill failed: {result.stderr.strip()}")
 
 
 def update_sitemap(slug, date_str):
