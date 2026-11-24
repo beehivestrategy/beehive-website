@@ -12,7 +12,7 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 OUT = os.path.join(HERE, "_partials")
-TEMPLATES = {"en": "fde.html", "zh-cn": "zh-cn/fde.html", "zh-hk": "zh-hk/fde.html"}
+TEMPLATES = {"en": "aifde.html", "zh-cn": "zh-cn/aifde.html", "zh-hk": "zh-hk/aifde.html"}
 
 
 def read(p):

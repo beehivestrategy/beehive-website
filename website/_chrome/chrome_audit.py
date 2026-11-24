@@ -21,10 +21,12 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-TEMPLATES = {"en": "fde.html", "zh-cn": "zh-cn/fde.html", "zh-hk": "zh-hk/fde.html"}
+TEMPLATES = {"en": "aifde.html", "zh-cn": "zh-cn/aifde.html", "zh-hk": "zh-hk/aifde.html"}
 EXCLUDE_DIRS = ("_batch_pipeline", "node_modules", ".git", "beehive-homepage-draft",
                 "beehive-homepage", "seo-audit-report", "seo-audit-summary",
-                "templates", "_chrome")
+                "templates", "_chrome", "_previews",
+                # 独立课程/工具页有自建 in-page nav，不属于站点统一 chrome。
+                "workbuddy", "training")
 KNOWN_PREFIXES = ("wechat-preview", "wechat-draft-preview",
                   "wechat-article-draft-preview", "training/opc/")
 KNOWN_PAGES = {"zh-cn.html": "hub header 未本地化（EN 链接）— 观察项",

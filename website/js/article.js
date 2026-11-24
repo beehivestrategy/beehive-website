@@ -243,26 +243,49 @@
         });
     }
 
+    // WhatsApp — wa.me works on mobile and WhatsApp Web, and is the
+    // dominant channel for the Hong Kong audience.
+    var shareWhatsapp = document.getElementById('share-whatsapp');
+    if (shareWhatsapp) {
+        shareWhatsapp.addEventListener('click', function() {
+            window.open('https://wa.me/?text=' + encodeURIComponent(articleTitle + ' ' + articleUrl), '_blank', 'width=600,height=500');
+        });
+    }
+
+    // Facebook — the sharer takes the URL and pulls og:title/og:image,
+    // so the dedicated 1200x630 social card is what gets displayed.
+    var shareFacebook = document.getElementById('share-facebook');
+    if (shareFacebook) {
+        shareFacebook.addEventListener('click', function() {
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(articleUrl), '_blank', 'width=600,height=500');
+        });
+    }
+
     var shareCopy = document.getElementById('share-copy');
     if (shareCopy) {
+        // Copy confirmation is localised via data-copy-msg on the button,
+        // so it matches the language of the page the reader is on.
+        var copyMsg = shareCopy.getAttribute('data-copy-msg') || 'Link copied to clipboard!';
         shareCopy.addEventListener('click', function() {
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(articleUrl).then(function() {
-                showToast('Link copied to clipboard!');
-            });
-        } else {
-            var temp = document.createElement('textarea');
-            temp.value = articleUrl;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-            showToast('Link copied to clipboard!');
-        }
-    });
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(articleUrl).then(function() {
+                    showToast(copyMsg);
+                });
+            } else {
+                var temp = document.createElement('textarea');
+                temp.value = articleUrl;
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand('copy');
+                document.body.removeChild(temp);
+                showToast(copyMsg);
+            }
+        });
     }
 
     function showToast(msg) {
+        // Some article pages predate the toast element — never throw on copy.
+        if (!toast) return;
         toast.textContent = msg;
         toast.classList.add('show');
         setTimeout(function() {

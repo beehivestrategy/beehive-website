@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-gen_article_heroes.py — SINGLE SOURCE for every blog diagram (v4).
+gen_article_heroes.py — SINGLE SOURCE for every blog diagram (v5).
 
 v4 (2026-11-20, Kenneth): index covers must be the SAME conceptual diagram as
 the article hero, with MORE pattern variety, still on the site's light
 IBM-blue editorial palette. So:
   - 28 structural prototypes (was 16)
   - 8 subtle pattern grounds (was 5)
-  - brand palette: IBM blue primary + muted teal/gold/steel/aqua (no plum/coral)
   - position-aware prototype rotation: no two adjacent cards share a prototype
   - every one of the 1,141 index slugs gets a hero SVG (40 were missing)
   - card covers are rendered FROM these SVGs (see render_hero_covers.js)
+
+v5 (2026-11-20, Kenneth): one consistent colour family. The previous muted
+teal/gold/steel/aqua accents were removed; every diagram now uses only IBM
+blue / deep blue / light blue over blue-white grounds.
 
 Deterministic: same slug (+ section) -> same SVG.
 Language-neutral: only the fixed brand footer text.
@@ -37,22 +40,20 @@ ART_DIRS = [WEB / "blog" / "articles", WEB / "zh-cn" / "blog" / "articles",
 
 W, H, M = 800, 450, 60
 
-# Site palette (accenture.css :root) — blue-led, muted supporting tones only
+# Site palette (accenture.css :root) — v5: one consistent IBM-blue family.
+# Kenneth 2026-11-20: mixed teal/gold/aqua cards look inconsistent. Every
+# diagram now uses only the brand's blue hues; pattern shapes still vary.
 INK = "#101828"
 SLATE = "#4A5568"
 MIST = "#dfe5f5"        # --border
 GRID = "#eef2fb"        # near-invisible grid (--bl-grid-line over white)
-TEAL = "#2B9E8B"
-GOLD = "#d4a843"
-AQUA = "#6cc4b4"
 BLUE = "#0F62FE"        # --accent
 BLUE_D = "#0043CE"      # --accent-strong
 BLUE_L = "#8fb0ff"
-STEEL = "#7d94a6"
 
 PAIRS = [
-    (BLUE, AQUA), (BLUE, GOLD), (BLUE_D, BLUE_L), (STEEL, AQUA),
-    (TEAL, GOLD), (BLUE, STEEL), (BLUE_D, AQUA), (TEAL, BLUE_L),
+    (BLUE, BLUE_L), (BLUE_D, BLUE_L), (BLUE, BLUE_D), (BLUE_D, BLUE),
+    (BLUE, BLUE_L), (BLUE_D, BLUE_L), (BLUE, BLUE_D), (BLUE_D, BLUE),
 ]
 
 SECTION_PROTO = {
@@ -123,7 +124,7 @@ def background(rnd, a1, a2):
     y2 = rnd.choice([1, 0, 0.6])
     stops = rnd.choice([
         ("#ffffff", "#f0f4fe"), ("#fbfcff", "#f4f7fe"),
-        ("#ffffff", "#eaf2f3"), ("#fafcff", "#eef1f8"),
+        ("#ffffff", "#f0f4fe"), ("#fafcff", "#eef1f8"),
     ])
     parts.append(
         f'<defs><linearGradient id="bg" x1="0" y1="0" x2="{x2}" y2="{y2}">'
@@ -265,7 +266,7 @@ def proto_shapes(idx, rnd, a1, a2):
                        f'stroke="{INK}" stroke-width="1.5"/>')
             ly = y - 60 if up else y + 24
             out.append(f'<line x1="{x:.0f}" y1="{(y-13) if up else (y+13):.0f}" x2="{x:.0f}" '
-                       f'y2="{(y-40) if up else (y+40):.0f}" stroke="{AQUA}" stroke-width="2"/>')
+                       f'y2="{(y-40) if up else (y+40):.0f}" stroke="{BLUE_L}" stroke-width="2"/>')
             out.append(f'<rect x="{x-32:.0f}" y="{ly:.0f}" width="64" height="30" rx="8" '
                        f'fill="{GRID}" stroke="{a2}" stroke-width="1"/>')
 
